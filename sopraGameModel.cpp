@@ -1,33 +1,5 @@
-#include <utility>
-
-#include <utility>
-
-#include <utility>
-
-#include <utility>
-
-#include <utility>
-
-#include <utility>
-
-#include <utility>
-
-#include <utility>
-
-#include <utility>
-
-#include <utility>
-
-#include <utility>
-
-#include <utility>
-
-#include <utility>
-
-#include <utility>
-
 #include "sopraGameModel.h"
-
+#include <utility>
 #include <iostream>
 
 Player::Player(int posX, int posY, std::string  name, Gender gender, Broom broom) :
@@ -40,14 +12,6 @@ Ball::Ball(int posX, int posY) {
     this->y = posY;
 }
 
-Team::Team(Seeker seeker, Keeper keeper, std::array<Beater, 2> beaters, std::array<Chaser, 3> chasers,
-           std::string name, std::string colorMain, std::string colorSecondary, const Fanblock &fanblock) :
-           name(std::move(name)), colorMain(std::move(colorMain)), colorSecondary(std::move(colorSecondary)), fanblock(fanblock){
-    this->seeker = std::move(seeker);
-    this->keeper = std::move(keeper);
-    this->beaters = std::move(beaters);
-    this->chasers = std::move(chasers);
-}
 
 Fanblock::Fanblock(int teleportation, int rangedAttack, int impulse, int snitchPush){
     if(teleportation + rangedAttack + impulse + snitchPush != 7){
@@ -105,3 +69,9 @@ Player(posX, posY, std::move(name), gender, broom) {}
 
 Beater::Beater(int posX, int posY, std::string name, Gender gender, Broom broom) :
 Player(posX, posY, std::move(name), gender, broom) {}
+
+Team::Team(Seeker seeker, Keeper keeper, std::array<Beater, 2> beaters, std::array<Chaser, 3> chasers,
+           std::string  name, std::string  colorMain, std::string  colorSecondary,
+           const Fanblock &fanblock)
+        : seeker(std::move(seeker)), keeper(std::move(keeper)), beaters(std::move(beaters)), chasers(std::move(chasers)), name(std::move(name)), colorMain(std::move(colorMain)),
+          colorSecondary(std::move(colorSecondary)), fanblock(fanblock) {}

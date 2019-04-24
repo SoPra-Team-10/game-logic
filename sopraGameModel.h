@@ -121,7 +121,8 @@ public:
     Fanblock fanblock;
 
     Team(Seeker seeker, Keeper keeper, std::array<Beater, 2> beaters, std::array<Chaser, 3> chasers,
-         std::string name, std::string colorMain, std::string colorSecondary, const Fanblock &fanblock);
+         std::string  name, std::string  colorMain, std::string  colorSecondary,
+         const Fanblock &fanblock);
 };
 
 /**
