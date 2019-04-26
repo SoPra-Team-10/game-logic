@@ -4,6 +4,9 @@
 #include <string>
 #include <array>
 
+/**
+ * This struct represents a 2D-Position on the Gamefield
+ */
 struct Position{
     int x;
     int y;
@@ -75,22 +78,22 @@ public:
 
 class Chaser : public Player{
 public:
-    Chaser(Position position, std::string  name, Gender gender, Broom broom);
+    Chaser(Position position, std::string name, Gender gender, Broom broom);
 };
 
 class Keeper : public Player{
 public:
-    Keeper(Position position, std::string  name, Gender gender, Broom broom);
+    Keeper(Position position, std::string name, Gender gender, Broom broom);
 };
 
 class Seeker : public Player{
 public:
-    Seeker(Position position, std::string  name, Gender gender, Broom broom);
+    Seeker(Position position, std::string name, Gender gender, Broom broom);
 };
 
 class Beater : public Player{
 public:
-    Beater(Position position, std::string  name, Gender gender, Broom broom);
+    Beater(Position position, std::string name, Gender gender, Broom broom);
 };
 
 class Quaffle : public Ball{
