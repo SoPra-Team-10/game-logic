@@ -2,15 +2,10 @@
 #include <utility>
 #include <iostream>
 
-Player::Player(int posX, int posY, std::string  name, Gender gender, Broom broom) :
-x(posX), y(posY), name(std::move(name)), gender(gender), broom(broom){
+Player::Player(Position position, std::string  name, Gender gender, Broom broom) :
+position{position}, name(std::move(name)), gender(gender), broom(broom){}
 
-}
-
-Ball::Ball(int posX, int posY) {
-    this->x = posX;
-    this->y = posY;
-}
+Ball::Ball(Position position) : position{position} {}
 
 
 Fanblock::Fanblock(int teleportation, int rangedAttack, int impulse, int snitchPush){
@@ -52,26 +47,27 @@ Environment::Environment(Team team1, Team team2, Quaffle quaffle, Snitch snitch,
                          std::array<Bludger, 2> bludgers)
         : team1(std::move(team1)), team2(std::move(team2)), quaffle(quaffle), snitch(snitch), bludgers(bludgers) {}
 
-Snitch::Snitch(int x, int y): Ball(x, y) {}
+Snitch::Snitch(Position position): Ball(position) {}
 
-Bludger::Bludger(int x, int y) : Ball(x, y) {}
+Bludger::Bludger(Position position) : Ball(position) {}
 
-Quaffle::Quaffle(int x, int y) : Ball(x, y) {}
+Quaffle::Quaffle(Position position) : Ball(position) {}
 
-Chaser::Chaser(int posX, int posY, std::string name, Gender gender, Broom broom) :
-Player(posX, posY, std::move(name), gender, broom) {}
+Chaser::Chaser(Position position, std::string name, Gender gender, Broom broom) :
+Player(position, std::move(name), gender, broom) {}
 
-Keeper::Keeper(int posX, int posY, std::string name, Gender gender, Broom broom) :
-Player(posX, posY, std::move(name), gender, broom) {}
+Keeper::Keeper(Position position, std::string name, Gender gender, Broom broom) :
+Player(position, std::move(name), gender, broom) {}
 
-Seeker::Seeker(int posX, int posY, std::string name, Gender gender, Broom broom) :
-Player(posX, posY, std::move(name), gender, broom) {}
+Seeker::Seeker(Position position, std::string name, Gender gender, Broom broom) :
+Player(position, std::move(name), gender, broom) {}
 
-Beater::Beater(int posX, int posY, std::string name, Gender gender, Broom broom) :
-Player(posX, posY, std::move(name), gender, broom) {}
+Beater::Beater(Position position, std::string name, Gender gender, Broom broom) :
+Player(position, std::move(name), gender, broom) {}
 
 Team::Team(Seeker seeker, Keeper keeper, std::array<Beater, 2> beaters, std::array<Chaser, 3> chasers,
            std::string  name, std::string  colorMain, std::string  colorSecondary,
            const Fanblock &fanblock)
         : seeker(std::move(seeker)), keeper(std::move(keeper)), beaters(std::move(beaters)), chasers(std::move(chasers)), name(std::move(name)), colorMain(std::move(colorMain)),
           colorSecondary(std::move(colorSecondary)), fanblock(fanblock) {}
+

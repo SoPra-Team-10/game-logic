@@ -5,6 +5,14 @@
 #include <array>
 
 /**
+ * This struct represents a 2D-Position on the Gamefield
+ */
+struct Position{
+    int x;
+    int y;
+};
+
+/**
  * Types of the playing field's cells
  */
 enum class Cell{
@@ -39,13 +47,13 @@ enum class Broom{
  */
 class Player{
 public:
-    int x{}, y{};
+    Position position = {};
     std::string name;
     Gender gender = Gender::Female;
     Broom broom = Broom::Cleansweep_11;
 
     Player() = default;
-    Player(int posX, int posY, std::string  name, Gender gender, Broom broom);
+    Player(Position position, std::string  name, Gender gender, Broom broom);
 };
 
 /**
@@ -53,9 +61,9 @@ public:
  */
 class Ball{
 public:
-    int x, y;
+    Position position = {};
 
-    Ball(int posX, int posY);
+    explicit Ball(Position position);
 };
 
 /**
@@ -70,39 +78,39 @@ public:
 
 class Chaser : public Player{
 public:
-    Chaser(int posX, int posY, std::string  name, Gender gender, Broom broom);
+    Chaser(Position position, std::string name, Gender gender, Broom broom);
 };
 
 class Keeper : public Player{
 public:
-    Keeper(int posX, int posY, std::string  name, Gender gender, Broom broom);
+    Keeper(Position position, std::string name, Gender gender, Broom broom);
 };
 
 class Seeker : public Player{
 public:
-    Seeker(int posX, int posY, std::string  name, Gender gender, Broom broom);
+    Seeker(Position position, std::string name, Gender gender, Broom broom);
 };
 
 class Beater : public Player{
 public:
-    Beater(int posX, int posY, std::string  name, Gender gender, Broom broom);
+    Beater(Position position, std::string name, Gender gender, Broom broom);
 };
 
 class Quaffle : public Ball{
 public:
-    Quaffle(int x, int y);
+    explicit Quaffle(Position position);
 };
 
 class Bludger : public Ball{
 public:
-    Bludger(int x, int y);
+    explicit Bludger(Position position);
 };
 
 class Snitch : public Ball{
 public:
     bool exists = false;
 
-    Snitch(int x, int y);
+    explicit Snitch(Position position);
 };
 
 /**
