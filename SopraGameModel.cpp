@@ -1,4 +1,4 @@
-#include "sopraGameModel.h"
+#include "SopraGameModel.h"
 #include <utility>
 #include <iostream>
 
