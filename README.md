@@ -1,5 +1,6 @@
 # GameLogic
 [![Build Status](https://travis-ci.org/SoPra-Team-10/GameLogic.svg?branch=master)](https://travis-ci.org/SoPra-Team-10/GameLogic)
+
 Die Spiellogik u.a. für den Server
 
 ## Installing
