@@ -9,8 +9,8 @@
  * Type of the result of an action
  */
 enum class ActionResult {
-    success,
     impossible,
+    success,
     foul
 };
 
@@ -23,7 +23,8 @@ private:
 public:
 
     // constructors
-    Action<T>(std::shared_ptr<T>, Position);
+    Action() = default;
+    Action(std::shared_ptr<T>, Position);
 
     // objects
     std::shared_ptr<T> actor;
@@ -44,6 +45,7 @@ private:
 public:
 
     // constructors
+    Shot() = default;
     Shot(std::shared_ptr<Player>, Position);
 
     // objects
@@ -65,6 +67,7 @@ private:
 public:
 
     // constructors
+    Move() = default;
     Move(std::shared_ptr<T>, Position);
 
     // objects
@@ -78,10 +81,17 @@ public:
 };
 
 /**
- * Get all currently possible actions of a given actor in a given environment
+ * Get all currently possible shots of a given player in a given environment
  * @return a action vector
  */
-template <class T> std::vector<Action<T>> getAllPossibleActions(std::shared_ptr<T>, std::shared_ptr<Environment>);
+std::vector<Shot> getAllPossibleShots(std::shared_ptr<Player>, std::shared_ptr<Environment>);
+
+/**
+ * Get all currently possible moves of a given actor in a given environment
+ * @tparam T the actor type (Player or Ball).
+ * @return a action vector
+ */
+template <class T> std::vector<Move<T>> getAllPossibleMoves(std::shared_ptr<T>, std::shared_ptr<Environment>);
 
 
 #endif //SOPRAGAMELOGIC_SOPRAGAMEACTION_H
