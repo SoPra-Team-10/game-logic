@@ -2,7 +2,7 @@ services:
   - docker
 
 before_install:
-  - docker build -t gamelogic.
+  - docker build -t gamelogic .
 
 script:
   - docker run gamelogic

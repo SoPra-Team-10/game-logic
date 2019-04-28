@@ -11,7 +11,7 @@ if (CMAKE_BUILD_TYPE STREQUAL "Debug")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=address -fno-omit-frame-pointer")
 endif ()
 
-project(GameLogic VERSION 0.0.1 DESCRIPTION "GameLogic for SoPra")
+project(SopraGameLogic VERSION 0.0.1 DESCRIPTION "GameLogic for SoPra")
 
 set(SOURCES ${CMAKE_SOURCE_DIR}/sopraGameModel.cpp)
 set(LIBS )
