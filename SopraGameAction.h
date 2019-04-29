@@ -24,38 +24,38 @@ public:
 
     // constructors
     Action() = default;
-    Action(std::shared_ptr<T>, Position);
+    Action(std::shared_ptr<T>, gameModel::Position);
 
     // objects
     std::shared_ptr<T> actor;
-    Position target{};
+    gameModel::Position target{};
 
     // functions
-    virtual void execute(std::shared_ptr<Environment>) = 0;
+    virtual void execute(std::shared_ptr<gameModel::Environment>) = 0;
     virtual double successProb() = 0;
-    virtual ActionResult check(std::shared_ptr<Environment>) = 0;
-    virtual std::vector<std::pair<Environment, double>> executeAll(std::shared_ptr<Environment>) = 0;
+    virtual ActionResult check(std::shared_ptr<gameModel::Environment>) = 0;
+    virtual std::vector<std::pair<gameModel::Environment, double>> executeAll(std::shared_ptr<gameModel::Environment>) = 0;
 };
 
 /**
  * class for a shot in the game which can only be executed by a player
  */
-class Shot : Action<Player> {
+class Shot : Action<gameModel::Player> {
 private:
 public:
 
     // constructors
     Shot() = default;
-    Shot(std::shared_ptr<Player>, Position);
+    Shot(std::shared_ptr<gameModel::Player>, gameModel::Position);
 
     // objects
 
 
     // functions
-    void execute(std::shared_ptr<Environment>) override;
+    void execute(std::shared_ptr<gameModel::Environment>) override;
     double successProb() override;
-    ActionResult check(std::shared_ptr<Environment>) override;
-    std::vector<std::pair<Environment, double>> executeAll(std::shared_ptr<Environment>) override;
+    ActionResult check(std::shared_ptr<gameModel::Environment>) override;
+    std::vector<std::pair<gameModel::Environment, double>> executeAll(std::shared_ptr<gameModel::Environment>) override;
 };
 
 /**
@@ -68,30 +68,30 @@ public:
 
     // constructors
     Move() = default;
-    Move(std::shared_ptr<T>, Position);
+    Move(std::shared_ptr<T>, gameModel::Position);
 
     // objects
 
 
     // functions
-    void execute(std::shared_ptr<Environment>) override;
+    void execute(std::shared_ptr<gameModel::Environment>) override;
     double successProb() override;
-    ActionResult check(std::shared_ptr<Environment>) override;
-    std::vector<std::pair<Environment, double>> executeAll(std::shared_ptr<Environment>) override;
+    ActionResult check(std::shared_ptr<gameModel::Environment>) override;
+    std::vector<std::pair<gameModel::Environment, double>> executeAll(std::shared_ptr<gameModel::Environment>) override;
 };
 
 /**
  * Get all currently possible shots of a given player in a given environment
  * @return a action vector
  */
-std::vector<Shot> getAllPossibleShots(std::shared_ptr<Player>, std::shared_ptr<Environment>);
+std::vector<Shot> getAllPossibleShots(std::shared_ptr<gameModel::Player>, std::shared_ptr<gameModel::Environment>);
 
 /**
  * Get all currently possible moves of a given actor in a given environment
  * @tparam T the actor type (Player or Ball).
  * @return a action vector
  */
-template <class T> std::vector<Move<T>> getAllPossibleMoves(std::shared_ptr<T>, std::shared_ptr<Environment>);
+template <class T> std::vector<Move<T>> getAllPossibleMoves(std::shared_ptr<T>, std::shared_ptr<gameModel::Environment>);
 
 
 #endif //SOPRAGAMELOGIC_SOPRAGAMEACTION_H

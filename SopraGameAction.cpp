@@ -6,7 +6,7 @@
  * @param actor the actor
  * @param target the target position
  */
-template<class T> Action<T>::Action(const std::shared_ptr<T> actor, const Position target) {
+template<class T> Action<T>::Action(const std::shared_ptr<T> actor, const gameModel::Position target) {
 
     this->actor = actor;
     this->target = target;
@@ -17,7 +17,7 @@ template<class T> Action<T>::Action(const std::shared_ptr<T> actor, const Positi
  * @param actor the acting player as shared pointer.
  * @param target the target position of the shot.
  */
-Shot::Shot(const std::shared_ptr<Player> actor, const Position target) : Action<Player>(actor, target){
+Shot::Shot(const std::shared_ptr<gameModel::Player> actor, const gameModel::Position target) : Action<gameModel::Player>(actor, target){
 
 }
 
@@ -25,7 +25,7 @@ Shot::Shot(const std::shared_ptr<Player> actor, const Position target) : Action<
  * execute the shot in a given environment (implementation of virtual function).
  * @param envi the environment in which the shot should be performed.
  */
-void Shot::execute(std::shared_ptr<Environment> envi) {
+void Shot::execute(std::shared_ptr<gameModel::Environment> envi) {
 
     if (this->check(envi) == ActionResult::impossible) return;
 }
@@ -44,7 +44,7 @@ double Shot::successProb() {
  * @param envi the selected environment.
  * @return the result of the check as ActionResult.
  */
-ActionResult Shot::check(const std::shared_ptr<Environment> envi) {
+ActionResult Shot::check(const std::shared_ptr<gameModel::Environment> envi) {
 
     return ActionResult::foul;
 }
@@ -54,21 +54,21 @@ ActionResult Shot::check(const std::shared_ptr<Environment> envi) {
  * @param envi the selected environment.
  * @return the resulting environments an there probabilities as a pair.
  */
-std::vector<std::pair<Environment, double>> Shot::executeAll(std::shared_ptr<Environment> envi) {
+std::vector<std::pair<gameModel::Environment, double>> Shot::executeAll(std::shared_ptr<gameModel::Environment> envi) {
 
-    std::vector<std::pair<Environment, double>> resultVect;
+    std::vector<std::pair<gameModel::Environment, double>> resultVect;
     std::vector<Shot> possibleShots = getAllPossibleShots(this->actor, envi);
 
     for (auto & possibleShot : possibleShots) {
 
         if (possibleShot.check(envi) == ActionResult::impossible) continue;
 
-        Environment testEnvi = *envi;
-        std::shared_ptr<Environment> testEnviPtr(new Environment(testEnvi));
+        gameModel::Environment testEnvi = *envi;
+        std::shared_ptr<gameModel::Environment> testEnviPtr(new gameModel::Environment(testEnvi));
 
         possibleShot.execute(testEnviPtr);
 
-        resultVect.emplace_back(std::pair<Environment, double>(testEnvi, possibleShot.successProb()));
+        resultVect.emplace_back(std::pair<gameModel::Environment, double>(testEnvi, possibleShot.successProb()));
     }
 
     return resultVect;
@@ -80,7 +80,7 @@ std::vector<std::pair<Environment, double>> Shot::executeAll(std::shared_ptr<Env
  * @param actor the acting player or ball as shared pointer.
  * @param target the target position of the move.
  */
-template<class T> Move<T>::Move(std::shared_ptr<T> actor, Position target) : Action<T>(actor, target){
+template<class T> Move<T>::Move(std::shared_ptr<T> actor, gameModel::Position target) : Action<T>(actor, target){
 
 }
 
@@ -89,7 +89,7 @@ template<class T> Move<T>::Move(std::shared_ptr<T> actor, Position target) : Act
  * @tparam T the actor type (Player or Ball).
  * @param envi the environment in which the shot should be performed.
  */
-template<class T> void Move<T>::execute(std::shared_ptr<Environment> envi) {
+template<class T> void Move<T>::execute(std::shared_ptr<gameModel::Environment> envi) {
     if (this->check(envi) == ActionResult::impossible) return;
 }
 
@@ -108,7 +108,7 @@ template<class T> double Move<T>::successProb() {
  * @param envi the selected environment.
  * @return the result of the check as ActionResult.
  */
-template<class T> ActionResult Move<T>::check(std::shared_ptr<Environment> envi) {
+template<class T> ActionResult Move<T>::check(std::shared_ptr<gameModel::Environment> envi) {
     return ActionResult::foul;
 }
 
@@ -118,21 +118,21 @@ template<class T> ActionResult Move<T>::check(std::shared_ptr<Environment> envi)
  * @param envi the selected environment.
  * @return the resulting environments an there probabilities as a pair.
  */
-template<class T> std::vector<std::pair<Environment, double>> Move<T>::executeAll(std::shared_ptr<Environment> envi) {
+template<class T> std::vector<std::pair<gameModel::Environment, double>> Move<T>::executeAll(std::shared_ptr<gameModel::Environment> envi) {
 
-    std::vector<std::pair<Environment, double>> resultVect;
+    std::vector<std::pair<gameModel::Environment, double>> resultVect;
     std::vector<Move<T>> possibleMoves = getAllPossibleMoves(this->actor, envi);
 
     for (auto & possibleShot : possibleMoves) {
 
         if (possibleShot.check(envi) == ActionResult::impossible) continue;
 
-        Environment testEnvi = *envi;
-        std::shared_ptr<Environment> testEnviPtr(new Environment(testEnvi));
+        gameModel::Environment testEnvi = *envi;
+        std::shared_ptr<gameModel::Environment> testEnviPtr(new gameModel::Environment(testEnvi));
 
         possibleShot.execute(testEnviPtr);
 
-        resultVect.emplace_back(std::pair<Environment, double>(testEnvi, possibleShot.successProb()));
+        resultVect.emplace_back(std::pair<gameModel::Environment, double>(testEnvi, possibleShot.successProb()));
     }
 
     return resultVect;
@@ -142,7 +142,7 @@ template<class T> std::vector<std::pair<Environment, double>> Move<T>::executeAl
  * Get all currently possible shots of a given player in a given environment
  * @return
  */
-std::vector<Shot> getAllPossibleShots(std::shared_ptr<Player>, std::shared_ptr<Environment>) {
+std::vector<Shot> getAllPossibleShots(std::shared_ptr<gameModel::Player>, std::shared_ptr<gameModel::Environment>) {
 
     std::vector<Shot> resultVect;
 
@@ -154,7 +154,7 @@ std::vector<Shot> getAllPossibleShots(std::shared_ptr<Player>, std::shared_ptr<E
  * @tparam T the actor type (Player or Ball).
  * @return
  */
-template <class T> std::vector<Move<T>> getAllPossibleMoves(std::shared_ptr<T>, std::shared_ptr<Environment>) {
+template <class T> std::vector<Move<T>> getAllPossibleMoves(std::shared_ptr<T>, std::shared_ptr<gameModel::Environment>) {
 
     std::vector<Move<T>> resultVect;
 

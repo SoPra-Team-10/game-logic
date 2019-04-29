@@ -13,7 +13,7 @@ endif ()
 
 project(SopraGameLogic VERSION 0.0.1 DESCRIPTION "GameLogic for SoPra")
 
-set(SOURCES ${CMAKE_SOURCE_DIR}/SopraGameModel.cpp SopraGameAction.cpp SopraGameAction.cpp SopraGameAction.h)
+set(SOURCES ${CMAKE_SOURCE_DIR}/SopraGameModel.cpp ${CMAKE_SOURCE_DIR}/SopraGameAction.cpp)
 set(LIBS )
 
 include_directories(${CMAKE_SOURCE_DIR})
