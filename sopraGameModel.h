@@ -3,6 +3,36 @@
 
 #include <string>
 #include <array>
+#include <map>
+
+/**
+ * Probabilities for detecting a foul
+ */
+struct FoulDetectionProbs{
+    double blockGoal,
+    chargeGoal, multipleOffence,
+    ramming, blockSnitch, teleport,
+    rangedAttack, impulse, snitchPush;
+};
+
+/**
+ * All different kinds of time limits and timeouts
+ */
+struct Timeouts{
+    unsigned int playerTurn,
+    fanTurn, playerPhase,
+    fanPhase, ballPhase;
+};
+
+/**
+ * Probabilities for standard gameplay
+ */
+struct GameDynamicsProbs{
+    double throwSuccess,
+    knockOut, foolAway,
+    catchSnitch, catchQuaffle,
+    wrestQuaffle;
+};
 
 /**
  * This struct represents a 2D-Position on the Gamefield
@@ -40,6 +70,28 @@ enum class Broom{
     Comet_260,
     Nimbus_2001,
     Firebolt
+};
+
+/**
+ * Class containing metadata for a match
+ */
+class Config{
+public:
+    const unsigned int maxRounds;
+    const Timeouts timeouts;
+    const FoulDetectionProbs foulDetectionProbs;
+    const GameDynamicsProbs gameDynamicsProbs;
+
+    Config(unsigned int maxRounds, const Timeouts &timeouts, const FoulDetectionProbs &foulDetectionProbs,
+           const GameDynamicsProbs &gameDynamicsProbs, std::map<Broom, double> extraTurnProbs);
+    /**
+     * Gets the probability of an extra turn with the specified Broom type
+     * @param broom
+     * @return
+     */
+    double getExtraTurnProb(Broom broom);
+private:
+    std::map<Broom, double> extraTurnProbs;
 };
 
 /**
@@ -146,13 +198,20 @@ public:
     Environment(Team team1, Team team2, Quaffle quaffle, Snitch snitch,
                 std::array<Bludger, 2> bludgers);
 
-/**
+    /**
      * Gets the type of the cell at position (x,y)
      * @param x xPosition from left, 0 based
      * @param y yPosition from bottom, 0based
      * @return The corresponding Cell
      */
     Cell getCell(unsigned int x, unsigned int y);
+
+    /**
+     * See overloaded function above
+     * @param position
+     * @return
+     */
+    Cell getCell(Position position);
 };
 
 #endif //GAMELOGIC_SOPRAGAMEMODEL_H

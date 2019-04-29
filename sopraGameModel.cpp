@@ -1,3 +1,5 @@
+#include <utility>
+
 #include "sopraGameModel.h"
 #include <utility>
 #include <iostream>
@@ -43,6 +45,10 @@ Cell Environment::getCell(unsigned int x, unsigned int y) {
     }
 }
 
+Cell Environment::getCell(Position position) {
+    return getCell(position.x, position.y);
+}
+
 Environment::Environment(Team team1, Team team2, Quaffle quaffle, Snitch snitch,
                          std::array<Bludger, 2> bludgers)
         : team1(std::move(team1)), team2(std::move(team2)), quaffle(quaffle), snitch(snitch), bludgers(bludgers) {}
@@ -71,3 +77,11 @@ Team::Team(Seeker seeker, Keeper keeper, std::array<Beater, 2> beaters, std::arr
         : seeker(std::move(seeker)), keeper(std::move(keeper)), beaters(std::move(beaters)), chasers(std::move(chasers)), name(std::move(name)), colorMain(std::move(colorMain)),
           colorSecondary(std::move(colorSecondary)), fanblock(fanblock) {}
 
+Config::Config(unsigned int maxRounds, const Timeouts &timeouts, const FoulDetectionProbs &foulDetectionProbs,
+               const GameDynamicsProbs &gameDynamicsProbs, std::map<Broom, double> extraTurnProbs) :
+               maxRounds(maxRounds), timeouts(timeouts), foulDetectionProbs(foulDetectionProbs), gameDynamicsProbs(gameDynamicsProbs),
+               extraTurnProbs(std::move(extraTurnProbs)) {}
+
+double Config::getExtraTurnProb(Broom broom) {
+    return extraTurnProbs.at(broom);
+}
