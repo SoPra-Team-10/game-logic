@@ -48,9 +48,10 @@ namespace gameModel{
         return getCell(position.x, position.y);
     }
 
-    Environment::Environment(Team team1, Team team2, Quaffle quaffle, Snitch snitch,
-                             std::array<Bludger, 2> bludgers)
-            : team1(std::move(team1)), team2(std::move(team2)), quaffle(quaffle), snitch(snitch), bludgers(bludgers) {}
+    Environment::Environment(const Config config,Team team1, Team team2, Quaffle quaffle, Snitch snitch,
+            std::array<Bludger, 2> bludgers)
+            : config(config), team1(std::move(team1)), team2(std::move(team2)), quaffle(quaffle), snitch(snitch),
+            bludgers(bludgers) {}
 
     Snitch::Snitch(Position position): Ball(position) {}
 
@@ -83,5 +84,10 @@ namespace gameModel{
 
     double Config::getExtraTurnProb(Broom broom) {
         return extraTurnProbs.at(broom);
+    }
+
+    bool operator==(const Position &p1, const Position &p2) {
+        if (p1.x == p2.x && p1.y == p2.y) return true;
+        else false;
     }
 }

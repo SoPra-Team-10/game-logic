@@ -43,6 +43,13 @@ namespace gameModel{
         int x;
         int y;
     };
+/**
+ * copmate if the positions were equal.
+ * @param p1 first position.
+ * @param p2 second position.
+ * @return true if p1 and p2 were equal, else false.
+ */
+    bool operator==(const Position& p1, const Position& p2);
 
 /**
  * Types of the playing field's cells
@@ -194,12 +201,13 @@ namespace gameModel{
  */
     class Environment{
     public:
+        Config config;
         Team team1, team2;
         Quaffle quaffle;
         Snitch snitch;
         std::array<Bludger, 2> bludgers;
 
-        Environment(Team team1, Team team2, Quaffle quaffle, Snitch snitch,
+        Environment(Config config, Team team1, Team team2, Quaffle quaffle, Snitch snitch,
                     std::array<Bludger, 2> bludgers);
 
         /**

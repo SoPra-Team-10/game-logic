@@ -2,8 +2,10 @@
 #define SOPRAGAMELOGIC_SOPRAGAMEACTION_H
 
 #include <memory>
+#include <cmath>
 #include <vector>
 #include "SopraGameModel.h"
+#include "SopraGameController.h"
 
 /**
  * Type of the result of an action
@@ -41,7 +43,7 @@ public:
 
     // functions
     virtual void execute(std::shared_ptr<gameModel::Environment> envi) = 0;
-    virtual auto successProb() -> double = 0;
+    virtual auto successProb(std::shared_ptr<gameModel::Environment> envi) -> double = 0;
     virtual auto check(std::shared_ptr<gameModel::Environment> envi) -> ActionResult = 0;
     virtual auto executeAll(std::shared_ptr<gameModel::Environment> envi) -> std::vector<std::pair<gameModel::Environment, double>> = 0;
 };
@@ -75,7 +77,7 @@ public:
      * get the success probability of the shot (implementation of virtual function).
      * @return the success probability of the shot as double.
      */
-    auto successProb() -> double override;
+    auto successProb(std::shared_ptr<gameModel::Environment> envi) -> double override;
     /**
      * check if the selected shot is possible (implementation of virtual function).
      * @param envi the selected environment.
@@ -123,7 +125,7 @@ public:
      * @tparam T the actor type (Player or Ball).
      * @return the success probability of the move as double.
      */
-    auto successProb() -> double override;
+    auto successProb(std::shared_ptr<gameModel::Environment> envi) -> double override;
     /**
     * check if the selected move is possible  (implementation of virtual function)
     * @tparam T the actor type (Player or Ball).
