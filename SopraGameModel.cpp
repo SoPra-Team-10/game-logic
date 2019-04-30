@@ -101,7 +101,6 @@ namespace gameModel{
         return !(p1.x == p2.x && p1.y == p2.y);
     }
 
-
     Vector::Vector(double x, double y) {
         this->x = x;
         this->y = y;

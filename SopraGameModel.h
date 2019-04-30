@@ -7,9 +7,9 @@
 
 namespace gameModel{
 
-/**
- * Probabilities for detecting a foul
- */
+    /**
+     * Probabilities for detecting a foul
+     */
     struct FoulDetectionProbs{
         double blockGoal,
                 chargeGoal, multipleOffence,
@@ -17,18 +17,18 @@ namespace gameModel{
                 rangedAttack, impulse, snitchPush;
     };
 
-/**
- * All different kinds of time limits and timeouts
- */
+    /**
+     * All different kinds of time limits and timeouts
+     */
     struct Timeouts{
         unsigned int playerTurn,
                 fanTurn, playerPhase,
                 fanPhase, ballPhase;
     };
 
-/**
- * Probabilities for standard gameplay
- */
+    /**
+     * Probabilities for standard gameplay
+     */
     struct GameDynamicsProbs{
         double throwSuccess,
                 knockOut, foolAway,
@@ -36,9 +36,9 @@ namespace gameModel{
                 wrestQuaffle;
     };
 
-/**
- * This struct represents a 2D-Position on the Gamefield
- */
+    /**
+     * This struct represents a 2D-Position on the Gamefield
+     */
     struct Position {
         int x;
         int y;
@@ -48,12 +48,19 @@ namespace gameModel{
     };
 
     /**
-         * copmate if the positions were equal.
-         * @param p1 first position.
-         * @param p2 second position.
-         * @return true if p1 and p2 were equal, else false.
-         */
+     * == operator for Position objects overloaded.
+     * @param p1 first position.
+     * @param p2 second position.
+     * @return true if p1 and p2 were equal, else false.
+     */
     bool operator==(const Position &p1, const Position &p2);
+
+    /**
+     * != operator for Position objects overloaded.
+     * @param p1 first position.
+     * @param p2 second position.
+     * @return true if p1 and p2 were equal, else false.
+     */
     bool operator!=(const Position &p1, const Position &p2);
 
     class Vector {
@@ -61,26 +68,38 @@ namespace gameModel{
 
         // constructors
         Vector() = default;
+        /**
+         * main constructor for the vector.
+         * @param x x component of the vector.
+         * @param y y component of the vector.
+         */
         Vector(double x, double y);
 
         // objects
-        double x;
-        double y;
+        double x;   ///< x component of the vector.
+        double y;   ///< y component of the vector.
 
         // methods
+        /**
+         * get the euclidean norm of the vector.
+         * @return the euclidean norm as double.
+         */
         double abs();
+        /**
+         * normalize the vector.
+         */
         void normalize();
 
-        // operatrors
+        // operators
         bool operator==(const Vector &v);
         Vector operator*(const double &c);
         Vector operator+(const Vector &v);
         Position operator+(const Position &p);
     };
 
-/**
- * Types of the playing field's cells
- */
+    /**
+     * Types of the playing field's cells
+     */
     enum class Cell{
         GoalLeft, ///< Goal cell
         GoalRight,
@@ -91,17 +110,17 @@ namespace gameModel{
         OutOfBounds ///< Cells not belonging to the game field
     };
 
-/**
- * For unnecessary gender fights
- */
+    /**
+     * For unnecessary gender fights
+     */
     enum class Gender{
         Male,
         Female
     };
 
-/**
- * Different broom types
- */
+    /**
+     * Different broom types
+     */
     enum class Broom{
         Thinderblast,
         Cleansweep_11,
@@ -110,9 +129,9 @@ namespace gameModel{
         Firebolt
     };
 
-/**
- * Class containing metadata for a match
- */
+    /**
+     * Class containing metadata for a match
+     */
     class Config{
     public:
         const unsigned int maxRounds;
@@ -132,9 +151,9 @@ namespace gameModel{
         std::map<Broom, double> extraTurnProbs;
     };
 
-/**
- * Represents the playable characters
- */
+    /**
+     * Represents the playable characters
+     */
     class Player{
     public:
         Position position = {};
@@ -146,9 +165,9 @@ namespace gameModel{
         Player(Position position, std::string  name, Gender gender, Broom broom);
     };
 
-/**
- * Represents non playable ball-objects
- */
+    /**
+     * Represents non playable ball-objects
+     */
     class Ball{
     public:
         Position position = {};
@@ -156,9 +175,9 @@ namespace gameModel{
         explicit Ball(Position position);
     };
 
-/**
- * Represents available fans for a Team
- */
+    /**
+     * Represents available fans for a Team
+     */
     class Fanblock{
     public:
         Fanblock(int teleportation, int rangedAttack, int impulse, int snitchPush);
@@ -203,9 +222,9 @@ namespace gameModel{
         explicit Snitch(Position position);
     };
 
-/**
- * Represents a Team
- */
+    /**
+     * Represents a Team
+     */
     class Team{
     public:
         Seeker seeker;
@@ -223,9 +242,9 @@ namespace gameModel{
              const Fanblock &fanblock);
     };
 
-/**
- * Represents a game state
- */
+    /**
+     * Represents a game state
+     */
     class Environment{
     public:
         Config config;

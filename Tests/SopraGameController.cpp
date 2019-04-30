@@ -16,3 +16,15 @@ TEST(controller_test, getDistance) {
     EXPECT_EQ(gameController::getDistance(gameModel::Position(8, 6), gameModel::Position(9, 7)), 1);
     EXPECT_EQ(gameController::getDistance(gameModel::Position(8, 6), gameModel::Position(9, 8)), 2);
 }
+
+TEST(controller_test, getAllCrossedCells) {
+
+    std::vector<gameModel::Position> result = gameController::getAllCrossedCells(gameModel::Position(12, 3), gameModel::Position(14, 4));
+    std::vector<gameModel::Position> expected = {gameModel::Position(12, 3), gameModel::Position(13, 3), gameModel::Position(13, 4), gameModel::Position(14, 4)};
+    EXPECT_EQ(result.size(), expected.size());
+    EXPECT_EQ(result[0], expected[0]);
+    EXPECT_EQ(result[1], expected[1]);
+    EXPECT_EQ(result[2], expected[2]);
+    EXPECT_EQ(result[3], expected[3]);
+
+}

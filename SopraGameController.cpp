@@ -6,15 +6,19 @@ namespace gameController {
 
         std::vector<gameModel::Position> resultVect;
 
+        // check if cells are valid
         if (gameModel::Environment::getCell(startPoint) == gameModel::Cell::OutOfBounds ||
         gameModel::Environment::getCell(endPoint) == gameModel::Cell::OutOfBounds)
             return resultVect;
 
+        // add the start point to the result
         resultVect.emplace_back(startPoint);
 
+        // check if start and end point are equal
         if (startPoint == endPoint)
             return resultVect;
 
+        // define an normalize the direction vector
         gameModel::Vector dirVect(endPoint.x - startPoint.x, endPoint.y - startPoint.y);
         dirVect.normalize();
 
@@ -33,23 +37,30 @@ namespace gameController {
             travVect = travVect + (dirVect * 0.5);
         }
 
+        // add the end point to the result
+        resultVect.emplace_back(endPoint);
+
         return resultVect;
     }
 
     auto getDistance(gameModel::Position startPoint, gameModel::Position endPoint) -> int {
 
+        // check if cells are valid
         if (gameModel::Environment::getCell(startPoint) == gameModel::Cell::OutOfBounds ||
         gameModel::Environment::getCell(endPoint) == gameModel::Cell::OutOfBounds)
             return -1;
 
+        // check if start and end point are equal
         if (startPoint == endPoint)
             return 0;
 
         int totalDistance = 0;
 
+        // calc the differences within the components of the given points
         int dX = abs(startPoint.x - endPoint.x);
         int dY = abs(startPoint.y - endPoint.y);
 
+        // calculate the total distance
         if (dX >= dY) {
             totalDistance += dY;
             totalDistance += dX-dY;
