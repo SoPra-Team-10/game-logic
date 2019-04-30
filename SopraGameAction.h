@@ -45,7 +45,8 @@ public:
     virtual void execute(std::shared_ptr<gameModel::Environment> envi) = 0;
     virtual auto successProb(std::shared_ptr<gameModel::Environment> envi) -> double = 0;
     virtual auto check(std::shared_ptr<gameModel::Environment> envi) -> ActionResult = 0;
-    virtual auto executeAll(std::shared_ptr<gameModel::Environment> envi) -> std::vector<std::pair<gameModel::Environment, double>> = 0;
+    virtual auto executeAll(std::shared_ptr<gameModel::Environment> envi) ->
+    std::vector<std::pair<gameModel::Environment, double>> = 0;
 };
 
 /**
@@ -89,7 +90,8 @@ public:
      * @param envi the selected environment.
      * @return the resulting environments an there probabilities as a pair.
      */
-    auto executeAll(std::shared_ptr<gameModel::Environment> envi) -> std::vector<std::pair<gameModel::Environment, double>> override;
+    auto executeAll(std::shared_ptr<gameModel::Environment> envi) ->
+    std::vector<std::pair<gameModel::Environment, double>> override;
 };
 
 /**
@@ -139,7 +141,8 @@ public:
      * @param envi the selected environment.
      * @return the resulting environments an there probabilities as a pair.
      */
-    auto executeAll(std::shared_ptr<gameModel::Environment> envi) -> std::vector<std::pair<gameModel::Environment, double>> override;
+    auto executeAll(std::shared_ptr<gameModel::Environment> envi) ->
+    std::vector<std::pair<gameModel::Environment, double>> override;
 };
 
 /**

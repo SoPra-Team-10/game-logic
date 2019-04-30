@@ -24,7 +24,8 @@ template <class T> auto getAllPossibleMoves(std::shared_ptr<T>, std::shared_ptr<
     return resultVect;
 }
 
-Shot::Shot(const std::shared_ptr<gameModel::Player> actor, const gameModel::Position target) : Action<gameModel::Player>(actor, target) {
+Shot::Shot(const std::shared_ptr<gameModel::Player> actor, const gameModel::Position target) :
+Action<gameModel::Player>(actor, target) {
 
 }
 
@@ -38,7 +39,7 @@ void Shot::execute(std::shared_ptr<gameModel::Environment> envi) {
 auto Shot::successProb(std::shared_ptr<gameModel::Environment> envi) -> double {
 
     return pow(envi.get()->config.gameDynamicsProbs.throwSuccess,
-            gameController::getAllCrossedCells(this->actor.get()->position, this->target, envi).size());
+            gameController::getDistance(this->actor.get()->position, this->target, envi));
 }
 
 auto Shot::check(const std::shared_ptr<gameModel::Environment> envi) -> ActionResult {
@@ -50,7 +51,8 @@ auto Shot::check(const std::shared_ptr<gameModel::Environment> envi) -> ActionRe
     return ActionResult::foul;
 }
 
-auto Shot::executeAll(std::shared_ptr<gameModel::Environment> envi) -> std::vector<std::pair<gameModel::Environment, double>> {
+auto Shot::executeAll(std::shared_ptr<gameModel::Environment> envi) ->
+std::vector<std::pair<gameModel::Environment, double>> {
 
     std::vector<std::pair<gameModel::Environment, double>> resultVect;
     std::vector<Shot> possibleShots = getAllPossibleShots(this->actor, envi);
@@ -96,7 +98,8 @@ template<class T> auto Move<T>::check(std::shared_ptr<gameModel::Environment> en
     return ActionResult::foul;
 }
 
-template<class T> auto Move<T>::executeAll(std::shared_ptr<gameModel::Environment> envi) -> std::vector<std::pair<gameModel::Environment, double>> {
+template<class T> auto Move<T>::executeAll(std::shared_ptr<gameModel::Environment> envi) ->
+std::vector<std::pair<gameModel::Environment, double>> {
 
     std::vector<std::pair<gameModel::Environment, double>> resultVect;
     std::vector<Move<T>> possibleMoves = getAllPossibleMoves(this->actor, envi);

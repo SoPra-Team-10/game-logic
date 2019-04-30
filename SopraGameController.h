@@ -12,12 +12,21 @@ namespace gameController {
      * @param startPoint position of the first cell.
      * @param endPoint position of the second cell.
      * @param envi the selected environment.
-     * @return a vector contailing all crossed cells.
+     * @return a vector containing all crossed cells.
      */
     auto getAllCrossedCells(gameModel::Position startPoint, gameModel::Position endPoint,
-            std::shared_ptr<gameModel::Environment> envi) ->
-            std::vector<std::pair<gameModel::Position, gameModel::Cell>>;
+                            std::shared_ptr<gameModel::Environment> envi) ->
+    std::vector<std::pair<gameModel::Position, gameModel::Cell>>;
 
+    /**
+     * get the ditance between to cells on the game field.
+     * @param startPoint position of the first cell.
+     * @param endPoint position of the second cell.
+     * @param envi the selected environment.
+     * @return the distance as integer.
+     */
+    auto getDistance(gameModel::Position startPoint, gameModel::Position endPoint,
+                     std::shared_ptr<gameModel::Environment> envi) -> int;
 }
 
 #endif //GAMELOGIC_SOPRAGAMECONTROLLER_H
