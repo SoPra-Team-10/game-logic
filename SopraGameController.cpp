@@ -1,6 +1,7 @@
 #include "SopraGameController.h"
 
 namespace gameController {
+
     auto getAllCrossedCells(const gameModel::Position startPoint, const gameModel::Position endPoint) ->
     std::vector<gameModel::Position> {
 

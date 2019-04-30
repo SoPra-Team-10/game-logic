@@ -54,6 +54,21 @@ public:
  */
 class Shot : Action<gameModel::Player> {
 private:
+
+    /**
+     * checks if the shot is intercepted by a opposing player
+     * @param envi the selected environment.
+     * @return true if the shot is intercepted, else false.
+     */
+    auto checkForPossibleIntercept(std::shared_ptr<gameModel::Environment> envi) -> bool;
+
+    /**
+     * roll the dice to get the position where the ball will land
+     * @param envi
+     * @return
+     */
+    auto rollTheDiceForLandingCell(std::shared_ptr<gameModel::Environment> envi) -> gameModel::Position;
+
 public:
 
     // constructors
@@ -92,6 +107,8 @@ public:
      */
     auto executeAll(std::shared_ptr<gameModel::Environment> envi) ->
     std::vector<std::pair<gameModel::Environment, double>> override;
+
+
 };
 
 /**

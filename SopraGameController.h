@@ -2,7 +2,6 @@
 #define GAMELOGIC_SOPRAGAMECONTROLLER_H
 
 #include <memory>
-#include <valarray>
 #include <vector>
 
 #include "SopraGameModel.h"
