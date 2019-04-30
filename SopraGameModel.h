@@ -39,17 +39,41 @@ namespace gameModel{
 /**
  * This struct represents a 2D-Position on the Gamefield
  */
-    struct Position{
+    struct Position {
         int x;
         int y;
     };
-/**
- * copmate if the positions were equal.
- * @param p1 first position.
- * @param p2 second position.
- * @return true if p1 and p2 were equal, else false.
- */
-    bool operator==(const Position& p1, const Position& p2);
+
+    /**
+         * copmate if the positions were equal.
+         * @param p1 first position.
+         * @param p2 second position.
+         * @return true if p1 and p2 were equal, else false.
+         */
+    bool operator==(const Position &p1, const Position &p2);
+    bool operator!=(const Position &p1, const Position &p2);
+
+    class Vector {
+    public:
+
+        // constructors
+        Vector() = default;
+        Vector(double x, double y);
+
+        // objects
+        double x;
+        double y;
+
+        // methods
+        double abs();
+        void normalize();
+
+        // operatrors
+        bool operator==(const Vector &v);
+        Vector operator*(const double &c);
+        Vector operator+(const Vector &v);
+        Position operator+(const Position &p);
+    };
 
 /**
  * Types of the playing field's cells

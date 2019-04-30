@@ -39,7 +39,7 @@ void Shot::execute(std::shared_ptr<gameModel::Environment> envi) {
 auto Shot::successProb(std::shared_ptr<gameModel::Environment> envi) -> double {
 
     return pow(envi.get()->config.gameDynamicsProbs.throwSuccess,
-            gameController::getDistance(this->actor.get()->position, this->target, envi));
+            gameController::getDistance(this->actor.get()->position, this->target));
 }
 
 auto Shot::check(const std::shared_ptr<gameModel::Environment> envi) -> ActionResult {

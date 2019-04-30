@@ -1,6 +1,8 @@
 #include "SopraGameModel.h"
 #include <utility>
 #include <iostream>
+#include <cmath>
+
 namespace gameModel{
 
     Player::Player(Position position, std::string  name, Gender gender, Broom broom) :
@@ -87,7 +89,45 @@ namespace gameModel{
     }
 
     bool operator==(const Position &p1, const Position &p2) {
-        if (p1.x == p2.x && p1.y == p2.y) return true;
-        else false;
+        return p1.x == p2.x && p1.y == p2.y;
+    }
+
+    bool operator!=(const Position &p1, const Position &p2) {
+        return !(p1.x == p2.x && p1.y == p2.y);
+    }
+
+
+    Vector::Vector(double x, double y) {
+        this->x = x;
+        this->y = y;
+    }
+
+    double Vector::abs() {
+        return std::sqrt(pow(this->x, 2) + pow(this->x, 2));
+    }
+
+    void Vector::normalize() {
+        double a = this->abs();
+        this->x = this->x * (1 / a);
+        this->y = this->y * (1 / a);
+    }
+
+    bool Vector::operator==(const Vector &v) {
+        return this->x == v.x && this->y == v.y;
+    }
+
+    Vector Vector::operator*(const double &c) {
+        return Vector(this->x * c, this->y * c);
+    }
+
+    Vector Vector::operator+(const Vector &v) {
+        return Vector(this->x + v.x, this->y + v.y);
+    }
+
+    Position Vector::operator+(const Position &p) {
+        Position resultPos;
+        resultPos.x = p.x + round(this->x);
+        resultPos.y = p.y + round(this->y);
+        return resultPos;
     }
 }
