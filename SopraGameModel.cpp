@@ -88,6 +88,11 @@ namespace gameModel{
         return extraTurnProbs.at(broom);
     }
 
+    Position::Position(int x, int y) {
+        this->x = x;
+        this->y = y;
+    }
+
     bool operator==(const Position &p1, const Position &p2) {
         return p1.x == p2.x && p1.y == p2.y;
     }
@@ -125,9 +130,6 @@ namespace gameModel{
     }
 
     Position Vector::operator+(const Position &p) {
-        Position resultPos;
-        resultPos.x = p.x + round(this->x);
-        resultPos.y = p.y + round(this->y);
-        return resultPos;
+        return Position(p.x + round(this->x), p.y + round(this->y));
     }
 }

@@ -5,7 +5,7 @@ find_package(GTest)
 if (GTest_FOUND)
     include_directories(${GTEST_INCLUDE_DIR})
 
-    set(TEST_SOURCES SopraGameModel.cpp)
+    set(TEST_SOURCES SopraGameModel.cpp SopraGameController.cpp)
 
     if (USE_INSTALLED_LIB)
         add_definitions(-DUSE_INSTALLED_LIB)
