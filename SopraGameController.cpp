@@ -1,6 +1,22 @@
+#include <random>
 #include "SopraGameController.h"
 
 namespace gameController {
+
+    double rng(double min, double max){
+        static std::random_device rd;
+        static std::default_random_engine el(rd());
+        std::uniform_real_distribution dist(min, max);
+        return dist(el);
+    }
+
+    bool actionTriggered(double actionProbability) {
+        if(actionProbability < 0 || actionProbability > 1){
+            throw std::invalid_argument("Probability not between 0 an 1");
+        }
+
+        return rng(0, 1) < actionProbability;
+    }
 
     auto getAllCrossedCells(const gameModel::Position &startPoint, const gameModel::Position &endPoint) ->
     std::vector<gameModel::Position> {
@@ -85,4 +101,5 @@ namespace gameController {
                              const gameModel::Environment &envi) -> std::vector<Shot> {
         return std::vector<Shot>();
     }
+
 }

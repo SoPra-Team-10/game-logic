@@ -11,6 +11,22 @@ namespace gameController {
     class Shot;
     class Move;
 
+
+    /**
+     * Generates a random integer in [min, max)
+     * @param min
+     * @param max
+     * @return
+     */
+    double rng(double min, double max);
+
+    /**
+     * Rolls the dice and determines whether an action takes place
+     * @param actionProbability Probability of the action. Must be between 0 an 1
+     * @return true if the action takes place
+     */
+    bool actionTriggered(double actionProbability);
+
     /**
      * get a vector containing all cells which are crossed by the vector between to cells.
      * @param startPoint position of the first cell.

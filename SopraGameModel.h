@@ -256,7 +256,7 @@ namespace gameModel{
          * gets all Players of the team
          * @return
          */
-        auto getAllPlayers() const -> std::vector<std::shared_ptr<const Player>>;
+        auto getAllPlayers() const -> std::array<std::shared_ptr<const Player>, 7>;
 
         /**
          * Determins wether a given player is a member of the team
@@ -294,6 +294,39 @@ namespace gameModel{
          * @return
          */
         static Cell getCell(Position position);
+
+        /**
+         * Gets all players on the field
+         * @return
+         */
+        auto getAllPlayers() const -> std::array<std::shared_ptr<const Player>, 14>;
+
+        /**
+         * Gets all players in the same team as the given player, themselves excluded
+         * @param player
+         * @return
+         */
+        auto getTeamMates(const Player &player) const -> std::array<std::shared_ptr<const Player>, 6>;
+
+        /**
+         * Gets all players from the opponent team of the given player
+         * @param player
+         * @return
+         */
+        auto getOpponents(const Player &player) const -> std::array<std::shared_ptr<const Player>, 7>;
+
+        /**
+         * Determines whether the given Position is occupied by a Player
+         * @param position the position to be checked
+         * @return true if occupied, false otherwise
+         */
+        bool cellIsFree(Position position) const;
+
+        /**
+         * Returns player object at the specified position if one exists
+         * @return
+         */
+        auto getPlayer(Position) const -> std::optional<std::shared_ptr<const Player>>;
     };
 }
 

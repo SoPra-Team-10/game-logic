@@ -8,11 +8,22 @@ namespace gameController{
             Action(actor, target) {}
 
     void Shot::execute(gameModel::Environment &envi) const{
+        if (check(envi) == ActionResult::Impossible){
+            throw std::runtime_error("Action is impossible");
+        }
 
-        if (check(envi) == ActionResult::Impossible)
-            return;
 
-        // @ToDo: execute shot
+        for(const auto &pos : getInterceptionPositions(envi)){
+            if(gameController::actionTriggered(envi.config.gameDynamicsProbs.catchQuaffle)){
+                auto player = envi.getPlayer(pos);
+                if(player.has_value()){
+                    if(typeid(player.value()) == typeid(gameModel::Chaser)){
+                    }
+                } else{
+                    throw std::runtime_error("No player at specified interception point");
+                }
+            }
+        }
     }
 
     auto Shot::successProb(const gameModel::Environment &envi) const -> double{
@@ -49,21 +60,40 @@ namespace gameController{
         return resultVect;
     }
 
-    auto Shot::rollTheDiceForLandingCell(std::shared_ptr<gameModel::Environment> envi) const -> gameModel::Position{
-
-        // @ToDo: roll the dice ...
-
-        return {};
-    }
-
     auto Shot::getInterceptionPositions(const gameModel::Environment &env) const -> std::vector<gameModel::Position>{
         auto crossedCells = gameController::getAllCrossedCells(this->actor->position, target);
-        auto oponentPlayers = env.team1.hasMember(*actor) ? env.team2.getAllPlayers() : env.team2.getAllPlayers();
         std::vector<gameModel::Position> ret;
         for(const auto &cell : crossedCells){
-            for(const auto &player : oponentPlayers){
+            for(const auto &player : env.getOpponents(*actor)){
                 if(player->position == cell){
                     ret.emplace_back(cell);
+                }
+            }
+        }
+
+        return ret;
+    }
+
+    auto Shot::getAllLandingCells(const gameModel::Environment &env) const -> std::vector<gameModel::Position> {
+#warning Was tun bei n gerade? Dann lässt sich das Quadrat nicht mittig um target platzieren
+        int n = static_cast<int>(std::ceil(gameController::getDistance(actor->position, target) / 7));
+        std::vector<gameModel::Position> ret;
+        using Env = gameModel::Environment;
+        using Cell = gameModel::Cell;
+        auto players = env.getAllPlayers();
+        ret.reserve(n * n);
+        for(int x = target.x - n / 2; x < target.x + n / 2; x++){
+            for(int y = target.y - n / 2; y < target.y + n / 2; y++){
+                if(gameModel::Position{x, y} == target){
+                    continue;
+                }
+
+                if(Env::getCell(x, y) == Cell::OutOfBounds){
+                    continue;
+                }
+
+                if(env.cellIsFree({x, y})){
+                    ret.emplace_back(x, y);
                 }
             }
         }

@@ -77,6 +77,60 @@ namespace gameModel{
             : config(config), team1(std::move(team1)), team2(std::move(team2)), quaffle(quaffle), snitch(snitch),
             bludgers(bludgers) {}
 
+    auto Environment::getAllPlayers() const -> std::array<std::shared_ptr<const Player>, 14> {
+        std::array<std::shared_ptr<const Player>, 14> ret;
+        auto it = ret.begin();
+        for(const auto &p : team1.getAllPlayers()){
+            *it = p;
+            it++;
+        }
+
+        for(const auto &p : team2.getAllPlayers()){
+            *it = p;
+            it++;
+        }
+
+        return ret;
+    }
+
+    bool Environment::cellIsFree(Position position) const {
+        for(const auto &p : getAllPlayers()){
+            if(position == p->position){
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    auto Environment::getTeamMates(const Player &player) const -> std::array<std::shared_ptr<const Player>, 6> {
+        auto players = team1.hasMember(player) ? team1.getAllPlayers() : team2.getAllPlayers();
+        std::array<std::shared_ptr<const Player>, 6> ret;
+        auto it = ret.begin();
+        for(const auto &p : players){
+            if(*p != player){
+                *it = p;
+                it++;
+            }
+        }
+
+        return ret;
+    }
+
+    auto Environment::getOpponents(const Player &player) const -> std::array<std::shared_ptr<const Player>, 7> {
+        return team1.hasMember(player) ? team2.getAllPlayers() : team1.getAllPlayers();
+    }
+
+    auto Environment::getPlayer(Position position) const -> std::optional<std::shared_ptr<const Player>> {
+        for(const auto &p : getAllPlayers()){
+            if(p->position == position){
+                return p;
+            }
+        }
+
+        return {};
+    }
+
     Snitch::Snitch(Position position): Ball(position) {}
 
     Bludger::Bludger(Position position) : Ball(position) {}
@@ -101,19 +155,21 @@ namespace gameModel{
             : seeker(std::move(seeker)), keeper(std::move(keeper)), beaters(std::move(beaters)), chasers(std::move(chasers)), name(std::move(name)), colorMain(std::move(colorMain)),
               colorSecondary(std::move(colorSecondary)), fanblock(fanblock) {}
 
-    auto Team::getAllPlayers() const -> std::vector<std::shared_ptr<const Player>> {
-        std::vector<std::shared_ptr<const Player>> ret;
-        ret.reserve(7);
+    auto Team::getAllPlayers() const -> std::array<std::shared_ptr<const Player>, 7> {
+        std::array<std::shared_ptr<const Player>, 7> ret;
+        auto it = ret.begin();
         for(const auto& p : beaters){
-            ret.push_back(std::make_shared<const Player>(p));
+            *it = std::make_shared<const Player>(p);
+            it++;
         }
 
         for(const auto& p : chasers){
-            ret.push_back(std::make_shared<const Player>(p));
+            *it = std::make_shared<const Player>(p);
+            it++;
         }
 
-        ret.push_back(std::make_shared<const Player>(keeper));
-        ret.push_back(std::make_shared<const Player>(seeker));
+        ret[5] = std::make_shared<const Player>(keeper);
+        ret[6] = std::make_shared<const Player>(seeker);
         return ret;
     }
 

@@ -59,14 +59,13 @@ namespace gameController{
         auto getInterceptionPositions(const gameModel::Environment &env) const -> std::vector<gameModel::Position>;
 
         /**
-         * roll the dice to get the position where the ball will land
-         * @param envi
+         * Returns a list with all possible positions the ball might land if NOT intercepted. The target position is NOT
+         * included
+         * @param env
          * @return
          */
-        auto rollTheDiceForLandingCell(std::shared_ptr<gameModel::Environment> envi) const -> gameModel::Position;
-
+        auto getAllLandingCells(const gameModel::Environment &env) const -> std::vector<gameModel::Position>;
     public:
-
         // constructors
         /**
          * default constructor for the Shot class.
