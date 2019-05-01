@@ -11,18 +11,31 @@ namespace gameModel{
     Ball::Ball(Position position) : position{position} {}
 
 
-    Fanblock::Fanblock(int teleportation, int rangedAttack, int impulse, int snitchPush){
+    Fanblock::Fanblock(int teleportation, int rangedAttack, int impulse, int snitchPush) : fans(){
         if(teleportation + rangedAttack + impulse + snitchPush != 7){
             throw std::invalid_argument("Fanblock has to contain exactly 7 fans!");
         }
 
-        this->teleportation = teleportation;
-        this->impulse = impulse;
-        this->rangedAttack = rangedAttack;
-        this->snitchPush = snitchPush;
+        using fan = InterferenceType ;
+        fans.emplace(fan::RangedAttack, rangedAttack);
+        fans.emplace(fan::Teleport, teleportation);
+        fans.emplace(fan::Impulse, impulse);
+        fans.emplace(fan::SnitchPush, snitchPush);
     }
 
-    Cell Environment::getCell(unsigned int x, unsigned int y) {
+    int Fanblock::getUses(InterferenceType fan) {
+        return fans.at(fan);
+    }
+
+    void Fanblock::banFan(InterferenceType fan) {
+        if(fans.at(fan) <= 0){
+            throw std::invalid_argument("No uses left");
+        }
+
+        fans.at(fan)--;
+    }
+
+    Cell Environment::getCell(int x, int y) {
         if(x >= 17 || y >= 13) {
             return Cell::OutOfBounds;
         }else if((x == 2 || x == 14) && (y == 4 || y == 6 || y == 8)){
