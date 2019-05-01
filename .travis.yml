@@ -6,3 +6,6 @@ before_install:
 
 script:
   - docker run gamelogic
+  
+notifications:
+    slack: soprateam10:wlcgvL7tR63frGyGP4BCuqNj
