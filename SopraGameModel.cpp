@@ -77,6 +77,16 @@ namespace gameModel{
             : config(config), team1(std::move(team1)), team2(std::move(team2)), quaffle(quaffle), snitch(snitch),
             bludgers(bludgers) {}
 
+    Player Environment::getPlayerOnCell(const Position &position) {
+
+        return Player();
+    }
+
+    bool Environment::arePlayerInSameTeam(const Player &p1, const Player &p2) const {
+        return (this->team1.hasMember(p1) && this->team1.hasMember(p2)) ||
+               (this->team2.hasMember(p1) && this->team2.hasMember(p2));
+    }
+
     Snitch::Snitch(Position position): Ball(position) {}
 
     Bludger::Bludger(Position position) : Ball(position) {}

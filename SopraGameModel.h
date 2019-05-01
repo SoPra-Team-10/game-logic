@@ -264,6 +264,7 @@ namespace gameModel{
          * @return true if player is a member of the team. false otherwise
          */
         bool hasMember(const Player &player) const;
+
     };
 
     /**
@@ -279,6 +280,20 @@ namespace gameModel{
 
         Environment(Config config, Team team1, Team team2, Quaffle quaffle, Snitch snitch,
                     std::array<Bludger, 2> bludgers);
+
+        /**
+         * get the player object which is standing on a given cell, if there is one.
+         * @param position
+         * @return the player object on the cell, or null.
+         */
+        Player getPlayerOnCell(const Position &position);
+        /**
+         * tests if two players are in the same team.
+         * @param p1 player 1.
+         * @param p2 player 2.
+         * @return if the players are in the same team true, else false.
+         */
+        bool arePlayerInSameTeam(const Player &p1, const Player & p2) const;
 
         /**
          * Gets the type of the cell at position (x,y)
