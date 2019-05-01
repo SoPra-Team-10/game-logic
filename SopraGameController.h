@@ -5,8 +5,12 @@
 #include <vector>
 
 #include "SopraGameModel.h"
+#include "SopraGameAction.h"
 
 namespace gameController {
+    class Shot;
+    template<typename T>
+    class Move;
 
     /**
      * get a vector containing all cells which are crossed by the vector between to cells.
@@ -14,7 +18,7 @@ namespace gameController {
      * @param endPoint position of the second cell.
      * @return a vector containing all crossed cells.
      */
-    auto getAllCrossedCells(gameModel::Position startPoint, gameModel::Position endPoint) ->
+    auto getAllCrossedCells(const gameModel::Position &startPoint, const gameModel::Position &endPoint) ->
         std::vector<gameModel::Position>;
 
     /**
@@ -23,7 +27,28 @@ namespace gameController {
      * @param endPoint position of the second cell.
      * @return the distance as integer.
      */
-    auto getDistance(gameModel::Position startPoint, gameModel::Position endPoint) -> int;
+    auto getDistance(const gameModel::Position &startPoint, const gameModel::Position &endPoint) -> int;
+
+    /**
+     * Get all currently possible shots of a given player in a given environment.
+     * @param actor actor the acting player as shared pointer.
+     * @param envi the selected environment.
+     * @return a shots vector
+     */
+    auto getAllPossibleShots(std::shared_ptr<gameModel::Player> actor, const gameModel::Environment &envi) ->
+    std::vector<Shot>;
+
+    /**
+     * Get all currently possible moves of a given actor in a given environment
+     * @tparam T the actor type (Player or Ball).
+     * @param actor actor the acting player or ball as shared pointer.
+     * @param envi the selected environment.
+     * @return a action vector
+     */
+    template<typename T>
+    auto getAllPossibleMoves(std::shared_ptr<T> actor, const gameModel::Environment &envi)
+    -> std::vector<Move<T>>;
 }
+
 
 #endif //GAMELOGIC_SOPRAGAMECONTROLLER_H

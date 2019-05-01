@@ -93,12 +93,12 @@ namespace gameModel{
         this->y = y;
     }
 
-    bool operator==(const Position &p1, const Position &p2) {
-        return p1.x == p2.x && p1.y == p2.y;
+    bool Position::operator==(const Position &other) const{
+        return this->x == other.x && this->y == other.y;
     }
 
-    bool operator!=(const Position &p1, const Position &p2) {
-        return !(p1.x == p2.x && p1.y == p2.y);
+    bool Position::operator!=(const Position &other) const{
+        return !(*this == other);
     }
 
     Vector::Vector(double x, double y) {

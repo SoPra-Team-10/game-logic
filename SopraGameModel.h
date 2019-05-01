@@ -4,7 +4,8 @@
 #include <string>
 #include <array>
 #include <map>
-
+#include <vector>
+#include <memory>
 namespace gameModel{
 
     /**
@@ -45,23 +46,9 @@ namespace gameModel{
 
         Position() = default;
         Position(int x, int y);
+        bool operator==(const Position &other) const;
+        bool operator!=(const Position &other) const;
     };
-
-    /**
-     * == operator for Position objects overloaded.
-     * @param p1 first position.
-     * @param p2 second position.
-     * @return true if p1 and p2 were equal, else false.
-     */
-    bool operator==(const Position &p1, const Position &p2);
-
-    /**
-     * != operator for Position objects overloaded.
-     * @param p1 first position.
-     * @param p2 second position.
-     * @return true if p1 and p2 were equal, else false.
-     */
-    bool operator!=(const Position &p1, const Position &p2);
 
     class Vector {
     public:

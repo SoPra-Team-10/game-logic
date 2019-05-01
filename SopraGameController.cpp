@@ -2,7 +2,7 @@
 
 namespace gameController {
 
-    auto getAllCrossedCells(const gameModel::Position startPoint, const gameModel::Position endPoint) ->
+    auto getAllCrossedCells(const gameModel::Position &startPoint, const gameModel::Position &endPoint) ->
     std::vector<gameModel::Position> {
 
         std::vector<gameModel::Position> resultVect;
@@ -44,7 +44,7 @@ namespace gameController {
         return resultVect;
     }
 
-    auto getDistance(gameModel::Position startPoint, gameModel::Position endPoint) -> int {
+    auto getDistance(const gameModel::Position &startPoint, const gameModel::Position &endPoint) -> int {
 
         // check if cells are valid
         if (gameModel::Environment::getCell(startPoint) == gameModel::Cell::OutOfBounds ||
@@ -71,5 +71,15 @@ namespace gameController {
         }
 
         return totalDistance;
+    }
+
+    template<typename T>
+    auto getAllPossibleMoves(std::shared_ptr<T> actor, const gameModel::Environment &envi) -> std::vector<Move<T>> {
+        return std::vector<Move<T>>();
+    }
+
+    auto getAllPossibleShots(std::shared_ptr<gameModel::Player> actor,
+                             const gameModel::Environment &envi) -> std::vector<Shot> {
+        return std::vector<Shot>();
     }
 }
