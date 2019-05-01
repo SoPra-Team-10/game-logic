@@ -56,10 +56,19 @@ namespace gameController{
         return {};
     }
 
-    auto Shot::getInterceptionPosition(const gameModel::Environment &env) const -> std::vector<gameModel::Position>{
+    auto Shot::getInterceptionPositions(const gameModel::Environment &env) const -> std::vector<gameModel::Position>{
         auto crossedCells = gameController::getAllCrossedCells(this->actor->position, target);
-        //@TODO
-        return crossedCells;
+        auto oponentPlayers = env.team1.hasMember(*actor) ? env.team2.getAllPlayers() : env.team2.getAllPlayers();
+        std::vector<gameModel::Position> ret;
+        for(const auto &cell : crossedCells){
+            for(const auto &player : oponentPlayers){
+                if(player->position == cell){
+                    ret.emplace_back(cell);
+                }
+            }
+        }
+
+        return ret;
     }
 
     template<class T> auto Move<T>::check(const gameModel::Environment &envi) const -> ActionResult{
@@ -111,12 +120,26 @@ namespace gameController{
             if (possibleShot.check(envi) == ActionResult::Impossible){
                 continue;
             }
+
             gameModel::Environment testEnvi = envi;
             possibleShot.execute(testEnvi);
             resultVect.emplace_back(testEnvi, possibleShot.successProb(envi));
         }
 
         return resultVect;
+    }
+
+    template<class T>
+    Move<T>::Move(std::shared_ptr<T> actor, gameModel::Position target): Action<T>(actor, target) {}
+
+    template<class T>
+    void Move<T>::execute(gameModel::Environment &envi) const {
+
+    }
+
+    template<class T>
+    auto Move<T>::successProb(const gameModel::Environment &envi) const -> double {
+        return 0;
     }
 
 

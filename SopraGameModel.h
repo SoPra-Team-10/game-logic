@@ -150,6 +150,8 @@ namespace gameModel{
 
         Player() = default;
         Player(Position position, std::string  name, Gender gender, Broom broom);
+        bool operator==(const Player &other) const;
+        bool operator!=(const Player &other) const;
     };
 
     /**
@@ -227,6 +229,19 @@ namespace gameModel{
         Team(Seeker seeker, Keeper keeper, std::array<Beater, 2> beaters, std::array<Chaser, 3> chasers,
              std::string  name, std::string  colorMain, std::string  colorSecondary,
              const Fanblock &fanblock);
+
+        /**
+         * gets all Players of the team
+         * @return
+         */
+        auto getAllPlayers() const -> std::vector<std::shared_ptr<const Player>>;
+
+        /**
+         * Determins wether a given player is a member of the team
+         * @param player
+         * @return true if player is a member of the team. false otherwise
+         */
+        bool hasMember(const Player &player) const;
     };
 
     /**

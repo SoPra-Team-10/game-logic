@@ -56,7 +56,12 @@ namespace gameController{
     class Shot : public Action<gameModel::Player> {
     private:
 
-        auto getInterceptionPosition(const gameModel::Environment &env) const -> std::vector<gameModel::Position>;
+        /**
+         * gets all cells along the flightpath which are occupied by opponent players (ordered in flight direction)
+         * @param env
+         * @return
+         */
+        auto getInterceptionPositions(const gameModel::Environment &env) const -> std::vector<gameModel::Position>;
 
         /**
          * roll the dice to get the position where the ball will land

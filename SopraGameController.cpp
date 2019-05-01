@@ -9,8 +9,9 @@ namespace gameController {
 
         // check if cells are valid
         if (gameModel::Environment::getCell(startPoint) == gameModel::Cell::OutOfBounds ||
-        gameModel::Environment::getCell(endPoint) == gameModel::Cell::OutOfBounds)
-            return resultVect;
+        gameModel::Environment::getCell(endPoint) == gameModel::Cell::OutOfBounds){
+            throw std::out_of_range("Source or destination of movement vector are out of bounds");
+        }
 
         // add the start point to the result
         resultVect.emplace_back(startPoint);

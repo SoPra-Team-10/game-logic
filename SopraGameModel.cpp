@@ -8,6 +8,15 @@ namespace gameModel{
     Player::Player(Position position, std::string  name, Gender gender, Broom broom) :
             position{position}, name(std::move(name)), gender(gender), broom(broom){}
 
+    bool Player::operator==(const Player &other) const {
+        return position == other.position && name == other.name &&
+        gender == other.gender && broom == other.broom;
+    }
+
+    bool Player::operator!=(const Player &other) const {
+        return !(*this == other);
+    }
+
     Ball::Ball(Position position) : position{position} {}
 
 
@@ -79,6 +88,32 @@ namespace gameModel{
             : seeker(std::move(seeker)), keeper(std::move(keeper)), beaters(std::move(beaters)), chasers(std::move(chasers)), name(std::move(name)), colorMain(std::move(colorMain)),
               colorSecondary(std::move(colorSecondary)), fanblock(fanblock) {}
 
+    auto Team::getAllPlayers() const -> std::vector<std::shared_ptr<const Player>> {
+        std::vector<std::shared_ptr<const Player>> ret;
+        ret.reserve(7);
+        for(const auto& p : beaters){
+            ret.push_back(std::make_shared<const Player>(p));
+        }
+
+        for(const auto& p : chasers){
+            ret.push_back(std::make_shared<const Player>(p));
+        }
+
+        ret.push_back(std::make_shared<const Player>(keeper));
+        ret.push_back(std::make_shared<const Player>(seeker));
+        return ret;
+    }
+
+    bool Team::hasMember(const Player &player) const {
+        for(const auto &p : getAllPlayers()){
+            if(player == *p){
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     Config::Config(unsigned int maxRounds, const Timeouts &timeouts, const FoulDetectionProbs &foulDetectionProbs,
                    const GameDynamicsProbs &gameDynamicsProbs, std::map<Broom, double> extraTurnProbs) :
             maxRounds(maxRounds), timeouts(timeouts), foulDetectionProbs(foulDetectionProbs), gameDynamicsProbs(gameDynamicsProbs),
@@ -129,6 +164,7 @@ namespace gameModel{
     }
 
     Position Vector::operator+(const Position &p) const{
-        return Position(p.x + round(this->x), p.y + round(this->y));
+        return Position(static_cast<int>(p.x + round(this->x)),
+                static_cast<int>(p.y + round(this->y)));
     }
 }
