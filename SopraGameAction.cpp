@@ -1,17 +1,11 @@
 #include "SopraGameAction.h"
 namespace gameController{
-
-    template<class T> Action<T>::Action(const std::shared_ptr<T> actor, const gameModel::Position target) {
-
-        this->actor = actor;
-        this->target = target;
-    }
+    template<class T> Action<T>::Action(const std::shared_ptr<T> actor, const gameModel::Position target) :
+        actor(actor), target(target){}
 
 
     Shot::Shot(const std::shared_ptr<gameModel::Player> actor, const gameModel::Position target) :
-            Action<gameModel::Player>(actor, target) {
-
-    }
+            Action<gameModel::Player>(actor, target) {}
 
     void Shot::execute(gameModel::Environment &envi) {
 
@@ -119,9 +113,13 @@ namespace gameController{
             }
             gameModel::Environment testEnvi = envi;
             possibleShot.execute(testEnvi);
-            resultVect.emplace_back(std::pair<gameModel::Environment, double>(testEnvi, possibleShot.successProb(envi)));
+            resultVect.emplace_back(testEnvi, possibleShot.successProb(envi));
         }
 
         return resultVect;
     }
+
+
+    template class Move<gameModel::Player>;
+    template class Move<gameModel::Ball>;
 }

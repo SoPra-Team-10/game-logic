@@ -48,12 +48,15 @@ namespace gameController {
 
         // check if cells are valid
         if (gameModel::Environment::getCell(startPoint) == gameModel::Cell::OutOfBounds ||
-        gameModel::Environment::getCell(endPoint) == gameModel::Cell::OutOfBounds)
+            gameModel::Environment::getCell(endPoint) == gameModel::Cell::OutOfBounds){
+
             return -1;
+        }
 
         // check if start and end point are equal
-        if (startPoint == endPoint)
+        if (startPoint == endPoint){
             return 0;
+        }
 
         int totalDistance = 0;
 
