@@ -102,7 +102,7 @@ namespace gameController{
          * @return the resulting environments an there probabilities as a pair.
          */
         auto executeAll(const gameModel::Environment &envi) const ->
-        std::vector<std::pair<gameModel::Environment, double>> override;
+            std::vector<std::pair<gameModel::Environment, double>> override;
 
     };
 
@@ -153,11 +153,8 @@ namespace gameController{
          * @return the resulting environments an there probabilities as a pair.
          */
         auto executeAll(const gameModel::Environment &envi) const ->
-        std::vector<std::pair<gameModel::Environment, double>> override;
+            std::vector<std::pair<gameModel::Environment, double>> override;
     };
 }
-
-
-
 
 #endif //SOPRAGAMELOGIC_SOPRAGAMEACTION_H
