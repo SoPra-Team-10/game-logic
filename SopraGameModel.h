@@ -116,9 +116,16 @@ namespace gameModel{
         Firebolt
     };
 
-    /**
-     * Class containing metadata for a match
-     */
+    enum class InterferenceType{
+        RangedAttack,
+        Teleport,
+        Impulse,
+        SnitchPush
+    };
+
+/**
+ * Class containing metadata for a match
+ */
     class Config{
     public:
         const unsigned int maxRounds;
@@ -170,7 +177,22 @@ namespace gameModel{
     class Fanblock{
     public:
         Fanblock(int teleportation, int rangedAttack, int impulse, int snitchPush);
-        int teleportation, rangedAttack, impulse, snitchPush;
+
+        /**
+         * gets the number of times the given fan might be used
+         * @param fan the fan to check
+         * @return number of left uses
+         */
+        int getUses(InterferenceType fan);
+
+        /**
+         * Bans a fan by decreasing the number of allowed uses by one
+         * @param fan the fan to be banned
+         * @throws std::invalid_argument if there are no more fans left to ban of the given type
+         */
+        void banFan(InterferenceType fan);
+    private:
+        std::map<InterferenceType, int> fans;
 
     };
 
@@ -264,7 +286,7 @@ namespace gameModel{
          * @param y yPosition from bottom, 0based
          * @return The corresponding Cell
          */
-        static Cell getCell(unsigned int x, unsigned int y);
+        static Cell getCell(int x, int y);
 
         /**
          * See overloaded function above
