@@ -28,34 +28,31 @@ namespace gameController{
 
     auto Shot::successProb(const gameModel::Environment &envi) const -> double{
 
-        return pow(envi.config.gameDynamicsProbs.throwSuccess,
-                   gameController::getDistance(this->actor.get()->position, this->target));
+        if (gameModel::Environment::getCell(this->target) == gameModel::Cell::OutOfBounds){
+            return 0;
+        }
+        else {
+            // @ToDo: Wahrscheinlichkeit für das Abfangen einfügen.
+            return pow(envi.config.gameDynamicsProbs.throwSuccess,
+                       gameController::getDistance(this->actor.get()->position, this->target));
+        }
     }
 
     auto Shot::check(const gameModel::Environment &envi) const -> ActionResult {
 
-        if (gameModel::Environment::getCell(this->target) == gameModel::Cell::OutOfBounds)
+        if (gameModel::Environment::getCell(this->target) == gameModel::Cell::OutOfBounds) {
             return ActionResult::Impossible;
-        else
+        }
+        else {
             return ActionResult::Success;
+        }
     }
 
     auto Shot::executeAll(const gameModel::Environment &envi) const ->
     std::vector<std::pair<gameModel::Environment, double>> {
 
         std::vector<std::pair<gameModel::Environment, double>> resultVect;
-        std::vector<Shot> possibleShots = getAllPossibleShots(this->actor, envi);
 
-        for (auto & possibleShot : possibleShots) {
-
-            if (possibleShot.check(envi) == ActionResult::Impossible){
-                continue;
-            }
-
-            gameModel::Environment testEnvi = envi;
-            possibleShot.execute(testEnvi);
-            resultVect.emplace_back(std::pair<gameModel::Environment, double>(testEnvi, possibleShot.successProb(envi)));
-        }
 
         return resultVect;
     }
@@ -103,60 +100,23 @@ namespace gameController{
 
     auto Move::check(const gameModel::Environment &envi) const -> ActionResult{
 
-        if (gameModel::Environment::getCell(this->target) == gameModel::Cell::OutOfBounds){
+        if (gameModel::Environment::getCell(this->target) == gameModel::Cell::OutOfBounds ||
+            gameController::getDistance(this->actor.get()->position, this->target) > 1) {
             return ActionResult::Impossible;
         }
 
-        // a move of a ball can't be a Foul
-        if ((typeid(this->actor.get()) == typeid(gameModel::Ball)) ){
+        if (this->checkForFoul(envi) == gameModel::Foul::None) {
             return ActionResult::Success;
         }
-
-        /*
-        // cast to Player
-        gameModel::Player player = this->actor.get();
-
-        // Foul 1: Flacken
-        if (player.)
+        else {
             return ActionResult::Foul;
-
-        // Foul 2: Nachtarocken
-        if (true)
-            return ActionResult::Foul;
-
-        // Foul 3: Stutschen
-        if (true)
-            return ActionResult::Foul;
-
-        // Foul 4: Keilen
-        if (true)
-            return ActionResult::Foul;
-
-        // Foul 5: Schlantzeln
-        if (true)
-            return ActionResult::Foul;
-
-        // no Foul
-        return ActionResult::Success;
-         */
+        }
     }
 
-   auto Move::executeAll(const gameModel::Environment &envi) const ->
-    std::vector<std::pair<gameModel::Environment, double>>{
+    auto Move::executeAll(const gameModel::Environment &envi) const ->
+        std::vector<std::pair<gameModel::Environment, double>>{
 
         std::vector<std::pair<gameModel::Environment, double>> resultVect;
-        std::vector<Move> possibleMoves = getAllPossibleMoves(this->actor, envi);
-
-        for (auto & possibleShot : possibleMoves) {
-
-            if (possibleShot.check(envi) == ActionResult::Impossible){
-                continue;
-            }
-
-            gameModel::Environment testEnvi = envi;
-            possibleShot.execute(testEnvi);
-            resultVect.emplace_back(testEnvi, possibleShot.successProb(envi));
-        }
 
         return resultVect;
     }
@@ -164,10 +124,36 @@ namespace gameController{
     Move::Move(std::shared_ptr<gameModel::Player> actor, gameModel::Position target): Action(actor, target) {}
 
     void Move::execute(gameModel::Environment &envi) const {
+        ActionResult actionResult = this->check(envi);
 
+        switch (actionResult) {
+
+            case ActionResult::Success :
+                this->actor.get()->position = this->target;
+                break;
+
+            case ActionResult::Foul:
+                // @ToDo was passiert bei einem Faul???
+                break;
+
+            case ActionResult::Impossible :
+                // @ToDo: throw exception
+                break;
+        }
     }
 
     auto Move::successProb(const gameModel::Environment &envi) const -> double {
-        return 0;
+        if (gameModel::Environment::getCell(this->target) == gameModel::Cell::OutOfBounds ||
+            gameController::getDistance(this->actor.get()->position, this->target) > 1){
+            return 0;
+        }
+        else {
+            return 1;
+        }
+    }
+
+    auto Move::checkForFoul(const gameModel::Environment &envi) const -> gameModel::Foul {
+
+        return gameModel::Foul::None;
     }
 }

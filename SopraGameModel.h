@@ -98,6 +98,18 @@ namespace gameModel{
     };
 
     /**
+     * Types of fouls.
+     */
+    enum class Foul {
+        None,
+        Flacken,
+        Nachtarocken,
+        Stutschen,
+        Keilen,
+        Schnatzeln
+    };
+
+    /**
      * For unnecessary gender fights
      */
     enum class Gender{
@@ -264,6 +276,7 @@ namespace gameModel{
          * @return true if player is a member of the team. false otherwise
          */
         bool hasMember(const Player &player) const;
+
     };
 
     /**
@@ -279,6 +292,14 @@ namespace gameModel{
 
         Environment(Config config, Team team1, Team team2, Quaffle quaffle, Snitch snitch,
                     std::array<Bludger, 2> bludgers);
+
+        /**
+         * tests if two players are in the same team.
+         * @param p1 player 1.
+         * @param p2 player 2.
+         * @return if the players are in the same team true, else false.
+         */
+        auto arePlayerInSameTeam(const Player &p1, const Player & p2) const -> bool;
 
         /**
          * Gets the type of the cell at position (x,y)

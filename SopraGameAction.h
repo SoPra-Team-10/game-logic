@@ -101,7 +101,7 @@ namespace gameController{
          * @return the resulting environments an there probabilities as a pair.
          */
         auto executeAll(const gameModel::Environment &envi) const ->
-        std::vector<std::pair<gameModel::Environment, double>> override;
+            std::vector<std::pair<gameModel::Environment, double>> override;
 
     };
 
@@ -110,6 +110,13 @@ namespace gameController{
      */
     class Move : Action{
     private:
+        /**
+         * chekcs if the move is a foul.
+         * @param envi the selected environment.
+         * @return the type of foul.
+         */
+        auto checkForFoul(const gameModel::Environment &envi) const -> gameModel::Foul;
+
     public:
 
         // constructors
@@ -152,11 +159,8 @@ namespace gameController{
          * @return the resulting environments an there probabilities as a pair.
          */
         auto executeAll(const gameModel::Environment &envi) const ->
-        std::vector<std::pair<gameModel::Environment, double>> override;
+            std::vector<std::pair<gameModel::Environment, double>> override;
     };
 }
-
-
-
 
 #endif //SOPRAGAMELOGIC_SOPRAGAMEACTION_H
