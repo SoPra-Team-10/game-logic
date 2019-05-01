@@ -77,12 +77,28 @@ namespace gameModel{
             : config(config), team1(std::move(team1)), team2(std::move(team2)), quaffle(quaffle), snitch(snitch),
             bludgers(bludgers) {}
 
-    Player Environment::getPlayerOnCell(const Position &position) {
+    auto Environment::getPlayerOnCell(const Position &position) const -> std::vector<std::shared_ptr<const Player>>{
+        std::vector<std::shared_ptr<const Player>> resultvect;
 
-        return Player();
+        std::vector<std::shared_ptr<const Player>> team1Player = this->team1.getAllPlayers();
+        std::vector<std::shared_ptr<const Player>> team2Player = this->team2.getAllPlayers();
+
+        for (unsigned long i = 0; i < team1Player.size(); i++) {
+            if (team1Player[i].get()->position == position) {
+                resultvect.emplace_back(team1Player[i]);
+            }
+        }
+
+        for (unsigned long i = 0; i < team2Player.size(); i++) {
+            if (team1Player[i].get()->position == position) {
+                resultvect.emplace_back(team1Player[i]);
+            }
+        }
+
+        return resultvect;
     }
 
-    bool Environment::arePlayerInSameTeam(const Player &p1, const Player &p2) const {
+    auto Environment::arePlayerInSameTeam(const Player &p1, const Player &p2) const -> bool{
         return (this->team1.hasMember(p1) && this->team1.hasMember(p2)) ||
                (this->team2.hasMember(p1) && this->team2.hasMember(p2));
     }

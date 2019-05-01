@@ -75,30 +75,12 @@ namespace gameController{
             return ActionResult::Impossible;
         }
 
-        /*
-        // Foul 1: Flacken
-        if ()
+        if (this->checkForFoul(envi) == gameModel::Foul::None) {
+            return ActionResult::Success;
+        }
+        else {
             return ActionResult::Foul;
-
-        // Foul 2: Nachtarocken
-        if (true)
-            return ActionResult::Foul;
-
-        // Foul 3: Stutschen
-        if (true)
-            return ActionResult::Foul;
-
-        // Foul 4: Keilen
-        if (true)
-            return ActionResult::Foul;
-
-        // Foul 5: Schlantzeln
-        if (true)
-            return ActionResult::Foul;
-
-        // no Foul
-        return ActionResult::Success;
-         */
+        }
     }
 
     auto Move::executeAll(const gameModel::Environment &envi) const ->
@@ -112,9 +94,22 @@ namespace gameController{
     Move::Move(std::shared_ptr<gameModel::Player> actor, gameModel::Position target): Action(actor, target) {}
 
     void Move::execute(gameModel::Environment &envi) const {
-        this->actor.get()->position = this->target;
+        ActionResult actionResult = this->check(envi);
 
-        // @ToDo was passiert bei einem Faul???
+        switch (actionResult) {
+
+            case ActionResult::Success :
+                this->actor.get()->position = this->target;
+                break;
+
+            case ActionResult::Foul:
+                // @ToDo was passiert bei einem Faul???
+                break;
+
+            case ActionResult::Impossible :
+                // @ToDo: throw exception
+                break;
+        }
     }
 
     auto Move::successProb(const gameModel::Environment &envi) const -> double {
@@ -125,5 +120,10 @@ namespace gameController{
         else {
             return 1;
         }
+    }
+
+    auto Move::checkForFoul(const gameModel::Environment &envi) const -> gameModel::Foul {
+
+        return gameModel::Foul::None;
     }
 }

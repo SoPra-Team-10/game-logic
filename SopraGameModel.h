@@ -98,6 +98,18 @@ namespace gameModel{
     };
 
     /**
+     * Types of fouls.
+     */
+    enum class Foul {
+        None,
+        Flacken,
+        Nachtarocken,
+        Stutschen,
+        Keilen,
+        Schnatzeln
+    };
+
+    /**
      * For unnecessary gender fights
      */
     enum class Gender{
@@ -286,14 +298,14 @@ namespace gameModel{
          * @param position
          * @return the player object on the cell, or null.
          */
-        Player getPlayerOnCell(const Position &position);
+        auto getPlayerOnCell(const Position &position) const -> std::vector<std::shared_ptr<const Player>>;
         /**
          * tests if two players are in the same team.
          * @param p1 player 1.
          * @param p2 player 2.
          * @return if the players are in the same team true, else false.
          */
-        bool arePlayerInSameTeam(const Player &p1, const Player & p2) const;
+        auto arePlayerInSameTeam(const Player &p1, const Player & p2) const -> bool;
 
         /**
          * Gets the type of the cell at position (x,y)

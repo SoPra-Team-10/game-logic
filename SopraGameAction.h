@@ -111,6 +111,13 @@ namespace gameController{
      */
     class Move : Action{
     private:
+        /**
+         * chekcs if the move is a foul.
+         * @param envi the selected environment.
+         * @return the type of foul.
+         */
+        auto checkForFoul(const gameModel::Environment &envi) const -> gameModel::Foul;
+
     public:
 
         // constructors
