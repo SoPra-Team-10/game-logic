@@ -283,7 +283,7 @@ namespace gameModel{
         /**
          * Gets the type of the cell at position (x,y)
          * @param x xPosition from left, 0 based
-         * @param y yPosition from bottom, 0based
+         * @param y yPosition from bottom, 0 based
          * @return The corresponding Cell
          */
         static Cell getCell(int x, int y);

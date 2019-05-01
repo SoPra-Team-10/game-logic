@@ -18,11 +18,7 @@ namespace gameController{
         Foul
     };
 
-    /**
-     * template class for a action in the game
-     * @tparam T
-     */
-    template <class T> class Action {
+    class Action {
     public:
 
         // constructors
@@ -32,14 +28,13 @@ namespace gameController{
         Action() = default;
         /**
          * main constructor for the Action class.
-         * @tparam T the actor type (Player or Ball).
          * @param actor the actor
          * @param target the target position
          */
-        Action(std::shared_ptr<T> actor, gameModel::Position target);
+        Action(std::shared_ptr<gameModel::Player> actor, gameModel::Position target);
 
         // objects
-        std::shared_ptr<T> actor;
+        std::shared_ptr<gameModel::Player> actor;
         gameModel::Position target{};
 
         // functions
@@ -53,7 +48,7 @@ namespace gameController{
     /**
      * class for a shot in the game which can only be executed by a player
      */
-    class Shot : public Action<gameModel::Player> {
+    class Shot : public Action{
     private:
 
         /**
@@ -113,9 +108,8 @@ namespace gameController{
 
     /**
      * clas for a move in the game which can be executed by a player or a ball
-     * @tparam T
      */
-    template <class T> class Move : Action<T> {
+    class Move : Action{
     private:
     public:
 
@@ -130,7 +124,7 @@ namespace gameController{
          * @param actor the acting player or ball as shared pointer.
          * @param target the target position of the move.
          */
-        Move(std::shared_ptr<T> actor, gameModel::Position target);
+        Move(std::shared_ptr<gameModel::Player> actor, gameModel::Position target);
 
         // functions
         /**
@@ -160,8 +154,6 @@ namespace gameController{
          */
         auto executeAll(const gameModel::Environment &envi) const ->
         std::vector<std::pair<gameModel::Environment, double>> override;
-
-
     };
 }
 

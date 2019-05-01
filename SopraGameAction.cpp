@@ -1,11 +1,11 @@
 #include "SopraGameAction.h"
 namespace gameController{
-    template<class T> Action<T>::Action(const std::shared_ptr<T> actor, const gameModel::Position target) :
+    Action::Action(const std::shared_ptr<gameModel::Player> actor, const gameModel::Position target) :
         actor(actor), target(target){}
 
 
     Shot::Shot(const std::shared_ptr<gameModel::Player> actor, const gameModel::Position target) :
-            Action<gameModel::Player>(actor, target) {}
+            Action(actor, target) {}
 
     void Shot::execute(gameModel::Environment &envi) const{
 
@@ -71,14 +71,16 @@ namespace gameController{
         return ret;
     }
 
-    template<class T> auto Move<T>::check(const gameModel::Environment &envi) const -> ActionResult{
+    auto Move::check(const gameModel::Environment &envi) const -> ActionResult{
 
-        if (gameModel::Environment::getCell(this->target) == gameModel::Cell::OutOfBounds)
+        if (gameModel::Environment::getCell(this->target) == gameModel::Cell::OutOfBounds){
             return ActionResult::Impossible;
+        }
 
         // a move of a ball can't be a Foul
-        if ((typeid(this->actor.get()) == typeid(gameModel::Ball)) )
+        if ((typeid(this->actor.get()) == typeid(gameModel::Ball)) ){
             return ActionResult::Success;
+        }
 
         /*
         // cast to Player
@@ -109,11 +111,11 @@ namespace gameController{
          */
     }
 
-    template<class T> auto Move<T>::executeAll(const gameModel::Environment &envi) const ->
+   auto Move::executeAll(const gameModel::Environment &envi) const ->
     std::vector<std::pair<gameModel::Environment, double>>{
 
         std::vector<std::pair<gameModel::Environment, double>> resultVect;
-        std::vector<Move<T>> possibleMoves = getAllPossibleMoves<T>(this->actor, envi);
+        std::vector<Move> possibleMoves = getAllPossibleMoves(this->actor, envi);
 
         for (auto & possibleShot : possibleMoves) {
 
@@ -129,20 +131,13 @@ namespace gameController{
         return resultVect;
     }
 
-    template<class T>
-    Move<T>::Move(std::shared_ptr<T> actor, gameModel::Position target): Action<T>(actor, target) {}
+    Move::Move(std::shared_ptr<gameModel::Player> actor, gameModel::Position target): Action(actor, target) {}
 
-    template<class T>
-    void Move<T>::execute(gameModel::Environment &envi) const {
+    void Move::execute(gameModel::Environment &envi) const {
 
     }
 
-    template<class T>
-    auto Move<T>::successProb(const gameModel::Environment &envi) const -> double {
+    auto Move::successProb(const gameModel::Environment &envi) const -> double {
         return 0;
     }
-
-
-    template class Move<gameModel::Player>;
-    template class Move<gameModel::Ball>;
 }

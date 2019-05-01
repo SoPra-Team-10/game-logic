@@ -9,7 +9,6 @@
 
 namespace gameController {
     class Shot;
-    template<typename T>
     class Move;
 
     /**
@@ -45,9 +44,8 @@ namespace gameController {
      * @param envi the selected environment.
      * @return a action vector
      */
-    template<typename T>
-    auto getAllPossibleMoves(std::shared_ptr<T> actor, const gameModel::Environment &envi)
-    -> std::vector<Move<T>>;
+    auto getAllPossibleMoves(std::shared_ptr<gameModel::Player> actor, const gameModel::Environment &envi)
+    -> std::vector<Move>;
 }
 
 

@@ -77,9 +77,8 @@ namespace gameController {
         return totalDistance;
     }
 
-    template<typename T>
-    auto getAllPossibleMoves(std::shared_ptr<T> actor, const gameModel::Environment &envi) -> std::vector<Move<T>> {
-        return std::vector<Move<T>>();
+    auto getAllPossibleMoves(std::shared_ptr<gameModel::Player> actor, const gameModel::Environment &envi) -> std::vector<Move> {
+        return std::vector<Move>();
     }
 
     auto getAllPossibleShots(std::shared_ptr<gameModel::Player> actor,
