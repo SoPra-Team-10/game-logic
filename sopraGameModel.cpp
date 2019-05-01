@@ -39,7 +39,7 @@ namespace gameModel{
             return x < 8 ? Cell::RestrictedLeft : Cell::RestrictedRight;
         } else if(x > 0 && x < 16 && y > 1 && y < 11){
             return x < 8 ? Cell::RestrictedLeft : Cell::RestrictedRight;
-        } else if(x >= 0 && y > 3 && y < 9){
+        } else if(y > 3 && y < 9){
             return x < 8 ? Cell::RestrictedLeft : Cell::RestrictedRight;
         } else{
             return Cell::OutOfBounds;

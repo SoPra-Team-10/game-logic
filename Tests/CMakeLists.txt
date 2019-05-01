@@ -5,7 +5,7 @@ find_package(GTest)
 if (GTest_FOUND)
     include_directories(${GTEST_INCLUDE_DIR})
 
-    set(TEST_SOURCES SopraGameModel.cpp)
+    file(GLOB_RECURSE TEST_SOURCES . *.cpp)
 
     if (USE_INSTALLED_LIB)
         add_definitions(-DUSE_INSTALLED_LIB)
@@ -21,4 +21,6 @@ if (GTest_FOUND)
             NAME ${PROJECT_NAME}
             COMMAND ${PROJECT_NAME}
     )
+else()
+    message(WARNING "GTest not found, you won't be able to run the tests")
 endif()
