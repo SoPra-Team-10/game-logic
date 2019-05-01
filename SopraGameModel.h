@@ -46,6 +46,7 @@ namespace gameModel{
 
         Position() = default;
         Position(int x, int y);
+        Position& operator=(const Position &other);
         bool operator==(const Position &other) const;
         bool operator!=(const Position &other) const;
     };
@@ -341,7 +342,14 @@ namespace gameModel{
          * @param position the position to be checked
          * @return true if occupied, false otherwise
          */
-        bool cellIsFree(Position position) const;
+        bool cellIsFree(const Position &position) const;
+
+        /**
+         * get all Positions around a given position where no odther player is on.
+         * @param position the position to be checked
+         * @return
+         */
+        auto getAllPlayerFreeCellsAround(const Position &position) const -> std::vector<Position>;
 
         /**
          * Returns player object at the specified position if one exists

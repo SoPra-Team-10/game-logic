@@ -93,7 +93,7 @@ namespace gameModel{
         return ret;
     }
 
-    bool Environment::cellIsFree(Position position) const {
+    bool Environment::cellIsFree(const Position &position) const {
         for(const auto &p : getAllPlayers()){
             if(position == p->position){
                 return false;
@@ -101,6 +101,36 @@ namespace gameModel{
         }
 
         return true;
+    }
+
+    auto Environment::getAllPlayerFreeCellsAround(const Position &position) const -> std::vector<Position> {
+        std::vector<Position> resultVect;
+
+        int startX = position.x - 1;
+        int endX = position.x + 1;
+        int startY = position.y - 1;
+        int endY = position.y + 1;
+
+        do {
+            for (int i = startY; i <= endY; i++) {
+                for (int j = startX; j <= endX; j++) {
+                    if (i == position.x && j == position.y) {
+                        continue;
+                    }
+                    if (Environment::getCell(j, i) != Cell::OutOfBounds && this->getPlayer(Position(j, i)) == nullptr) {
+                        resultVect.emplace_back(Position(j, i));
+                    }
+                }
+            }
+
+            startX--;
+            endX++;
+            startX--;
+            endX++;
+
+        } while (resultVect.empty());
+
+        return resultVect;
     }
 
     auto Environment::getTeamMates(const Player &player) const -> std::array<std::shared_ptr<const Player>, 6> {
@@ -129,6 +159,11 @@ namespace gameModel{
         }
 
         return {};
+    }
+
+    auto Environment::arePlayerInSameTeam(const Player &p1, const Player &p2) const -> bool {
+        return (this->team1.hasMember(p1) && this->team1.hasMember(p2)) ||
+               (this->team2.hasMember(p1) && this->team2.hasMember(p2));
     }
 
     Snitch::Snitch(Position position): Ball(position) {}
@@ -203,6 +238,11 @@ namespace gameModel{
 
     bool Position::operator!=(const Position &other) const{
         return !(*this == other);
+    }
+
+    Position &Position::operator=(const Position &other) {
+        this->x = other.x;
+        this->y = other.y;
     }
 
     Vector::Vector(double x, double y) {

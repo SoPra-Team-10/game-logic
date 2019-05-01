@@ -117,6 +117,8 @@ namespace gameController{
          */
         auto checkForFoul(const gameModel::Environment &envi) const -> gameModel::Foul;
 
+        void movePlayerOnEmptyCell(gameModel::Environment &envi, const gameModel::Position &position) const;
+
     public:
 
         // constructors

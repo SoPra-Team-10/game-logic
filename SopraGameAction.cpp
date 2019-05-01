@@ -37,6 +37,7 @@ namespace gameController{
         }
     }
 
+    // fertig ?
     auto Shot::check(const gameModel::Environment &envi) const -> ActionResult {
         if (gameModel::Environment::getCell(this->target) == gameModel::Cell::OutOfBounds) {
             return ActionResult::Impossible;
@@ -61,6 +62,7 @@ namespace gameController{
 
         std::vector<std::pair<gameModel::Environment, double>> resultVect;
 
+        // @toDo: da fehlt noch alles
 
         return resultVect;
     }
@@ -106,6 +108,7 @@ namespace gameController{
         return ret;
     }
 
+    // fertig
     auto Move::check(const gameModel::Environment &envi) const -> ActionResult{
 
         if (gameModel::Environment::getCell(this->target) == gameModel::Cell::OutOfBounds ||
@@ -126,6 +129,8 @@ namespace gameController{
 
         std::vector<std::pair<gameModel::Environment, double>> resultVect;
 
+        // @toDo: da fehlt noch alles
+
         return resultVect;
     }
 
@@ -136,21 +141,30 @@ namespace gameController{
 
         switch (actionResult) {
 
-            case ActionResult::Success :
-                this->actor.get()->position = this->target;
-                break;
-
-            case ActionResult::Foul:
+            case ActionResult::Foul :
                 // @ToDo was passiert bei einem Faul???
-                break;
+
+            case ActionResult::Success :
+
+                if (envi.getPlayer(this->target) != nullptr) {
+                    movePlayerOnEmptyCell(envi, this->target);
+                }
+                this->actor.get()->position = this->target;
+
+            break;
 
             case ActionResult::Impossible :
-                // @ToDo: throw exception
-                break;
+                throw std::runtime_error("The Selected move is impossible!");
         }
     }
 
-    auto Move::successProb(const gameModel::Environment &envi) const -> double {
+    void Move::movePlayerOnEmptyCell(gameModel::Environment &envi, const gameModel::Position &position) const {
+        const std::vector<gameModel::Position> positions = envi.getAllPlayerFreeCellsAround(position);
+        // @ToDo: random cell auswählen & player verschieben
+    }
+
+    // fertig
+    auto Move::successProb(const gameModel::Environment&) const -> double {
         if (gameModel::Environment::getCell(this->target) == gameModel::Cell::OutOfBounds ||
             gameController::getDistance(this->actor.get()->position, this->target) > 1){
             return 0;
@@ -161,6 +175,15 @@ namespace gameController{
     }
 
     auto Move::checkForFoul(const gameModel::Environment &envi) const -> gameModel::Foul {
+
+
+        // @ToDo: sinnvolle strategie um flas effizient zu erkennen
+        if (envi.getPlayer(this->target) == nullptr) {
+
+        }
+        else {
+
+        }
 
         return gameModel::Foul::None;
     }
