@@ -23,7 +23,6 @@ namespace gameController{
      * @tparam T
      */
     template <class T> class Action {
-    private:
     public:
 
         // constructors
@@ -44,10 +43,10 @@ namespace gameController{
         gameModel::Position target{};
 
         // functions
-        virtual void execute(gameModel::Environment &envi) = 0;
-        virtual auto successProb(const gameModel::Environment &envi) -> double = 0;
-        virtual auto check(const gameModel::Environment &envi) -> ActionResult = 0;
-        virtual auto executeAll(const gameModel::Environment &envi) ->
+        virtual void execute(gameModel::Environment &envi) const = 0;
+        virtual auto successProb(const gameModel::Environment &envi) const -> double = 0;
+        virtual auto check(const gameModel::Environment &envi) const -> ActionResult = 0;
+        virtual auto executeAll(const gameModel::Environment &envi) const ->
         std::vector<std::pair<gameModel::Environment, double>> = 0;
     };
 
@@ -57,14 +56,14 @@ namespace gameController{
     class Shot : public Action<gameModel::Player> {
     private:
 
-        auto getInterceptionPosition(const gameModel::Environment &env) -> std::vector<gameModel::Position>;
+        auto getInterceptionPosition(const gameModel::Environment &env) const -> std::vector<gameModel::Position>;
 
         /**
          * roll the dice to get the position where the ball will land
          * @param envi
          * @return
          */
-        auto rollTheDiceForLandingCell(std::shared_ptr<gameModel::Environment> envi) -> gameModel::Position;
+        auto rollTheDiceForLandingCell(std::shared_ptr<gameModel::Environment> envi) const -> gameModel::Position;
 
     public:
 
@@ -85,24 +84,24 @@ namespace gameController{
         * execute the shot in a given environment (implementation of virtual function).
         * @param envi the environment in which the shot should be performed.
         */
-        void execute(gameModel::Environment &envi) override;
+        void execute(gameModel::Environment &envi) const override;
         /**
          * get the success probability of the shot (implementation of virtual function).
          * @return the success probability of the shot as double.
          */
-        auto successProb(const gameModel::Environment &envi) -> double override;
+        auto successProb(const gameModel::Environment &envi) const -> double override;
         /**
          * check if the selected shot is possible (implementation of virtual function).
          * @param envi the selected environment.
          * @return the result of the check as ActionResult.
          */
-        auto check(const gameModel::Environment &envi) -> ActionResult override;
+        auto check(const gameModel::Environment &envi) const -> ActionResult override;
         /**
          * execute all given shots in a given environment (implementation of virtual function).
          * @param envi the selected environment.
          * @return the resulting environments an there probabilities as a pair.
          */
-        auto executeAll(const gameModel::Environment &envi) ->
+        auto executeAll(const gameModel::Environment &envi) const ->
         std::vector<std::pair<gameModel::Environment, double>> override;
 
     };
@@ -134,27 +133,27 @@ namespace gameController{
          * @tparam T the actor type (Player or Ball).
          * @param envi the environment in which the shot should be performed.
          */
-        void execute(gameModel::Environment &envi) override;
+        void execute(gameModel::Environment &envi) const override;
         /**
          * get the success probability of the move (implementation of virtual function). (implementation of virtual function).
          * @tparam T the actor type (Player or Ball).
          * @return the success probability of the move as double.
          */
-        auto successProb(const gameModel::Environment &envi) -> double override;
+        auto successProb(const gameModel::Environment &envi) const -> double override;
         /**
         * check if the selected move is possible  (implementation of virtual function)
         * @tparam T the actor type (Player or Ball).
         * @param envi the selected environment.
         * @return the result of the check as ActionResult.
         */
-        auto check(const gameModel::Environment &envi) -> ActionResult override;
+        auto check(const gameModel::Environment &envi) const -> ActionResult override;
         /**
          * execute all given move in a given environment (implementation of virtual function).
          * @tparam T the actor type (Player or Ball).
          * @param envi the selected environment.
          * @return the resulting environments an there probabilities as a pair.
          */
-        auto executeAll(const gameModel::Environment &envi) ->
+        auto executeAll(const gameModel::Environment &envi) const ->
         std::vector<std::pair<gameModel::Environment, double>> override;
 
 

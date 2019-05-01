@@ -7,21 +7,21 @@ namespace gameController{
     Shot::Shot(const std::shared_ptr<gameModel::Player> actor, const gameModel::Position target) :
             Action<gameModel::Player>(actor, target) {}
 
-    void Shot::execute(gameModel::Environment &envi) {
+    void Shot::execute(gameModel::Environment &envi) const{
 
-        if (this->check(envi) == ActionResult::Impossible)
+        if (check(envi) == ActionResult::Impossible)
             return;
 
         // @ToDo: execute shot
     }
 
-    auto Shot::successProb(const gameModel::Environment &envi) -> double {
+    auto Shot::successProb(const gameModel::Environment &envi) const -> double{
 
         return pow(envi.config.gameDynamicsProbs.throwSuccess,
                    gameController::getDistance(this->actor.get()->position, this->target));
     }
 
-    auto Shot::check(const gameModel::Environment &envi) -> ActionResult {
+    auto Shot::check(const gameModel::Environment &envi) const -> ActionResult {
 
         if (gameModel::Environment::getCell(this->target) == gameModel::Cell::OutOfBounds)
             return ActionResult::Impossible;
@@ -29,7 +29,7 @@ namespace gameController{
             return ActionResult::Success;
     }
 
-    auto Shot::executeAll(const gameModel::Environment &envi) ->
+    auto Shot::executeAll(const gameModel::Environment &envi) const ->
     std::vector<std::pair<gameModel::Environment, double>> {
 
         std::vector<std::pair<gameModel::Environment, double>> resultVect;
@@ -49,20 +49,20 @@ namespace gameController{
         return resultVect;
     }
 
-    auto Shot::rollTheDiceForLandingCell(std::shared_ptr<gameModel::Environment> envi) -> gameModel::Position{
+    auto Shot::rollTheDiceForLandingCell(std::shared_ptr<gameModel::Environment> envi) const -> gameModel::Position{
 
         // @ToDo: roll the dice ...
 
         return {};
     }
 
-    auto Shot::getInterceptionPosition(const gameModel::Environment &env) -> std::vector<gameModel::Position> {
+    auto Shot::getInterceptionPosition(const gameModel::Environment &env) const -> std::vector<gameModel::Position>{
         auto crossedCells = gameController::getAllCrossedCells(this->actor->position, target);
         //@TODO
         return crossedCells;
     }
 
-    template<class T> auto Move<T>::check(const gameModel::Environment &envi) -> ActionResult {
+    template<class T> auto Move<T>::check(const gameModel::Environment &envi) const -> ActionResult{
 
         if (gameModel::Environment::getCell(this->target) == gameModel::Cell::OutOfBounds)
             return ActionResult::Impossible;
@@ -100,8 +100,8 @@ namespace gameController{
          */
     }
 
-    template<class T> auto Move<T>::executeAll(const gameModel::Environment &envi) ->
-    std::vector<std::pair<gameModel::Environment, double>> {
+    template<class T> auto Move<T>::executeAll(const gameModel::Environment &envi) const ->
+    std::vector<std::pair<gameModel::Environment, double>>{
 
         std::vector<std::pair<gameModel::Environment, double>> resultVect;
         std::vector<Move<T>> possibleMoves = getAllPossibleMoves<T>(this->actor, envi);

@@ -71,17 +71,17 @@ namespace gameModel{
          * get the euclidean norm of the vector.
          * @return the euclidean norm as double.
          */
-        double abs();
+        double abs() const;
         /**
          * normalize the vector.
          */
         void normalize();
 
         // operators
-        bool operator==(const Vector &v);
-        Vector operator*(const double &c);
-        Vector operator+(const Vector &v);
-        Position operator+(const Position &p);
+        bool operator==(const Vector &v) const;
+        Vector operator*(const double &c) const;
+        Vector operator+(const Vector &v) const;
+        Position operator+(const Position &p) const;
     };
 
     /**
@@ -133,7 +133,7 @@ namespace gameModel{
          * @param broom
          * @return
          */
-        double getExtraTurnProb(Broom broom);
+        double getExtraTurnProb(Broom broom) const;
     private:
         std::map<Broom, double> extraTurnProbs;
     };

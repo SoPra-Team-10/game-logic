@@ -84,7 +84,7 @@ namespace gameModel{
             maxRounds(maxRounds), timeouts(timeouts), foulDetectionProbs(foulDetectionProbs), gameDynamicsProbs(gameDynamicsProbs),
             extraTurnProbs(std::move(extraTurnProbs)) {}
 
-    double Config::getExtraTurnProb(Broom broom) {
+    double Config::getExtraTurnProb(Broom broom) const{
         return extraTurnProbs.at(broom);
     }
 
@@ -106,29 +106,29 @@ namespace gameModel{
         this->y = y;
     }
 
-    double Vector::abs() {
+    double Vector::abs() const{
         return std::sqrt(pow(this->x, 2) + pow(this->x, 2));
     }
 
-    void Vector::normalize() {
+    void Vector::normalize(){
         double a = this->abs();
         this->x = this->x * (1 / a);
         this->y = this->y * (1 / a);
     }
 
-    bool Vector::operator==(const Vector &v) {
+    bool Vector::operator==(const Vector &v) const{
         return this->x == v.x && this->y == v.y;
     }
 
-    Vector Vector::operator*(const double &c) {
+    Vector Vector::operator*(const double &c) const{
         return Vector(this->x * c, this->y * c);
     }
 
-    Vector Vector::operator+(const Vector &v) {
+    Vector Vector::operator+(const Vector &v) const{
         return Vector(this->x + v.x, this->y + v.y);
     }
 
-    Position Vector::operator+(const Position &p) {
+    Position Vector::operator+(const Position &p) const{
         return Position(p.x + round(this->x), p.y + round(this->y));
     }
 }
