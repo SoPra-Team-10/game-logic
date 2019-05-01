@@ -17,8 +17,7 @@ namespace gameController{
             if(gameController::actionTriggered(envi.config.gameDynamicsProbs.catchQuaffle)){
                 auto player = envi.getPlayer(pos);
                 if(player.has_value()){
-                    if(typeid(player.value()) == typeid(gameModel::Chaser)){
-                    }
+                    //@TODO
                 } else{
                     throw std::runtime_error("No player at specified interception point");
                 }
@@ -39,13 +38,22 @@ namespace gameController{
     }
 
     auto Shot::check(const gameModel::Environment &envi) const -> ActionResult {
-
         if (gameModel::Environment::getCell(this->target) == gameModel::Cell::OutOfBounds) {
             return ActionResult::Impossible;
+        } else if(typeid(*actor) == typeid(gameModel::Seeker)){
+            return ActionResult::Impossible;
+        } else if(typeid(*actor) == typeid(gameModel::Keeper) || typeid(*actor) == typeid(gameModel::Chaser)){
+            if(envi.quaffle.position != actor->position){
+                return ActionResult::Impossible;
+            }
+        } else if(typeid(*actor) == typeid(gameModel::Beater)){
+            if(envi.bludgers[0].position != actor->position &&
+            envi.bludgers[1].position != actor->position){
+                return ActionResult::Impossible;
+            }
         }
-        else {
-            return ActionResult::Success;
-        }
+
+        return ActionResult::Success;
     }
 
     auto Shot::executeAll(const gameModel::Environment &envi) const ->
