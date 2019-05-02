@@ -47,7 +47,6 @@ namespace gameModel{
 
         Position() = default;
         Position(int x, int y);
-        Position& operator=(const Position &other);
         bool operator==(const Position &other) const;
         bool operator!=(const Position &other) const;
     };

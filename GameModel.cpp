@@ -191,7 +191,7 @@ namespace gameModel{
     Snitch::Snitch(Position position): Ball(position) {}
 
     Snitch::Snitch() : Ball({0, 0}), exists(false){
-        auto &&allCells = Environment::getAllValidCells();
+        auto allCells = Environment::getAllValidCells();
         auto index = gameController::rng(0, static_cast<int>(allCells.size()));
         position = allCells[index];
     }
@@ -272,11 +272,6 @@ namespace gameModel{
         return !(*this == other);
     }
 
-    Position &Position::operator=(const Position &other) {
-        this->x = other.x;
-        this->y = other.y;
-    }
-
     Vector::Vector(double x, double y) {
         this->x = x;
         this->y = y;
@@ -288,6 +283,10 @@ namespace gameModel{
 
     void Vector::normalize(){
         double a = this->abs();
+        if(a < std::numeric_limits<double>::epsilon()){
+            throw std::runtime_error("Cannot normalize Vector with length 0");
+        }
+
         this->x = this->x * (1 / a);
         this->y = this->y * (1 / a);
     }

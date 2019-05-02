@@ -28,7 +28,7 @@ namespace gameController{
         }
         else {
             // @ToDo: Wahrscheinlichkeit für das Abfangen einfügen.
-            return pow(env->config.gameDynamicsProbs.throwSuccess,
+            return std::pow(env->config.gameDynamicsProbs.throwSuccess,
                        gameController::getDistance(this->actor.get()->position, this->target));
         }
     }
@@ -124,8 +124,8 @@ namespace gameController{
         using Cell = gameModel::Cell;
         auto players = env->getAllPlayers();
         ret.reserve(n * n);
-        for(int x = target.x - n / 2; x < target.x + n / 2; x++){
-            for(int y = target.y - n / 2; y < target.y + n / 2; y++){
+        for(int x = target.x - n / 2; x <= target.x + n / 2; x++){
+            for(int y = target.y - n / 2; y <= target.y + n / 2; y++){
                 if(gameModel::Position{x, y} == target){
                     continue;
                 }
@@ -148,7 +148,7 @@ namespace gameController{
     auto Move::check() const -> ActionResult{
 
         if (gameModel::Environment::getCell(this->target) == gameModel::Cell::OutOfBounds ||
-            gameController::getDistance(this->actor.get()->position, this->target) > 1) {
+            gameController::getDistance(this->actor->position, this->target) > 1) {
             return ActionResult::Impossible;
         }
 
@@ -186,7 +186,7 @@ namespace gameController{
                 if (env->getPlayer(this->target) != nullptr) {
                     movePlayerOnEmptyCell(this->target);
                 }
-                this->actor.get()->position = this->target;
+                this->actor->position = this->target;
 
             break;
 
@@ -199,12 +199,8 @@ namespace gameController{
         const std::vector<gameModel::Position> positions = env->getAllPlayerFreeCellsAround(position);
         // @ToDo: random cell auswählen & player verschieben
 
-        // init random seed
-        srand (time(NULL));
 
-        int randCellNo = rand() % positions.size();
-
-
+        int randCellNo = rng(0, static_cast<int>(positions.size()));
     }
 
     // fertig
