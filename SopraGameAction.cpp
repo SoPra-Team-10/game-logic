@@ -1,54 +1,61 @@
+#include <utility>
+
+#include <utility>
+
+#include <utility>
+
+#include <utility>
+
+#include <utility>
+
+#include <utility>
+
 #include "SopraGameAction.h"
 namespace gameController{
-    Action::Action(const std::shared_ptr<gameModel::Player> actor, const gameModel::Position target) :
-        actor(actor), target(target){}
+    Action::Action(std::shared_ptr<gameModel::Environment> env, std::shared_ptr<gameModel::Player> actor,
+            gameModel::Position target) : env(std::move(env)), actor(std::move(actor)), target(target){}
 
 
-    Shot::Shot(const std::shared_ptr<gameModel::Player> actor, const gameModel::Position target) :
-            Action(actor, target) {}
+    Shot::Shot(std::shared_ptr<gameModel::Environment> env, std::shared_ptr<gameModel::Player> actor,
+            std::shared_ptr<gameModel::Ball> ball, gameModel::Position target) :
+            Action(std::move(env), std::move(actor), target), ball(std::move(ball)) {}
 
-    void Shot::execute(gameModel::Environment &envi) const{
-        if (check(envi) == ActionResult::Impossible){
+    void Shot::execute() const{
+        if (check() == ActionResult::Impossible){
             throw std::runtime_error("Action is impossible");
         }
 
-        for(const auto &pos : getInterceptionPositions(envi)){
-            if(gameController::actionTriggered(envi.config.gameDynamicsProbs.catchQuaffle)){
-                auto player = envi.getPlayer(pos);
-                if(player.has_value()) {
-                    //@TODO
-                } else {
-                    throw std::runtime_error("No player at specified interception point");
-                }
+        for(const auto &pos : getInterceptionPositions()){
+            if(gameController::actionTriggered(env->config.gameDynamicsProbs.catchQuaffle)){
             }
         }
     }
 
-    auto Shot::successProb(const gameModel::Environment &envi) const -> double{
+    auto Shot::successProb() const -> double{
 
         if (gameModel::Environment::getCell(this->target) == gameModel::Cell::OutOfBounds){
             return 0;
         }
         else {
             // @ToDo: Wahrscheinlichkeit für das Abfangen einfügen.
-            return pow(envi.config.gameDynamicsProbs.throwSuccess,
+            return pow(env->config.gameDynamicsProbs.throwSuccess,
                        gameController::getDistance(this->actor.get()->position, this->target));
         }
     }
 
     // fertig ?
-    auto Shot::check(const gameModel::Environment &envi) const -> ActionResult {
+    auto Shot::check() const -> ActionResult {
         if (gameModel::Environment::getCell(this->target) == gameModel::Cell::OutOfBounds) {
             return ActionResult::Impossible;
         } else if(typeid(*actor) == typeid(gameModel::Seeker)){
             return ActionResult::Impossible;
         } else if(typeid(*actor) == typeid(gameModel::Keeper) || typeid(*actor) == typeid(gameModel::Chaser)){
-            if(envi.quaffle.position != actor->position){
+            if(env->quaffle.position != actor->position){
                 return ActionResult::Impossible;
             }
         } else if(typeid(*actor) == typeid(gameModel::Beater)){
-            if(envi.bludgers[0].position != actor->position &&
-            envi.bludgers[1].position != actor->position){
+            if(env->bludgers[0].position != actor->position &&
+            env->bludgers[1].position != actor->position){
                 return ActionResult::Impossible;
             }
         }
@@ -56,7 +63,7 @@ namespace gameController{
         return ActionResult::Success;
     }
 
-    auto Shot::executeAll(const gameModel::Environment &envi) const ->
+    auto Shot::executeAll() const ->
     std::vector<std::pair<gameModel::Environment, double>> {
 
         std::vector<std::pair<gameModel::Environment, double>> resultVect;
@@ -66,11 +73,11 @@ namespace gameController{
         return resultVect;
     }
 
-    auto Shot::getInterceptionPositions(const gameModel::Environment &env) const -> std::vector<gameModel::Position>{
+    auto Shot::getInterceptionPositions() const -> std::vector<gameModel::Position>{
         auto crossedCells = gameController::getAllCrossedCells(this->actor->position, target);
         std::vector<gameModel::Position> ret;
         for(const auto &cell : crossedCells){
-            for(const auto &player : env.getOpponents(*actor)){
+            for(const auto &player : env->getOpponents(*actor)){
                 if(player->position == cell){
                     ret.emplace_back(cell);
                 }
@@ -80,13 +87,52 @@ namespace gameController{
         return ret;
     }
 
-    auto Shot::getAllLandingCells(const gameModel::Environment &env) const -> std::vector<gameModel::Position> {
+    template <>
+    auto Shot::check(gameModel::Chaser &Player, gameModel::Quaffle &Ball) -> ActionResult{
+        if(gameModel::Environment::getCell(target) == gameModel::Cell::OutOfBounds ||
+            Ball.position != Player.position){
+            return ActionResult::Impossible;
+        }
+
+        return ActionResult::Success;
+    }
+
+    template <>
+    auto Shot::check(gameModel::Beater &player, gameModel::Bludger &Ball) -> ActionResult {
+        if(player.position != Ball.position){
+            return ActionResult::Impossible;
+        }
+
+        if(getDistance(player.position, target) > 3){
+            return ActionResult::Impossible;
+        }
+
+        for(const auto &cell : getAllCrossedCells(player.position, target)){
+            if(!env->cellIsFree(cell)){
+                return ActionResult::Impossible;
+            }
+        }
+
+        return ActionResult::Success;
+    }
+
+    template <>
+    auto Shot::check(gameModel::Keeper &Player, gameModel::Quaffle &Ball) -> ActionResult{
+        if(gameModel::Environment::getCell(target) == gameModel::Cell::OutOfBounds ||
+           Ball.position != Player.position){
+            return ActionResult::Impossible;
+        }
+
+        return ActionResult::Success;
+    }
+
+    auto Shot::getAllLandingCells() const -> std::vector<gameModel::Position> {
 #warning Was tun bei n gerade? Dann lässt sich das Quadrat nicht mittig um target platzieren
         int n = static_cast<int>(std::ceil(gameController::getDistance(actor->position, target) / 7));
         std::vector<gameModel::Position> ret;
         using Env = gameModel::Environment;
         using Cell = gameModel::Cell;
-        auto players = env.getAllPlayers();
+        auto players = env->getAllPlayers();
         ret.reserve(n * n);
         for(int x = target.x - n / 2; x < target.x + n / 2; x++){
             for(int y = target.y - n / 2; y < target.y + n / 2; y++){
@@ -98,7 +144,7 @@ namespace gameController{
                     continue;
                 }
 
-                if(env.cellIsFree({x, y})){
+                if(env->cellIsFree({x, y})){
                     ret.emplace_back(x, y);
                 }
             }
@@ -109,14 +155,14 @@ namespace gameController{
 
 
     // fertig
-    auto Move::check(const gameModel::Environment &envi) const -> ActionResult{
+    auto Move::check() const -> ActionResult{
 
         if (gameModel::Environment::getCell(this->target) == gameModel::Cell::OutOfBounds ||
             gameController::getDistance(this->actor.get()->position, this->target) > 1) {
             return ActionResult::Impossible;
         }
 
-        if (this->checkForFoul(envi) == gameModel::Foul::None) {
+        if (this->checkForFoul() == gameModel::Foul::None) {
             return ActionResult::Success;
         }
         else {
@@ -124,7 +170,7 @@ namespace gameController{
         }
     }
 
-    auto Move::executeAll(const gameModel::Environment &envi) const ->
+    auto Move::executeAll() const ->
         std::vector<std::pair<gameModel::Environment, double>>{
 
         std::vector<std::pair<gameModel::Environment, double>> resultVect;
@@ -134,10 +180,11 @@ namespace gameController{
         return resultVect;
     }
 
-    Move::Move(std::shared_ptr<gameModel::Player> actor, gameModel::Position target): Action(actor, target) {}
+    Move::Move(std::shared_ptr<gameModel::Environment> env, std::shared_ptr<gameModel::Player> actor, gameModel::Position target):
+    Action(std::move(env), std::move(actor), target) {}
 
-    void Move::execute(gameModel::Environment &envi) const {
-        ActionResult actionResult = this->check(envi);
+    void Move::execute() const {
+        ActionResult actionResult = this->check();
 
         switch (actionResult) {
 
@@ -146,8 +193,8 @@ namespace gameController{
 
             case ActionResult::Success :
 
-                if (envi.getPlayer(this->target) != nullptr) {
-                    movePlayerOnEmptyCell(envi, this->target);
+                if (env->getPlayer(this->target) != nullptr) {
+                    movePlayerOnEmptyCell(this->target);
                 }
                 this->actor.get()->position = this->target;
 
@@ -158,8 +205,8 @@ namespace gameController{
         }
     }
 
-    void Move::movePlayerOnEmptyCell(gameModel::Environment &envi, const gameModel::Position &position) const {
-        const std::vector<gameModel::Position> positions = envi.getAllPlayerFreeCellsAround(position);
+    void Move::movePlayerOnEmptyCell(const gameModel::Position &position) const {
+        const std::vector<gameModel::Position> positions = env->getAllPlayerFreeCellsAround(position);
         // @ToDo: random cell auswählen & player verschieben
 
         // init random seed
@@ -171,7 +218,7 @@ namespace gameController{
     }
 
     // fertig
-    auto Move::successProb(const gameModel::Environment&) const -> double {
+    auto Move::successProb() const -> double {
         if (gameModel::Environment::getCell(this->target) == gameModel::Cell::OutOfBounds ||
             gameController::getDistance(this->actor.get()->position, this->target) > 1){
             return 0;
@@ -181,11 +228,11 @@ namespace gameController{
         }
     }
 
-    auto Move::checkForFoul(const gameModel::Environment &envi) const -> gameModel::Foul {
+    auto Move::checkForFoul() const -> gameModel::Foul {
 
 
         // @ToDo: sinnvolle strategie um flas effizient zu erkennen
-        if (envi.getPlayer(this->target) == nullptr) {
+        if (env->getPlayer(this->target) == nullptr) {
 
         }
         else {

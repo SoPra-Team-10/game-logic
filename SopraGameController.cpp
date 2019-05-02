@@ -38,9 +38,6 @@ namespace gameController {
             throw std::out_of_range("Source or destination of movement vector are out of bounds");
         }
 
-        // add the start point to the result
-        resultVect.emplace_back(startPoint);
-
         // check if start and end point are equal
         if (startPoint == endPoint)
             return resultVect;
@@ -63,9 +60,6 @@ namespace gameController {
             // make a step to travers the vector
             travVect = travVect + (dirVect * 0.5);
         }
-
-        // add the end point to the result
-        resultVect.emplace_back(endPoint);
 
         return resultVect;
     }
