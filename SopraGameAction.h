@@ -42,7 +42,7 @@ namespace gameController{
         virtual auto successProb(const gameModel::Environment &envi) const -> double = 0;
         virtual auto check(const gameModel::Environment &envi) const -> ActionResult = 0;
         virtual auto executeAll(const gameModel::Environment &envi) const ->
-        std::vector<std::pair<gameModel::Environment, double>> = 0;
+            std::vector<std::pair<gameModel::Environment, double>> = 0;
     };
 
     /**
@@ -65,6 +65,10 @@ namespace gameController{
          * @return
          */
         auto getAllLandingCells(const gameModel::Environment &env) const -> std::vector<gameModel::Position>;
+
+        template <typename P, typename B>
+        void doStuff(P &player, B &ball);
+
     public:
         // constructors
         /**
@@ -106,12 +110,12 @@ namespace gameController{
     };
 
     /**
-     * clas for a move in the game which can be executed by a player or a ball
+     * class for a move in the game which can be executed by a player or a ball
      */
     class Move : Action{
     private:
         /**
-         * chekcs if the move is a foul.
+         * checks if the move is a foul.
          * @param envi the selected environment.
          * @return the type of foul.
          */
@@ -128,7 +132,6 @@ namespace gameController{
         Move() = default;
         /**
          * main constructor for the Move class.
-         * @tparam T the actor type (Player or Ball).
          * @param actor the acting player or ball as shared pointer.
          * @param target the target position of the move.
          */
@@ -137,32 +140,36 @@ namespace gameController{
         // functions
         /**
          * execute the move in a given environment (implementation of virtual function).
-         * @tparam T the actor type (Player or Ball).
          * @param envi the environment in which the shot should be performed.
          */
         void execute(gameModel::Environment &envi) const override;
         /**
          * get the success probability of the move (implementation of virtual function). (implementation of virtual function).
-         * @tparam T the actor type (Player or Ball).
          * @return the success probability of the move as double.
          */
         auto successProb(const gameModel::Environment &envi) const -> double override;
         /**
         * check if the selected move is possible  (implementation of virtual function)
-        * @tparam T the actor type (Player or Ball).
         * @param envi the selected environment.
         * @return the result of the check as ActionResult.
         */
         auto check(const gameModel::Environment &envi) const -> ActionResult override;
         /**
          * execute all given move in a given environment (implementation of virtual function).
-         * @tparam T the actor type (Player or Ball).
          * @param envi the selected environment.
          * @return the resulting environments an there probabilities as a pair.
          */
         auto executeAll(const gameModel::Environment &envi) const ->
             std::vector<std::pair<gameModel::Environment, double>> override;
     };
+
+    template<>
+    void Shot::doStuff(gameModel::Chaser &player, gameModel::Quaffle &ball);
+
+    template<typename P, typename B>
+    void Shot::doStuff(P &player, B &ball) {
+        static_assert("Shit");
+    }
 }
 
 #endif //SOPRAGAMELOGIC_SOPRAGAMEACTION_H

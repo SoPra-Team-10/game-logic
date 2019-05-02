@@ -12,13 +12,12 @@ namespace gameController{
             throw std::runtime_error("Action is impossible");
         }
 
-
         for(const auto &pos : getInterceptionPositions(envi)){
             if(gameController::actionTriggered(envi.config.gameDynamicsProbs.catchQuaffle)){
                 auto player = envi.getPlayer(pos);
-                if(player.has_value()){
+                if(player.has_value()) {
                     //@TODO
-                } else{
+                } else {
                     throw std::runtime_error("No player at specified interception point");
                 }
             }
@@ -108,6 +107,7 @@ namespace gameController{
         return ret;
     }
 
+
     // fertig
     auto Move::check(const gameModel::Environment &envi) const -> ActionResult{
 
@@ -186,5 +186,10 @@ namespace gameController{
         }
 
         return gameModel::Foul::None;
+    }
+
+    template<>
+    void Shot::doStuff(gameModel::Chaser &player,gameModel::Quaffle &ball) {
+        player.position.x = 17;
     }
 }
