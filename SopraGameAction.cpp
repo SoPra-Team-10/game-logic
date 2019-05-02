@@ -194,9 +194,4 @@ namespace gameController{
 
         return gameModel::Foul::None;
     }
-
-    template<>
-    void Shot::doStuff(gameModel::Chaser &player,gameModel::Quaffle &ball) {
-        player.position.x = 17;
-    }
 }

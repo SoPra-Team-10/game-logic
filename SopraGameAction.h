@@ -66,9 +66,6 @@ namespace gameController{
          */
         auto getAllLandingCells(const gameModel::Environment &env) const -> std::vector<gameModel::Position>;
 
-        template <typename P, typename B>
-        void doStuff(P &player, B &ball);
-
     public:
         // constructors
         /**
@@ -163,13 +160,6 @@ namespace gameController{
             std::vector<std::pair<gameModel::Environment, double>> override;
     };
 
-    template<>
-    void Shot::doStuff(gameModel::Chaser &player, gameModel::Quaffle &ball);
-
-    template<typename P, typename B>
-    void Shot::doStuff(P &player, B &ball) {
-        static_assert("Shit");
-    }
 }
 
 #endif //SOPRAGAMELOGIC_SOPRAGAMEACTION_H

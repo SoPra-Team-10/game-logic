@@ -18,7 +18,8 @@ namespace gameController {
      * @param max
      * @return
      */
-    double rng(double min, double max);
+     template <typename T>
+    T rng(T min, T max);
 
     /**
      * Rolls the dice and determines whether an action takes place
@@ -62,6 +63,18 @@ namespace gameController {
      */
     auto getAllPossibleMoves(std::shared_ptr<gameModel::Player> actor, const gameModel::Environment &envi)
     -> std::vector<Move>;
+    
+    template <>
+    double rng(double min, double max);
+    
+    template <>
+    int rng(int min, int max);
+    
+    template <typename T>
+    T rng(T min, T mx){
+        static_assert("Only double or int are supported");
+        return min;
+    }
 }
 
 
