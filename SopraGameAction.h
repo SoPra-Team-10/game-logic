@@ -4,8 +4,8 @@
 #include <memory>
 #include <cmath>
 #include <vector>
-#include "SopraGameModel.h"
 #include "SopraGameController.h"
+#include "SopraGameModel.h"
 
 namespace gameController{
 

@@ -232,11 +232,19 @@ namespace gameModel{
 
     class Quaffle : public Ball{
     public:
+        /**
+         * Places Quaffle in the centre of the field
+         */
+        Quaffle();
         explicit Quaffle(Position position);
     };
 
     class Bludger : public Ball{
     public:
+        /**
+         * Places Bludger in the centre of the field
+         */
+        Bludger();
         explicit Bludger(Position position);
     };
 
@@ -244,6 +252,10 @@ namespace gameModel{
     public:
         bool exists = false;
 
+        /**
+         * Places Snitch on random position on the field and makes it non existent
+         */
+        Snitch();
         explicit Snitch(Position position);
     };
 
@@ -292,8 +304,16 @@ namespace gameModel{
         Snitch snitch;
         std::array<Bludger, 2> bludgers;
 
-        Environment(Config  config, Team team1, Team team2, Quaffle quaffle, Snitch snitch,
-                    std::array<Bludger, 2> bludgers);
+        /**
+         * Automatically places all balls at the correct location
+         * @param config
+         * @param team1
+         * @param team2
+         */
+        Environment(Config config, Team team1, Team team2);
+
+        Environment(Config config, Team team1, Team team2, Quaffle quaffle,
+                Snitch snitch, std::array<Bludger, 2> bludgers);
 
         /**
          * tests if two players are in the same team.
@@ -357,6 +377,8 @@ namespace gameModel{
          * @return
          */
         auto getPlayer(Position) const -> std::optional<std::shared_ptr<Player>>;
+
+        static auto getAllValidCells() -> std::array<Position, 193>;
     };
 }
 

@@ -1,5 +1,6 @@
 #include <utility>
 #include "SopraGameModel.h"
+#include "SopraGameController.h"
 #include <utility>
 #include <iostream>
 #include <cmath>
@@ -73,10 +74,13 @@ namespace gameModel{
         return getCell(position.x, position.y);
     }
 
-    Environment::Environment(Config config,Team team1, Team team2, Quaffle quaffle, Snitch snitch,
-            std::array<Bludger, 2> bludgers)
-            : config(std::move(config)), team1(std::move(team1)), team2(std::move(team2)), quaffle(std::move(quaffle)), snitch(std::move(snitch)),
-            bludgers(std::move(bludgers)) {}
+    Environment::Environment(Config config,Team team1, Team team2) : config(std::move(config)), team1(std::move(team1)),
+    team2(std::move(team2)), quaffle(), snitch(), bludgers() {}
+
+    Environment::Environment(Config config, Team team1, Team team2, Quaffle quaffle, Snitch snitch,
+                             std::array<Bludger, 2> bludgers) : config(std::move(config)), team1(std::move(team1)),
+                             team2(std::move(team2)), quaffle(std::move(quaffle)), snitch(std::move(snitch)),
+                             bludgers(std::move(bludgers)){}
 
     auto Environment::getAllPlayers() const -> std::array<std::shared_ptr<Player>, 14> {
         std::array<std::shared_ptr<Player>, 14> ret;
@@ -167,11 +171,38 @@ namespace gameModel{
                (this->team2.hasMember(p1) && this->team2.hasMember(p2));
     }
 
+    auto Environment::getAllValidCells() -> std::array<Position, 193> {
+        std::array<Position, 193> ret{};
+        auto it = ret.begin();
+        for(int x = 0; x < 17; x++){
+            for(int y = 0; y < 13; y++){
+                if(getCell(x, y) != Cell::OutOfBounds){
+                    *it = {x, y};
+                    it++;
+                }
+            }
+        }
+
+        return ret;
+    }
+
+
+
     Snitch::Snitch(Position position): Ball(position) {}
+
+    Snitch::Snitch() : Ball({0, 0}), exists(false){
+        auto &&allCells = Environment::getAllValidCells();
+        auto index = gameController::rng(0, static_cast<int>(allCells.size()));
+        position = allCells[index];
+    }
 
     Bludger::Bludger(Position position) : Ball(position) {}
 
+    Bludger::Bludger() : Ball({8, 6}){}
+
     Quaffle::Quaffle(Position position) : Ball(position) {}
+
+    Quaffle::Quaffle() : Ball({8, 6}){}
 
     Chaser::Chaser(Position position, std::string name, Gender gender, Broom broom) :
             Player(position, std::move(name), gender, broom) {}
