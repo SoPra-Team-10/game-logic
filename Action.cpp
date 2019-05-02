@@ -143,7 +143,6 @@ namespace gameController{
         return ret;
     }
 
-
     // fertig
     auto Move::check() const -> ActionResult{
 
@@ -208,13 +207,17 @@ namespace gameController{
 
     auto Move::checkForFoul() const -> gameModel::Foul {
 
-        // @ToDo: sinnvolle strategie um flas effizient zu erkennen
-        if (env->getPlayer(this->target).has_value()) {
-
+        // @ToDo: Fouls
+        if (env->getPlayer(this->target).has_value() &&
+            !env->arePlayerInSameTeam(*(env->getPlayer(this->target).value()), *(this->actor))) {
+            return  gameModel::Foul::Flacken;
         }
-        else {
 
+        if (typeid(this->actor.get()) != typeid(gameModel::Seeker) &&
+                this->actor.get()->position == env->snitch.position) {
+            return gameModel::Foul::Schnatzeln;
         }
+
 
         return gameModel::Foul::None;
     }
