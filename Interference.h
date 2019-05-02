@@ -50,7 +50,7 @@ public:
 class Impulse : Interference{
 public:
     Impulse() = default;
-    Impulse(std::shared_ptr<gameModel::Team> team);
+    explicit Impulse(std::shared_ptr<gameModel::Team> team);
 
     bool isPossible(const gameModel::Environment &envi) override;
     void execute(gameModel::Environment &envi) override;
