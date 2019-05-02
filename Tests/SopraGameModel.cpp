@@ -3,7 +3,7 @@
 //
 
 #include <gtest/gtest.h>
-#include "SopraGameModel.h"
+#include "GameModel.h"
 
 TEST(env_tests, getCell){
     EXPECT_EQ(gameModel::Environment::getCell(6, 3), gameModel::Cell::Standard);

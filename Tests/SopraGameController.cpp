@@ -3,8 +3,8 @@
 //
 
 #include <gtest/gtest.h>
-#include "SopraGameController.h"
-#include "SopraGameModel.h"
+#include "GameController.h"
+#include "GameModel.h"
 
 TEST(controller_test, getDistance) {
     EXPECT_EQ(gameController::getDistance(gameModel::Position(0, 0), gameModel::Position(0, 0)), -1);

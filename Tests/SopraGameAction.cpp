@@ -3,7 +3,7 @@
 //
 
 #include <gtest/gtest.h>
-#include "SopraGameAction.h"
+#include "Action.h"
 
 TEST(action_test, move_check) {
 

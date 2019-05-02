@@ -4,8 +4,8 @@
 #include <memory>
 #include <vector>
 
-#include "SopraGameModel.h"
-#include "SopraGameAction.h"
+#include "GameModel.h"
+#include "Action.h"
 
 namespace gameController {
     class Shot;

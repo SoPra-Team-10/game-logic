@@ -1,5 +1,5 @@
 #include <random>
-#include "SopraGameController.h"
+#include "GameController.h"
 
 namespace gameController {
 

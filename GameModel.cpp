@@ -1,6 +1,6 @@
 #include <utility>
-#include "SopraGameModel.h"
-#include "SopraGameController.h"
+#include "GameModel.h"
+#include "GameController.h"
 #include <utility>
 #include <iostream>
 #include <cmath>
