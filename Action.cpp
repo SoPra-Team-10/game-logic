@@ -1,16 +1,6 @@
 #include <utility>
-
-#include <utility>
-
-#include <utility>
-
-#include <utility>
-
-#include <utility>
-
-#include <utility>
-
 #include "Action.h"
+
 namespace gameController{
     Action::Action(std::shared_ptr<gameModel::Environment> env, std::shared_ptr<gameModel::Player> actor,
             gameModel::Position target) : env(std::move(env)), actor(std::move(actor)), target(target){}

@@ -13,7 +13,7 @@ endif ()
 
 project(SopraGameLogic VERSION 0.0.1 DESCRIPTION "GameLogic for SoPra")
 
-set(SOURCES ${CMAKE_SOURCE_DIR}/SopraGameModel.cpp ${CMAKE_SOURCE_DIR}/SopraGameAction.cpp ${CMAKE_SOURCE_DIR}/SopraGameController.cpp)
+set(SOURCES ${CMAKE_SOURCE_DIR}/GameModel.cpp ${CMAKE_SOURCE_DIR}/Action.cpp ${CMAKE_SOURCE_DIR}/GameController.cpp)
 set(LIBS)
 
 include_directories(${CMAKE_SOURCE_DIR})
@@ -26,7 +26,7 @@ set_target_properties(${PROJECT_NAME} PROPERTIES
         VERSION ${PROJECT_VERSION}
         SOVERSION 1
         PUBLIC_HEADER
-        "SopraGameModel.h;SopraGameAction.h;SopraGameController.h")
+        "GameModel.h;Action.h;GameController.h")
 install(TARGETS ${PROJECT_NAME}
         LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
         PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/SopraGameLogic)
