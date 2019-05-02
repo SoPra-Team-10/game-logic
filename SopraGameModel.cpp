@@ -1,3 +1,4 @@
+#include <utility>
 #include "SopraGameModel.h"
 #include <utility>
 #include <iostream>
@@ -72,13 +73,13 @@ namespace gameModel{
         return getCell(position.x, position.y);
     }
 
-    Environment::Environment(const Config config,Team team1, Team team2, Quaffle quaffle, Snitch snitch,
+    Environment::Environment(Config config,Team team1, Team team2, Quaffle quaffle, Snitch snitch,
             std::array<Bludger, 2> bludgers)
-            : config(config), team1(std::move(team1)), team2(std::move(team2)), quaffle(quaffle), snitch(snitch),
-            bludgers(bludgers) {}
+            : config(std::move(config)), team1(std::move(team1)), team2(std::move(team2)), quaffle(std::move(quaffle)), snitch(std::move(snitch)),
+            bludgers(std::move(bludgers)) {}
 
-    auto Environment::getAllPlayers() const -> std::array<std::shared_ptr<const Player>, 14> {
-        std::array<std::shared_ptr<const Player>, 14> ret;
+    auto Environment::getAllPlayers() const -> std::array<std::shared_ptr<Player>, 14> {
+        std::array<std::shared_ptr<Player>, 14> ret;
         auto it = ret.begin();
         for(const auto &p : team1.getAllPlayers()){
             *it = p;
@@ -133,9 +134,9 @@ namespace gameModel{
         return resultVect;
     }
 
-    auto Environment::getTeamMates(const Player &player) const -> std::array<std::shared_ptr<const Player>, 6> {
+    auto Environment::getTeamMates(const Player &player) const -> std::array<std::shared_ptr<Player>, 6> {
         auto players = team1.hasMember(player) ? team1.getAllPlayers() : team2.getAllPlayers();
-        std::array<std::shared_ptr<const Player>, 6> ret;
+        std::array<std::shared_ptr<Player>, 6> ret;
         auto it = ret.begin();
         for(const auto &p : players){
             if(*p != player){
@@ -147,11 +148,11 @@ namespace gameModel{
         return ret;
     }
 
-    auto Environment::getOpponents(const Player &player) const -> std::array<std::shared_ptr<const Player>, 7> {
+    auto Environment::getOpponents(const Player &player) const -> std::array<std::shared_ptr<Player>, 7> {
         return team1.hasMember(player) ? team2.getAllPlayers() : team1.getAllPlayers();
     }
 
-    auto Environment::getPlayer(Position position) const -> std::optional<std::shared_ptr<const Player>> {
+    auto Environment::getPlayer(Position position) const -> std::optional<std::shared_ptr<Player>> {
         for(const auto &p : getAllPlayers()){
             if(p->position == position){
                 return p;
@@ -186,25 +187,25 @@ namespace gameModel{
 
     Team::Team(Seeker seeker, Keeper keeper, std::array<Beater, 2> beaters, std::array<Chaser, 3> chasers,
                std::string  name, std::string  colorMain, std::string  colorSecondary,
-               const Fanblock &fanblock)
+               Fanblock fanblock)
             : seeker(std::move(seeker)), keeper(std::move(keeper)), beaters(std::move(beaters)), chasers(std::move(chasers)), name(std::move(name)), colorMain(std::move(colorMain)),
-              colorSecondary(std::move(colorSecondary)), fanblock(fanblock) {}
+              colorSecondary(std::move(colorSecondary)), fanblock(std::move(fanblock)) {}
 
-    auto Team::getAllPlayers() const -> std::array<std::shared_ptr<const Player>, 7> {
-        std::array<std::shared_ptr<const Player>, 7> ret;
+    auto Team::getAllPlayers() const -> std::array<std::shared_ptr<Player>, 7> {
+        std::array<std::shared_ptr<Player>, 7> ret;
         auto it = ret.begin();
         for(const auto& p : beaters){
-            *it = std::make_shared<const Player>(p);
+            *it = std::make_shared<Player>(p);
             it++;
         }
 
         for(const auto& p : chasers){
-            *it = std::make_shared<const Player>(p);
+            *it = std::make_shared<Player>(p);
             it++;
         }
 
-        ret[5] = std::make_shared<const Player>(keeper);
-        ret[6] = std::make_shared<const Player>(seeker);
+        ret[5] = std::make_shared<Player>(keeper);
+        ret[6] = std::make_shared<Player>(seeker);
         return ret;
     }
 

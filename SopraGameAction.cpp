@@ -161,6 +161,13 @@ namespace gameController{
     void Move::movePlayerOnEmptyCell(gameModel::Environment &envi, const gameModel::Position &position) const {
         const std::vector<gameModel::Position> positions = envi.getAllPlayerFreeCellsAround(position);
         // @ToDo: random cell auswählen & player verschieben
+
+        // init random seed
+        srand (time(NULL));
+
+        int randCellNo = rand() % positions.size();
+
+
     }
 
     // fertig
