@@ -12,6 +12,12 @@ WORKDIR /usr/src/gmock
 RUN cmake CMakeLists.txt && make -j$(nproc)
 RUN cp *.a /usr/lib
 
+# Compile Messages
+WORKDIR /
+RUN git clone https://github.com/SoPra-Team-10/Messages.git
+WORKDIR /GameLogic
+RUN cmake . && make -j$(nproc) SopraMessages && make install
+
 RUN ldconfig
 
 RUN mkdir /src
