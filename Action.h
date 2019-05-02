@@ -164,9 +164,6 @@ namespace gameController{
          * @return the type of foul.
          */
         auto checkForFoul() const -> gameModel::Foul;
-
-        void movePlayerOnEmptyCell(const gameModel::Position &position) const;
-
     };
 
     template <>

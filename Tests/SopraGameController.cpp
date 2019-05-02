@@ -9,7 +9,6 @@
 TEST(controller_test, getDistance0) {
     EXPECT_EQ(gameController::getDistance({0, 0}, {0, 0}), -1);
 }
-
 TEST(controller_test, getDistance1) {
     EXPECT_EQ(gameController::getDistance({8, 6}, {8, 6}), 0);
 }
@@ -29,8 +28,6 @@ TEST(controller_test, getDistance6) {
     EXPECT_EQ(gameController::getDistance({8, 6}, {9, 7}), 1);
 }
 TEST(controller_test, getDistance7) {
-}
-TEST(controller_test, getDistance) {
     EXPECT_EQ(gameController::getDistance({8, 6}, {9, 8}), 2);
 }
 

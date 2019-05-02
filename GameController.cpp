@@ -28,7 +28,7 @@ namespace gameController {
     }
 
     auto getAllCrossedCells(const gameModel::Position &startPoint, const gameModel::Position &endPoint) ->
-    std::vector<gameModel::Position> {
+        std::vector<gameModel::Position> {
 
         std::vector<gameModel::Position> resultVect;
 
@@ -94,6 +94,11 @@ namespace gameController {
         }
 
         return totalDistance;
+    }
+
+    void movePlayerOnEmptyCell(const gameModel::Position playerPos, const std::shared_ptr<gameModel::Environment>& env) {
+        const std::vector<gameModel::Position> positions = env.get()->getAllPlayerFreeCellsAround(playerPos);
+        env.get()->getPlayer(playerPos).value().get()->position = positions[gameController::rng(0, (int) positions.size())];
     }
 
     auto getAllPossibleMoves(std::shared_ptr<gameModel::Player> actor, const gameModel::Environment &envi) -> std::vector<Move> {

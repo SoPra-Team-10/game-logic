@@ -183,8 +183,8 @@ namespace gameController{
 
             case ActionResult::Success :
 
-                if (env->getPlayer(this->target) != nullptr) {
-                    movePlayerOnEmptyCell(this->target);
+                if (env->getPlayer(this->target).has_value()) {
+                    gameController::movePlayerOnEmptyCell(this->target, this->env);
                 }
                 this->actor->position = this->target;
 
@@ -193,14 +193,6 @@ namespace gameController{
             case ActionResult::Impossible :
                 throw std::runtime_error("The Selected move is impossible!");
         }
-    }
-
-    void Move::movePlayerOnEmptyCell(const gameModel::Position &position) const {
-        const std::vector<gameModel::Position> positions = env->getAllPlayerFreeCellsAround(position);
-        // @ToDo: random cell auswählen & player verschieben
-
-
-        int randCellNo = rng(0, static_cast<int>(positions.size()));
     }
 
     // fertig
@@ -216,9 +208,8 @@ namespace gameController{
 
     auto Move::checkForFoul() const -> gameModel::Foul {
 
-
         // @ToDo: sinnvolle strategie um flas effizient zu erkennen
-        if (env->getPlayer(this->target) == nullptr) {
+        if (env->getPlayer(this->target).has_value()) {
 
         }
         else {
