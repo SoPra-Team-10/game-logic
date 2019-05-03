@@ -223,6 +223,24 @@ namespace gameModel{
         throw std::runtime_error("The Player isn't part of any team.");
     }
 
+    void Environment::placePlayerOnRandomFreeCell(Player &player) {
+        Position pos;
+        if (this->team1.hasMember(player)) {
+            do {
+                pos = Position(gameController::rng(3,7), gameController::rng(0,12));
+            }
+            while (getCell(pos) != gameModel::Cell::Standard || getPlayer(pos).has_value());
+        }
+        else {
+            do {
+                pos = Position(gameController::rng(9,13), gameController::rng(0,12));
+            }
+            while (getCell(pos) != gameModel::Cell::Standard || getPlayer(pos).has_value());
+        }
+
+        player.position = pos;
+    }
+
     // Ball Types
 
     Snitch::Snitch(Position position): Ball(position, communication::messages::types::EntityId::SNITCH) {}

@@ -1,13 +1,7 @@
 #include <utility>
 #include "Action.h"
 #define P_TYPE typeid(*actor)
-#define B_TYPE typeId(*ball)
 #define SEEKER typeid(gameModel::Seeker)
-#define KEEPER typeid(gameModel::Keeper)
-#define BEATER typeid(gameModel::Beater)
-#define CHASER typeid(gameModel::Chaser)
-#define QUAFFLE typeid(gameModel::Quaffle)
-#define BLUDGER typeid(gameModel::Bludger)
 
 namespace gameController{
     Action::Action(std::shared_ptr<gameModel::Environment> env, std::shared_ptr<gameModel::Player> actor,
@@ -145,6 +139,9 @@ namespace gameController{
     }
 
     // fertig
+    Move::Move(std::shared_ptr<gameModel::Environment> env, std::shared_ptr<gameModel::Player> actor, gameModel::Position target):
+            Action(std::move(env), std::move(actor), target) {}
+
     auto Move::check() const -> ActionResult{
 
         if (gameModel::Environment::getCell(this->target) == gameModel::Cell::OutOfBounds ||
@@ -160,42 +157,31 @@ namespace gameController{
         }
     }
 
-    auto Move::executeAll() const ->
-        std::vector<std::pair<gameModel::Environment, double>>{
-
-        std::vector<std::pair<gameModel::Environment, double>> resultVect;
-
-        // @toDo: da fehlt noch alles
-
-        return resultVect;
-    }
-
-    Move::Move(std::shared_ptr<gameModel::Environment> env, std::shared_ptr<gameModel::Player> actor, gameModel::Position target):
-    Action(std::move(env), std::move(actor), target) {}
-
     void Move::execute() const {
+        // check move
         ActionResult actionResult = this->check();
-
-        switch (actionResult) {
-
-            case ActionResult::Foul :
-                // @ToDo was passiert bei einem Faul???
-
-            case ActionResult::Success :
-
-                if (env->getPlayer(this->target).has_value()) {
-                    gameController::movePlayerOnEmptyCell(this->target, this->env);
-                }
-                this->actor->position = this->target;
-
-            break;
-
-            case ActionResult::Impossible :
-                throw std::runtime_error("The Selected move is impossible!");
+        if (actionResult == ActionResult::Impossible) {
+            throw std::runtime_error("The Selected move is impossible!");
         }
+        else if (actionResult == ActionResult::Foul) {
+            gameModel::Foul foul = this->checkForFoul();
+            this->actor->isFined = gameController::refereeDecision(foul, this->env->config);
+        }
+
+        // move other player out of the way
+        if (this->env->getPlayer(this->target).has_value()) {
+            gameController::movePlayerOnEmptyCell(this->target, this->env);
+        }
+
+        // move the quaffle if necessary
+        if (this->env->quaffle.position == this->actor->position) {
+            this->env->quaffle.position = this->target;
+        }
+
+        // move the player
+        this->actor->position = this->target;
     }
 
-    // fertig
     auto Move::successProb() const -> double {
         if (gameModel::Environment::getCell(this->target) == gameModel::Cell::OutOfBounds ||
             gameController::getDistance(this->actor->position, this->target) > 1){
@@ -207,43 +193,40 @@ namespace gameController{
     }
 
     auto Move::checkForFoul() const -> gameModel::Foul {
-
-        // Keilen
+        // Ramming
         if (env->getPlayer(this->target).has_value() &&
             !env->arePlayerInSameTeam(*(env->getPlayer(this->target).value()), *(this->actor))) {
-            return  gameModel::Foul::Keilen;
+            return  gameModel::Foul::Ramming;
         }
 
-        // Flacken
-        if (env->isPlayerInOwnRestrictedZone(*(this->actor))) {
-            if ((env->team1.hasMember(*(this->actor)) && env->getCell(this->target) == gameModel::Cell::GoalLeft) ||
-                (env->team2.hasMember(*(this->actor)) && env->getCell(this->target) == gameModel::Cell::GoalRight)) {
-                return gameModel::Foul::Flacken;
-            }
+        // BlockGoal
+        if ((env->team1.hasMember(*(this->actor)) && env->getCell(this->target) == gameModel::Cell::GoalLeft) ||
+            (env->team2.hasMember(*(this->actor)) && env->getCell(this->target) == gameModel::Cell::GoalRight)) {
+            return gameModel::Foul::BlockGoal;
         }
 
         // Schnalzeln
         if (typeid(this->actor) != typeid(gameModel::Seeker) &&
                 this->actor->position == env->snitch.position) {
-            return gameModel::Foul::Schnatzeln;
+            return gameModel::Foul::BlockSnitch;
         }
 
         if (typeid(this->actor) == typeid(gameModel::Chaser)) {
-            // Nachtarocken
+            // ChargeGoal
             if (env->quaffle.position == this->actor->position) {
                 if ((env->team1.hasMember(*(this->actor)) && env->getCell(this->target) == gameModel::Cell::GoalRight) ||
                     (env->team2.hasMember(*(this->actor)) && env->getCell(this->target) == gameModel::Cell::GoalLeft)) {
-                    return gameModel::Foul::Nachtarocken;
+                    return gameModel::Foul::ChargeGoal;
                 }
             }
-            // Stutschen
+            // MultibleOffence
             if (env->team1.hasMember(*(this->actor))) {
                 if (env->getCell(this->target) == gameModel::Cell::RestrictedLeft) {
                     const auto &players = env->team1.chasers;
 
                     for (auto & player : players) {
                         if (env->isPlayerInOpponentRestrictedZone(player)) {
-                            return gameModel::Foul::Stutschen;
+                            return gameModel::Foul::MultibleOffence;
                         }
                     }
                 }
@@ -254,7 +237,7 @@ namespace gameController{
 
                     for (auto & player : players) {
                         if (env->isPlayerInOpponentRestrictedZone(player)) {
-                            return gameModel::Foul::Stutschen;
+                            return gameModel::Foul::MultibleOffence;
                         }
                     }
                 }
@@ -262,5 +245,15 @@ namespace gameController{
         }
 
         return gameModel::Foul::None;
+    }
+
+    auto Move::executeAll() const ->
+    std::vector<std::pair<gameModel::Environment, double>>{
+
+        std::vector<std::pair<gameModel::Environment, double>> resultVect;
+
+        // @toDo: da fehlt noch alles
+
+        return resultVect;
     }
 }

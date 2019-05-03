@@ -105,11 +105,11 @@ namespace gameModel{
      */
     enum class Foul {
         None,
-        Flacken,
-        Nachtarocken,
-        Stutschen,
-        Keilen,
-        Schnatzeln
+        BlockGoal,
+        ChargeGoal,
+        MultibleOffence,
+        Ramming,
+        BlockSnitch
     };
 
     enum class InterferenceType{
@@ -119,9 +119,9 @@ namespace gameModel{
         SnitchPush
     };
 
-/**
- * Class containing metadata for a match
- */
+    /**
+     * Class containing metadata for a match
+     */
     class Config{
     public:
         const unsigned int maxRounds;
@@ -159,6 +159,7 @@ namespace gameModel{
         std::string name;
         communication::messages::types::Sex gender = {};
         communication::messages::types::Broom broom = {};
+        bool isFined;
 
         Player() = default;
         Player(Position position, std::string  name, communication::messages::types::Sex gender, communication::messages::types::Broom broom, communication::messages::types::EntityId id);
@@ -389,6 +390,12 @@ namespace gameModel{
         auto getTeam(const Player &player) const -> const Team&;
 
         static auto getAllValidCells() -> std::array<Position, 193>;
+
+        /**
+         * place a player on random free cell in his half of the game field.
+         * @param player
+          */
+        void placePlayerOnRandomFreeCell(Player & player);
     };
 }
 

@@ -83,6 +83,14 @@ namespace gameController {
      * @param env the selected environment.
      */
     void movePlayerOnEmptyCell(const gameModel::Position playerPos, const std::shared_ptr<gameModel::Environment>& env);
+
+    /**
+     * make the decision if a player will be punished or not after a foul.
+     * @param foul the foul type.
+     * @param gameConf the current game configuration.
+     * @return true if player shall be punished, else false.
+     */
+    auto refereeDecision(const gameModel::Foul &foul, const gameModel::Config &gameConf) -> bool;
 }
 
 
