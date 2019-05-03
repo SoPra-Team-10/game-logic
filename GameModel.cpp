@@ -80,7 +80,7 @@ namespace gameModel{
 
     Environment::Environment(Config config,Team team1, Team team2) : config(std::move(config)), team1(std::move(team1)),
     team2(std::move(team2)), quaffle(), snitch(), bludgers{communication::messages::types::EntityId::BLUDGER1,
-                                                           communication::messages::types::EntityId::BLUDGER1} {}
+                                                           communication::messages::types::EntityId::BLUDGER2} {}
 
     Environment::Environment(Config config, Team team1, Team team2, Quaffle quaffle, Snitch snitch,
                              std::array<Bludger, 2> bludgers) : config(std::move(config)), team1(std::move(team1)),
