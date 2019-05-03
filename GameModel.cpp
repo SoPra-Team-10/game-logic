@@ -7,8 +7,10 @@
 
 namespace gameModel{
 
+    // Player
+
     Player::Player(Position position, std::string  name, Gender gender, Broom broom) :
-            position{position}, name(std::move(name)), gender(gender), broom(broom){}
+            position{position}, name(std::move(name)), gender(gender), broom(broom) {}
 
     bool Player::operator==(const Player &other) const {
         return position == other.position && name == other.name &&
@@ -19,10 +21,15 @@ namespace gameModel{
         return !(*this == other);
     }
 
+
+    // Ball
+
     Ball::Ball(Position position) : position{position} {}
 
 
-    Fanblock::Fanblock(int teleportation, int rangedAttack, int impulse, int snitchPush) : fans(){
+    // Fanblock
+
+    Fanblock::Fanblock(int teleportation, int rangedAttack, int impulse, int snitchPush) : fans() {
         if(teleportation + rangedAttack + impulse + snitchPush != 7){
             throw std::invalid_argument("Fanblock has to contain exactly 7 fans!");
         }
@@ -45,6 +52,9 @@ namespace gameModel{
 
         fans.at(fan)--;
     }
+
+
+    // Environment
 
     Cell Environment::getCell(int x, int y) {
         if(x >= 17 || y >= 13) {
@@ -186,11 +196,33 @@ namespace gameModel{
         return ret;
     }
 
+    auto Environment::isPlayerInOwnRestrictedZone(const Player &player) const -> bool {
+        if (this->team1.hasMember(player) && this->getCell(player.position) == Cell::RestrictedLeft) {
+            return true;
+        }
+        if (this->team2.hasMember(player) && this->getCell(player.position) == Cell::RestrictedRight) {
+            return true;
+        }
 
+        return false;
+    }
+
+    auto Environment::isPlayerInOpponentRestrictedZone(const Player &player) const  -> bool {
+        if (this->team1.hasMember(player) && this->getCell(player.position) == Cell::RestrictedRight) {
+            return true;
+        }
+        if (this->team2.hasMember(player) && this->getCell(player.position) == Cell::RestrictedLeft) {
+            return true;
+        }
+
+        return false;
+    }
+
+    // Ball Types
 
     Snitch::Snitch(Position position): Ball(position) {}
 
-    Snitch::Snitch() : Ball({0, 0}), exists(false){
+    Snitch::Snitch() : Ball({0, 0}), exists(false) {
         auto allCells = Environment::getAllValidCells();
         auto index = gameController::rng(0, static_cast<int>(allCells.size()));
         position = allCells[index];
@@ -198,11 +230,14 @@ namespace gameModel{
 
     Bludger::Bludger(Position position) : Ball(position) {}
 
-    Bludger::Bludger() : Ball({8, 6}){}
+    Bludger::Bludger() : Ball({8, 6}) {}
 
     Quaffle::Quaffle(Position position) : Ball(position) {}
 
-    Quaffle::Quaffle() : Ball({8, 6}){}
+    Quaffle::Quaffle() : Ball({8, 6}) {}
+
+
+    // Player Types
 
     Chaser::Chaser(Position position, std::string name, Gender gender, Broom broom) :
             Player(position, std::move(name), gender, broom) {}
@@ -215,6 +250,9 @@ namespace gameModel{
 
     Beater::Beater(Position position, std::string name, Gender gender, Broom broom) :
             Player(position, std::move(name), gender, broom) {}
+
+
+    // Team
 
     Team::Team(Seeker seeker, Keeper keeper, std::array<Beater, 2> beaters, std::array<Chaser, 3> chasers,
                std::string  name, std::string  colorMain, std::string  colorSecondary,
@@ -250,6 +288,9 @@ namespace gameModel{
         return false;
     }
 
+
+    // Config
+
     Config::Config(unsigned int maxRounds, const Timeouts &timeouts, const FoulDetectionProbs &foulDetectionProbs,
                    const GameDynamicsProbs &gameDynamicsProbs, std::map<Broom, double> extraTurnProbs) :
             maxRounds(maxRounds), timeouts(timeouts), foulDetectionProbs(foulDetectionProbs), gameDynamicsProbs(gameDynamicsProbs),
@@ -258,6 +299,9 @@ namespace gameModel{
     double Config::getExtraTurnProb(Broom broom) const{
         return extraTurnProbs.at(broom);
     }
+
+
+    // Position
 
     Position::Position(int x, int y) {
         this->x = x;
@@ -271,6 +315,13 @@ namespace gameModel{
     bool Position::operator!=(const Position &other) const{
         return !(*this == other);
     }
+
+    Position Vector::operator+(const Position &p) const{
+        return Position(static_cast<int>(p.x + round(this->x)),
+                        static_cast<int>(p.y + round(this->y)));
+    }
+
+    // Vector
 
     Vector::Vector(double x, double y) {
         this->x = x;
@@ -301,10 +352,5 @@ namespace gameModel{
 
     Vector Vector::operator+(const Vector &v) const{
         return Vector(this->x + v.x, this->y + v.y);
-    }
-
-    Position Vector::operator+(const Position &p) const{
-        return Position(static_cast<int>(p.x + round(this->x)),
-                static_cast<int>(p.y + round(this->y)));
     }
 }

@@ -29,7 +29,7 @@ namespace gameController{
         else {
             // @ToDo: Wahrscheinlichkeit für das Abfangen einfügen.
             return std::pow(env->config.gameDynamicsProbs.throwSuccess,
-                       gameController::getDistance(this->actor.get()->position, this->target));
+                       gameController::getDistance(this->actor->position, this->target));
         }
     }
 
@@ -197,7 +197,7 @@ namespace gameController{
     // fertig
     auto Move::successProb() const -> double {
         if (gameModel::Environment::getCell(this->target) == gameModel::Cell::OutOfBounds ||
-            gameController::getDistance(this->actor.get()->position, this->target) > 1){
+            gameController::getDistance(this->actor->position, this->target) > 1){
             return 0;
         }
         else {
@@ -213,8 +213,8 @@ namespace gameController{
             return  gameModel::Foul::Flacken;
         }
 
-        if (typeid(this->actor.get()) != typeid(gameModel::Seeker) &&
-                this->actor.get()->position == env->snitch.position) {
+        if (typeid(this->actor) != typeid(gameModel::Seeker) &&
+                this->actor->position == env->snitch.position) {
             return gameModel::Foul::Schnatzeln;
         }
 
