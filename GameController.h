@@ -65,6 +65,14 @@ namespace gameController {
     auto getAllPossibleMoves(std::shared_ptr<gameModel::Player> actor, const gameModel::Environment &envi)
     -> std::vector<Move>;
 
+    /**
+     * Move the player that's currently on the given position onto a empty cell around.
+     * @param playerPos the current position of the player which should be moved.
+     * @param env the selected environment.
+     */
+    void movePlayerOnEmptyCell(const gameModel::Position playerPos, const std::shared_ptr<gameModel::Environment>& env);
+
+
     template <>
     double rng(double min, double max);
 

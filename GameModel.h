@@ -160,6 +160,7 @@ namespace gameModel{
         communication::messages::types::Sex gender = {};
         communication::messages::types::Broom broom = {};
         bool isFined;
+        bool knockedOut = false;
 
         Player() = default;
         Player(Position position, std::string  name, communication::messages::types::Sex gender, communication::messages::types::Broom broom, communication::messages::types::EntityId id);
@@ -389,7 +390,17 @@ namespace gameModel{
          */
         auto getTeam(const Player &player) const -> const Team&;
 
+        /**
+         * Gets all Positions which are not out of bounds
+         * @return
+         */
         static auto getAllValidCells() -> std::array<Position, 193>;
+
+        /**
+         * Gets all valid cells not occupied by players
+         * @return
+         */
+        auto getAllFreeCells() -> std::array<Position, 179>;
 
         /**
          * place a player on random free cell in his half of the game field.
