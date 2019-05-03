@@ -391,6 +391,13 @@ namespace gameModel{
          */
         auto getPlayer(Position) const -> std::optional<std::shared_ptr<Player>>;
 
+        /**
+         * get the corresponding team of a player.
+         * @param player the selected player.
+         * @return the team of a player.
+         */
+        auto getTeam(const Player &player) const -> const Team&;
+
         static auto getAllValidCells() -> std::array<Position, 193>;
     };
 }

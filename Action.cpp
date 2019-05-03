@@ -207,8 +207,6 @@ namespace gameController{
 
     auto Move::checkForFoul() const -> gameModel::Foul {
 
-        // @ToDo: Fouls
-
         // Keilen
         if (env->getPlayer(this->target).has_value() &&
             !env->arePlayerInSameTeam(*(env->getPlayer(this->target).value()), *(this->actor))) {
@@ -230,7 +228,6 @@ namespace gameController{
         }
 
         if (typeid(this->actor) == typeid(gameModel::Chaser)) {
-
             // Nachtarocken
             if (env->quaffle.position == this->actor->position) {
                 if ((env->team1.hasMember(*(this->actor)) && env->getCell(this->target) == gameModel::Cell::GoalRight) ||
@@ -238,25 +235,26 @@ namespace gameController{
                     return gameModel::Foul::Nachtarocken;
                 }
             }
-
             // Stutschen
             if (env->team1.hasMember(*(this->actor))) {
                 if (env->getCell(this->target) == gameModel::Cell::RestrictedLeft) {
-                    std::array<std::shared_ptr<gameModel::Player>, 6> players = env->getTeamMates(*(this->actor));
+                    const auto &players = env->team1.chasers;
 
-                    bool flag = false;
-                    for (int i = 0; i < (int) players.size(); i++) {
-
+                    for (auto & player : players) {
+                        if (env->isPlayerInOpponentRestrictedZone(player)) {
+                            return gameModel::Foul::Stutschen;
+                        }
                     }
                 }
             }
             else {
                 if (env->getCell(this->target) == gameModel::Cell::RestrictedRight) {
-                    std::array<std::shared_ptr<gameModel::Player>, 6> players = env->getTeamMates(*(this->actor));
+                    const auto &players = env->team1.chasers;
 
-                    bool flag = false;
-                    for (int i = 0; i < (int) players.size(); i++) {
-
+                    for (auto & player : players) {
+                        if (env->isPlayerInOpponentRestrictedZone(player)) {
+                            return gameModel::Foul::Stutschen;
+                        }
                     }
                 }
             }

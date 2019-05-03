@@ -217,6 +217,17 @@ namespace gameModel{
         return false;
     }
 
+    auto Environment::getTeam(const Player &player) const -> const Team& {
+        if (this->team1.hasMember(player)) {
+            return this->team1;
+        }
+        else if (this->team2.hasMember(player)) {
+            return this->team2;
+        }
+
+        throw std::runtime_error("The Player isn't part of any team.");
+    }
+
     // Ball Types
 
     Snitch::Snitch(Position position): Ball(position) {}
