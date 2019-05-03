@@ -91,12 +91,12 @@ namespace gameModel{
      * Types of the playing field's cells
      */
     enum class Cell{
-        GoalLeft, ///< Goal cell
-        GoalRight,
+        GoalLeft, ///< Goal cell that belongs to team 1
+        GoalRight, ///< Goal cell that belongs to team 2
         Standard, ///< Cell with no specialties
         Centre, ///< Cells belonging to the fields centre area
-        RestrictedLeft, ///< Restricted area where only one attacker at a time is allowed
-        RestrictedRight,
+        RestrictedLeft, ///< Restricted area that belongs to team 1 where only one attacker at a time is allowed
+        RestrictedRight, ///< Restricted area that belongs to team 2 where only one attacker at a time is allowed
         OutOfBounds ///< Cells not belonging to the game field
     };
 
@@ -311,6 +311,20 @@ namespace gameModel{
          * @return if the players are in the same team true, else false.
          */
         auto arePlayerInSameTeam(const Player &p1, const Player & p2) const -> bool;
+
+        /**
+         * checks if a player is in the own restricted zone.
+         * @param player the player.
+         * @return true if player is in own restricted zone, else false;
+         */
+        auto isPlayerInOwnRestrictedZone(const Player &player) const -> bool;
+
+        /**
+         * checks if a player is in the opponent restricted zone.
+         * @param player the player.
+         * @return true if player is in opponent restricted zone, else false;
+         */
+        auto isPlayerInOpponentRestrictedZone(const Player &player) const  -> bool;
 
         /**
          * Gets the type of the cell at position (x,y)

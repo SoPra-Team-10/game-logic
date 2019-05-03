@@ -37,7 +37,7 @@ namespace gameController{
         else {
             // @ToDo: Wahrscheinlichkeit für das Abfangen einfügen.
             return std::pow(env->config.gameDynamicsProbs.throwSuccess,
-                       gameController::getDistance(this->actor.get()->position, this->target));
+                       gameController::getDistance(this->actor->position, this->target));
         }
     }
 
@@ -198,7 +198,7 @@ namespace gameController{
     // fertig
     auto Move::successProb() const -> double {
         if (gameModel::Environment::getCell(this->target) == gameModel::Cell::OutOfBounds ||
-            gameController::getDistance(this->actor.get()->position, this->target) > 1){
+            gameController::getDistance(this->actor->position, this->target) > 1){
             return 0;
         }
         else {
@@ -209,16 +209,59 @@ namespace gameController{
     auto Move::checkForFoul() const -> gameModel::Foul {
 
         // @ToDo: Fouls
+
+        // Keilen
         if (env->getPlayer(this->target).has_value() &&
             !env->arePlayerInSameTeam(*(env->getPlayer(this->target).value()), *(this->actor))) {
-            return  gameModel::Foul::Flacken;
+            return  gameModel::Foul::Keilen;
         }
 
-        if (typeid(this->actor.get()) != typeid(gameModel::Seeker) &&
-                this->actor.get()->position == env->snitch.position) {
+        // Flacken
+        if (env->isPlayerInOwnRestrictedZone(*(this->actor))) {
+            if ((env->team1.hasMember(*(this->actor)) && env->getCell(this->target) == gameModel::Cell::GoalLeft) ||
+                (env->team2.hasMember(*(this->actor)) && env->getCell(this->target) == gameModel::Cell::GoalRight)) {
+                return gameModel::Foul::Flacken;
+            }
+        }
+
+        // Schnalzeln
+        if (typeid(this->actor) != typeid(gameModel::Seeker) &&
+                this->actor->position == env->snitch.position) {
             return gameModel::Foul::Schnatzeln;
         }
 
+        if (typeid(this->actor) == typeid(gameModel::Chaser)) {
+
+            // Nachtarocken
+            if (env->quaffle.position == this->actor->position) {
+                if ((env->team1.hasMember(*(this->actor)) && env->getCell(this->target) == gameModel::Cell::GoalRight) ||
+                    (env->team2.hasMember(*(this->actor)) && env->getCell(this->target) == gameModel::Cell::GoalLeft)) {
+                    return gameModel::Foul::Nachtarocken;
+                }
+            }
+
+            // Stutschen
+            if (env->team1.hasMember(*(this->actor))) {
+                if (env->getCell(this->target) == gameModel::Cell::RestrictedLeft) {
+                    std::array<std::shared_ptr<gameModel::Player>, 6> players = env->getTeamMates(*(this->actor));
+
+                    bool flag = false;
+                    for (int i = 0; i < (int) players.size(); i++) {
+
+                    }
+                }
+            }
+            else {
+                if (env->getCell(this->target) == gameModel::Cell::RestrictedRight) {
+                    std::array<std::shared_ptr<gameModel::Player>, 6> players = env->getTeamMates(*(this->actor));
+
+                    bool flag = false;
+                    for (int i = 0; i < (int) players.size(); i++) {
+
+                    }
+                }
+            }
+        }
 
         return gameModel::Foul::None;
     }

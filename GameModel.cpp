@@ -1,6 +1,4 @@
 #include <utility>
-
-#include <utility>
 #include "GameModel.h"
 #include "GameController.h"
 #include <utility>
@@ -23,7 +21,9 @@ namespace gameModel{
 
     Ball::Ball(Position position, communication::messages::types::EntityId id) : Object(position, id) {}
 
-    Fanblock::Fanblock(int teleportation, int rangedAttack, int impulse, int snitchPush) : fans(){
+    // Fanblock
+
+    Fanblock::Fanblock(int teleportation, int rangedAttack, int impulse, int snitchPush) : fans() {
         if(teleportation + rangedAttack + impulse + snitchPush != 7){
             throw std::invalid_argument("Fanblock has to contain exactly 7 fans!");
         }
@@ -46,6 +46,9 @@ namespace gameModel{
 
         fans.at(fan)--;
     }
+
+
+    // Environment
 
     Cell Environment::getCell(int x, int y) {
         if(x >= 17 || y >= 13) {
@@ -188,7 +191,28 @@ namespace gameModel{
         return ret;
     }
 
+    auto Environment::isPlayerInOwnRestrictedZone(const Player &player) const -> bool {
+        if (this->team1.hasMember(player) && this->getCell(player.position) == Cell::RestrictedLeft) {
+            return true;
+        }
+        if (this->team2.hasMember(player) && this->getCell(player.position) == Cell::RestrictedRight) {
+            return true;
+        }
 
+        return false;
+    }
+
+    auto Environment::isPlayerInOpponentRestrictedZone(const Player &player) const  -> bool {
+        if (this->team1.hasMember(player) && this->getCell(player.position) == Cell::RestrictedRight) {
+            return true;
+        }
+        if (this->team2.hasMember(player) && this->getCell(player.position) == Cell::RestrictedLeft) {
+            return true;
+        }
+        return false;
+    }
+
+    // Ball Types
 
     Snitch::Snitch(Position position): Ball(position, communication::messages::types::EntityId::SNITCH) {}
 
@@ -217,6 +241,9 @@ namespace gameModel{
 
     Beater::Beater(Position position, std::string name, communication::messages::types::Sex gender, communication::messages::types::Broom broom, communication::messages::types::EntityId id) :
             Player(position, std::move(name), gender, broom, id) {}
+
+
+    // Team
 
     Team::Team(Seeker seeker, Keeper keeper, std::array<Beater, 2> beaters, std::array<Chaser, 3> chasers,
                std::string  name, std::string  colorMain, std::string  colorSecondary,
@@ -252,6 +279,9 @@ namespace gameModel{
         return false;
     }
 
+
+    // Config
+
     Config::Config(unsigned int maxRounds, const Timeouts &timeouts, const FoulDetectionProbs &foulDetectionProbs,
                    const GameDynamicsProbs &gameDynamicsProbs, std::map<communication::messages::types::Broom, double> extraTurnProbs) :
             maxRounds(maxRounds), timeouts(timeouts), foulDetectionProbs(foulDetectionProbs), gameDynamicsProbs(gameDynamicsProbs),
@@ -282,6 +312,13 @@ namespace gameModel{
     bool Position::operator!=(const Position &other) const{
         return !(*this == other);
     }
+
+    Position Vector::operator+(const Position &p) const{
+        return Position(static_cast<int>(p.x + round(this->x)),
+                        static_cast<int>(p.y + round(this->y)));
+    }
+
+    // Vector
 
     Vector::Vector(double x, double y) {
         this->x = x;
@@ -314,10 +351,5 @@ namespace gameModel{
         return Vector(this->x + v.x, this->y + v.y);
     }
 
-    Position Vector::operator+(const Position &p) const{
-        return Position(static_cast<int>(p.x + round(this->x)),
-                static_cast<int>(p.y + round(this->y)));
-    }
-
-    Object::Object(const Position &position, communication::messages::types::EntityId id) : position(position), id(id) {}
+    Object::Object(const Position &position, communication::messages::types::EntityId id) : position(position), id(id){}
 }
