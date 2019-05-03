@@ -97,16 +97,18 @@ namespace gameController {
     }
 
     void movePlayerOnEmptyCell(const gameModel::Position playerPos, const std::shared_ptr<gameModel::Environment>& env) {
-        const std::vector<gameModel::Position> positions = env.get()->getAllPlayerFreeCellsAround(playerPos);
-        env.get()->getPlayer(playerPos).value().get()->position = positions[gameController::rng(0, (int) positions.size())];
+        const std::vector<gameModel::Position> positions = env->getAllPlayerFreeCellsAround(playerPos);
+        env->getPlayer(playerPos).value()->position = positions[gameController::rng(0, (int) positions.size())];
     }
 
-    auto getAllPossibleMoves(std::shared_ptr<gameModel::Player> actor, const gameModel::Environment &envi) -> std::vector<Move> {
+    auto getAllPossibleMoves(std::shared_ptr<gameModel::Player>, const gameModel::Environment&) -> std::vector<Move> {
         return std::vector<Move>();
+        // @ToDo: Nicht für Server relevant
     }
 
-    auto getAllPossibleShots(std::shared_ptr<gameModel::Player> actor,
-                             const gameModel::Environment &envi) -> std::vector<Shot> {
+    auto getAllPossibleShots(std::shared_ptr<gameModel::Player>,
+                             const gameModel::Environment&) -> std::vector<Shot> {
         return std::vector<Shot>();
+        // @ToDo: Nicht für Server relevant
     }
 }

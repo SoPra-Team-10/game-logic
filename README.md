@@ -4,6 +4,8 @@
 Die Spiellogik u.a. für den Server
 
 ## Installing
+First you need to install [SopraMessage](https://github.com/SoPra-Team-10/Messages).
+
 In the root directory of the project run
 ```
 sudo make install
