@@ -109,5 +109,4 @@ namespace gameController {
                              const gameModel::Environment &envi) -> std::vector<Shot> {
         return std::vector<Shot>();
     }
-
 }

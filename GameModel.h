@@ -167,6 +167,7 @@ namespace gameModel{
         std::string name;
         Gender gender = Gender::Female;
         Broom broom = Broom::Cleansweep_11;
+        bool knockedOut = false;
 
         Player() = default;
         Player(Position position, std::string  name, Gender gender, Broom broom);
@@ -377,7 +378,17 @@ namespace gameModel{
          */
         auto getPlayer(Position) const -> std::optional<std::shared_ptr<Player>>;
 
+        /**
+         * Gets all Positions which are not out of bounds
+         * @return
+         */
         static auto getAllValidCells() -> std::array<Position, 193>;
+
+        /**
+         * Gets all valid cells not occupied by players
+         * @return
+         */
+        auto getAllFreeCells() -> std::array<Position, 179>;
     };
 }
 

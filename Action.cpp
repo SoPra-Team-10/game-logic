@@ -1,13 +1,16 @@
 #include <utility>
 #include "Action.h"
 #define P_TYPE typeid(*actor)
-#define B_TYPE typeId(*ball)
+#define B_TYPE typeid(*ball)
 #define SEEKER typeid(gameModel::Seeker)
 #define KEEPER typeid(gameModel::Keeper)
 #define BEATER typeid(gameModel::Beater)
 #define CHASER typeid(gameModel::Chaser)
 #define QUAFFLE typeid(gameModel::Quaffle)
 #define BLUDGER typeid(gameModel::Bludger)
+#define SNITCH typeid(gameModel::Snitch)
+#define QUAFFLETHROW ((P_TYPE == CHASER || P_TYPE == KEEPER) && B_TYPE == QUAFFLE)
+#define BLUDGERSHOT (P_TYPE == BEATER && B_TYPE == BLUDGER)
 
 namespace gameController{
     Action::Action(std::shared_ptr<gameModel::Environment> env, std::shared_ptr<gameModel::Player> actor,
@@ -23,8 +26,49 @@ namespace gameController{
             throw std::runtime_error("Action is impossible");
         }
 
-        for(const auto &pos : getInterceptionPositions()){
-            if(gameController::actionTriggered(env->config.gameDynamicsProbs.catchQuaffle)){
+        if(QUAFFLETHROW){
+            for(const auto &pos : getInterceptionPositions()){
+                if(actionTriggered(env->config.gameDynamicsProbs.catchQuaffle)){
+                    auto interceptPlayer = env->getPlayer(pos);
+                    if(!interceptPlayer.has_value()){
+                        throw std::runtime_error("No Player at intercept position");
+                    }
+
+                    auto &p = interceptPlayer.value();
+                    if(typeid(*p) == CHASER || typeid(*p) == KEEPER){
+                        //Quaffle is catched
+                        ball->position = pos;
+                    } else {
+                        //Quaffle bounces off
+                        auto possibleCells = env->getAllPlayerFreeCellsAround(pos);
+                        int index = rng(0, static_cast<int>(possibleCells.size()));
+                        ball->position = possibleCells[index];
+                    }
+                }
+            }
+
+            //Quaffle not intercepted
+
+            auto dist = getDistance(actor->position, target);
+            if(actionTriggered(std::pow(env->config.gameDynamicsProbs.throwSuccess, dist))){
+                //Throw successs
+                ball->position = target;
+            } else {
+                //Miss -> dispersion
+                auto possibleCells = getAllLandingCells();
+                int index = rng(0, static_cast<int>(possibleCells.size()));
+                ball->position = possibleCells[index];
+            }
+        } else if(BLUDGERSHOT){
+            auto playerOnTarget = env->getPlayer(target);
+            if(playerOnTarget.has_value()){
+                //Knock player out an place bludger on random free cell
+                if(typeid(*playerOnTarget.value()) != BEATER){
+                    playerOnTarget.value()->knockedOut = true;
+                    auto possibleCells = env->getAllFreeCells();
+                    int index = rng(0, static_cast<int>(possibleCells.size()));
+                    ball->position = possibleCells[index];
+                }
             }
         }
     }
@@ -41,19 +85,29 @@ namespace gameController{
         }
     }
 
-    // fertig ?
     auto Shot::check() const -> ActionResult {
-        if (gameModel::Environment::getCell(this->target) == gameModel::Cell::OutOfBounds) {
-            return ActionResult::Impossible;
-        }else if(actor->position != ball->position){
-            return ActionResult::Impossible;
-        } else if(P_TYPE == SEEKER){
-            return ActionResult::Impossible;
-        } else if(){
+        using res = ActionResult;
+        if(actor->position == ball->position && gameModel::Environment::getCell(target) != gameModel::Cell::OutOfBounds){
+            if(QUAFFLETHROW){
+                return res::Success;
+            } else if(BLUDGERSHOT){
+                if(getDistance(actor->position, target) < 3){
+                    bool blocked = false;
+                    for(const auto &cell : getAllCrossedCells(actor->position, target)){
+                        if(!env->cellIsFree(cell)){
+                            blocked = true;
+                            break;
+                        }
+                    }
 
+                    if(!blocked){
+                        return res::Success;
+                    }
+                }
+            }
         }
 
-        return ActionResult::Success;
+        return res::Impossible;
     }
 
     auto Shot::executeAll() const ->
@@ -80,48 +134,9 @@ namespace gameController{
         return ret;
     }
 
-    template <>
-    auto Shot::check(gameModel::Chaser &Player, gameModel::Quaffle &Ball) -> ActionResult{
-        if(gameModel::Environment::getCell(target) == gameModel::Cell::OutOfBounds ||
-            Ball.position != Player.position){
-            return ActionResult::Impossible;
-        }
-
-        return ActionResult::Success;
-    }
-
-    template <>
-    auto Shot::check(gameModel::Beater &player, gameModel::Bludger &Ball) -> ActionResult {
-        if(player.position != Ball.position){
-            return ActionResult::Impossible;
-        }
-
-        if(getDistance(player.position, target) > 3){
-            return ActionResult::Impossible;
-        }
-
-        for(const auto &cell : getAllCrossedCells(player.position, target)){
-            if(!env->cellIsFree(cell)){
-                return ActionResult::Impossible;
-            }
-        }
-
-        return ActionResult::Success;
-    }
-
-    template <>
-    auto Shot::check(gameModel::Keeper &Player, gameModel::Quaffle &Ball) -> ActionResult{
-        if(gameModel::Environment::getCell(target) == gameModel::Cell::OutOfBounds ||
-           Ball.position != Player.position){
-            return ActionResult::Impossible;
-        }
-
-        return ActionResult::Success;
-    }
-
     auto Shot::getAllLandingCells() const -> std::vector<gameModel::Position> {
 #warning Was tun bei n gerade? Dann lässt sich das Quadrat nicht mittig um target platzieren
-        int n = static_cast<int>(std::ceil(gameController::getDistance(actor->position, target) / 7));
+        int n = static_cast<int>(std::ceil(getDistance(actor->position, target) / 7.0));
         std::vector<gameModel::Position> ret;
         using Env = gameModel::Environment;
         using Cell = gameModel::Cell;

@@ -186,6 +186,19 @@ namespace gameModel{
         return ret;
     }
 
+    auto Environment::getAllFreeCells() -> std::array<Position, 179> {
+        //@TODO optimization!!!
+        std::array<Position, 179> ret{};
+        auto it = ret.begin();
+        for(const auto &cell : getAllValidCells()){
+            if(cellIsFree(cell)){
+                *it = cell;
+                it++;
+            }
+        }
+
+        return ret;
+    }
 
 
     Snitch::Snitch(Position position): Ball(position) {}
