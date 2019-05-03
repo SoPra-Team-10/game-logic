@@ -7,25 +7,19 @@
 
 namespace gameModel{
 
-    // Player
-
-    Player::Player(Position position, std::string  name, Gender gender, Broom broom) :
-            position{position}, name(std::move(name)), gender(gender), broom(broom) {}
+    Player::Player(Position position, std::string name, communication::messages::types::Sex gender, communication::messages::types::Broom broom, communication::messages::types::EntityId id) :
+        Object(position, id), name(std::move(name)), gender(gender), broom(broom) {}
 
     bool Player::operator==(const Player &other) const {
         return position == other.position && name == other.name &&
-        gender == other.gender && broom == other.broom;
+        gender == other.gender && broom == other.broom && id == other.id;
     }
 
     bool Player::operator!=(const Player &other) const {
         return !(*this == other);
     }
 
-
-    // Ball
-
-    Ball::Ball(Position position) : position{position} {}
-
+    Ball::Ball(Position position, communication::messages::types::EntityId id) : Object(position, id) {}
 
     // Fanblock
 
@@ -85,12 +79,13 @@ namespace gameModel{
     }
 
     Environment::Environment(Config config,Team team1, Team team2) : config(std::move(config)), team1(std::move(team1)),
-    team2(std::move(team2)), quaffle(), snitch(), bludgers() {}
+    team2(std::move(team2)), quaffle(), snitch(), bludgers{communication::messages::types::EntityId::BLUDGER1,
+                                                           communication::messages::types::EntityId::BLUDGER2} {}
 
     Environment::Environment(Config config, Team team1, Team team2, Quaffle quaffle, Snitch snitch,
                              std::array<Bludger, 2> bludgers) : config(std::move(config)), team1(std::move(team1)),
-                             team2(std::move(team2)), quaffle(std::move(quaffle)), snitch(std::move(snitch)),
-                             bludgers(std::move(bludgers)){}
+                             team2(std::move(team2)), quaffle(quaffle), snitch(snitch),
+                             bludgers(bludgers){}
 
     auto Environment::getAllPlayers() const -> std::array<std::shared_ptr<Player>, 14> {
         std::array<std::shared_ptr<Player>, 14> ret;
@@ -220,16 +215,6 @@ namespace gameModel{
 
         return false;
     }
-    auto Environment::isPlayerInOwnRestrictedZone(const Player &player) const -> bool {
-        if (this->team1.hasMember(player) && this->getCell(player.position) == Cell::RestrictedLeft) {
-            return true;
-        }
-        if (this->team2.hasMember(player) && this->getCell(player.position) == Cell::RestrictedRight) {
-            return true;
-        }
-
-        return false;
-    }
     auto Environment::isPlayerInOpponentRestrictedZone(const Player &player) const  -> bool {
         if (this->team1.hasMember(player) && this->getCell(player.position) == Cell::RestrictedRight) {
             return true;
@@ -242,36 +227,33 @@ namespace gameModel{
 
     // Ball Types
 
-    Snitch::Snitch(Position position): Ball(position) {}
+    Snitch::Snitch(Position position): Ball(position, communication::messages::types::EntityId::SNITCH) {}
 
-    Snitch::Snitch() : Ball({0, 0}), exists(false) {
+    Snitch::Snitch() : Ball({0, 0}, communication::messages::types::EntityId::SNITCH), exists(false){
         auto allCells = Environment::getAllValidCells();
         auto index = gameController::rng(0, static_cast<int>(allCells.size()));
         position = allCells[index];
     }
 
-    Bludger::Bludger(Position position) : Ball(position) {}
+    Bludger::Bludger(Position position, communication::messages::types::EntityId id) : Ball(position, id) {}
 
-    Bludger::Bludger() : Ball({8, 6}) {}
+    Bludger::Bludger(communication::messages::types::EntityId id) : Ball({8, 6}, id){}
 
-    Quaffle::Quaffle(Position position) : Ball(position) {}
+    Quaffle::Quaffle(Position position) : Ball(position, communication::messages::types::EntityId::QUAFFLE) {}
 
-    Quaffle::Quaffle() : Ball({8, 6}) {}
+    Quaffle::Quaffle() : Ball({8, 6}, communication::messages::types::EntityId::QUAFFLE){}
 
+    Chaser::Chaser(Position position, std::string name, communication::messages::types::Sex gender, communication::messages::types::Broom broom, communication::messages::types::EntityId id) :
+            Player(position, std::move(name), gender, broom, id) {}
 
-    // Player Types
+    Keeper::Keeper(Position position, std::string name, communication::messages::types::Sex gender, communication::messages::types::Broom broom, communication::messages::types::EntityId id) :
+            Player(position, std::move(name), gender, broom, id) {}
 
-    Chaser::Chaser(Position position, std::string name, Gender gender, Broom broom) :
-            Player(position, std::move(name), gender, broom) {}
+    Seeker::Seeker(Position position, std::string name, communication::messages::types::Sex gender, communication::messages::types::Broom broom, communication::messages::types::EntityId id) :
+            Player(position, std::move(name), gender, broom, id) {}
 
-    Keeper::Keeper(Position position, std::string name, Gender gender, Broom broom) :
-            Player(position, std::move(name), gender, broom) {}
-
-    Seeker::Seeker(Position position, std::string name, Gender gender, Broom broom) :
-            Player(position, std::move(name), gender, broom) {}
-
-    Beater::Beater(Position position, std::string name, Gender gender, Broom broom) :
-            Player(position, std::move(name), gender, broom) {}
+    Beater::Beater(Position position, std::string name, communication::messages::types::Sex gender, communication::messages::types::Broom broom, communication::messages::types::EntityId id) :
+            Player(position, std::move(name), gender, broom, id) {}
 
 
     // Team
@@ -314,16 +296,22 @@ namespace gameModel{
     // Config
 
     Config::Config(unsigned int maxRounds, const Timeouts &timeouts, const FoulDetectionProbs &foulDetectionProbs,
-                   const GameDynamicsProbs &gameDynamicsProbs, std::map<Broom, double> extraTurnProbs) :
+                   const GameDynamicsProbs &gameDynamicsProbs, std::map<communication::messages::types::Broom, double> extraTurnProbs) :
             maxRounds(maxRounds), timeouts(timeouts), foulDetectionProbs(foulDetectionProbs), gameDynamicsProbs(gameDynamicsProbs),
             extraTurnProbs(std::move(extraTurnProbs)) {}
 
-    double Config::getExtraTurnProb(Broom broom) const{
+    double Config::getExtraTurnProb(communication::messages::types::Broom broom) const{
         return extraTurnProbs.at(broom);
     }
 
-
-    // Position
+    //Willste mal nen richtig großen ... KONSTRUKTOR sehen? ;)
+    Config::Config(const communication::messages::broadcast::MatchConfig &config) : maxRounds(config.getMaxRounds()),
+        timeouts{config.getPlayerTurnTimeout(), config.getFanTurnTimeout(), config.getPlayerPhaseTime(), config.getFanPhaseTime(),
+                 config.getBallPhaseTime()}, foulDetectionProbs{config.getProbFoulFlacking(), config.getProbFoulHaversacking(),
+                 config.getProbFoulStooging(), config.getProbFoulBlatching(), config.getProbFoulSnitchnip(), config.getProbFoulElf(),
+                 config.getProbFoulGoblin(), config.getProbFoulTroll(), config.getProbFoulSnitch()},
+                 gameDynamicsProbs{config.getProbThrowSuccess(), config.getProbKnockOut(), config.getProbFoolAway(), config.getProbCatchSnitch(),
+                 config.getProbCatchQuaffle(), config.getProbWrestQuaffle()}{}
 
     Position::Position(int x, int y) {
         this->x = x;
@@ -375,4 +363,6 @@ namespace gameModel{
     Vector Vector::operator+(const Vector &v) const{
         return Vector(this->x + v.x, this->y + v.y);
     }
+
+    Object::Object(const Position &position, communication::messages::types::EntityId id) : position(position), id(id){}
 }
