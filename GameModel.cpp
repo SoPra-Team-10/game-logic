@@ -249,7 +249,17 @@ namespace gameModel{
                std::string  name, std::string  colorMain, std::string  colorSecondary,
                Fanblock fanblock)
             : seeker(std::move(seeker)), keeper(std::move(keeper)), beaters(std::move(beaters)), chasers(std::move(chasers)), name(std::move(name)), colorMain(std::move(colorMain)),
-              colorSecondary(std::move(colorSecondary)), fanblock(std::move(fanblock)) {}
+            colorSecondary(std::move(colorSecondary)), fanblock(std::move(fanblock)) {}
+
+//TODO EntityID muss in der Teamconfig oder Formation mit übergeben werden!!!!
+    Team::Team(communication::messages::request::TeamConfig teamConfig, communication::messages::request::TeamFormation teamFormation) :
+        seeker{{teamFormation.getSeekerX(), teamFormation.getSeekerY()}, teamConfig.getSeeker().getName(), teamConfig.getSeeker().getSex(), teamConfig.getSeeker().getBroom(), communication::messages::types::EntityId::LEFT_SEEKER},
+        keeper{{teamFormation.getKeeperX(), teamFormation.getKeeperY()}, teamConfig.getKeeper().getName(), teamConfig.getKeeper().getSex(), teamConfig.getKeeper().getBroom(), communication::messages::types::EntityId::LEFT_KEEPER},
+        beaters( std::array<gameModel::Beater, 1> {{0,0}, teamConfig.getKeeper().getName(), teamConfig.getKeeper().getSex(), teamConfig.getKeeper().getBroom(), communication::messages::types::EntityId::LEFT_KEEPER}),
+
+
+
+
 
     auto Team::getAllPlayers() const -> std::array<std::shared_ptr<Player>, 7> {
         std::array<std::shared_ptr<Player>, 7> ret;

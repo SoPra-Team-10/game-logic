@@ -8,6 +8,8 @@
 #include <memory>
 #include <SopraMessages/types.hpp>
 #include <SopraMessages/MatchConfig.hpp>
+#include <SopraMessages/TeamConfig.hpp>
+#include <SopraMessages/TeamFormation.hpp>
 
 namespace gameModel{
 
@@ -262,7 +264,7 @@ namespace gameModel{
         const std::string colorSecondary;
         int score{};
         Fanblock fanblock;
-
+        Team(communication::messages::request::TeamConfig, communication::messages::request::TeamFormation);
         Team(Seeker seeker, Keeper keeper, std::array<Beater, 2> beaters, std::array<Chaser, 3> chasers,
              std::string  name, std::string  colorMain, std::string  colorSecondary,
              Fanblock fanblock);
