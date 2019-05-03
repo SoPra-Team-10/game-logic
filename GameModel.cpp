@@ -9,7 +9,7 @@
 
 namespace gameModel{
 
-    Player::Player(Position position, std::string name, Gender gender, Broom broom, communication::messages::types::EntityId id) :
+    Player::Player(Position position, std::string name, communication::messages::types::Sex gender, communication::messages::types::Broom broom, communication::messages::types::EntityId id) :
         Object(position, id), name(std::move(name)), gender(gender), broom(broom) {}
 
     bool Player::operator==(const Player &other) const {
@@ -206,16 +206,16 @@ namespace gameModel{
 
     Quaffle::Quaffle() : Ball({8, 6}, communication::messages::types::EntityId::QUAFFLE){}
 
-    Chaser::Chaser(Position position, std::string name, Gender gender, Broom broom, communication::messages::types::EntityId id) :
+    Chaser::Chaser(Position position, std::string name, communication::messages::types::Sex gender, communication::messages::types::Broom broom, communication::messages::types::EntityId id) :
             Player(position, std::move(name), gender, broom, id) {}
 
-    Keeper::Keeper(Position position, std::string name, Gender gender, Broom broom, communication::messages::types::EntityId id) :
+    Keeper::Keeper(Position position, std::string name, communication::messages::types::Sex gender, communication::messages::types::Broom broom, communication::messages::types::EntityId id) :
             Player(position, std::move(name), gender, broom, id) {}
 
-    Seeker::Seeker(Position position, std::string name, Gender gender, Broom broom, communication::messages::types::EntityId id) :
+    Seeker::Seeker(Position position, std::string name, communication::messages::types::Sex gender, communication::messages::types::Broom broom, communication::messages::types::EntityId id) :
             Player(position, std::move(name), gender, broom, id) {}
 
-    Beater::Beater(Position position, std::string name, Gender gender, Broom broom, communication::messages::types::EntityId id) :
+    Beater::Beater(Position position, std::string name, communication::messages::types::Sex gender, communication::messages::types::Broom broom, communication::messages::types::EntityId id) :
             Player(position, std::move(name), gender, broom, id) {}
 
     Team::Team(Seeker seeker, Keeper keeper, std::array<Beater, 2> beaters, std::array<Chaser, 3> chasers,
@@ -253,13 +253,22 @@ namespace gameModel{
     }
 
     Config::Config(unsigned int maxRounds, const Timeouts &timeouts, const FoulDetectionProbs &foulDetectionProbs,
-                   const GameDynamicsProbs &gameDynamicsProbs, std::map<Broom, double> extraTurnProbs) :
+                   const GameDynamicsProbs &gameDynamicsProbs, std::map<communication::messages::types::Broom, double> extraTurnProbs) :
             maxRounds(maxRounds), timeouts(timeouts), foulDetectionProbs(foulDetectionProbs), gameDynamicsProbs(gameDynamicsProbs),
             extraTurnProbs(std::move(extraTurnProbs)) {}
 
-    double Config::getExtraTurnProb(Broom broom) const{
+    double Config::getExtraTurnProb(communication::messages::types::Broom broom) const{
         return extraTurnProbs.at(broom);
     }
+
+    //Willste mal nen richtig großen ... KONSTRUKTOR sehen? ;)
+    Config::Config(const communication::messages::broadcast::MatchConfig &config) : maxRounds(config.getMaxRounds()),
+        timeouts{config.getPlayerTurnTimeout(), config.getFanTurnTimeout(), config.getPlayerPhaseTime(), config.getFanPhaseTime(),
+                 config.getBallPhaseTime()}, foulDetectionProbs{config.getProbFoulFlacking(), config.getProbFoulHaversacking(),
+                 config.getProbFoulStooging(), config.getProbFoulBlatching(), config.getProbFoulSnitchnip(), config.getProbFoulElf(),
+                 config.getProbFoulGoblin(), config.getProbFoulTroll(), config.getProbFoulSnitch()},
+                 gameDynamicsProbs{config.getProbThrowSuccess(), config.getProbKnockOut(), config.getProbFoolAway(), config.getProbCatchSnitch(),
+                 config.getProbCatchQuaffle(), config.getProbWrestQuaffle()}{}
 
     Position::Position(int x, int y) {
         this->x = x;
