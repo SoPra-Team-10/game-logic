@@ -6,6 +6,7 @@
 #include <map>
 #include <vector>
 #include <memory>
+#include <SopraMessages/types.hpp>
 
 namespace gameModel{
 
@@ -158,18 +159,26 @@ namespace gameModel{
         std::map<Broom, double> extraTurnProbs;
     };
 
+    class Object{
+    public:
+        Object() = default;
+        Object(const Position &position, communication::messages::types::EntityId id);
+
+        Position position = {};
+        const communication::messages::types::EntityId id{};
+    };
+
     /**
      * Represents the playable characters
      */
-    class Player{
+    class Player : public Object{
     public:
-        Position position = {};
         std::string name;
         Gender gender = Gender::Female;
         Broom broom = Broom::Cleansweep_11;
 
         Player() = default;
-        Player(Position position, std::string  name, Gender gender, Broom broom);
+        Player(Position position, std::string  name, Gender gender, Broom broom, communication::messages::types::EntityId id);
         bool operator==(const Player &other) const;
         bool operator!=(const Player &other) const;
     };
@@ -177,11 +186,9 @@ namespace gameModel{
     /**
      * Represents non playable ball-objects
      */
-    class Ball{
+    class Ball : public Object{
     public:
-        Position position = {};
-
-        explicit Ball(Position position);
+        Ball(Position position, communication::messages::types::EntityId id);
     };
 
     /**
@@ -211,22 +218,22 @@ namespace gameModel{
 
     class Chaser : public Player{
     public:
-        Chaser(Position position, std::string name, Gender gender, Broom broom);
+        Chaser(Position position, std::string name, Gender gender, Broom broom, communication::messages::types::EntityId id);
     };
 
     class Keeper : public Player{
     public:
-        Keeper(Position position, std::string name, Gender gender, Broom broom);
+        Keeper(Position position, std::string name, Gender gender, Broom broom, communication::messages::types::EntityId id);
     };
 
     class Seeker : public Player{
     public:
-        Seeker(Position position, std::string name, Gender gender, Broom broom);
+        Seeker(Position position, std::string name, Gender gender, Broom broom, communication::messages::types::EntityId id);
     };
 
     class Beater : public Player{
     public:
-        Beater(Position position, std::string name, Gender gender, Broom broom);
+        Beater(Position position, std::string name, Gender gender, Broom broom, communication::messages::types::EntityId id);
     };
 
     class Quaffle : public Ball{
@@ -243,8 +250,8 @@ namespace gameModel{
         /**
          * Places Bludger in the centre of the field
          */
-        Bludger();
-        explicit Bludger(Position position);
+        Bludger(communication::messages::types::EntityId id);
+        Bludger(Position position, communication::messages::types::EntityId id);
     };
 
     class Snitch : public Ball{

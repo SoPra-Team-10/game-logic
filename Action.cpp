@@ -49,8 +49,6 @@ namespace gameController{
             return ActionResult::Impossible;
         } else if(P_TYPE == SEEKER){
             return ActionResult::Impossible;
-        } else if(){
-
         }
 
         return ActionResult::Success;

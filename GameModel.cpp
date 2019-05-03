@@ -1,4 +1,6 @@
 #include <utility>
+
+#include <utility>
 #include "GameModel.h"
 #include "GameController.h"
 #include <utility>
@@ -7,20 +9,19 @@
 
 namespace gameModel{
 
-    Player::Player(Position position, std::string  name, Gender gender, Broom broom) :
-            position{position}, name(std::move(name)), gender(gender), broom(broom){}
+    Player::Player(Position position, std::string name, Gender gender, Broom broom, communication::messages::types::EntityId id) :
+        Object(position, id), name(std::move(name)), gender(gender), broom(broom) {}
 
     bool Player::operator==(const Player &other) const {
         return position == other.position && name == other.name &&
-        gender == other.gender && broom == other.broom;
+        gender == other.gender && broom == other.broom && id == other.id;
     }
 
     bool Player::operator!=(const Player &other) const {
         return !(*this == other);
     }
 
-    Ball::Ball(Position position) : position{position} {}
-
+    Ball::Ball(Position position, communication::messages::types::EntityId id) : Object(position, id) {}
 
     Fanblock::Fanblock(int teleportation, int rangedAttack, int impulse, int snitchPush) : fans(){
         if(teleportation + rangedAttack + impulse + snitchPush != 7){
@@ -75,12 +76,13 @@ namespace gameModel{
     }
 
     Environment::Environment(Config config,Team team1, Team team2) : config(std::move(config)), team1(std::move(team1)),
-    team2(std::move(team2)), quaffle(), snitch(), bludgers() {}
+    team2(std::move(team2)), quaffle(), snitch(), bludgers{communication::messages::types::EntityId::BLUDGER1,
+                                                           communication::messages::types::EntityId::BLUDGER1} {}
 
     Environment::Environment(Config config, Team team1, Team team2, Quaffle quaffle, Snitch snitch,
                              std::array<Bludger, 2> bludgers) : config(std::move(config)), team1(std::move(team1)),
-                             team2(std::move(team2)), quaffle(std::move(quaffle)), snitch(std::move(snitch)),
-                             bludgers(std::move(bludgers)){}
+                             team2(std::move(team2)), quaffle(quaffle), snitch(snitch),
+                             bludgers(bludgers){}
 
     auto Environment::getAllPlayers() const -> std::array<std::shared_ptr<Player>, 14> {
         std::array<std::shared_ptr<Player>, 14> ret;
@@ -188,33 +190,33 @@ namespace gameModel{
 
 
 
-    Snitch::Snitch(Position position): Ball(position) {}
+    Snitch::Snitch(Position position): Ball(position, communication::messages::types::EntityId::SNITCH) {}
 
-    Snitch::Snitch() : Ball({0, 0}), exists(false){
+    Snitch::Snitch() : Ball({0, 0}, communication::messages::types::EntityId::SNITCH), exists(false){
         auto allCells = Environment::getAllValidCells();
         auto index = gameController::rng(0, static_cast<int>(allCells.size()));
         position = allCells[index];
     }
 
-    Bludger::Bludger(Position position) : Ball(position) {}
+    Bludger::Bludger(Position position, communication::messages::types::EntityId id) : Ball(position, id) {}
 
-    Bludger::Bludger() : Ball({8, 6}){}
+    Bludger::Bludger(communication::messages::types::EntityId id) : Ball({8, 6}, id){}
 
-    Quaffle::Quaffle(Position position) : Ball(position) {}
+    Quaffle::Quaffle(Position position) : Ball(position, communication::messages::types::EntityId::QUAFFLE) {}
 
-    Quaffle::Quaffle() : Ball({8, 6}){}
+    Quaffle::Quaffle() : Ball({8, 6}, communication::messages::types::EntityId::QUAFFLE){}
 
-    Chaser::Chaser(Position position, std::string name, Gender gender, Broom broom) :
-            Player(position, std::move(name), gender, broom) {}
+    Chaser::Chaser(Position position, std::string name, Gender gender, Broom broom, communication::messages::types::EntityId id) :
+            Player(position, std::move(name), gender, broom, id) {}
 
-    Keeper::Keeper(Position position, std::string name, Gender gender, Broom broom) :
-            Player(position, std::move(name), gender, broom) {}
+    Keeper::Keeper(Position position, std::string name, Gender gender, Broom broom, communication::messages::types::EntityId id) :
+            Player(position, std::move(name), gender, broom, id) {}
 
-    Seeker::Seeker(Position position, std::string name, Gender gender, Broom broom) :
-            Player(position, std::move(name), gender, broom) {}
+    Seeker::Seeker(Position position, std::string name, Gender gender, Broom broom, communication::messages::types::EntityId id) :
+            Player(position, std::move(name), gender, broom, id) {}
 
-    Beater::Beater(Position position, std::string name, Gender gender, Broom broom) :
-            Player(position, std::move(name), gender, broom) {}
+    Beater::Beater(Position position, std::string name, Gender gender, Broom broom, communication::messages::types::EntityId id) :
+            Player(position, std::move(name), gender, broom, id) {}
 
     Team::Team(Seeker seeker, Keeper keeper, std::array<Beater, 2> beaters, std::array<Chaser, 3> chasers,
                std::string  name, std::string  colorMain, std::string  colorSecondary,
@@ -307,4 +309,6 @@ namespace gameModel{
         return Position(static_cast<int>(p.x + round(this->x)),
                 static_cast<int>(p.y + round(this->y)));
     }
+
+    Object::Object(const Position &position, communication::messages::types::EntityId id) : position(position), id(id) {}
 }
