@@ -1,5 +1,13 @@
 #include <utility>
 #include "Action.h"
+#define P_TYPE typeid(*actor)
+#define B_TYPE typeId(*ball)
+#define SEEKER typeid(gameModel::Seeker)
+#define KEEPER typeid(gameModel::Keeper)
+#define BEATER typeid(gameModel::Beater)
+#define CHASER typeid(gameModel::Chaser)
+#define QUAFFLE typeid(gameModel::Quaffle)
+#define BLUDGER typeid(gameModel::Bludger)
 
 namespace gameController{
     Action::Action(std::shared_ptr<gameModel::Environment> env, std::shared_ptr<gameModel::Player> actor,
@@ -37,17 +45,10 @@ namespace gameController{
     auto Shot::check() const -> ActionResult {
         if (gameModel::Environment::getCell(this->target) == gameModel::Cell::OutOfBounds) {
             return ActionResult::Impossible;
-        } else if(typeid(*actor) == typeid(gameModel::Seeker)){
+        }else if(actor->position != ball->position){
             return ActionResult::Impossible;
-        } else if(typeid(*actor) == typeid(gameModel::Keeper) || typeid(*actor) == typeid(gameModel::Chaser)){
-            if(env->quaffle.position != actor->position){
-                return ActionResult::Impossible;
-            }
-        } else if(typeid(*actor) == typeid(gameModel::Beater)){
-            if(env->bludgers[0].position != actor->position &&
-            env->bludgers[1].position != actor->position){
-                return ActionResult::Impossible;
-            }
+        } else if(P_TYPE == SEEKER){
+            return ActionResult::Impossible;
         }
 
         return ActionResult::Success;
