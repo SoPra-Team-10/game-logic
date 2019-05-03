@@ -208,16 +208,59 @@ namespace gameController{
     auto Move::checkForFoul() const -> gameModel::Foul {
 
         // @ToDo: Fouls
+
+        // Keilen
         if (env->getPlayer(this->target).has_value() &&
             !env->arePlayerInSameTeam(*(env->getPlayer(this->target).value()), *(this->actor))) {
-            return  gameModel::Foul::Flacken;
+            return  gameModel::Foul::Keilen;
         }
 
+        // Flacken
+        if (env->isPlayerInOwnRestrictedZone(*(this->actor))) {
+            if ((env->team1.hasMember(*(this->actor)) && env->getCell(this->target) == gameModel::Cell::GoalLeft) ||
+                (env->team2.hasMember(*(this->actor)) && env->getCell(this->target) == gameModel::Cell::GoalRight)) {
+                return gameModel::Foul::Flacken;
+            }
+        }
+
+        // Schnalzeln
         if (typeid(this->actor) != typeid(gameModel::Seeker) &&
                 this->actor->position == env->snitch.position) {
             return gameModel::Foul::Schnatzeln;
         }
 
+        if (typeid(this->actor) == typeid(gameModel::Chaser)) {
+
+            // Nachtarocken
+            if (env->quaffle.position == this->actor->position) {
+                if ((env->team1.hasMember(*(this->actor)) && env->getCell(this->target) == gameModel::Cell::GoalRight) ||
+                    (env->team2.hasMember(*(this->actor)) && env->getCell(this->target) == gameModel::Cell::GoalLeft)) {
+                    return gameModel::Foul::Nachtarocken;
+                }
+            }
+
+            // Stutschen
+            if (env->team1.hasMember(*(this->actor))) {
+                if (env->getCell(this->target) == gameModel::Cell::RestrictedLeft) {
+                    std::array<std::shared_ptr<gameModel::Player>, 6> players = env->getTeamMates(*(this->actor));
+
+                    bool flag = false;
+                    for (int i = 0; i < (int) players.size(); i++) {
+
+                    }
+                }
+            }
+            else {
+                if (env->getCell(this->target) == gameModel::Cell::RestrictedRight) {
+                    std::array<std::shared_ptr<gameModel::Player>, 6> players = env->getTeamMates(*(this->actor));
+
+                    bool flag = false;
+                    for (int i = 0; i < (int) players.size(); i++) {
+
+                    }
+                }
+            }
+        }
 
         return gameModel::Foul::None;
     }

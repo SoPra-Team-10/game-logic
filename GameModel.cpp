@@ -214,7 +214,6 @@ namespace gameModel{
         if (this->team2.hasMember(player) && this->getCell(player.position) == Cell::RestrictedLeft) {
             return true;
         }
-
         return false;
     }
 
