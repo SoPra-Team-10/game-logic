@@ -10,9 +10,8 @@
 TEST(shot_test, shot_check1) {
     auto env = setup::createEnv();
 
-    env.quaffle.position = env.team1.keeper.position;
-    gameController::Shot testShot(std::make_shared<gameModel::Environment>(env),
-            std::make_shared<gameModel::Keeper>(env.team1.keeper), std::make_shared<gameModel::Quaffle>(env.quaffle), {0, 0});
+    env.quaffle.position = env.team1.keeper->position;
+    gameController::Shot testShot(std::make_shared<gameModel::Environment>(env), env.team1.keeper, std::make_shared<gameModel::Quaffle>(env.quaffle), {0, 0});
     EXPECT_EQ(testShot.check(), gameController::ActionResult::Impossible);
 }
 
@@ -20,9 +19,8 @@ TEST(shot_test, shot_check1) {
 TEST(shot_test, shot_check2) {
     auto env = setup::createEnv();
 
-    env.quaffle.position = env.team1.keeper.position;
-    gameController::Shot testShot(std::make_shared<gameModel::Environment>(env),
-                                  std::make_shared<gameModel::Keeper>(env.team1.keeper), std::make_shared<gameModel::Quaffle>(env.quaffle), {12, 12});
+    env.quaffle.position = env.team1.keeper->position;
+    gameController::Shot testShot(std::make_shared<gameModel::Environment>(env), env.team1.keeper, std::make_shared<gameModel::Quaffle>(env.quaffle), {12, 12});
     EXPECT_EQ(testShot.check(), gameController::ActionResult::Success);
 }
 
@@ -30,9 +28,8 @@ TEST(shot_test, shot_check2) {
 TEST(shot_test, shot_check3){
     auto env = setup::createEnv();
 
-    env.quaffle.position = env.team1.chasers[0].position;
-    gameController::Shot testShot(std::make_shared<gameModel::Environment>(env),
-                                  std::make_shared<gameModel::Keeper>(env.team1.keeper), std::make_shared<gameModel::Quaffle>(env.quaffle), {12, 12});
+    env.quaffle.position = env.team1.chasers[0]->position;
+    gameController::Shot testShot(std::make_shared<gameModel::Environment>(env), env.team1.keeper, std::make_shared<gameModel::Quaffle>(env.quaffle), {12, 12});
     EXPECT_EQ(testShot.check(), gameController::ActionResult::Impossible);
 }
 
@@ -40,9 +37,8 @@ TEST(shot_test, shot_check3){
 TEST(shot_test, shot_check4){
     auto env = setup::createEnv();
 
-    env.quaffle.position = env.team1.chasers[0].position;
-    gameController::Shot testShot(std::make_shared<gameModel::Environment>(env),
-                                  std::make_shared<gameModel::Chaser>(env.team1.chasers[0]), std::make_shared<gameModel::Quaffle>(env.quaffle), {12, 12});
+    env.quaffle.position = env.team1.chasers[0]->position;
+    gameController::Shot testShot(std::make_shared<gameModel::Environment>(env), env.team1.chasers[0], std::make_shared<gameModel::Quaffle>(env.quaffle), {12, 12});
     EXPECT_EQ(testShot.check(), gameController::ActionResult::Success);
 }
 
@@ -50,9 +46,8 @@ TEST(shot_test, shot_check4){
 TEST(shot_test, shot_check5){
     auto env = setup::createEnv();
 
-    env.quaffle.position = env.team1.seeker.position;
-    gameController::Shot testShot(std::make_shared<gameModel::Environment>(env),
-                                  std::make_shared<gameModel::Seeker>(env.team1.seeker), std::make_shared<gameModel::Quaffle>(env.quaffle), {12, 12});
+    env.quaffle.position = env.team1.seeker->position;
+    gameController::Shot testShot(std::make_shared<gameModel::Environment>(env), env.team1.seeker, std::make_shared<gameModel::Quaffle>(env.quaffle), {12, 12});
     EXPECT_EQ(testShot.check(), gameController::ActionResult::Impossible);
 }
 
@@ -60,9 +55,8 @@ TEST(shot_test, shot_check5){
 TEST(shot_test, shot_check6){
     auto env = setup::createEnv();
 
-    env.quaffle.position = env.team1.beaters[0].position;
-    gameController::Shot testShot(std::make_shared<gameModel::Environment>(env),
-                                  std::make_shared<gameModel::Beater>(env.team1.beaters[0]), std::make_shared<gameModel::Quaffle>(env.quaffle), {12, 12});
+    env.quaffle.position = env.team1.beaters[0]->position;
+    gameController::Shot testShot(std::make_shared<gameModel::Environment>(env), env.team1.beaters[0], std::make_shared<gameModel::Quaffle>(env.quaffle), {12, 12});
     EXPECT_EQ(testShot.check(), gameController::ActionResult::Impossible);
 }
 
@@ -71,9 +65,8 @@ TEST(shot_test, shot_check6){
 TEST(shot_test, shot_execute1){
     auto env = setup::createEnv({0, {}, {}, {1, 0, 0, 0, 0, 0}, {}});
 
-    env.quaffle.position = env.team1.keeper.position;
-    gameController::Shot testShot(std::make_shared<gameModel::Environment>(env),
-                                  std::make_shared<gameModel::Keeper>(env.team1.keeper), std::make_shared<gameModel::Quaffle>(env.quaffle), {8, 6});
+    env.quaffle.position = env.team1.keeper->position;
+    gameController::Shot testShot(std::make_shared<gameModel::Environment>(env), env.team1.keeper, std::make_shared<gameModel::Quaffle>(env.quaffle), {8, 6});
     testShot.execute();
     EXPECT_EQ(env.quaffle.position, gameModel::Position(8, 6));
 }

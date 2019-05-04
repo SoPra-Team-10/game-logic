@@ -260,10 +260,10 @@ namespace gameModel{
      */
     class Team{
     public:
-        Seeker seeker;
-        Keeper keeper;
-        std::array<Beater, 2> beaters;
-        std::array<Chaser, 3> chasers;
+        std::shared_ptr<Seeker> seeker;
+        std::shared_ptr<Keeper> keeper;
+        std::array<std::shared_ptr<Beater>, 2> beaters;
+        std::array<std::shared_ptr<Chaser>, 3> chasers;
         const std::string name;
         const std::string colorMain;
         const std::string colorSecondary;
