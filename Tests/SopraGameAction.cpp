@@ -6,8 +6,8 @@
 #include "Action.h"
 #include "setup.h"
 
-//OOB throw
-TEST(shot_test, shot_check1) {
+//OOB throw_check
+TEST(shot_test, oob_throw_check) {
     auto env = setup::createEnv();
 
     env.quaffle.position = env.team1.keeper.position;
@@ -16,8 +16,8 @@ TEST(shot_test, shot_check1) {
     EXPECT_EQ(testShot.check(), gameController::ActionResult::Impossible);
 }
 
-//Valid Keeper throw
-TEST(shot_test, shot_check2) {
+//Valid Keeper throw_check
+TEST(shot_test, valid_keeper_throw_check) {
     auto env = setup::createEnv();
 
     env.quaffle.position = env.team1.keeper.position;
@@ -26,8 +26,8 @@ TEST(shot_test, shot_check2) {
     EXPECT_EQ(testShot.check(), gameController::ActionResult::Success);
 }
 
-//Invalid Keeper throw (Ball not at keeper position)
-TEST(shot_test, shot_check3){
+//Invalid Keeper throw_check (Ball not at keeper position)
+TEST(shot_test, inv_keeper_throw_check){
     auto env = setup::createEnv();
 
     env.quaffle.position = env.team1.chasers[0].position;
@@ -36,8 +36,8 @@ TEST(shot_test, shot_check3){
     EXPECT_EQ(testShot.check(), gameController::ActionResult::Impossible);
 }
 
-//Valid Chaser throw
-TEST(shot_test, shot_check4){
+//Valid Chaser throw_check
+TEST(shot_test, valid_chaser_throw_check){
     auto env = setup::createEnv();
 
     env.quaffle.position = env.team1.chasers[0].position;
@@ -46,8 +46,8 @@ TEST(shot_test, shot_check4){
     EXPECT_EQ(testShot.check(), gameController::ActionResult::Success);
 }
 
-//Invalid Seeker throw
-TEST(shot_test, shot_check5){
+//Invalid Seeker throw_check
+TEST(shot_test, inv_seeker_throw_check){
     auto env = setup::createEnv();
 
     env.quaffle.position = env.team1.seeker.position;
@@ -56,8 +56,8 @@ TEST(shot_test, shot_check5){
     EXPECT_EQ(testShot.check(), gameController::ActionResult::Impossible);
 }
 
-//Invalid Beater throw
-TEST(shot_test, shot_check6){
+//Invalid Beater throw_check
+TEST(shot_test, inv_beater_throw_check){
     auto env = setup::createEnv();
 
     env.quaffle.position = env.team1.beaters[0].position;
@@ -67,8 +67,8 @@ TEST(shot_test, shot_check6){
 }
 
 
-//Keeper throws ball to centre, no intercept, 100% chance of success
-TEST(shot_test, shot_execute1){
+//Keeper throw_checks ball to centre, no intercept, 100% chance of success
+TEST(shot_test, success_throw_execute){
     auto env = setup::createEnv({0, {}, {}, {1, 0, 0, 0, 0, 0}, {}});
 
     env.quaffle.position = env.team1.keeper.position;
