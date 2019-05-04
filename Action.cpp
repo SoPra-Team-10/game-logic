@@ -1,16 +1,9 @@
 #include <utility>
 #include "Action.h"
-#define P_TYPE typeid(*actor)
-#define B_TYPE typeid(*ball)
-#define SEEKER typeid(gameModel::Seeker)
-#define KEEPER typeid(gameModel::Keeper)
-#define BEATER typeid(gameModel::Beater)
-#define CHASER typeid(gameModel::Chaser)
-#define QUAFFLE typeid(gameModel::Quaffle)
-#define BLUDGER typeid(gameModel::Bludger)
-#define SNITCH typeid(gameModel::Snitch)
-#define QUAFFLETHROW ((P_TYPE == CHASER || P_TYPE == KEEPER) && B_TYPE == QUAFFLE)
-#define BLUDGERSHOT (P_TYPE == BEATER && B_TYPE == BLUDGER)
+#include "GameModel.h"
+#define INSTANCE_OF(A, B) (std::dynamic_pointer_cast<B>(A))
+#define QUAFFLETHROW ((INSTANCE_OF(actor, gameModel::Chaser) || INSTANCE_OF(actor, gameModel::Keeper)) && INSTANCE_OF(ball, gameModel::Quaffle))
+#define BLUDGERSHOT (INSTANCE_OF(actor, gameModel::Beater) && INSTANCE_OF(ball, gameModel::Bludger))
 
 namespace gameController{
     Action::Action(std::shared_ptr<gameModel::Environment> env, std::shared_ptr<gameModel::Player> actor,
@@ -35,7 +28,7 @@ namespace gameController{
                     }
 
                     auto &p = interceptPlayer.value();
-                    if(typeid(*p) == CHASER || typeid(*p) == KEEPER){
+                    if(INSTANCE_OF(p, gameModel::Chaser) || INSTANCE_OF(p, gameModel::Keeper)){
                         //Quaffle is catched
                         ball->position = pos;
                     } else {
@@ -63,7 +56,7 @@ namespace gameController{
             auto playerOnTarget = env->getPlayer(target);
             if(playerOnTarget.has_value()){
                 //Knock player out an place bludger on random free cell
-                if(typeid(*playerOnTarget.value()) != BEATER){
+                if(!INSTANCE_OF(playerOnTarget.value(), gameModel::Beater)){
                     playerOnTarget.value()->knockedOut = true;
                     auto possibleCells = env->getAllFreeCells();
                     int index = rng(0, static_cast<int>(possibleCells.size()));

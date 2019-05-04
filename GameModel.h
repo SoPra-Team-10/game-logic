@@ -165,6 +165,8 @@ namespace gameModel{
         Player(Position position, std::string  name, communication::messages::types::Sex gender, communication::messages::types::Broom broom, communication::messages::types::EntityId id);
         bool operator==(const Player &other) const;
         bool operator!=(const Player &other) const;
+
+        virtual ~Player() = default;
     };
 
     /**
@@ -173,6 +175,8 @@ namespace gameModel{
     class Ball : public Object{
     public:
         Ball(Position position, communication::messages::types::EntityId id);
+
+        virtual ~Ball() = default;
     };
 
     /**
