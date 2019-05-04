@@ -1,4 +1,5 @@
 #include <utility>
+#include <iostream>
 #include "Action.h"
 #include "GameModel.h"
 #define INSTANCE_OF(A, B) (std::dynamic_pointer_cast<B>(A))
@@ -31,11 +32,13 @@ namespace gameController{
                     if(INSTANCE_OF(p, gameModel::Chaser) || INSTANCE_OF(p, gameModel::Keeper)){
                         //Quaffle is catched
                         ball->position = pos;
+                        return;
                     } else {
                         //Quaffle bounces off
                         auto possibleCells = env->getAllPlayerFreeCellsAround(pos);
                         int index = rng(0, static_cast<int>(possibleCells.size()));
                         ball->position = possibleCells[index];
+                        return;
                     }
                 }
             }
@@ -116,8 +119,8 @@ namespace gameController{
     auto Shot::getInterceptionPositions() const -> std::vector<gameModel::Position>{
         auto crossedCells = gameController::getAllCrossedCells(this->actor->position, target);
         std::vector<gameModel::Position> ret;
-        for(const auto &cell : crossedCells){
-            for(const auto &player : env->getOpponents(*actor)){
+        for(const auto &player : env->getOpponents(*actor)){
+            for(const auto &cell : crossedCells){
                 if(player->position == cell){
                     ret.emplace_back(cell);
                 }
