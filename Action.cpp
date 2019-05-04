@@ -1,5 +1,4 @@
 #include <utility>
-#include <iostream>
 #include "Action.h"
 #include "GameModel.h"
 #define INSTANCE_OF(A, B) (std::dynamic_pointer_cast<B>(A))
