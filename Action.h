@@ -107,9 +107,6 @@ namespace gameController{
          * @return
          */
         auto getAllLandingCells() const -> std::vector<gameModel::Position>;
-
-        template <typename P, typename B>
-        auto check(P &player, B &ball) -> ActionResult;
     };
 
     /**
@@ -165,20 +162,6 @@ namespace gameController{
          */
         auto checkForFoul() const -> gameModel::Foul;
     };
-
-    template <>
-    auto Shot::check(gameModel::Chaser &Player, gameModel::Quaffle &Ball) -> ActionResult;
-
-    template <>
-    auto Shot::check(gameModel::Keeper &Player, gameModel::Quaffle &Ball) -> ActionResult;
-
-    template <>
-    auto Shot::check(gameModel::Beater &player, gameModel::Bludger &Ball) -> ActionResult;
-
-    template <typename P, typename B>
-    auto Shot::check(P &player, B &ball) -> ActionResult{
-        return ActionResult::Impossible;
-    }
 
 }
 

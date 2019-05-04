@@ -159,11 +159,14 @@ namespace gameModel{
         std::string name;
         communication::messages::types::Sex gender = {};
         communication::messages::types::Broom broom = {};
+        bool knockedOut = false;
 
         Player() = default;
         Player(Position position, std::string  name, communication::messages::types::Sex gender, communication::messages::types::Broom broom, communication::messages::types::EntityId id);
         bool operator==(const Player &other) const;
         bool operator!=(const Player &other) const;
+
+        virtual ~Player() = default;
     };
 
     /**
@@ -172,6 +175,8 @@ namespace gameModel{
     class Ball : public Object{
     public:
         Ball(Position position, communication::messages::types::EntityId id);
+
+        virtual ~Ball() = default;
     };
 
     /**
@@ -381,7 +386,17 @@ namespace gameModel{
          */
         auto getPlayer(Position) const -> std::optional<std::shared_ptr<Player>>;
 
+        /**
+         * Gets all Positions which are not out of bounds
+         * @return
+         */
         static auto getAllValidCells() -> std::array<Position, 193>;
+
+        /**
+         * Gets all valid cells not occupied by players
+         * @return
+         */
+        auto getAllFreeCells() -> std::array<Position, 179>;
     };
 }
 
