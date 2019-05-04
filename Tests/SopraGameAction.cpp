@@ -7,6 +7,8 @@
 #include "Action.h"
 #include "setup.h"
 
+//-----------------------------------Throw checks-----------------------------------------------------------------------
+
 //OOB throw_check
 TEST(shot_test, oob_throw_check) {
     auto env = setup::createEnv();
@@ -61,6 +63,7 @@ TEST(shot_test, inv_beater_throw_check){
     EXPECT_EQ(testShot.check(), gameController::ActionResult::Impossible);
 }
 
+//-----------------Throw execute----------------------------------------------------------------------------------------
 
 //Keeper throw_checks ball to centre, no intercept, 100% chance of success
 TEST(shot_test, success_throw_execute){
@@ -96,6 +99,37 @@ TEST(shot_test, success_throw_execute_intercept_bounce_off){
 }
 
 
+//--------------------------Bludger shot check------------------------------------------------------------------------
+
+TEST(shot_test, valid_bludger_shot_test){
+    auto env = std::make_shared<gameModel::Environment>(setup::createEnv());
+    env->bludgers[0]->position = env->team2.beaters[1]->position;
+    auto testShot = gameController::Shot(env, env->team2.beaters[1], env->bludgers[0], env->team1.seeker->position);
+    EXPECT_EQ(testShot.check(), gameController::ActionResult::Success);
+}
+
+
+TEST(shot_test, invalid_bludger_shot_test_no_ball){
+    auto env = std::make_shared<gameModel::Environment>(setup::createEnv());
+    auto testShot = gameController::Shot(env, env->team2.beaters[1], env->bludgers[0], env->team1.seeker->position);
+    EXPECT_EQ(testShot.check(), gameController::ActionResult::Impossible);
+}
+
+
+TEST(shot_test, invalid_bludger_shot_test_oob){
+    auto env = std::make_shared<gameModel::Environment>(setup::createEnv());
+    env->bludgers[0]->position = env->team2.beaters[1]->position;
+    auto testShot = gameController::Shot(env, env->team2.beaters[1], env->bludgers[0], {0, 0});
+    EXPECT_EQ(testShot.check(), gameController::ActionResult::Impossible);
+}
+
+
+TEST(shot_test, invalid_bludger_shot_test_no_beater){
+    auto env = std::make_shared<gameModel::Environment>(setup::createEnv());
+    env->bludgers[0]->position = env->team2.chasers[1]->position;
+    auto testShot = gameController::Shot(env, env->team2.chasers[1], env->bludgers[0], env->team1.seeker->position);
+    EXPECT_EQ(testShot.check(), gameController::ActionResult::Impossible);
+}
 //---------------------------Move tests---------------------------------------------------------------------------------
 
 TEST(move_test, move_foul0) {
