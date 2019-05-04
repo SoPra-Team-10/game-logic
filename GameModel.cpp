@@ -75,7 +75,7 @@ namespace gameModel{
         }
     }
 
-    Cell Environment::getCell(Position position) {
+    Cell Environment::getCell(const Position &position) {
         return getCell(position.x, position.y);
     }
 
@@ -152,12 +152,12 @@ namespace gameModel{
         return resultVect;
     }
 
-    auto Environment::getTeamMates(const Player &player) const -> std::array<std::shared_ptr<Player>, 6> {
+    auto Environment::getTeamMates(const std::shared_ptr<Player>& player) const -> std::array<std::shared_ptr<Player>, 6> {
         auto players = team1.hasMember(player) ? team1.getAllPlayers() : team2.getAllPlayers();
         std::array<std::shared_ptr<Player>, 6> ret;
         auto it = ret.begin();
         for(const auto &p : players){
-            if(*p != player){
+            if(*p != *player){
                 *it = p;
                 it++;
             }
@@ -166,11 +166,11 @@ namespace gameModel{
         return ret;
     }
 
-    auto Environment::getOpponents(const Player &player) const -> std::array<std::shared_ptr<Player>, 7> {
+    auto Environment::getOpponents(const std::shared_ptr<Player>& player) const -> std::array<std::shared_ptr<Player>, 7> {
         return team1.hasMember(player) ? team2.getAllPlayers() : team1.getAllPlayers();
     }
 
-    auto Environment::getPlayer(Position position) const -> std::optional<std::shared_ptr<Player>> {
+    auto Environment::getPlayer(const Position &position) const -> std::optional<std::shared_ptr<Player>> {
         for(const auto &p : getAllPlayers()){
             if(p->position == position){
                 return p;
@@ -180,7 +180,7 @@ namespace gameModel{
         return {};
     }
 
-    auto Environment::arePlayerInSameTeam(const Player &p1, const Player &p2) const -> bool {
+    auto Environment::arePlayerInSameTeam(const std::shared_ptr<Player>& p1, const std::shared_ptr<Player>& p2) const -> bool {
         return (this->team1.hasMember(p1) && this->team1.hasMember(p2)) ||
                (this->team2.hasMember(p1) && this->team2.hasMember(p2));
     }
@@ -214,27 +214,27 @@ namespace gameModel{
         return ret;
     }
 
-    auto Environment::isPlayerInOwnRestrictedZone(const Player &player) const -> bool {
-        if (this->team1.hasMember(player) && this->getCell(player.position) == Cell::RestrictedLeft) {
+    auto Environment::isPlayerInOwnRestrictedZone(const std::shared_ptr<Player>& player) const -> bool {
+        if (this->team1.hasMember(player) && this->getCell(player->position) == Cell::RestrictedLeft) {
             return true;
         }
-        if (this->team2.hasMember(player) && this->getCell(player.position) == Cell::RestrictedRight) {
+        if (this->team2.hasMember(player) && this->getCell(player->position) == Cell::RestrictedRight) {
             return true;
         }
 
         return false;
     }
-    auto Environment::isPlayerInOpponentRestrictedZone(const Player &player) const  -> bool {
-        if (this->team1.hasMember(player) && this->getCell(player.position) == Cell::RestrictedRight) {
+    auto Environment::isPlayerInOpponentRestrictedZone(const std::shared_ptr<Player>& player) const  -> bool {
+        if (this->team1.hasMember(player) && this->getCell(player->position) == Cell::RestrictedRight) {
             return true;
         }
-        if (this->team2.hasMember(player) && this->getCell(player.position) == Cell::RestrictedLeft) {
+        if (this->team2.hasMember(player) && this->getCell(player->position) == Cell::RestrictedLeft) {
             return true;
         }
         return false;
     }
 
-    auto Environment::getTeam(const Player &player) const -> const Team& {
+    auto Environment::getTeam(const std::shared_ptr<Player>& player) const -> const Team& {
         if (this->team1.hasMember(player)) {
             return this->team1;
         }
@@ -245,7 +245,7 @@ namespace gameModel{
         throw std::runtime_error("The Player isn't part of any team.");
     }
 
-    void Environment::placePlayerOnRandomFreeCell(Player &player) {
+    void Environment::placePlayerOnRandomFreeCell(const std::shared_ptr<Player>& player) {
         std::vector<Position> possibleCells;
         possibleCells.reserve(82);
         for(const auto &cell : getAllValidCells()){
@@ -263,7 +263,7 @@ namespace gameModel{
         }
 
         int index = gameController::rng(0, static_cast<int>(possibleCells.size() - 1));
-        player.position = possibleCells[index];
+        player->position = possibleCells[index];
     }
 
 
@@ -344,9 +344,9 @@ namespace gameModel{
         return ret;
     }
 
-    bool Team::hasMember(const Player &player) const {
+    bool Team::hasMember(const std::shared_ptr<Player>& player) const {
         for(const auto &p : getAllPlayers()){
-            if(player == *p){
+            if(player == p){
                 return true;
             }
         }
