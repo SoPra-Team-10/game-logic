@@ -240,29 +240,20 @@ namespace gameController{
                     return gameModel::Foul::ChargeGoal;
                 }
             }
+
             // MultipleOffence
-            if (env->team1.hasMember(*(this->actor))) {
-                if (env->getCell(this->target) == gameModel::Cell::RestrictedRight) {
-                    const auto &players = env->team1.chasers;
-
-                    for (const auto & player : players) {
-                        if (env->isPlayerInOpponentRestrictedZone(*player)) {
-                            return gameModel::Foul::MultibleOffence;
-                        }
+            auto origPos = actor->position;
+            actor->position = target;
+            if(env->isPlayerInOpponentRestrictedZone(*actor)){
+                auto mates = env->getTeamMates(*actor);
+                for(const auto &p : mates){
+                    if(INSTANCE_OF(p, gameModel::Chaser) && env->isPlayerInOpponentRestrictedZone(*p)){
+                        return gameModel::Foul::MultibleOffence;
                     }
                 }
             }
-            else {
-                if (env->getCell(this->target) == gameModel::Cell::RestrictedLeft) {
-                    const auto &players = env->team1.chasers;
 
-                    for (const auto & player : players) {
-                        if (env->isPlayerInOpponentRestrictedZone(*player)) {
-                            return gameModel::Foul::MultibleOffence;
-                        }
-                    }
-                }
-            }
+            actor->position = origPos;
         }
 
         return gameModel::Foul::None;
