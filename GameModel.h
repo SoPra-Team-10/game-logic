@@ -302,9 +302,9 @@ namespace gameModel{
     public:
         Config config;
         Team team1, team2;
-        Quaffle quaffle;
-        Snitch snitch;
-        std::array<Bludger, 2> bludgers;
+        std::shared_ptr<Quaffle> quaffle;
+        std::shared_ptr<Snitch> snitch;
+        std::array<std::shared_ptr<Bludger>, 2> bludgers;
 
         /**
          * Constructs an Environment from server config types
@@ -323,8 +323,8 @@ namespace gameModel{
          */
         Environment(Config config, Team team1, Team team2);
 
-        Environment(Config config, Team team1, Team team2, Quaffle quaffle,
-                Snitch snitch, std::array<Bludger, 2> bludgers);
+        Environment(Config config, Team team1, Team team2, std::shared_ptr<Quaffle> quaffle,
+                std::shared_ptr<Snitch> snitch, std::array<std::shared_ptr<Bludger>, 2> bludgers);
 
         /**
          * tests if two players are in the same team.

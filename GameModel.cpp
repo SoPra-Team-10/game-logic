@@ -1,4 +1,6 @@
 #include <utility>
+
+#include <utility>
 #include "GameModel.h"
 #include "GameController.h"
 #include <utility>
@@ -79,13 +81,14 @@ namespace gameModel{
     }
 
     Environment::Environment(Config config,Team team1, Team team2) : config(std::move(config)), team1(std::move(team1)),
-    team2(std::move(team2)), quaffle(), snitch(), bludgers{communication::messages::types::EntityId::BLUDGER1,
-                                                           communication::messages::types::EntityId::BLUDGER2} {}
+            team2(std::move(team2)), quaffle(std::make_shared<Quaffle>()), snitch(std::make_shared<Snitch>()),
+            bludgers{std::make_shared<Bludger>(communication::messages::types::EntityId::BLUDGER1),
+            std::make_shared<Bludger>(communication::messages::types::EntityId::BLUDGER2)} {}
 
-    Environment::Environment(Config config, Team team1, Team team2, Quaffle quaffle, Snitch snitch,
-                             std::array<Bludger, 2> bludgers) : config(std::move(config)), team1(std::move(team1)),
-                             team2(std::move(team2)), quaffle(quaffle), snitch(snitch),
-                             bludgers(bludgers){}
+    Environment::Environment(Config config, Team team1, Team team2, std::shared_ptr<Quaffle> quaffle, std::shared_ptr<Snitch> snitch,
+                             std::array<std::shared_ptr<Bludger>, 2> bludgers) : config(std::move(config)), team1(std::move(team1)),
+                             team2(std::move(team2)), quaffle(std::move(quaffle)), snitch(std::move(snitch)),
+                             bludgers(std::move(bludgers)){}
 
 
     Environment::Environment(communication::messages::broadcast::MatchConfig matchConfig,
