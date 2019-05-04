@@ -20,7 +20,6 @@ namespace gameModel{
         return !(*this == other);
     }
 
-    Ball::Ball(Position position, communication::messages::types::EntityId id) : Object(position, id) {}
 
     // Fanblock
 
@@ -224,6 +223,7 @@ namespace gameModel{
 
         return false;
     }
+
     auto Environment::isPlayerInOpponentRestrictedZone(const Player &player) const  -> bool {
         if (this->team1.hasMember(player) && this->getCell(player.position) == Cell::RestrictedRight) {
             return true;
@@ -268,6 +268,8 @@ namespace gameModel{
 
 
     // Ball Types
+
+    Ball::Ball(Position position, communication::messages::types::EntityId id) : Object(position, id) {}
 
     Snitch::Snitch(Position position): Ball(position, communication::messages::types::EntityId::SNITCH) {}
 
@@ -366,7 +368,6 @@ namespace gameModel{
         return extraTurnProbs.at(broom);
     }
 
-    //Willste mal nen richtig großen ... KONSTRUKTOR sehen? ;)
     Config::Config(const communication::messages::broadcast::MatchConfig &config) : maxRounds(config.getMaxRounds()),
         timeouts{config.getPlayerTurnTimeout(), config.getFanTurnTimeout(), config.getPlayerPhaseTime(), config.getFanPhaseTime(),
                  config.getBallPhaseTime()}, foulDetectionProbs{config.getProbFoulFlacking(), config.getProbFoulHaversacking(),
@@ -374,6 +375,8 @@ namespace gameModel{
                  config.getProbFoulGoblin(), config.getProbFoulTroll(), config.getProbFoulSnitch()},
                  gameDynamicsProbs{config.getProbThrowSuccess(), config.getProbKnockOut(), config.getProbFoolAway(), config.getProbCatchSnitch(),
                  config.getProbCatchQuaffle(), config.getProbWrestQuaffle()}{}
+
+    // Position
 
     Position::Position(int x, int y) {
         this->x = x;
@@ -392,6 +395,7 @@ namespace gameModel{
         return Position(static_cast<int>(p.x + round(this->x)),
                         static_cast<int>(p.y + round(this->y)));
     }
+
 
     // Vector
 
