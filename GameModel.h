@@ -8,6 +8,8 @@
 #include <memory>
 #include <SopraMessages/types.hpp>
 #include <SopraMessages/MatchConfig.hpp>
+#include <SopraMessages/TeamConfig.hpp>
+#include <SopraMessages/TeamFormation.hpp>
 
 namespace gameModel{
 
@@ -268,6 +270,12 @@ namespace gameModel{
         int score{};
         Fanblock fanblock;
 
+        /**
+         * Constructs a Team from server config types
+         * @param leftTeam select if team si on left or right side
+         */
+        Team(const communication::messages::request::TeamConfig& tConf, communication::messages::request::TeamFormation tForm, bool leftTeam);
+
         Team(Seeker seeker, Keeper keeper, std::array<Beater, 2> beaters, std::array<Chaser, 3> chasers,
              std::string  name, std::string  colorMain, std::string  colorSecondary,
              Fanblock fanblock);
@@ -297,6 +305,15 @@ namespace gameModel{
         Quaffle quaffle;
         Snitch snitch;
         std::array<Bludger, 2> bludgers;
+
+        /**
+         * Constructs an Environment from server config types
+         * @param matchConfig
+         * @param teamConfig
+         * @param teamFormation
+         */
+        Environment(communication::messages::broadcast::MatchConfig matchConfig, const communication::messages::request::TeamConfig& teamConfig,
+                communication::messages::request::TeamFormation teamFormation);
 
         /**
          * Automatically places all balls at the correct location
