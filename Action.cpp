@@ -240,14 +240,14 @@ namespace gameController{
 
         // Schnalzeln
         if (!INSTANCE_OF(actor, gameModel::Seeker) &&
-                this->actor->position == env->snitch.position) {
+                this->actor->position == env->snitch->position) {
             return gameModel::Foul::Schnatzeln;
         }
 
         if (INSTANCE_OF(actor, gameModel::Chaser)) {
 
             // Nachtarocken
-            if (env->quaffle.position == this->actor->position) {
+            if (env->quaffle->position == this->actor->position) {
                 if ((env->team1.hasMember(*(this->actor)) && env->getCell(this->target) == gameModel::Cell::GoalRight) ||
                     (env->team2.hasMember(*(this->actor)) && env->getCell(this->target) == gameModel::Cell::GoalLeft)) {
                     return gameModel::Foul::Nachtarocken;

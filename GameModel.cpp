@@ -79,13 +79,14 @@ namespace gameModel{
     }
 
     Environment::Environment(Config config,Team team1, Team team2) : config(std::move(config)), team1(std::move(team1)),
-    team2(std::move(team2)), quaffle(), snitch(), bludgers{communication::messages::types::EntityId::BLUDGER1,
-                                                           communication::messages::types::EntityId::BLUDGER2} {}
+            team2(std::move(team2)), quaffle(std::make_shared<Quaffle>()), snitch(std::make_shared<Snitch>()),
+            bludgers{std::make_shared<Bludger>(communication::messages::types::EntityId::BLUDGER1),
+            std::make_shared<Bludger>(communication::messages::types::EntityId::BLUDGER2)} {}
 
-    Environment::Environment(Config config, Team team1, Team team2, Quaffle quaffle, Snitch snitch,
-                             std::array<Bludger, 2> bludgers) : config(std::move(config)), team1(std::move(team1)),
-                             team2(std::move(team2)), quaffle(quaffle), snitch(snitch),
-                             bludgers(bludgers){}
+    Environment::Environment(Config config, Team team1, Team team2, std::shared_ptr<Quaffle> quaffle, std::shared_ptr<Snitch> snitch,
+                             std::array<std::shared_ptr<Bludger>, 2> bludgers) : config(std::move(config)), team1(std::move(team1)),
+                             team2(std::move(team2)), quaffle(std::move(quaffle)), snitch(std::move(snitch)),
+                             bludgers(std::move(bludgers)){}
 
 
     Environment::Environment(communication::messages::broadcast::MatchConfig matchConfig,
@@ -268,44 +269,45 @@ namespace gameModel{
 
     Team::Team(Seeker seeker, Keeper keeper, std::array<Beater, 2> beaters, std::array<Chaser, 3> chasers,
                std::string  name, std::string  colorMain, std::string  colorSecondary,
-               Fanblock fanblock)
-            : seeker(std::move(seeker)), keeper(std::move(keeper)), beaters(std::move(beaters)), chasers(std::move(chasers)), name(std::move(name)), colorMain(std::move(colorMain)),
-            colorSecondary(std::move(colorSecondary)), fanblock(std::move(fanblock)) {}
+               Fanblock fanblock) :
+               seeker(std::make_shared<Seeker>(seeker)), keeper(std::make_shared<Keeper>(keeper)), beaters{std::make_shared<Beater>(beaters[0]), std::make_shared<Beater>(beaters[1])},
+                chasers{std::make_shared<Chaser>(chasers[0]), std::make_shared<Chaser>(chasers[1]), std::make_shared<Chaser>(chasers[2])},name(std::move(name)),
+                colorMain(std::move(colorMain)), colorSecondary(std::move(colorSecondary)), fanblock(std::move(fanblock)) {}
 
    Team::Team(const communication::messages::request::TeamConfig& tConf, communication::messages::request::TeamFormation tForm, bool leftTeam) :
-   seeker({tForm.getSeekerX(), tForm.getSeekerY()}, tConf.getSeeker().getName(), tConf.getSeeker().getSex(), tConf.getSeeker().getBroom(), leftTeam ? communication::messages::types::EntityId::LEFT_SEEKER :
-    communication::messages::types::EntityId::RIGHT_SEEKER),
-    keeper({tForm.getKeeperX(), tForm.getKeeperY()}, tConf.getKeeper().getName(), tConf.getKeeper().getSex(), tConf.getKeeper().getBroom(), leftTeam ? communication::messages::types::EntityId::LEFT_KEEPER :
-    communication::messages::types::EntityId::RIGHT_KEEPER),
-    beaters{Beater{{tForm.getBeater1X(), tForm.getBeater1Y()}, tConf.getBeater1().getName(), tConf.getBeater1().getSex(), tConf.getBeater1().getBroom(), leftTeam ?
-            communication::messages::types::EntityId::LEFT_BEATER1 : communication::messages::types::EntityId::RIGHT_BEATER1},
-            Beater{{tForm.getBeater2X(), tForm.getBeater2Y()}, tConf.getBeater2().getName(), tConf.getBeater2().getSex(), tConf.getBeater2().getBroom(), leftTeam ?
-            communication::messages::types::EntityId ::LEFT_BEATER2 : communication::messages::types::EntityId::RIGHT_BEATER2}},
-    chasers{Chaser{{tForm.getChaser1X(), tForm.getChaser1Y()}, tConf.getChaser1().getName(), tConf.getChaser1().getSex(), tConf.getChaser1().getBroom(), leftTeam ?
-            communication::messages::types::EntityId::LEFT_CHASER1 : communication::messages::types::EntityId::RIGHT_CHASER1},
-            Chaser{{tForm.getChaser2X(), tForm.getChaser2Y()}, tConf.getChaser2().getName(), tConf.getChaser2().getSex(), tConf.getChaser2().getBroom(), leftTeam ?
-            communication::messages::types::EntityId::LEFT_CHASER2 : communication::messages::types::EntityId::RIGHT_CHASER2},
-            Chaser{{tForm.getChaser3X(), tForm.getChaser3Y()}, tConf.getChaser3().getName(), tConf.getChaser3().getSex(), tConf.getChaser3().getBroom(), leftTeam ?
-            communication::messages::types::EntityId::LEFT_CHASER3 : communication::messages::types::EntityId::RIGHT_CHASER3}},
-    name(tConf.getName()), colorMain(tConf.getColorPrimary()), colorSecondary(tConf.getColorSecondary()),
-    fanblock(tConf.getElfs(), tConf.getGoblins(), tConf.getTrolls(), tConf.getNifflers()){}
+   seeker(std::make_shared<Seeker>(Position{tForm.getSeekerX(), tForm.getSeekerY()}, tConf.getSeeker().getName(), tConf.getSeeker().getSex(), tConf.getSeeker().getBroom(), leftTeam ?
+   communication::messages::types::EntityId::LEFT_SEEKER : communication::messages::types::EntityId::RIGHT_SEEKER)),
+   keeper(std::make_shared<Keeper>(Position{tForm.getKeeperX(), tForm.getKeeperY()}, tConf.getKeeper().getName(), tConf.getKeeper().getSex(), tConf.getKeeper().getBroom(), leftTeam ?
+   communication::messages::types::EntityId::LEFT_KEEPER : communication::messages::types::EntityId::RIGHT_KEEPER)),
+   beaters{std::make_shared<Beater>(Position{tForm.getBeater1X(), tForm.getBeater1Y()}, tConf.getBeater1().getName(), tConf.getBeater1().getSex(), tConf.getBeater1().getBroom(), leftTeam ?
+            communication::messages::types::EntityId::LEFT_BEATER1 : communication::messages::types::EntityId::RIGHT_BEATER1),
+            std::make_shared<Beater>(Position{tForm.getBeater2X(), tForm.getBeater2Y()}, tConf.getBeater2().getName(), tConf.getBeater2().getSex(), tConf.getBeater2().getBroom(), leftTeam ?
+            communication::messages::types::EntityId ::LEFT_BEATER2 : communication::messages::types::EntityId::RIGHT_BEATER2)},
+   chasers{std::make_shared<Chaser>(Position{tForm.getChaser1X(), tForm.getChaser1Y()}, tConf.getChaser1().getName(), tConf.getChaser1().getSex(), tConf.getChaser1().getBroom(), leftTeam ?
+            communication::messages::types::EntityId::LEFT_CHASER1 : communication::messages::types::EntityId::RIGHT_CHASER1),
+            std::make_shared<Chaser>(Position{tForm.getChaser2X(), tForm.getChaser2Y()}, tConf.getChaser2().getName(), tConf.getChaser2().getSex(), tConf.getChaser2().getBroom(), leftTeam ?
+            communication::messages::types::EntityId::LEFT_CHASER2 : communication::messages::types::EntityId::RIGHT_CHASER2),
+            std::make_shared<Chaser>(Position{tForm.getChaser3X(), tForm.getChaser3Y()}, tConf.getChaser3().getName(), tConf.getChaser3().getSex(), tConf.getChaser3().getBroom(), leftTeam ?
+            communication::messages::types::EntityId::LEFT_CHASER3 : communication::messages::types::EntityId::RIGHT_CHASER3)},
+   name(tConf.getName()), colorMain(tConf.getColorPrimary()), colorSecondary(tConf.getColorSecondary()),
+   fanblock(tConf.getElfs(), tConf.getGoblins(), tConf.getTrolls(), tConf.getNifflers()){}
 
 
     auto Team::getAllPlayers() const -> std::array<std::shared_ptr<Player>, 7> {
         std::array<std::shared_ptr<Player>, 7> ret;
         auto it = ret.begin();
         for(const auto& p : beaters){
-            *it = std::make_shared<Player>(p);
+            *it = p;
             it++;
         }
 
         for(const auto& p : chasers){
-            *it = std::make_shared<Player>(p);
+            *it = p;
             it++;
         }
 
-        ret[5] = std::make_shared<Player>(keeper);
-        ret[6] = std::make_shared<Player>(seeker);
+        ret[5] = keeper;
+        ret[6] = seeker;
         return ret;
     }
 
