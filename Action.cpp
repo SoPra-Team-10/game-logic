@@ -235,12 +235,12 @@ namespace gameController{
         }
 
         // Schnalzeln
-        if (typeid(this->actor) != typeid(gameModel::Seeker) &&
+        if (!INSTANCE_OF(actor, gameModel::Seeker) &&
                 this->actor->position == env->snitch.position) {
             return gameModel::Foul::Schnatzeln;
         }
 
-        if (typeid(this->actor) == typeid(gameModel::Chaser)) {
+        if (INSTANCE_OF(actor, gameModel::Chaser)) {
 
             // Nachtarocken
             if (env->quaffle.position == this->actor->position) {
