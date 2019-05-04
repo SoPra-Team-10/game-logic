@@ -194,7 +194,11 @@ namespace gameController{
         // move the quaffle if necessary
         if (this->env->quaffle->position == this->actor->position) {
             this->env->quaffle->position = this->target;
+        } else if(checkForFoul() == gameModel::Foul::Ramming && env->quaffle->position == target) {
+            //rammed player looses Quaffle
+            moveToAdjacent(*env->quaffle, *env);
         }
+
 
         // move the player
         this->actor->position = this->target;
