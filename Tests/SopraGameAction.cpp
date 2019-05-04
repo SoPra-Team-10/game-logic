@@ -90,6 +90,7 @@ TEST(shot_test, success_throw_execute_intercept_bounce_off){
     env.team2.beaters[0]->position = {10, 9};
     gameController::Shot testShot(std::make_shared<gameModel::Environment>(env), env.team1.keeper, env.quaffle, {8, 6});
     testShot.execute();
+    std::cout << "Position {" << env.quaffle->position.x << ", " << env.quaffle->position.y << "}" << std::endl;
     EXPECT_THAT(env.quaffle->position, testing::AnyOf(gameModel::Position(10, 8), gameModel::Position(9, 8),
             gameModel::Position(9, 10), gameModel::Position(10, 10), gameModel::Position(11, 10), gameModel::Position(11, 9)));
 }

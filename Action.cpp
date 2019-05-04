@@ -34,9 +34,8 @@ namespace gameController{
                         return;
                     } else {
                         //Quaffle bounces off
-                        auto possibleCells = env->getAllPlayerFreeCellsAround(pos);
-                        int index = rng(0, static_cast<int>(possibleCells.size()) - 1);
-                        ball->position = possibleCells[index];
+                        ball->position = pos;
+                        moveToAdjacent(*ball, *env);
                         return;
                     }
                 }
