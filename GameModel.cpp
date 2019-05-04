@@ -251,14 +251,23 @@ namespace gameModel{
             : seeker(std::move(seeker)), keeper(std::move(keeper)), beaters(std::move(beaters)), chasers(std::move(chasers)), name(std::move(name)), colorMain(std::move(colorMain)),
             colorSecondary(std::move(colorSecondary)), fanblock(std::move(fanblock)) {}
 
-//TODO EntityID muss in der Teamconfig oder Formation mit übergeben werden!!!!
-    Team::Team(communication::messages::request::TeamConfig teamConfig, communication::messages::request::TeamFormation teamFormation) :
-        seeker{{teamFormation.getSeekerX(), teamFormation.getSeekerY()}, teamConfig.getSeeker().getName(), teamConfig.getSeeker().getSex(), teamConfig.getSeeker().getBroom(), communication::messages::types::EntityId::LEFT_SEEKER},
-        keeper{{teamFormation.getKeeperX(), teamFormation.getKeeperY()}, teamConfig.getKeeper().getName(), teamConfig.getKeeper().getSex(), teamConfig.getKeeper().getBroom(), communication::messages::types::EntityId::LEFT_KEEPER},
-        beaters( std::array<gameModel::Beater, 1> {{0,0}, teamConfig.getKeeper().getName(), teamConfig.getKeeper().getSex(), teamConfig.getKeeper().getBroom(), communication::messages::types::EntityId::LEFT_KEEPER}),
-
-
-
+   Team::Team(const communication::messages::request::TeamConfig& tConf, communication::messages::request::TeamFormation tForm, bool leftTeam) :
+   seeker({tForm.getSeekerX(), tForm.getSeekerY()}, tConf.getSeeker().getName(), tConf.getSeeker().getSex(), tConf.getSeeker().getBroom(), leftTeam ? communication::messages::types::EntityId::LEFT_SEEKER :
+    communication::messages::types::EntityId::RIGHT_SEEKER),
+    keeper({tForm.getKeeperX(), tForm.getKeeperY()}, tConf.getKeeper().getName(), tConf.getKeeper().getSex(), tConf.getKeeper().getBroom(), leftTeam ? communication::messages::types::EntityId::LEFT_KEEPER :
+    communication::messages::types::EntityId::RIGHT_KEEPER),
+    beaters{Beater{{tForm.getBeater1X(), tForm.getBeater1Y()}, tConf.getBeater1().getName(), tConf.getBeater1().getSex(), tConf.getBeater1().getBroom(), leftTeam ?
+            communication::messages::types::EntityId::LEFT_BEATER1 : communication::messages::types::EntityId::RIGHT_BEATER1},
+            Beater{{tForm.getBeater2X(), tForm.getBeater2Y()}, tConf.getBeater2().getName(), tConf.getBeater2().getSex(), tConf.getBeater2().getBroom(), leftTeam ?
+            communication::messages::types::EntityId ::LEFT_BEATER2 : communication::messages::types::EntityId::RIGHT_BEATER2}},
+    chasers{Chaser{{tForm.getChaser1X(), tForm.getChaser1Y()}, tConf.getChaser1().getName(), tConf.getChaser1().getSex(), tConf.getChaser1().getBroom(), leftTeam ?
+            communication::messages::types::EntityId::LEFT_CHASER1 : communication::messages::types::EntityId::RIGHT_CHASER1},
+            Chaser{{tForm.getChaser2X(), tForm.getChaser2Y()}, tConf.getChaser2().getName(), tConf.getChaser2().getSex(), tConf.getChaser2().getBroom(), leftTeam ?
+            communication::messages::types::EntityId::LEFT_CHASER2 : communication::messages::types::EntityId::RIGHT_CHASER2},
+            Chaser{{tForm.getChaser3X(), tForm.getChaser3Y()}, tConf.getChaser3().getName(), tConf.getChaser3().getSex(), tConf.getChaser3().getBroom(), leftTeam ?
+            communication::messages::types::EntityId::LEFT_CHASER3 : communication::messages::types::EntityId::RIGHT_CHASER3}},
+    name(tConf.getName()), colorMain(tConf.getColorPrimary()), colorSecondary(tConf.getColorSecondary()),
+    fanblock(tConf.getElfs(), tConf.getGoblins(), tConf.getTrolls(), tConf.getNifflers()){}
 
 
     auto Team::getAllPlayers() const -> std::array<std::shared_ptr<Player>, 7> {

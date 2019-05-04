@@ -264,7 +264,13 @@ namespace gameModel{
         const std::string colorSecondary;
         int score{};
         Fanblock fanblock;
-        Team(communication::messages::request::TeamConfig, communication::messages::request::TeamFormation);
+
+        /**
+         * Constructs a Team from server config types
+         * @param leftTeam select if team si on left or right side
+         */
+        Team(const communication::messages::request::TeamConfig&, communication::messages::request::TeamFormation, bool leftTeam);
+
         Team(Seeker seeker, Keeper keeper, std::array<Beater, 2> beaters, std::array<Chaser, 3> chasers,
              std::string  name, std::string  colorMain, std::string  colorSecondary,
              Fanblock fanblock);
