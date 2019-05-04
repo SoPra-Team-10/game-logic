@@ -36,7 +36,7 @@ namespace gameController{
                     } else {
                         //Quaffle bounces off
                         auto possibleCells = env->getAllPlayerFreeCellsAround(pos);
-                        int index = rng(0, static_cast<int>(possibleCells.size()));
+                        int index = rng(0, static_cast<int>(possibleCells.size()) - 1);
                         ball->position = possibleCells[index];
                         return;
                     }
@@ -52,7 +52,7 @@ namespace gameController{
             } else {
                 //Miss -> dispersion
                 auto possibleCells = getAllLandingCells();
-                int index = rng(0, static_cast<int>(possibleCells.size()));
+                int index = rng(0, static_cast<int>(possibleCells.size()) - 1);
                 ball->position = possibleCells[index];
             }
         } else if(BLUDGERSHOT){
