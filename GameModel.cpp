@@ -124,6 +124,7 @@ namespace gameModel{
 
     auto Environment::getAllPlayerFreeCellsAround(const Position &position) const -> std::vector<Position> {
         std::vector<Position> resultVect;
+        resultVect.reserve(8);
 
         int startX = position.x - 1;
         int endX = position.x + 1;

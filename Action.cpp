@@ -190,15 +190,19 @@ namespace gameController{
 
             case ActionResult::Foul :
                 // @ToDo was passiert bei einem Faul???
+                break;
 
-            case ActionResult::Success :
+            case ActionResult::Success : {
 
-                if (env->getPlayer(this->target).has_value()) {
-                    gameController::movePlayerOnEmptyCell(this->target, this->env);
+                auto targetPlayer = env->getPlayer(this->target);
+                if (targetPlayer.has_value()) {
+
+                    gameController::moveToAdjacent(*targetPlayer.value(), *this->env);
                 }
-                this->actor->position = this->target;
 
-            break;
+                this->actor->position = this->target;
+            }
+                break;
 
             case ActionResult::Impossible :
                 throw std::runtime_error("The Selected move is impossible!");
