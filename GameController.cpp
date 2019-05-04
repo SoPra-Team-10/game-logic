@@ -96,9 +96,9 @@ namespace gameController {
         return totalDistance;
     }
 
-    void movePlayerOnEmptyCell(const gameModel::Position playerPos, const std::shared_ptr<gameModel::Environment>& env) {
-        const std::vector<gameModel::Position> positions = env->getAllPlayerFreeCellsAround(playerPos);
-        env->getPlayer(playerPos).value()->position = positions[gameController::rng(0, (int) positions.size())];
+    void moveToAdjacent(gameModel::Object &object, const gameModel::Environment &env) {
+        const std::vector<gameModel::Position> positions = env.getAllPlayerFreeCellsAround(object.position);
+        object.position = positions[rng(0, static_cast<int>(positions.size()))];
     }
 
     auto getAllPossibleMoves(std::shared_ptr<gameModel::Player>, const gameModel::Environment&) -> std::vector<Move> {
