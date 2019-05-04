@@ -237,12 +237,12 @@ namespace gameController{
                     return gameModel::Foul::ChargeGoal;
                 }
             }
-            // MultibleOffence
+            // MultipleOffence
             if (env->team1.hasMember(*(this->actor))) {
                 if (env->getCell(this->target) == gameModel::Cell::RestrictedRight) {
                     const auto &players = env->team1.chasers;
 
-                    for (auto & player : players) {
+                    for (const auto & player : players) {
                         if (env->isPlayerInOpponentRestrictedZone(player)) {
                             return gameModel::Foul::MultibleOffence;
                         }
@@ -253,7 +253,7 @@ namespace gameController{
                 if (env->getCell(this->target) == gameModel::Cell::RestrictedLeft) {
                     const auto &players = env->team1.chasers;
 
-                    for (auto & player : players) {
+                    for (const auto & player : players) {
                         if (env->isPlayerInOpponentRestrictedZone(player)) {
                             return gameModel::Foul::MultibleOffence;
                         }

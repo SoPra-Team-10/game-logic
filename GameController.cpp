@@ -113,23 +113,19 @@ namespace gameController {
     }
 
     auto refereeDecision(const gameModel::Foul &foul, const gameModel::Config &gameConf) -> bool {
-        double randNo = rng(0, 100);
-
         switch (foul) {
             case gameModel::Foul::MultibleOffence :
-                return (randNo < gameConf.foulDetectionProbs.multipleOffence);
+                return actionTriggered(gameConf.foulDetectionProbs.multipleOffence);
             case gameModel::Foul::ChargeGoal :
-                return (randNo < gameConf.foulDetectionProbs.chargeGoal);
+                return actionTriggered(gameConf.foulDetectionProbs.chargeGoal);
             case gameModel::Foul::BlockGoal :
-                return (randNo < gameConf.foulDetectionProbs.blockGoal);
+                return actionTriggered(gameConf.foulDetectionProbs.blockGoal);
             case gameModel::Foul::Ramming :
-                return (randNo < gameConf.foulDetectionProbs.ramming);
+                return actionTriggered(gameConf.foulDetectionProbs.ramming);
             case gameModel::Foul::BlockSnitch :
-                return (randNo < gameConf.foulDetectionProbs.blockSnitch);
+                return actionTriggered(gameConf.foulDetectionProbs.blockSnitch);
             default :
                 return  false;
         }
     }
-
-
 }

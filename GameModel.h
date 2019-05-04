@@ -427,7 +427,7 @@ namespace gameModel{
          * place a player on random free cell in his half of the game field.
          * @param player
           */
-        void placePlayerOnRandomFreeCell(Player & player);
+        void placePlayerOnRandomFreeCell(Player& player);
     };
 }
 
