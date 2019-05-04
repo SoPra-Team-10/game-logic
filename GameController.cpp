@@ -98,7 +98,7 @@ namespace gameController {
 
     void moveToAdjacent(gameModel::Object &object, const gameModel::Environment &env) {
         const std::vector<gameModel::Position> positions = env.getAllPlayerFreeCellsAround(object.position);
-        object.position = positions[rng(0, static_cast<int>(positions.size()))];
+        object.position = positions[rng(0, static_cast<int>(positions.size()) - 1)];
     }
 
     auto getAllPossibleMoves(std::shared_ptr<gameModel::Player>, const gameModel::Environment&) -> std::vector<Move> {

@@ -270,7 +270,7 @@ namespace gameModel{
 
     Snitch::Snitch() : Ball({0, 0}, communication::messages::types::EntityId::SNITCH), exists(false){
         auto allCells = Environment::getAllValidCells();
-        auto index = gameController::rng(0, static_cast<int>(allCells.size()));
+        auto index = gameController::rng(0, static_cast<int>(allCells.size()) - 1);
         position = allCells[index];
     }
 
