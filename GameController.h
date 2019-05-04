@@ -13,9 +13,10 @@ namespace gameController {
 
 
     /**
-     * Generates a random integer in [min, max)
-     * @param min
-     * @param max
+     *
+     * @tparam T Type of random number (int or double)
+     * @param min lower boundary (inclusive)
+     * @param max upper boundary (inclusive when integer is used, exclusive else)
      * @return
      */
      template <typename T>
