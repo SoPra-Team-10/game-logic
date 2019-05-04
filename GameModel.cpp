@@ -89,10 +89,10 @@ namespace gameModel{
                              bludgers(std::move(bludgers)){}
 
 
-    Environment::Environment(communication::messages::broadcast::MatchConfig matchConfig,
-                             const communication::messages::request::TeamConfig& teamConfig,
-                             communication::messages::request::TeamFormation teamFormation) :
-                             Environment({matchConfig}, {teamConfig, teamFormation, true}, {teamConfig, teamFormation, false}){}
+    Environment::Environment(communication::messages::broadcast::MatchConfig matchConfig, const communication::messages::request::TeamConfig& teamConfig1,
+                const communication::messages::request::TeamConfig& teamConfig2, communication::messages::request::TeamFormation teamFormation1,
+                communication::messages::request::TeamFormation teamFormation2) :
+                             Environment({matchConfig}, {teamConfig1, teamFormation1, true}, {teamConfig2, teamFormation2, false}){}
 
     auto Environment::getAllPlayers() const -> std::array<std::shared_ptr<Player>, 14> {
         std::array<std::shared_ptr<Player>, 14> ret;
@@ -289,7 +289,7 @@ namespace gameModel{
             communication::messages::types::EntityId::LEFT_CHASER2 : communication::messages::types::EntityId::RIGHT_CHASER2),
             std::make_shared<Chaser>(Position{tForm.getChaser3X(), tForm.getChaser3Y()}, tConf.getChaser3().getName(), tConf.getChaser3().getSex(), tConf.getChaser3().getBroom(), leftTeam ?
             communication::messages::types::EntityId::LEFT_CHASER3 : communication::messages::types::EntityId::RIGHT_CHASER3)},
-   name(tConf.getName()), colorMain(tConf.getColorPrimary()), colorSecondary(tConf.getColorSecondary()),
+   name(tConf.getTeamName()), colorMain(tConf.getColorPrimary()), colorSecondary(tConf.getColorSecondary()),
    fanblock(tConf.getElfs(), tConf.getGoblins(), tConf.getTrolls(), tConf.getNifflers()){}
 
 
