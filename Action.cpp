@@ -214,8 +214,8 @@ namespace gameController{
 
     auto Move::checkForFoul() const -> gameModel::Foul {
         // Ramming
-        if (env->getPlayer(this->target).has_value() &&
-            !env->arePlayerInSameTeam(*(env->getPlayer(this->target).value()), *(this->actor))) {
+        auto player = env->getPlayer(target);
+        if (player.has_value() && !env->arePlayerInSameTeam(*player.value(), *(this->actor))) {
             return  gameModel::Foul::Ramming;
         }
 
