@@ -246,21 +246,24 @@ namespace gameModel{
     }
 
     void Environment::placePlayerOnRandomFreeCell(Player &player) {
-        Position pos;
-        if (this->team1.hasMember(player)) {
-            do {
-                pos = Position(gameController::rng(3,7), gameController::rng(0,12));
+        std::vector<Position> possibleCells;
+        possibleCells.reserve(82);
+        for(const auto &cell : getAllValidCells()){
+            if(getCell(cell) == Cell::Centre || getCell(cell) == Cell::GoalLeft){
+                continue;
             }
-            while (getCell(pos) != gameModel::Cell::Standard || getPlayer(pos).has_value());
-        }
-        else {
-            do {
-                pos = Position(gameController::rng(9,13), gameController::rng(0,12));
+
+            if(team1.hasMember(player) && cell.x < 8 && cellIsFree(cell)){
+                possibleCells.push_back(cell);
             }
-            while (getCell(pos) != gameModel::Cell::Standard || getPlayer(pos).has_value());
+
+            if(team2.hasMember(player) && cell.x > 8 && cellIsFree(cell)){
+                possibleCells.push_back(cell);
+            }
         }
 
-        player.position = pos;
+        int index = gameController::rng(0, static_cast<int>(possibleCells.size() - 1));
+        player.position = possibleCells[index];
     }
 
 
