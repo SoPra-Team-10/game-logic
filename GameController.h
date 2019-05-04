@@ -67,11 +67,11 @@ namespace gameController {
     -> std::vector<Move>;
 
     /**
-     * Move the player that's currently on the given position onto a empty cell around.
-     * @param playerPos the current position of the player which should be moved.
-     * @param env the selected environment.
+     * moves the specified game object to an adjacent position according to the game rules
+     * @param object to be moved
+     * @param env the environment to operate on
      */
-    void movePlayerOnEmptyCell(const gameModel::Position playerPos, const std::shared_ptr<gameModel::Environment>& env);
+    void moveToAdjacent(gameModel::Object &object, const gameModel::Environment &env);
 
 
     template <>
@@ -86,6 +86,13 @@ namespace gameController {
         return min;
     }
 
+    /**
+     * make the decision if a player will be punished or not after a foul.
+     * @param foul the foul type.
+     * @param gameConf the current game configuration.
+     * @return true if player shall be punished, else false.
+     */
+    auto refereeDecision(const gameModel::Foul &foul, const gameModel::Config &gameConf) -> bool;
 }
 
 

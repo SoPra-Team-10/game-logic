@@ -33,20 +33,20 @@ TEST(env_tests, getCell){
 TEST(env_tests, cellIsFree){
     auto env = setup::createEnv();
 
-    EXPECT_FALSE(env.cellIsFree(env.team1.chasers[0].position));
-    EXPECT_FALSE(env.cellIsFree(env.team1.chasers[1].position));
-    EXPECT_FALSE(env.cellIsFree(env.team1.chasers[2].position));
-    EXPECT_FALSE(env.cellIsFree(env.team2.chasers[0].position));
-    EXPECT_FALSE(env.cellIsFree(env.team2.chasers[1].position));
-    EXPECT_FALSE(env.cellIsFree(env.team2.chasers[2].position));
-    EXPECT_FALSE(env.cellIsFree(env.team1.beaters[0].position));
-    EXPECT_FALSE(env.cellIsFree(env.team1.beaters[1].position));
-    EXPECT_FALSE(env.cellIsFree(env.team2.beaters[0].position));
-    EXPECT_FALSE(env.cellIsFree(env.team2.beaters[1].position));
-    EXPECT_FALSE(env.cellIsFree(env.team1.keeper.position));
-    EXPECT_FALSE(env.cellIsFree(env.team2.keeper.position));
-    EXPECT_FALSE(env.cellIsFree(env.team1.seeker.position));
-    EXPECT_FALSE(env.cellIsFree(env.team2.seeker.position));
+    EXPECT_FALSE(env.cellIsFree(env.team1.chasers[0]->position));
+    EXPECT_FALSE(env.cellIsFree(env.team1.chasers[1]->position));
+    EXPECT_FALSE(env.cellIsFree(env.team1.chasers[2]->position));
+    EXPECT_FALSE(env.cellIsFree(env.team2.chasers[0]->position));
+    EXPECT_FALSE(env.cellIsFree(env.team2.chasers[1]->position));
+    EXPECT_FALSE(env.cellIsFree(env.team2.chasers[2]->position));
+    EXPECT_FALSE(env.cellIsFree(env.team1.beaters[0]->position));
+    EXPECT_FALSE(env.cellIsFree(env.team1.beaters[1]->position));
+    EXPECT_FALSE(env.cellIsFree(env.team2.beaters[0]->position));
+    EXPECT_FALSE(env.cellIsFree(env.team2.beaters[1]->position));
+    EXPECT_FALSE(env.cellIsFree(env.team1.keeper->position));
+    EXPECT_FALSE(env.cellIsFree(env.team2.keeper->position));
+    EXPECT_FALSE(env.cellIsFree(env.team1.seeker->position));
+    EXPECT_FALSE(env.cellIsFree(env.team2.seeker->position));
 
     EXPECT_TRUE(env.cellIsFree({8, 6}));
     EXPECT_TRUE(env.cellIsFree({2, 6}));

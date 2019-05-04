@@ -96,9 +96,9 @@ namespace gameController {
         return totalDistance;
     }
 
-    void movePlayerOnEmptyCell(const gameModel::Position playerPos, const std::shared_ptr<gameModel::Environment>& env) {
-        const std::vector<gameModel::Position> positions = env->getAllPlayerFreeCellsAround(playerPos);
-        env->getPlayer(playerPos).value()->position = positions[gameController::rng(0, (int) positions.size())];
+    void moveToAdjacent(gameModel::Object &object, const gameModel::Environment &env) {
+        auto positions = env.getAllPlayerFreeCellsAround(object.position);
+        object.position = positions[rng(0, static_cast<int>(positions.size()) - 1)];
     }
 
     auto getAllPossibleMoves(std::shared_ptr<gameModel::Player>, const gameModel::Environment&) -> std::vector<Move> {
@@ -110,5 +110,22 @@ namespace gameController {
                              const gameModel::Environment&) -> std::vector<Shot> {
         return std::vector<Shot>();
         // @ToDo: Nicht für Server relevant
+    }
+
+    auto refereeDecision(const gameModel::Foul &foul, const gameModel::Config &gameConf) -> bool {
+        switch (foul) {
+            case gameModel::Foul::MultipleOffence :
+                return actionTriggered(gameConf.foulDetectionProbs.multipleOffence);
+            case gameModel::Foul::ChargeGoal :
+                return actionTriggered(gameConf.foulDetectionProbs.chargeGoal);
+            case gameModel::Foul::BlockGoal :
+                return actionTriggered(gameConf.foulDetectionProbs.blockGoal);
+            case gameModel::Foul::Ramming :
+                return actionTriggered(gameConf.foulDetectionProbs.ramming);
+            case gameModel::Foul::BlockSnitch :
+                return actionTriggered(gameConf.foulDetectionProbs.blockSnitch);
+            default :
+                return  false;
+        }
     }
 }
