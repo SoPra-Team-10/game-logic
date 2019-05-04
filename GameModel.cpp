@@ -356,7 +356,6 @@ namespace gameModel{
         return false;
     }
 
-
     // Config
 
     Config::Config(unsigned int maxRounds, const Timeouts &timeouts, const FoulDetectionProbs &foulDetectionProbs,

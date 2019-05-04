@@ -107,3 +107,50 @@ TEST(env_test, isPlayerInOpponentRestrictedZone) {
     EXPECT_FALSE(env.isPlayerInOpponentRestrictedZone(*env.team1.keeper));
     EXPECT_TRUE(env.isPlayerInOpponentRestrictedZone(*env.team2.keeper));
 }
+
+TEST(env_test, getTeamMates) {
+    auto env = setup::createEnv();
+
+    auto team = env.getTeamMates(*env.team1.keeper);
+
+    for (auto player : team) {
+        EXPECT_TRUE(env.arePlayerInSameTeam(*player, *env.team1.keeper));
+    }
+}
+
+TEST(env_test, getOpponents) {
+    auto env = setup::createEnv();
+
+    auto team = env.getOpponents(*env.team1.keeper);
+
+    for (auto player : team) {
+        EXPECT_FALSE(env.arePlayerInSameTeam(*player, *env.team1.keeper));
+    }
+}
+
+
+/*
+TEST(env_test, getAllFreeCells) {
+
+    auto env = setup::createEnv();
+
+    auto players = env.getAllPlayers();
+    for (auto &player : players) {
+        player->position = gameModel::Position(-1, -1);
+    }
+
+    env.team1.keeper->position = gameModel::Position(6, 6);
+
+    auto freeCells = env.getAllFreeCells();
+
+    bool flag = false;
+    for (auto cell : freeCells) {
+        if (cell == gameModel::Position(6, 6)) {
+            flag = true;
+            break;
+        }
+    }
+
+    EXPECT_FALSE(flag);
+}
+ */
