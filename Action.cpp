@@ -185,13 +185,14 @@ namespace gameController{
         }
 
         // move other player out of the way
-        if (this->env->getPlayer(this->target).has_value()) {
-            gameController::movePlayerOnEmptyCell(this->target, this->env);
+        auto targetPlayer = env->getPlayer(this->target);
+        if (targetPlayer.has_value()) {
+            gameController::moveToAdjacent(*targetPlayer.value(), *env);
         }
 
         // move the quaffle if necessary
-        if (this->env->quaffle.position == this->actor->position) {
-            this->env->quaffle.position = this->target;
+        if (this->env->quaffle->position == this->actor->position) {
+            this->env->quaffle->position = this->target;
         }
 
         // move the player
@@ -224,14 +225,14 @@ namespace gameController{
 
         // BlockSnitch
         if (!INSTANCE_OF(actor, gameModel::Seeker) &&
-                this->target == this->env->snitch.position) {
+                this->target == this->env->snitch->position) {
             return gameModel::Foul::BlockSnitch;
         }
 
         if (INSTANCE_OF(actor, gameModel::Chaser)) {
 
             // ChargeGoal
-            if (env->quaffle.position == this->actor->position) {
+            if (env->quaffle->position == this->actor->position) {
                 if ((env->team1.hasMember(*(this->actor)) && env->getCell(this->target) == gameModel::Cell::GoalRight) ||
                     (env->team2.hasMember(*(this->actor)) && env->getCell(this->target) == gameModel::Cell::GoalLeft)) {
                     return gameModel::Foul::ChargeGoal;
@@ -243,7 +244,7 @@ namespace gameController{
                     const auto &players = env->team1.chasers;
 
                     for (const auto & player : players) {
-                        if (env->isPlayerInOpponentRestrictedZone(player)) {
+                        if (env->isPlayerInOpponentRestrictedZone(*player)) {
                             return gameModel::Foul::MultibleOffence;
                         }
                     }
@@ -254,7 +255,7 @@ namespace gameController{
                     const auto &players = env->team1.chasers;
 
                     for (const auto & player : players) {
-                        if (env->isPlayerInOpponentRestrictedZone(player)) {
+                        if (env->isPlayerInOpponentRestrictedZone(*player)) {
                             return gameModel::Foul::MultibleOffence;
                         }
                     }

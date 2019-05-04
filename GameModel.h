@@ -261,10 +261,10 @@ namespace gameModel{
      */
     class Team{
     public:
-        Seeker seeker;
-        Keeper keeper;
-        std::array<Beater, 2> beaters;
-        std::array<Chaser, 3> chasers;
+        std::shared_ptr<Seeker> seeker;
+        std::shared_ptr<Keeper> keeper;
+        std::array<std::shared_ptr<Beater>, 2> beaters;
+        std::array<std::shared_ptr<Chaser>, 3> chasers;
         const std::string name;
         const std::string colorMain;
         const std::string colorSecondary;
@@ -303,9 +303,9 @@ namespace gameModel{
     public:
         Config config;
         Team team1, team2;
-        Quaffle quaffle;
-        Snitch snitch;
-        std::array<Bludger, 2> bludgers;
+        std::shared_ptr<Quaffle> quaffle;
+        std::shared_ptr<Snitch> snitch;
+        std::array<std::shared_ptr<Bludger>, 2> bludgers;
 
         /**
          * Constructs an Environment from server config types
@@ -313,8 +313,9 @@ namespace gameModel{
          * @param teamConfig
          * @param teamFormation
          */
-        Environment(communication::messages::broadcast::MatchConfig matchConfig, const communication::messages::request::TeamConfig& teamConfig,
-                communication::messages::request::TeamFormation teamFormation);
+        Environment(communication::messages::broadcast::MatchConfig matchConfig, const communication::messages::request::TeamConfig& teamConfig1,
+                const communication::messages::request::TeamConfig& teamConfig2, communication::messages::request::TeamFormation teamFormation1,
+                communication::messages::request::TeamFormation teamFormation2);
 
         /**
          * Automatically places all balls at the correct location
@@ -324,8 +325,8 @@ namespace gameModel{
          */
         Environment(Config config, Team team1, Team team2);
 
-        Environment(Config config, Team team1, Team team2, Quaffle quaffle,
-                Snitch snitch, std::array<Bludger, 2> bludgers);
+        Environment(Config config, Team team1, Team team2, std::shared_ptr<Quaffle> quaffle,
+                std::shared_ptr<Snitch> snitch, std::array<std::shared_ptr<Bludger>, 2> bludgers);
 
         /**
          * tests if two players are in the same team.
@@ -392,7 +393,8 @@ namespace gameModel{
         bool cellIsFree(const Position &position) const;
 
         /**
-         * get all Positions around a given position where no odther player is on.
+         * get all Positions around a given position where no other player is on. If all surrounding
+         * cells are blocked the search window is enlarged until a free cell is found
          * @param position the position to be checked
          * @return
          */

@@ -5,8 +5,11 @@
 #include "setup.h"
 
 auto setup::createEnv() -> gameModel::Environment {
+    return createEnv({0, {}, {}, {}, {}});
+}
+
+auto setup::createEnv(const gameModel::Config &config) -> gameModel::Environment {
     using ID = communication::messages::types::EntityId;
-    gameModel::Config conf(0, {}, {}, {}, {});
     gameModel::Chaser c1({2, 10}, "", {}, {}, ID::LEFT_CHASER1);
     gameModel::Chaser c2({8, 5}, "", {}, {}, ID::LEFT_CHASER2);
     gameModel::Chaser c3({10, 7}, "", {}, {}, ID::RIGHT_CHASER3);
@@ -30,6 +33,8 @@ auto setup::createEnv() -> gameModel::Environment {
     gameModel::Team t1(s1, k1, {b1, b2}, {c1, c2, c3}, "", "", "", f);
     gameModel::Team t2(s2, k2, {b3, b4}, {c4, c5, c6}, "", "", "", f);
 
-    gameModel::Environment env(conf, t1, t2);
+    gameModel::Environment env(config, t1, t2);
     return env;
 }
+
+
