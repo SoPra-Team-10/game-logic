@@ -191,6 +191,20 @@ namespace gameModel{
         return ret;
     }
 
+    auto Environment::getAllFreeCells() -> std::array<Position, 179> {
+        //@TODO optimization!!!
+        std::array<Position, 179> ret{};
+        auto it = ret.begin();
+        for(const auto &cell : getAllValidCells()){
+            if(cellIsFree(cell)){
+                *it = cell;
+                it++;
+            }
+        }
+
+        return ret;
+    }
+
     auto Environment::isPlayerInOwnRestrictedZone(const Player &player) const -> bool {
         if (this->team1.hasMember(player) && this->getCell(player.position) == Cell::RestrictedLeft) {
             return true;
@@ -201,7 +215,6 @@ namespace gameModel{
 
         return false;
     }
-
     auto Environment::isPlayerInOpponentRestrictedZone(const Player &player) const  -> bool {
         if (this->team1.hasMember(player) && this->getCell(player.position) == Cell::RestrictedRight) {
             return true;

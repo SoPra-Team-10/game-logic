@@ -111,5 +111,4 @@ namespace gameController {
         return std::vector<Shot>();
         // @ToDo: Nicht für Server relevant
     }
-
 }
