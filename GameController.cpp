@@ -114,7 +114,7 @@ namespace gameController {
 
     auto refereeDecision(const gameModel::Foul &foul, const gameModel::Config &gameConf) -> bool {
         switch (foul) {
-            case gameModel::Foul::MultibleOffence :
+            case gameModel::Foul::MultipleOffence :
                 return actionTriggered(gameConf.foulDetectionProbs.multipleOffence);
             case gameModel::Foul::ChargeGoal :
                 return actionTriggered(gameConf.foulDetectionProbs.chargeGoal);

@@ -109,7 +109,7 @@ namespace gameModel{
         None,
         BlockGoal,
         ChargeGoal,
-        MultibleOffence,
+        MultipleOffence,
         Ramming,
         BlockSnitch
     };

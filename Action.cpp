@@ -248,7 +248,7 @@ namespace gameController{
                 auto mates = env->getTeamMates(*actor);
                 for(const auto &p : mates){
                     if(INSTANCE_OF(p, gameModel::Chaser) && env->isPlayerInOpponentRestrictedZone(*p)){
-                        return gameModel::Foul::MultibleOffence;
+                        return gameModel::Foul::MultipleOffence;
                     }
                 }
             }

@@ -176,7 +176,7 @@ TEST(move_test, move_foul3) {
     gameController::Move mv(std::make_shared<gameModel::Environment>(env),
                             env.team1.chasers[1], gameModel::Position(12, 7));
 
-    EXPECT_EQ(mv.checkForFoul(), gameModel::Foul::MultibleOffence);
+    EXPECT_EQ(mv.checkForFoul(), gameModel::Foul::MultipleOffence);
 }
 
 TEST(move_test, move_foul4) {
