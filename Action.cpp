@@ -62,7 +62,7 @@ namespace gameController{
                 if(!INSTANCE_OF(playerOnTarget.value(), gameModel::Beater)){
                     playerOnTarget.value()->knockedOut = true;
                     auto possibleCells = env->getAllFreeCells();
-                    int index = rng(0, static_cast<int>(possibleCells.size()));
+                    int index = rng(0, static_cast<int>(possibleCells.size()) - 1);
                     ball->position = possibleCells[index];
                 }
             }
