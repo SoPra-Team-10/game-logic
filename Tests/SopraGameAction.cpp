@@ -144,6 +144,7 @@ TEST(move_test, move_foul1) {
 
 TEST(move_test, move_foul2) {
     auto env = setup::createEnv();
+    env.snitch->exists = true;
 
     auto player = env.getPlayer({8, 6});
     if (player.has_value()) {
