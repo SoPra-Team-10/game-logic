@@ -8,8 +8,7 @@
 namespace gameModel{
 
     Player::Player(Position position, std::string name, communication::messages::types::Sex gender, communication::messages::types::Broom broom, communication::messages::types::EntityId id) :
-        Object(position, id), name(std::move(name)), gender(gender), broom(broom), fined{false} {
-        this->isFined = false;
+        Object(position, id), name(std::move(name)), gender(gender), broom(broom), isFined{false} {
     }
 
     bool Player::operator==(const Player &other) const {

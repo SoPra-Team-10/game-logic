@@ -154,7 +154,6 @@ namespace gameController{
         auto executeAll() const ->
             std::vector<std::pair<gameModel::Environment, double>> override;
 
-    //private:
         /**
          * checks if the move is a foul.
          * @param envi the selected environment.

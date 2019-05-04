@@ -57,6 +57,8 @@ TEST(move_test, move_foul1) {
     }
     env.team2.keeper.position = gameModel::Position(7, 6);
 
+    env.snitch.position = gameModel::Position(5, 5);
+
     gameController::Move mv(std::make_shared<gameModel::Environment>(env),
                             std::make_shared<gameModel::Keeper>(env.team2.keeper),
                             gameModel::Position(8, 6));
