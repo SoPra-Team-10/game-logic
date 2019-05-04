@@ -312,8 +312,9 @@ namespace gameModel{
          * @param teamConfig
          * @param teamFormation
          */
-        Environment(communication::messages::broadcast::MatchConfig matchConfig, const communication::messages::request::TeamConfig& teamConfig,
-                communication::messages::request::TeamFormation teamFormation);
+        Environment(communication::messages::broadcast::MatchConfig matchConfig, const communication::messages::request::TeamConfig& teamConfig1,
+                const communication::messages::request::TeamConfig& teamConfig2, communication::messages::request::TeamFormation teamFormation1,
+                communication::messages::request::TeamFormation teamFormation2);
 
         /**
          * Automatically places all balls at the correct location
