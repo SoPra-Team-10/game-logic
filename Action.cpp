@@ -229,8 +229,8 @@ namespace gameController{
         }
 
         // BlockSnitch
-        if (!INSTANCE_OF(actor, gameModel::Seeker) &&
-                this->target == this->env->snitch->position) {
+        if (!INSTANCE_OF(actor, gameModel::Seeker) && this->target == this->env->snitch->position &&
+                env->snitch->exists) {
             return gameModel::Foul::BlockSnitch;
         }
 
