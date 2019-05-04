@@ -87,6 +87,12 @@ namespace gameModel{
                              team2(std::move(team2)), quaffle(quaffle), snitch(snitch),
                              bludgers(bludgers){}
 
+
+    Environment::Environment(communication::messages::broadcast::MatchConfig matchConfig,
+                             const communication::messages::request::TeamConfig& teamConfig,
+                             communication::messages::request::TeamFormation teamFormation) :
+                             Environment({matchConfig}, {teamConfig, teamFormation, true}, {teamConfig, teamFormation, false}){}
+
     auto Environment::getAllPlayers() const -> std::array<std::shared_ptr<Player>, 14> {
         std::array<std::shared_ptr<Player>, 14> ret;
         auto it = ret.begin();
@@ -211,6 +217,7 @@ namespace gameModel{
         }
         return false;
     }
+
 
     // Ball Types
 
