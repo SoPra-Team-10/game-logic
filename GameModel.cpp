@@ -127,7 +127,7 @@ namespace gameModel{
                     if (i == position.x && j == position.y) {
                         continue;
                     }
-                    if (Environment::getCell(j, i) != Cell::OutOfBounds && this->getPlayer(Position(j, i)) == nullptr) {
+                    if (Environment::getCell(j, i) != Cell::OutOfBounds && !this->getPlayer({j, i}).has_value()) {
                         resultVect.emplace_back(Position(j, i));
                     }
                 }
