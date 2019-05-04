@@ -83,9 +83,9 @@ TEST(env_test, arePlayerInSameTeam) {
     auto team1Players = env.team1.getAllPlayers();
     auto team2Players = env.team2.getAllPlayers();
 
-    EXPECT_TRUE(env.arePlayerInSameTeam(*team1Players[gameController::rng(0, 6)], *team1Players[gameController::rng(0, 6)]));
-    EXPECT_TRUE(env.arePlayerInSameTeam(*team2Players[gameController::rng(0, 6)], *team2Players[gameController::rng(0, 6)]));
-    EXPECT_FALSE(env.arePlayerInSameTeam(*team1Players[gameController::rng(0, 6)], *team2Players[gameController::rng(0, 6)]));
+    EXPECT_TRUE(env.arePlayerInSameTeam(team1Players[gameController::rng(0, 6)], team1Players[gameController::rng(0, 6)]));
+    EXPECT_TRUE(env.arePlayerInSameTeam(team2Players[gameController::rng(0, 6)], team2Players[gameController::rng(0, 6)]));
+    EXPECT_FALSE(env.arePlayerInSameTeam(team1Players[gameController::rng(0, 6)], team2Players[gameController::rng(0, 6)]));
 }
 
 TEST(env_test, isPlayerInOwnRestrictedZone) {
@@ -94,8 +94,8 @@ TEST(env_test, isPlayerInOwnRestrictedZone) {
     env.team1.keeper->position = gameModel::Position(3, 6);
     env.team2.keeper->position = gameModel::Position(3, 6);
 
-    EXPECT_TRUE(env.isPlayerInOwnRestrictedZone(*env.team1.keeper));
-    EXPECT_FALSE(env.isPlayerInOwnRestrictedZone(*env.team2.keeper));
+    EXPECT_TRUE(env.isPlayerInOwnRestrictedZone(env.team1.keeper));
+    EXPECT_FALSE(env.isPlayerInOwnRestrictedZone(env.team2.keeper));
 }
 
 TEST(env_test, isPlayerInOpponentRestrictedZone) {
@@ -104,27 +104,27 @@ TEST(env_test, isPlayerInOpponentRestrictedZone) {
     env.team1.keeper->position = gameModel::Position(3, 6);
     env.team2.keeper->position = gameModel::Position(3, 6);
 
-    EXPECT_FALSE(env.isPlayerInOpponentRestrictedZone(*env.team1.keeper));
-    EXPECT_TRUE(env.isPlayerInOpponentRestrictedZone(*env.team2.keeper));
+    EXPECT_FALSE(env.isPlayerInOpponentRestrictedZone(env.team1.keeper));
+    EXPECT_TRUE(env.isPlayerInOpponentRestrictedZone(env.team2.keeper));
 }
 
 TEST(env_test, getTeamMates) {
     auto env = setup::createEnv();
 
-    auto team = env.getTeamMates(*env.team1.keeper);
+    auto team = env.getTeamMates(env.team1.keeper);
 
     for (auto player : team) {
-        EXPECT_TRUE(env.arePlayerInSameTeam(*player, *env.team1.keeper));
+        EXPECT_TRUE(env.arePlayerInSameTeam(player, env.team1.keeper));
     }
 }
 
 TEST(env_test, getOpponents) {
     auto env = setup::createEnv();
 
-    auto team = env.getOpponents(*env.team1.keeper);
+    auto team = env.getOpponents(env.team1.keeper);
 
     for (auto player : team) {
-        EXPECT_FALSE(env.arePlayerInSameTeam(*player, *env.team1.keeper));
+        EXPECT_FALSE(env.arePlayerInSameTeam(player, env.team1.keeper));
     }
 }
 

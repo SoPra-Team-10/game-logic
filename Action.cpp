@@ -117,7 +117,7 @@ namespace gameController{
     auto Shot::getInterceptionPositions() const -> std::vector<gameModel::Position>{
         auto crossedCells = gameController::getAllCrossedCells(this->actor->position, target);
         std::vector<gameModel::Position> ret;
-        for(const auto &player : env->getOpponents(*actor)){
+        for(const auto &player : env->getOpponents(actor)){
             for(const auto &cell : crossedCells){
                 if(player->position == cell){
                     ret.emplace_back(cell);
@@ -216,13 +216,13 @@ namespace gameController{
     auto Move::checkForFoul() const -> gameModel::Foul {
         // Ramming
         auto player = env->getPlayer(target);
-        if (player.has_value() && !env->arePlayerInSameTeam(*player.value(), *(this->actor))) {
+        if (player.has_value() && !env->arePlayerInSameTeam(player.value(), this->actor)) {
             return  gameModel::Foul::Ramming;
         }
 
         // BlockGoal
-        if ((env->team1.hasMember(*(this->actor)) && env->getCell(this->target) == gameModel::Cell::GoalLeft) ||
-            (env->team2.hasMember(*(this->actor)) && env->getCell(this->target) == gameModel::Cell::GoalRight)) {
+        if ((env->team1.hasMember(this->actor) && env->getCell(this->target) == gameModel::Cell::GoalLeft) ||
+            (env->team2.hasMember(this->actor) && env->getCell(this->target) == gameModel::Cell::GoalRight)) {
             return gameModel::Foul::BlockGoal;
         }
 
@@ -236,8 +236,8 @@ namespace gameController{
 
             // ChargeGoal
             if (env->quaffle->position == this->actor->position) {
-                if ((env->team1.hasMember(*(this->actor)) && env->getCell(this->target) == gameModel::Cell::GoalRight) ||
-                    (env->team2.hasMember(*(this->actor)) && env->getCell(this->target) == gameModel::Cell::GoalLeft)) {
+                if ((env->team1.hasMember(this->actor) && env->getCell(this->target) == gameModel::Cell::GoalRight) ||
+                    (env->team2.hasMember(this->actor) && env->getCell(this->target) == gameModel::Cell::GoalLeft)) {
                     return gameModel::Foul::ChargeGoal;
                 }
             }
@@ -245,10 +245,10 @@ namespace gameController{
             // MultipleOffence
             auto origPos = actor->position;
             actor->position = target;
-            if(env->isPlayerInOpponentRestrictedZone(*actor)){
-                auto mates = env->getTeamMates(*actor);
+            if(env->isPlayerInOpponentRestrictedZone(actor)){
+                auto mates = env->getTeamMates(actor);
                 for(const auto &p : mates){
-                    if(INSTANCE_OF(p, gameModel::Chaser) && env->isPlayerInOpponentRestrictedZone(*p)){
+                    if(INSTANCE_OF(p, gameModel::Chaser) && env->isPlayerInOpponentRestrictedZone(p)){
                         return gameModel::Foul::MultipleOffence;
                     }
                 }
