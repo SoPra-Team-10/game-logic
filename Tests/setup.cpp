@@ -12,7 +12,7 @@ auto setup::createEnv(const gameModel::Config &config) -> gameModel::Environment
     using ID = communication::messages::types::EntityId;
     gameModel::Chaser c1({2, 10}, "", {}, {}, ID::LEFT_CHASER1);
     gameModel::Chaser c2({8, 5}, "", {}, {}, ID::LEFT_CHASER2);
-    gameModel::Chaser c3({10, 7}, "", {}, {}, ID::RIGHT_CHASER3);
+    gameModel::Chaser c3({10, 7}, "", {}, {}, ID::LEFT_CHASER3);
     gameModel::Chaser c4({6, 1}, "", {}, {}, ID::RIGHT_CHASER1);
     gameModel::Chaser c5({9, 9}, "", {}, {}, ID::RIGHT_CHASER2);
     gameModel::Chaser c6({7, 3}, "", {}, {}, ID::RIGHT_CHASER3);

@@ -3,6 +3,7 @@
 //
 
 #include <gtest/gtest.h>
+#include <gmock/gmock-matchers.h>
 #include "Action.h"
 #include "setup.h"
 
@@ -70,3 +71,27 @@ TEST(shot_test, success_throw_execute){
     testShot.execute();
     EXPECT_EQ(env.quaffle->position, gameModel::Position(8, 6));
 }
+
+//Keeper throw_checks ball to centre, intercepted
+TEST(shot_test, success_throw_execute_intercept){
+    auto env = setup::createEnv({0, {}, {}, {1, 0, 0, 0, 1, 0}, {}});
+
+    env.quaffle->position = env.team1.keeper->position;
+env.team2.chasers[1]->position = {9, 7};
+    gameController::Shot testShot(std::make_shared<gameModel::Environment>(env), env.team1.keeper, env.quaffle, {8, 6});
+    testShot.execute();
+    EXPECT_EQ(env.quaffle->position, gameModel::Position(9, 7));
+}
+
+TEST(shot_test, success_throw_execute_intercept_bounce_off){
+    auto env = setup::createEnv({0, {}, {}, {1, 0, 0, 0, 1, 0}, {}});
+
+    env.quaffle->position = env.team1.keeper->position;
+    env.team2.beaters[0]->position = {10, 9};
+    gameController::Shot testShot(std::make_shared<gameModel::Environment>(env), env.team1.keeper, env.quaffle, {8, 6});
+    testShot.execute();
+    EXPECT_THAT(env.quaffle->position, testing::AnyOf(gameModel::Position(10, 8), gameModel::Position(9, 8),
+            gameModel::Position(9, 10), gameModel::Position(10, 10), gameModel::Position(11, 10), gameModel::Position(11, 9)));
+}
+
+
