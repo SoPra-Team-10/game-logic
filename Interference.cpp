@@ -17,17 +17,22 @@ namespace gameController{
         return team->fanblock.getUses(type) > 0;
     }
 
+    Teleport::Teleport(std::shared_ptr<gameModel::Environment> env, std::shared_ptr<gameModel::Team> team,
+                       gameModel::Position target) : Interference(std::move(env), std::move(team),
+                                                                  gameModel::InterferenceType::Teleport), target(target) {}
     void Teleport::execute() const {
+        if(!isPossible()){
+            throw std::runtime_error("Interference not possible");
+        }
 
+        auto possibleCells = env->getAllFreeCells();
+        auto targetPlayer = env->getPlayer(target);
+        targetPlayer.value()->position = possibleCells[rng(0, static_cast<int>(possibleCells.size() - 1))];
     }
 
     bool Teleport::isPossible() const {
         return available() && env->getPlayer(target).has_value();
     }
-
-    Teleport::Teleport(std::shared_ptr<gameModel::Environment> env, std::shared_ptr<gameModel::Team> team,
-                       gameModel::Position target) : Interference(std::move(env), std::move(team),
-                               gameModel::InterferenceType::Teleport), target(target) {}
 
     auto Teleport::getType() const -> gameModel::InterferenceType {
         return type;
@@ -38,7 +43,16 @@ namespace gameController{
                                        gameModel::InterferenceType::RangedAttack), target(target){}
 
     void RangedAttack::execute() const {
+        if(!isPossible()){
+            throw std::runtime_error("Interference not possible");
+        }
 
+        auto targetPlayer = env->getPlayer(target);
+        if(env->quaffle->position == target){
+            moveToAdjacent(env->quaffle, env);
+        }
+
+        moveToAdjacent(targetPlayer.value(), env);
     }
 
     bool RangedAttack::isPossible() const {
@@ -58,7 +72,18 @@ namespace gameController{
         Interference(std::move(env), std::move(team), gameModel::InterferenceType::Impulse){}
 
     void Impulse::execute() const {
+        if(!isPossible()){
+            throw std::runtime_error("Interference not possible");
+        }
 
+        for(const auto &player : env->getAllPlayers()){
+            if(player->position == env->quaffle->position &&
+                (INSTANCE_OF(player, gameModel::Chaser) ||
+                INSTANCE_OF(player, gameModel::Keeper))) {
+                moveToAdjacent(env->quaffle, env);
+                break;
+            }
+        }
     }
 
     bool Impulse::isPossible() const {
@@ -73,7 +98,13 @@ namespace gameController{
         Interference(std::move(env), std::move(team), gameModel::InterferenceType::SnitchPush){}
 
     void SnitchPush::execute() const {
+        if(!isPossible()){
+            throw std::runtime_error("Interference not possible");
+        }
 
+        if(env->snitch->exists){
+            moveToAdjacent(env->snitch, env);
+        }
     }
 
     bool SnitchPush::isPossible() const {

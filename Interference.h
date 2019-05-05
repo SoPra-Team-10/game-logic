@@ -49,6 +49,10 @@ namespace gameController{
     public:
         Teleport(std::shared_ptr<gameModel::Environment> env, std::shared_ptr<gameModel::Team> team,
                  gameModel::Position target);
+
+        /**
+         * Teleports target player to random free location on the field
+         */
         void execute() const override;
 
         /**
@@ -67,6 +71,10 @@ namespace gameController{
         RangedAttack(std::shared_ptr<gameModel::Environment> env, std::shared_ptr<gameModel::Team> team,
                 gameModel::Position target);
 
+        /**
+         * Pushes target player to a random free adjacent position
+         * if target player previously held quaffle, quaffle will be moved to random free adjacent position
+         */
         void execute() const override;
 
         /**
@@ -81,8 +89,11 @@ namespace gameController{
 
     class Impulse : public Interference {
     public:
-    Impulse(std::shared_ptr<gameModel::Environment> env, std::shared_ptr<gameModel::Team> team);
+        Impulse(std::shared_ptr<gameModel::Environment> env, std::shared_ptr<gameModel::Team> team);
 
+        /**
+         * If a Keeper or Chaser holds the quaffle, quaffle is moved to a random free adjacent position
+         */
         void execute() const override;
 
         /**
@@ -97,6 +108,9 @@ namespace gameController{
     public:
         SnitchPush(std::shared_ptr<gameModel::Environment> env, std::shared_ptr<gameModel::Team> team);
 
+        /**
+         * Snitch is moved to random free adjacent position
+         */
         void execute() const override;
 
         /**

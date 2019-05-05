@@ -1,7 +1,6 @@
 #include <utility>
 #include "Action.h"
 #include "GameModel.h"
-#define INSTANCE_OF(A, B) (std::dynamic_pointer_cast<B>(A))
 #define QUAFFLETHROW ((INSTANCE_OF(actor, gameModel::Chaser) || INSTANCE_OF(actor, gameModel::Keeper)) && INSTANCE_OF(ball, gameModel::Quaffle))
 #define BLUDGERSHOT (INSTANCE_OF(actor, gameModel::Beater) && INSTANCE_OF(ball, gameModel::Bludger))
 

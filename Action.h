@@ -7,6 +7,8 @@
 #include "GameController.h"
 #include "GameModel.h"
 
+#define INSTANCE_OF(A, B) (std::dynamic_pointer_cast<B>(A))
+
 namespace gameController{
 
     /**
