@@ -363,7 +363,9 @@ namespace gameModel{
          * @param position
          * @return
          */
-        static Cell getCell(Position position);
+        static Cell getCell(const Position &position);
+
+        static auto getSurroundingPositions(const Position &position) -> std::vector<Position>;
 
         /**
          * Gets all players on the field

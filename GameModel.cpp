@@ -75,8 +75,23 @@ namespace gameModel{
         }
     }
 
-    Cell Environment::getCell(Position position) {
+    Cell Environment::getCell(const Position &position) {
         return getCell(position.x, position.y);
+    }
+
+    auto Environment::getSurroundingPositions(const Position &position) -> std::vector<Position>{
+        std::vector<Position> ret;
+        ret.reserve(8);
+        for(int x = position.x - 1; x <= position.x + 1; x++){
+            for(int y = position.y - 1; y <= position.y + 1; y++){
+                Position p(x, y);
+                if(getCell(p) != Cell::OutOfBounds && p != position){
+                    ret.push_back(p);
+                }
+            }
+        }
+
+        return ret;
     }
 
     Environment::Environment(Config config,Team team1, Team team2) : config(std::move(config)), team1(std::move(team1)),
@@ -265,6 +280,7 @@ namespace gameModel{
         int index = gameController::rng(0, static_cast<int>(possibleCells.size() - 1));
         player.position = possibleCells[index];
     }
+
 
 
     // Ball Types

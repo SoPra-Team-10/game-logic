@@ -3,6 +3,7 @@
 //
 
 #include <gtest/gtest.h>
+#include <gmock/gmock-matchers.h>
 #include "GameModel.h"
 #include "setup.h"
 
@@ -55,4 +56,20 @@ TEST(env_tests, cellIsFree){
     EXPECT_TRUE(env.cellIsFree({5, 10}));
     EXPECT_TRUE(env.cellIsFree({4, 1}));
     EXPECT_TRUE(env.cellIsFree({10, 2}));
+}
+
+TEST(env_tests, getSurroundingPositions){
+    using env = gameModel::Environment;
+    using P = gameModel::Position;
+    for(const auto &pos : env::getSurroundingPositions({10, 2})){
+        EXPECT_THAT(pos, testing::AnyOf(P{10, 1}, P{9, 1}, P{9, 2}, P{9, 3}, P{10, 3}, P{11, 3}, P{11, 2}, P{11, 1}));
+    }
+}
+
+TEST(env_tests, getSurroundingPositions_corner){
+    using env = gameModel::Environment;
+    using P = gameModel::Position;
+    for(const auto &pos : env::getSurroundingPositions({2, 1})){
+        EXPECT_THAT(pos, testing::AnyOf(P{1, 2}, P{2, 2}, P{3, 2}, P{3, 1}, P{3, 0}));
+    }
 }
