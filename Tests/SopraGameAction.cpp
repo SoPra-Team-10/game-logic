@@ -186,7 +186,7 @@ TEST(shot_test, bludger_shot_on_Beater){
 
 //---------------------------Move tests---------------------------------------------------------------------------------
 
-TEST(move_test, move_foul0) {
+TEST(move_test, move_foul_ramming) {
     auto env = setup::createEnv();
 
     auto player = env.getPlayer({8, 6});
@@ -207,7 +207,7 @@ TEST(move_test, move_foul0) {
     EXPECT_EQ(mv.checkForFoul(), gameModel::Foul::Ramming);
 }
 
-TEST(move_test, move_foul1) {
+TEST(move_test, move_foul_none) {
     auto env = setup::createEnv();
 
     auto player = env.getPlayer({8, 6});
@@ -230,7 +230,7 @@ TEST(move_test, move_foul1) {
     EXPECT_EQ(mv.checkForFoul(), gameModel::Foul::None);
 }
 
-TEST(move_test, move_foul2) {
+TEST(move_test, move_foul_blocksnitch) {
     auto env = setup::createEnv();
     env.snitch->exists = true;
 
@@ -252,7 +252,7 @@ TEST(move_test, move_foul2) {
     EXPECT_EQ(mv.checkForFoul(), gameModel::Foul::BlockSnitch);
 }
 
-TEST(move_test, move_foul3) {
+TEST(move_test, move_foul_multipleoffence) {
     auto env = setup::createEnv();
 
     env.team1.chasers[0]->position = gameModel::Position(16, 7);
@@ -269,7 +269,7 @@ TEST(move_test, move_foul3) {
     EXPECT_EQ(mv.checkForFoul(), gameModel::Foul::MultipleOffence);
 }
 
-TEST(move_test, move_foul4) {
+TEST(move_test, move_foul_blockgoal) {
     auto env = setup::createEnv();
 
     env.team1.chasers[0]->position = gameModel::Position(1, 6);
@@ -286,13 +286,19 @@ TEST(move_test, move_foul4) {
 }
 
 //@TODO failt noch manchmal
-TEST(move_test, move_foul5) {
+TEST(move_test, move_foul_chargeGoal) {
     auto env = setup::createEnv();
+
+    auto player = env.getPlayer({1, 6});
+    if (player.has_value()) {
+        gameController::moveToAdjacent(*player.value(), env);
+    }
 
     env.team2.chasers[0]->position = gameModel::Position(1, 6);
     env.quaffle->position = gameModel::Position(1, 6);
+    env.snitch->position = gameModel::Position(5,5);
 
-    auto player = env.getPlayer({2, 6});
+    player = env.getPlayer({2, 6});
     if (player.has_value()) {
         gameController::moveToAdjacent(*player.value(), env);
     }
@@ -303,7 +309,7 @@ TEST(move_test, move_foul5) {
     EXPECT_EQ(mv.checkForFoul(), gameModel::Foul::ChargeGoal);
 }
 
-TEST(move_test, move_check0) {
+TEST(move_test, move_check_impossible0) {
     auto env = setup::createEnv();
 
     env.team1.keeper->position = gameModel::Position(7, 1);
@@ -315,11 +321,23 @@ TEST(move_test, move_check0) {
 
 }
 
-//Failt manchaml
-TEST(move_test, move_check1) {
+TEST(move_test, move_check_impossible1) {
+    auto env = setup::createEnv();
+
+    env.team1.keeper->position = gameModel::Position(3, 0);
+
+    gameController::Move mv(std::make_shared<gameModel::Environment>(env),
+                            env.team1.keeper, gameModel::Position(2, 0));
+
+    EXPECT_EQ(mv.check(), gameController::ActionResult::Impossible);
+
+}
+
+TEST(move_test, move_check_success) {
     auto env = setup::createEnv();
 
     env.team1.keeper->position = gameModel::Position(7, 1);
+    env.snitch->position = gameModel::Position(5,5);
 
     auto player = env.getPlayer({7, 2});
     if (player.has_value()) {
@@ -332,7 +350,7 @@ TEST(move_test, move_check1) {
     EXPECT_EQ(mv.check(), gameController::ActionResult::Success);
 }
 
-TEST(move_test, move_check2) {
+TEST(move_test, move_check_foul) {
     auto env = setup::createEnv();
 
     env.team1.chasers[0]->position = gameModel::Position(16, 6);

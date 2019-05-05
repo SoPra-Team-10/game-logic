@@ -20,7 +20,6 @@ namespace gameModel{
         return !(*this == other);
     }
 
-    Ball::Ball(Position position, communication::messages::types::EntityId id) : Object(position, id) {}
 
     // Fanblock
 
@@ -269,6 +268,8 @@ namespace gameModel{
 
     // Ball Types
 
+    Ball::Ball(Position position, communication::messages::types::EntityId id) : Object(position, id) {}
+
     Snitch::Snitch(Position position): Ball(position, communication::messages::types::EntityId::SNITCH) {}
 
     Snitch::Snitch() : Ball({0, 0}, communication::messages::types::EntityId::SNITCH), exists(false){
@@ -354,7 +355,6 @@ namespace gameModel{
         return false;
     }
 
-
     // Config
 
     Config::Config(unsigned int maxRounds, const Timeouts &timeouts, const FoulDetectionProbs &foulDetectionProbs,
@@ -375,6 +375,9 @@ namespace gameModel{
                  gameDynamicsProbs{config.getProbThrowSuccess(), config.getProbKnockOut(), config.getProbFoolAway(), config.getProbCatchSnitch(),
                  config.getProbCatchQuaffle(), config.getProbWrestQuaffle()}{}
 
+
+    // Position
+
     Position::Position(int x, int y) {
         this->x = x;
         this->y = y;
@@ -392,6 +395,7 @@ namespace gameModel{
         return Position(static_cast<int>(p.x + round(this->x)),
                         static_cast<int>(p.y + round(this->y)));
     }
+
 
     // Vector
 
