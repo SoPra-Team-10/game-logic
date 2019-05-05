@@ -190,7 +190,13 @@ namespace gameController{
 
         double m = (env->quaffle->position.y - actor->position.y) / static_cast<double>((env->quaffle->position.x - actor->position.x));
         double c = target.y - m * target.x;
-        auto passThrough = [m, c](const gameModel::Position &p){
+        auto passThrough = [this, m, c](const gameModel::Position &p){
+            auto left = std::min(target.x, env->quaffle->position.x);
+            auto right = std::max(target.x, env->quaffle->position.x);
+            if(p.x < left || p.x > right){
+                return false;
+            }
+
             auto upper = p.y + 0.5;
             auto lower = p.y - 0.5;
             auto lSide = m * (p.x - 0.5) + c;

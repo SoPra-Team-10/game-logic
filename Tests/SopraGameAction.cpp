@@ -71,7 +71,9 @@ TEST(shot_test, success_throw_execute){
 
     env->quaffle->position = env->team1->keeper->position;
     gameController::Shot testShot(env, env->team1->keeper, env->quaffle, {8, 6});
-    testShot.execute();
+    auto res = testShot.execute();
+    EXPECT_EQ(res.first.size(), 1);
+    EXPECT_EQ(res.first[0], gameController::ShotResult::ThrowSuccess);
     EXPECT_EQ(env->quaffle->position, gameModel::Position(8, 6));
 }
 
@@ -82,7 +84,9 @@ TEST(shot_test, success_throw_execute_intercept){
     env->quaffle->position = env->team1->keeper->position;
     env->team2->chasers[1]->position = {9, 7};
     gameController::Shot testShot(env, env->team1->keeper, env->quaffle, {8, 6});
-    testShot.execute();
+    auto res = testShot.execute();
+    EXPECT_EQ(res.first.size(), 1);
+    EXPECT_EQ(res.first[0], gameController::ShotResult::Intercepted);
     EXPECT_EQ(env->quaffle->position, gameModel::Position(9, 7));
 }
 
@@ -92,7 +96,9 @@ TEST(shot_test, success_throw_execute_intercept_bounce_off){
     env->quaffle->position = env->team1->keeper->position;
     env->team2->beaters[0]->position = {10, 9};
     gameController::Shot testShot(env, env->team1->keeper, env->quaffle, {8, 6});
-    testShot.execute();
+    auto res = testShot.execute();
+    EXPECT_EQ(res.first.size(), 1);
+    EXPECT_EQ(res.first[0], gameController::ShotResult::Intercepted);
     EXPECT_THAT(env->quaffle->position, testing::AnyOf(gameModel::Position(10, 8), gameModel::Position(9, 8),
             gameModel::Position(9, 10), gameModel::Position(10, 10), gameModel::Position(11, 10), gameModel::Position(11, 9)));
 }
@@ -103,7 +109,9 @@ TEST(shot_test, success_throw_execute_fail_and_disperse){
     env->team1->keeper->position = {0, 8};
     env->quaffle->position = env->team1->keeper->position;
     gameController::Shot testShot(env, env->team1->keeper, env->quaffle, {16, 8});
-    testShot.execute();
+    auto res = testShot.execute();
+    EXPECT_EQ(res.first.size(), 1);
+    EXPECT_EQ(res.first[0], gameController::ShotResult::Miss);
     EXPECT_THAT(env->quaffle->position, testing::AnyOf(gameModel::Position(16, 7), gameModel::Position(15, 7),
                                                       gameModel::Position(15, 8), gameModel::Position(15, 9)));
 }
