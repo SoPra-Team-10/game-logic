@@ -3,6 +3,7 @@
 //
 
 #include <gtest/gtest.h>
+#include <gmock/gmock-matchers.h>
 #include "GameModel.h"
 #include "GameController.h"
 #include "setup.h"
@@ -128,6 +129,25 @@ TEST(env_test, getOpponents) {
     }
 }
 
+TEST(env_tests, getSurroundingPositions){
+    using env = gameModel::Environment;
+    using P = gameModel::Position;
+    auto positions = env::getSurroundingPositions({10, 2});
+    EXPECT_EQ(positions.size(), 8);
+    for(const auto &pos : positions){
+        EXPECT_THAT(pos, testing::AnyOf(P{10, 1}, P{9, 1}, P{9, 2}, P{9, 3}, P{10, 3}, P{11, 3}, P{11, 2}, P{11, 1}));
+    }
+}
+
+TEST(env_tests, getSurroundingPositions_corner){
+    using env = gameModel::Environment;
+    using P = gameModel::Position;
+    auto positions = env::getSurroundingPositions({2, 1});
+    EXPECT_EQ(positions.size(), 5);
+    for(const auto &pos : positions){
+        EXPECT_THAT(pos, testing::AnyOf(P{1, 2}, P{2, 2}, P{3, 2}, P{3, 1}, P{3, 0}));
+    }
+}
 
 /*
 TEST(env_test, getAllFreeCells) {

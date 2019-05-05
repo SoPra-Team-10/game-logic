@@ -78,6 +78,21 @@ namespace gameModel{
         return getCell(position.x, position.y);
     }
 
+    auto Environment::getSurroundingPositions(const Position &position) -> std::vector<Position>{
+        std::vector<Position> ret;
+        ret.reserve(8);
+        for(int x = position.x - 1; x <= position.x + 1; x++){
+            for(int y = position.y - 1; y <= position.y + 1; y++){
+                Position curr(x, y);
+                if(curr != position && getCell(curr) != Cell::OutOfBounds){
+                    ret.emplace_back(curr);
+                }
+            }
+        }
+
+        return ret;
+    }
+
     Environment::Environment(Config config,Team team1, Team team2) : config(std::move(config)), team1(std::move(team1)),
             team2(std::move(team2)), quaffle(std::make_shared<Quaffle>()), snitch(std::make_shared<Snitch>()),
             bludgers{std::make_shared<Bludger>(communication::messages::types::EntityId::BLUDGER1),
@@ -264,6 +279,7 @@ namespace gameModel{
         int index = gameController::rng(0, static_cast<int>(possibleCells.size() - 1));
         player->position = possibleCells[index];
     }
+
 
 
     // Ball Types
