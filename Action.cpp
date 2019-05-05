@@ -61,7 +61,8 @@ namespace gameController{
             auto playerOnTarget = env->getPlayer(target);
             if(playerOnTarget.has_value()){
                 //Knock player out an place bludger on random free cell
-                if(!INSTANCE_OF(playerOnTarget.value(), gameModel::Beater)){
+                if(!INSTANCE_OF(playerOnTarget.value(), gameModel::Beater) &&
+                    actionTriggered(env->config.gameDynamicsProbs.knockOut)){
                     playerOnTarget.value()->knockedOut = true;
                     auto possibleCells = env->getAllFreeCells();
                     int index = rng(0, static_cast<int>(possibleCells.size()) - 1);

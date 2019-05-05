@@ -166,7 +166,7 @@ TEST(shot_test, bludger_shot_on_empty_cell){
 }
 
 TEST(shot_test, bludger_shot_on_Seeker){
-    auto env = std::make_shared<gameModel::Environment>(setup::createEnv());
+    auto env = std::make_shared<gameModel::Environment>(setup::createEnv({0, {}, {}, {0, 1, 0, 0, 0, 0}, {}}));
     env->bludgers[0]->position = env->team2.beaters[1]->position;
     auto testShot = gameController::Shot(env, env->team2.beaters[1], env->bludgers[0], env->team1.seeker->position);
     testShot.execute();
