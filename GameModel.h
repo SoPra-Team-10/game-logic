@@ -292,7 +292,7 @@ namespace gameModel{
          * @param player
          * @return true if player is a member of the team. false otherwise
          */
-        bool hasMember(const Player &player) const;
+        bool hasMember(const std::shared_ptr<Player>& player) const;
 
     };
 
@@ -334,21 +334,21 @@ namespace gameModel{
          * @param p2 player 2.
          * @return if the players are in the same team true, else false.
          */
-        auto arePlayerInSameTeam(const Player &p1, const Player & p2) const -> bool;
+        auto arePlayerInSameTeam(const std::shared_ptr<Player>& p1, const std::shared_ptr<Player>& p2) const -> bool;
 
         /**
          * checks if a player is in the own restricted zone.
          * @param player the player.
          * @return true if player is in own restricted zone, else false;
          */
-        auto isPlayerInOwnRestrictedZone(const Player &player) const -> bool;
+        auto isPlayerInOwnRestrictedZone(const std::shared_ptr<Player>& player) const -> bool;
 
         /**
          * checks if a player is in the opponent restricted zone.
          * @param player the player.
          * @return true if player is in opponent restricted zone, else false;
          */
-        auto isPlayerInOpponentRestrictedZone(const Player &player) const  -> bool;
+        auto isPlayerInOpponentRestrictedZone(const std::shared_ptr<Player>& player) const  -> bool;
 
         /**
          * Gets the type of the cell at position (x,y)
@@ -363,7 +363,7 @@ namespace gameModel{
          * @param position
          * @return
          */
-        static Cell getCell(Position position);
+        static Cell getCell(const Position &position);
 
         /**
          * Gets all players on the field
@@ -376,14 +376,14 @@ namespace gameModel{
          * @param player
          * @return
          */
-        auto getTeamMates(const Player &player) const -> std::array<std::shared_ptr<Player>, 6>;
+        auto getTeamMates(const std::shared_ptr<Player>& player) const -> std::array<std::shared_ptr<Player>, 6>;
 
         /**
          * Gets all players from the opponent team of the given player
          * @param player
          * @return
          */
-        auto getOpponents(const Player &player) const -> std::array<std::shared_ptr<Player>, 7>;
+        auto getOpponents(const std::shared_ptr<Player>& player) const -> std::array<std::shared_ptr<Player>, 7>;
 
         /**
          * Determines whether the given Position is occupied by a Player
@@ -404,14 +404,14 @@ namespace gameModel{
          * Returns player object at the specified position if one exists
          * @return
          */
-        auto getPlayer(Position) const -> std::optional<std::shared_ptr<Player>>;
+        auto getPlayer(const Position &position) const -> std::optional<std::shared_ptr<Player>>;
 
         /**
          * get the corresponding team of a player.
          * @param player the selected player.
          * @return the team of a player.
          */
-        auto getTeam(const Player &player) const -> const Team&;
+        auto getTeam(const std::shared_ptr<Player>& player) const -> const Team&;
 
         /**
          * Gets all Positions which are not out of bounds
@@ -429,7 +429,7 @@ namespace gameModel{
          * place a player on random free cell in his half of the game field.
          * @param player
           */
-        void placePlayerOnRandomFreeCell(Player& player);
+        void placePlayerOnRandomFreeCell(const std::shared_ptr<Player>& player);
     };
 }
 
