@@ -50,6 +50,11 @@ namespace gameController{
         Teleport(std::shared_ptr<gameModel::Environment> env, std::shared_ptr<gameModel::Team> team,
                  gameModel::Position target);
         void execute() const override;
+
+        /**
+         *
+         * @return true if available and player on target, false otherwise
+         */
         bool isPossible() const override;
         auto getType() const -> gameModel::InterferenceType override;
 
@@ -63,6 +68,11 @@ namespace gameController{
                 gameModel::Position target);
 
         void execute() const override;
+
+        /**
+         *
+         * @return true if available and opponent on target, false otherwise
+         */
         bool isPossible() const override;
         auto getType() const -> gameModel::InterferenceType override;
     private:
@@ -74,6 +84,11 @@ namespace gameController{
     Impulse(std::shared_ptr<gameModel::Environment> env, std::shared_ptr<gameModel::Team> team);
 
         void execute() const override;
+
+        /**
+         *
+         * @return true if available, false otherwise
+         */
         bool isPossible() const override;
         auto getType() const -> gameModel::InterferenceType override;
     };
@@ -83,6 +98,11 @@ namespace gameController{
         SnitchPush(std::shared_ptr<gameModel::Environment> env, std::shared_ptr<gameModel::Team> team);
 
         void execute() const override;
+
+        /**
+         *
+         * @return true if available, false otherwise
+         */
         bool isPossible() const override;
         auto getType() const -> gameModel::InterferenceType override;
     };
