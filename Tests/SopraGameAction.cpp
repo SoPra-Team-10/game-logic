@@ -174,6 +174,17 @@ TEST(shot_test, bludger_shot_on_Seeker){
     EXPECT_TRUE(env->team1.seeker->knockedOut);
 }
 
+TEST(shot_test, bludger_shot_on_Chase_with_ball){
+    using P = gameModel::Position;
+    auto env = setup::createEnv({0, {}, {}, {0, 1, 0, 0, 0, 0}, {}});
+    env->bludgers[0]->position = env->team2.beaters[1]->position;
+    env->quaffle->position = env->team2.chasers[0]->position;
+    auto testShot = gameController::Shot(env, env->team2.beaters[1], env->bludgers[0], env->team2.chasers[0]->position);
+    testShot.execute();
+    EXPECT_NE(env->bludgers[0]->position, env->team1.seeker->position);
+    EXPECT_TRUE(env->team2.chasers[0]->knockedOut);
+    EXPECT_THAT(env->quaffle->position, testing::AnyOf(P(7, 0), P(6, 0), P(5, 0), P(5, 1), P(5, 2), P(6, 2), P(7, 2), P(7, 1)));
+}
 
 TEST(shot_test, bludger_shot_on_Beater){
     auto env = setup::createEnv();
@@ -280,7 +291,6 @@ TEST(move_test, move_foul_blockgoal) {
     EXPECT_EQ(mv.checkForFoul(), gameModel::Foul::BlockGoal);
 }
 
-//@TODO failt noch manchmal
 TEST(move_test, move_foul_chargeGoal) {
     auto env = setup::createEnv();
 
