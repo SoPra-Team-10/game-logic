@@ -62,6 +62,8 @@ namespace gameController{
                     auto possibleCells = env->getAllFreeCells();
                     int index = rng(0, static_cast<int>(possibleCells.size()) - 1);
                     ball->position = possibleCells[index];
+                } else {
+                    ball->position = target;
                 }
             } else {
                 ball->position = target;

@@ -156,6 +156,24 @@ TEST(shot_test, bludger_shot_on_empty_cell){
     EXPECT_EQ(env->bludgers[0]->position, gameModel::Position(6, 2));
 }
 
+TEST(shot_test, bludger_shot_on_Seeker){
+    auto env = std::make_shared<gameModel::Environment>(setup::createEnv());
+    env->bludgers[0]->position = env->team2.beaters[1]->position;
+    auto testShot = gameController::Shot(env, env->team2.beaters[1], env->bludgers[0], env->team1.seeker->position);
+    testShot.execute();
+    EXPECT_NE(env->bludgers[0]->position, env->team1.seeker->position);
+    EXPECT_TRUE(env->team1.seeker->knockedOut);
+}
+
+
+TEST(shot_test, bludger_shot_on_Beater){
+    auto env = std::make_shared<gameModel::Environment>(setup::createEnv());
+    env->bludgers[0]->position = env->team2.beaters[1]->position;
+    auto testShot = gameController::Shot(env, env->team2.beaters[1], env->bludgers[0], env->team1.beaters[1]->position);
+    testShot.execute();
+    EXPECT_EQ(env->bludgers[0]->position, env->team1.beaters[1]->position);
+    EXPECT_FALSE(env->team1.beaters[1]->knockedOut);
+}
 
 //---------------------------Move tests---------------------------------------------------------------------------------
 
