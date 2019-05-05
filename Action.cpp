@@ -62,6 +62,11 @@ namespace gameController{
                     }
                 }
             }
+
+            auto goal = goalCheck();
+            if(goal.has_value()){
+                shotRes.push_back(goal.value());
+            }
         } else if(BLUDGERSHOT){
             auto playerOnTarget = env->getPlayer(target);
             if(playerOnTarget.has_value()){
@@ -175,6 +180,37 @@ namespace gameController{
         }
 
         return ret;
+    }
+
+    auto Shot::goalCheck() const -> std::optional<ShotResult> {
+        if(target.x == env->quaffle->position.x){
+            return {};
+        }
+
+        double m = (env->quaffle->position.y - actor->position.y) / static_cast<double>((env->quaffle->position.x - actor->position.x));
+        double c = target.y - m * target.x;
+        auto passThrough = [m, c](const gameModel::Position &p){
+            auto upper = p.y + 0.5;
+            auto lower = p.y - 0.5;
+            auto lSide = m * (p.x - 0.5) + c;
+            auto rSide = m * (p.x + 0.5) + c;
+            return (lSide > lower && lSide < upper) || (rSide > lower && rSide < upper);
+
+        };
+
+        for(const auto &goal : gameModel::Environment::getGoalsLeft()){
+            if(passThrough(goal)){
+                return ShotResult::ScoreRight;
+            }
+        }
+
+        for(const auto &goal : gameModel::Environment::getGoalsRight()){
+            if(passThrough(goal)){
+                return ShotResult::ScoreLeft;
+            }
+        }
+
+        return {};
     }
 
     Move::Move(std::shared_ptr<gameModel::Environment> env, std::shared_ptr<gameModel::Player> actor, gameModel::Position target):

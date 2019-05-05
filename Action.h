@@ -121,6 +121,12 @@ namespace gameController{
          * @return
          */
         auto getAllLandingCells() const -> std::vector<gameModel::Position>;
+
+        /**
+         * Checks if a goal was scored depending on the quaffles and actors current position
+         * @return
+         */
+        auto goalCheck() const -> std::optional<ShotResult>;
     };
 
     /**
