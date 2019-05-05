@@ -85,3 +85,31 @@ TEST(ranged_attack_test, execute_target_with_quaffle){
     EXPECT_THAT(env->quaffle->position, testing::AnyOf(P(13, 11), P(12, 12), P(14, 11)));
     EXPECT_THAT(env->team2->keeper->position, testing::AnyOf(P(13, 11), P(12, 12), P(14, 11)));
 }
+
+//----------------------------------------------Impulse-----------------------------------------------------------------
+
+TEST(impulse_test, possible){
+    auto env = setup::createEnv();
+    gameController::Impulse testImpuls(env, env->team1);
+    EXPECT_TRUE(testImpuls.isPossible());
+}
+
+TEST(impulse_test, no_uses_left){
+    auto env = setup::createEnv();
+    gameController::Impulse testImpuls(env, env->team1);
+    while(env->team1->fanblock.getUses(testImpuls.getType())){
+        env->team1->fanblock.banFan(testImpuls.getType());
+    }
+
+    EXPECT_FALSE(testImpuls.isPossible());
+}
+
+
+TEST(impulse_test, execute){
+    using P = gameModel::Position;
+    auto env = setup::createEnv();
+    env->quaffle->position = env->team1->chasers[0]->position;
+    gameController::Impulse testImpuls(env, env->team1);
+    testImpuls.execute();
+    EXPECT_THAT(env->quaffle->position, testing::AnyOf(P(2, 9), P(1, 9), P(1, 10), P(2, 11), P(3, 11), P(3, 10), P(3, 9)));
+}
