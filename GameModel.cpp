@@ -146,21 +146,21 @@ namespace gameModel{
         int endY = position.y + 1;
 
         do {
-            for (int i = startY; i <= endY; i++) {
-                for (int j = startX; j <= endX; j++) {
-                    if (i == position.x && j == position.y) {
+            for (int yPos = startY; yPos <= endY; yPos++) {
+                for (int xPos = startX; xPos <= endX; xPos++) {
+                    if (xPos == position.x && yPos == position.y) {
                         continue;
                     }
-                    if (Environment::getCell(j, i) != Cell::OutOfBounds && !this->getPlayer({j, i}).has_value()) {
-                        resultVect.emplace_back(Position(j, i));
+                    else if (Environment::getCell(xPos, yPos) != Cell::OutOfBounds && !this->getPlayer({xPos, yPos}).has_value()) {
+                        resultVect.emplace_back(Position(xPos, yPos));
                     }
                 }
             }
 
             startX--;
             endX++;
-            startX--;
-            endX++;
+            startY--;
+            endY++;
 
         } while (resultVect.empty());
 
@@ -222,7 +222,12 @@ namespace gameModel{
         for(const auto &cell : getAllValidCells()){
             if(cellIsFree(cell)){
                 *it = cell;
-                it++;
+                if (it < ret.end() ) {
+                    it++;
+                }
+                else {
+                    throw std::runtime_error("There are less than 14 players on the field!");
+                }
             }
         }
 

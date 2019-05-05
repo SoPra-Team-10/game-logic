@@ -161,7 +161,7 @@ namespace gameController{
          * @param envi the selected environment.
          * @return the type of foul.
          */
-        auto checkForFoul() const -> gameModel::Foul;
+        auto checkForFoul() const -> std::vector<gameModel::Foul>;
     };
 
 }

@@ -178,7 +178,7 @@ namespace gameController{
             return ActionResult::Impossible;
         }
 
-        if (this->checkForFoul() == gameModel::Foul::None) {
+        if (this->checkForFoul().empty()) {
             return ActionResult::Success;
         }
         else {
@@ -188,32 +188,43 @@ namespace gameController{
 
     void Move::execute() const {
         // check move
+        bool rammingFoulFlag = false;
         ActionResult actionResult = this->check();
         if (actionResult == ActionResult::Impossible) {
-            throw std::runtime_error("The Selected move is impossible!");
+            throw std::runtime_error("The selected move is impossible!");
         }
         else if (actionResult == ActionResult::Foul) {
-            gameModel::Foul foul = this->checkForFoul();
-            this->actor->isFined = gameController::refereeDecision(foul, this->env->config);
+            std::vector<gameModel::Foul> fouls = this->checkForFoul();
+            for (const auto &foul :  fouls) {
+                if (foul == gameModel::Foul::Ramming) {
+                    rammingFoulFlag = true;
+                }
+                if (gameController::refereeDecision(foul, this->env->config)) {
+                    this->actor->isFined = true;
+                }
+
+            }
         }
 
-        // move other player out of the way
+        // get other player on target cell
         auto targetPlayer = env->getPlayer(this->target);
-        if (targetPlayer.has_value()) {
-            gameController::moveToAdjacent(targetPlayer.value(), env);
-        }
 
-        // move the quaffle if necessary
-        if (this->env->quaffle->position == this->actor->position) {
+        // move the player
+        auto oldActorPos = actor->position;
+        this->actor->position = this->target;
+
+                // move the quaffel if necessary
+        if (this->env->quaffle->position == oldActorPos) {
             this->env->quaffle->position = this->target;
-        } else if(checkForFoul() == gameModel::Foul::Ramming && env->quaffle->position == target) {
-            //rammed player looses Quaffle
+        } else if(rammingFoulFlag && env->quaffle->position == target) {
+            //rammed player looses quaffel
             moveToAdjacent(env->quaffle, env);
         }
 
-
-        // move the player
-        this->actor->position = this->target;
+        // move other player out of the way if necessary
+        if (targetPlayer.has_value()) {
+            gameController::moveToAdjacent(targetPlayer.value(), env);
+        }
     }
 
     auto Move::successProb() const -> double {
@@ -226,23 +237,24 @@ namespace gameController{
         }
     }
 
-    auto Move::checkForFoul() const -> gameModel::Foul {
+    auto Move::checkForFoul() const -> std::vector<gameModel::Foul> {
+        std::vector<gameModel::Foul> resVect;
         // Ramming
         auto player = env->getPlayer(target);
         if (player.has_value() && !env->arePlayerInSameTeam(player.value(), this->actor)) {
-            return  gameModel::Foul::Ramming;
+            resVect.emplace_back(gameModel::Foul::Ramming);
         }
 
         // BlockGoal
         if ((env->team1->hasMember(this->actor) && env->getCell(this->target) == gameModel::Cell::GoalLeft) ||
             (env->team2->hasMember(this->actor) && env->getCell(this->target) == gameModel::Cell::GoalRight)) {
-            return gameModel::Foul::BlockGoal;
+            resVect.emplace_back(gameModel::Foul::BlockGoal);
         }
 
         // BlockSnitch
         if (!INSTANCE_OF(actor, gameModel::Seeker) && this->target == this->env->snitch->position &&
                 env->snitch->exists) {
-            return gameModel::Foul::BlockSnitch;
+            resVect.emplace_back(gameModel::Foul::BlockSnitch);
         }
 
         if (INSTANCE_OF(actor, gameModel::Chaser)) {
@@ -251,7 +263,7 @@ namespace gameController{
             if (env->quaffle->position == this->actor->position) {
                 if ((env->team1->hasMember(this->actor) && env->getCell(this->target) == gameModel::Cell::GoalRight) ||
                     (env->team2->hasMember(this->actor) && env->getCell(this->target) == gameModel::Cell::GoalLeft)) {
-                    return gameModel::Foul::ChargeGoal;
+                    resVect.emplace_back(gameModel::Foul::ChargeGoal);
                 }
             }
 
@@ -262,7 +274,7 @@ namespace gameController{
                 auto mates = env->getTeamMates(actor);
                 for(const auto &p : mates){
                     if(INSTANCE_OF(p, gameModel::Chaser) && env->isPlayerInOpponentRestrictedZone(p)){
-                        return gameModel::Foul::MultipleOffence;
+                        resVect.emplace_back(gameModel::Foul::MultipleOffence);
                     }
                 }
             }
@@ -270,7 +282,7 @@ namespace gameController{
             actor->position = origPos;
         }
 
-        return gameModel::Foul::None;
+        return resVect;
     }
 
     auto Move::executeAll() const ->
