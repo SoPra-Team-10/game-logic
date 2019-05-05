@@ -286,6 +286,14 @@ namespace gameModel{
         player->position = possibleCells[index];
     }
 
+     auto Environment::getGoalsLeft() -> std::array<Position, 3> {
+        return {Position{2, 4}, Position{2, 6}, Position{2, 8}};
+    }
+
+    auto Environment::getGoalsRight() -> std::array<Position, 3> {
+        return {Position{14, 4}, Position{14, 6}, Position{14, 8}};
+    }
+
 
 
     // Ball Types
