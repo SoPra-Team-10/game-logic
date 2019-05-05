@@ -161,7 +161,7 @@ namespace gameModel{
         std::string name;
         communication::messages::types::Sex gender = {};
         communication::messages::types::Broom broom = {};
-        bool isFined;
+        bool isFined = false;
         bool knockedOut = false;
 
         Player() = default;
@@ -307,7 +307,7 @@ namespace gameModel{
     class Environment{
     public:
         Config config;
-        Team team1, team2;
+        std::shared_ptr<Team> team1, team2;
         std::shared_ptr<Quaffle> quaffle;
         std::shared_ptr<Snitch> snitch;
         std::array<std::shared_ptr<Bludger>, 2> bludgers;
@@ -328,9 +328,9 @@ namespace gameModel{
          * @param team1
          * @param team2
          */
-        Environment(Config config, Team team1, Team team2);
+        Environment(Config config, std::shared_ptr<Team> team1, std::shared_ptr<Team> team2);
 
-        Environment(Config config, Team team1, Team team2, std::shared_ptr<Quaffle> quaffle,
+        Environment(Config config, std::shared_ptr<Team> team1, std::shared_ptr<Team> team2, std::shared_ptr<Quaffle> quaffle,
                 std::shared_ptr<Snitch> snitch, std::array<std::shared_ptr<Bludger>, 2> bludgers);
 
         /**
@@ -423,7 +423,7 @@ namespace gameModel{
          * @param player the selected player.
          * @return the team of a player.
          */
-        auto getTeam(const std::shared_ptr<Player>& player) const -> const Team&;
+        auto getTeam(const std::shared_ptr<Player>& player) const -> std::shared_ptr<Team>;
 
         /**
          * Gets all Positions which are not out of bounds

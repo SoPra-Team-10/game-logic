@@ -1,7 +1,6 @@
 #include <utility>
 #include "Action.h"
 #include "GameModel.h"
-#define INSTANCE_OF(A, B) (std::dynamic_pointer_cast<B>(A))
 #define QUAFFLETHROW ((INSTANCE_OF(actor, gameModel::Chaser) || INSTANCE_OF(actor, gameModel::Keeper)) && INSTANCE_OF(ball, gameModel::Quaffle))
 #define BLUDGERSHOT (INSTANCE_OF(actor, gameModel::Beater) && INSTANCE_OF(ball, gameModel::Bludger))
 
@@ -235,8 +234,8 @@ namespace gameController{
         }
 
         // BlockGoal
-        if ((env->team1.hasMember(this->actor) && env->getCell(this->target) == gameModel::Cell::GoalLeft) ||
-            (env->team2.hasMember(this->actor) && env->getCell(this->target) == gameModel::Cell::GoalRight)) {
+        if ((env->team1->hasMember(this->actor) && env->getCell(this->target) == gameModel::Cell::GoalLeft) ||
+            (env->team2->hasMember(this->actor) && env->getCell(this->target) == gameModel::Cell::GoalRight)) {
             return gameModel::Foul::BlockGoal;
         }
 
@@ -250,8 +249,8 @@ namespace gameController{
 
             // ChargeGoal
             if (env->quaffle->position == this->actor->position) {
-                if ((env->team1.hasMember(this->actor) && env->getCell(this->target) == gameModel::Cell::GoalRight) ||
-                    (env->team2.hasMember(this->actor) && env->getCell(this->target) == gameModel::Cell::GoalLeft)) {
+                if ((env->team1->hasMember(this->actor) && env->getCell(this->target) == gameModel::Cell::GoalRight) ||
+                    (env->team2->hasMember(this->actor) && env->getCell(this->target) == gameModel::Cell::GoalLeft)) {
                     return gameModel::Foul::ChargeGoal;
                 }
             }
