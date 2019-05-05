@@ -63,9 +63,8 @@ namespace gameController{
                 }
             }
 
-            auto goal = goalCheck();
-            if(goal.has_value()){
-                shotRes.push_back(goal.value());
+            for(const auto &res : goalCheck()){
+                shotRes.push_back(res);
             }
         } else if(BLUDGERSHOT){
             auto playerOnTarget = env->getPlayer(target);
@@ -183,16 +182,17 @@ namespace gameController{
         return ret;
     }
 
-    auto Shot::goalCheck() const -> std::optional<ShotResult> {
-        if(target.x == env->quaffle->position.x){
+    auto Shot::goalCheck() const -> std::vector<ShotResult> {
+        if(actor->position.x == env->quaffle->position.x){
             return {};
         }
 
+        std::vector<ShotResult> ret;
         double m = (env->quaffle->position.y - actor->position.y) / static_cast<double>((env->quaffle->position.x - actor->position.x));
-        double c = target.y - m * target.x;
-        auto passThrough = [this, m, c](const gameModel::Position &p){
-            auto left = std::min(target.x, env->quaffle->position.x);
-            auto right = std::max(target.x, env->quaffle->position.x);
+        double c = actor->position.y - m * actor->position.x;
+        auto left = std::min(actor->position.x, env->quaffle->position.x);
+        auto right = std::max(actor->position.x, env->quaffle->position.x);
+        auto passThrough = [m, c, left, right](const gameModel::Position &p){
             if(p.x < left || p.x > right){
                 return false;
             }
@@ -207,17 +207,19 @@ namespace gameController{
 
         for(const auto &goal : gameModel::Environment::getGoalsLeft()){
             if(passThrough(goal)){
-                return ShotResult::ScoreRight;
+                ret.push_back(ShotResult::ScoreRight);
+                break;
             }
         }
 
         for(const auto &goal : gameModel::Environment::getGoalsRight()){
             if(passThrough(goal)){
-                return ShotResult::ScoreLeft;
+                ret.push_back(ShotResult::ScoreLeft);
+                break;
             }
         }
 
-        return {};
+        return ret;
     }
 
     Move::Move(std::shared_ptr<gameModel::Environment> env, std::shared_ptr<gameModel::Player> actor, gameModel::Position target):

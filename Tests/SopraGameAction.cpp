@@ -78,7 +78,7 @@ TEST(shot_test, success_throw_execute){
 }
 
 //Keeper throw_checks ball to centre, intercepted
-TEST(shot_test, success_throw_execute_intercept){
+TEST(shot_test, throw_execute_intercept){
     auto env = setup::createEnv({0, {}, {}, {1, 0, 0, 0, 1, 0}, {}});
 
     env->quaffle->position = env->team1->keeper->position;
@@ -90,7 +90,7 @@ TEST(shot_test, success_throw_execute_intercept){
     EXPECT_EQ(env->quaffle->position, gameModel::Position(9, 7));
 }
 
-TEST(shot_test, success_throw_execute_intercept_bounce_off){
+TEST(shot_test, throw_execute_intercept_bounce_off){
     auto env = setup::createEnv({0, {}, {}, {1, 0, 0, 0, 1, 0}, {}});
 
     env->quaffle->position = env->team1->keeper->position;
@@ -103,17 +103,19 @@ TEST(shot_test, success_throw_execute_intercept_bounce_off){
             gameModel::Position(9, 10), gameModel::Position(10, 10), gameModel::Position(11, 10), gameModel::Position(11, 9)));
 }
 
-TEST(shot_test, success_throw_execute_fail_and_disperse){
+TEST(shot_test, throw_execute_fail_and_disperse){
     auto env = setup::createEnv({0, {}, {}, {0, 0, 0, 0, 0, 0}, {}});
 
     env->team1->keeper->position = {0, 8};
     env->quaffle->position = env->team1->keeper->position;
     gameController::Shot testShot(env, env->team1->keeper, env->quaffle, {16, 8});
     auto res = testShot.execute();
-    EXPECT_EQ(res.first.size(), 1);
+    EXPECT_GE(res.first.size(), 2);
     EXPECT_EQ(res.first[0], gameController::ShotResult::Miss);
+    EXPECT_EQ(res.first[1], gameController::ShotResult::ScoreRight);
     EXPECT_THAT(env->quaffle->position, testing::AnyOf(gameModel::Position(16, 7), gameModel::Position(15, 7),
                                                       gameModel::Position(15, 8), gameModel::Position(15, 9)));
+    std::cout << "landed on {" << env->quaffle->position.x << ", " << env->quaffle->position.y << "}" << std::endl;
 }
 
 //--------------------------Bludger shot check------------------------------------------------------------------------
