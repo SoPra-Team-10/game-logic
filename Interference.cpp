@@ -22,7 +22,7 @@ namespace gameController{
     }
 
     bool Teleport::isPossible() const {
-        return false;
+        return available() && env->getPlayer(target).has_value();
     }
 
     Teleport::Teleport(std::shared_ptr<gameModel::Environment> env, std::shared_ptr<gameModel::Team> team,
@@ -42,6 +42,11 @@ namespace gameController{
     }
 
     bool RangedAttack::isPossible() const {
+        auto player = env->getPlayer(target);
+        if(available() && player.has_value()){
+            return !team->hasMember(player.value());
+        }
+
         return false;
     }
 
@@ -57,7 +62,7 @@ namespace gameController{
     }
 
     bool Impulse::isPossible() const {
-        return false;
+        return available();
     }
 
     auto Impulse::getType() const -> gameModel::InterferenceType {
@@ -72,7 +77,7 @@ namespace gameController{
     }
 
     bool SnitchPush::isPossible() const {
-        return false;
+        return available();
     }
 
     auto SnitchPush::getType() const -> gameModel::InterferenceType {
