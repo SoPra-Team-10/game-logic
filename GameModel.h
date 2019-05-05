@@ -294,6 +294,11 @@ namespace gameModel{
          */
         bool hasMember(const std::shared_ptr<Player>& player) const;
 
+        /**
+         * gets the number of banned players in the team
+         */
+        int numberOfBannedMembers();
+
     };
 
     /**

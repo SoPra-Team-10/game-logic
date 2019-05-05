@@ -372,6 +372,17 @@ namespace gameModel{
         return false;
     }
 
+    int Team::numberOfBannedMembers() {
+        int ret = 0;
+        for(const auto &player :getAllPlayers()){
+            if(player->isFined){
+                ret++;
+            }
+        }
+
+        return ret;
+    }
+
     // Config
 
     Config::Config(unsigned int maxRounds, const Timeouts &timeouts, const FoulDetectionProbs &foulDetectionProbs,
