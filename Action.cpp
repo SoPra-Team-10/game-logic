@@ -155,7 +155,6 @@ namespace gameController{
         return ret;
     }
 
-    // fertig
     Move::Move(std::shared_ptr<gameModel::Environment> env, std::shared_ptr<gameModel::Player> actor, gameModel::Position target):
             Action(std::move(env), std::move(actor), target) {}
 
@@ -204,7 +203,6 @@ namespace gameController{
         this->actor->position = this->target;
     }
 
-    // fertig
     auto Move::successProb() const -> double {
         if (gameModel::Environment::getCell(this->target) == gameModel::Cell::OutOfBounds ||
             gameController::getDistance(this->actor->position, this->target) > 1){
