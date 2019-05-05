@@ -48,7 +48,7 @@ namespace gameController{
     class Teleport : public Interference {
     public:
         Teleport(std::shared_ptr<gameModel::Environment> env, std::shared_ptr<gameModel::Team> team,
-                 gameModel::Position target);
+                 std::shared_ptr<gameModel::Player> target);
 
         /**
          * Teleports target player to random free location on the field
@@ -57,19 +57,19 @@ namespace gameController{
 
         /**
          *
-         * @return true if available and player on target, false otherwise
+         * @return true if available
          */
         bool isPossible() const override;
         auto getType() const -> gameModel::InterferenceType override;
 
     private:
-        gameModel::Position target;
+        std::shared_ptr<gameModel::Player> target;
     };
 
     class RangedAttack : public Interference {
     public:
         RangedAttack(std::shared_ptr<gameModel::Environment> env, std::shared_ptr<gameModel::Team> team,
-                gameModel::Position target);
+                std::shared_ptr<gameModel::Player> target);
 
         /**
          * Pushes target player to a random free adjacent position
@@ -79,12 +79,12 @@ namespace gameController{
 
         /**
          *
-         * @return true if available and opponent on target, false otherwise
+         * @return true if available and opponent target, false otherwise
          */
         bool isPossible() const override;
         auto getType() const -> gameModel::InterferenceType override;
     private:
-        gameModel::Position target;
+        std::shared_ptr<gameModel::Player> target;
     };
 
     class Impulse : public Interference {

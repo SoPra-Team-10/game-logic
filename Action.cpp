@@ -234,8 +234,8 @@ namespace gameController{
         }
 
         // BlockGoal
-        if ((env->team1.hasMember(this->actor) && env->getCell(this->target) == gameModel::Cell::GoalLeft) ||
-            (env->team2.hasMember(this->actor) && env->getCell(this->target) == gameModel::Cell::GoalRight)) {
+        if ((env->team1->hasMember(this->actor) && env->getCell(this->target) == gameModel::Cell::GoalLeft) ||
+            (env->team2->hasMember(this->actor) && env->getCell(this->target) == gameModel::Cell::GoalRight)) {
             return gameModel::Foul::BlockGoal;
         }
 
@@ -249,8 +249,8 @@ namespace gameController{
 
             // ChargeGoal
             if (env->quaffle->position == this->actor->position) {
-                if ((env->team1.hasMember(this->actor) && env->getCell(this->target) == gameModel::Cell::GoalRight) ||
-                    (env->team2.hasMember(this->actor) && env->getCell(this->target) == gameModel::Cell::GoalLeft)) {
+                if ((env->team1->hasMember(this->actor) && env->getCell(this->target) == gameModel::Cell::GoalRight) ||
+                    (env->team2->hasMember(this->actor) && env->getCell(this->target) == gameModel::Cell::GoalLeft)) {
                     return gameModel::Foul::ChargeGoal;
                 }
             }

@@ -2,6 +2,10 @@
 
 #include <utility>
 
+#include <utility>
+
+#include <utility>
+
 //
 // Created by timluchterhand on 05.05.19.
 //
@@ -18,20 +22,19 @@ namespace gameController{
     }
 
     Teleport::Teleport(std::shared_ptr<gameModel::Environment> env, std::shared_ptr<gameModel::Team> team,
-                       gameModel::Position target) : Interference(std::move(env), std::move(team),
-                                                                  gameModel::InterferenceType::Teleport), target(target) {}
+                       std::shared_ptr<gameModel::Player> target) : Interference(std::move(env), std::move(team),
+                                                                  gameModel::InterferenceType::Teleport), target(std::move(target)) {}
     void Teleport::execute() const {
         if(!isPossible()){
             throw std::runtime_error("Interference not possible");
         }
 
         auto possibleCells = env->getAllFreeCells();
-        auto targetPlayer = env->getPlayer(target);
-        targetPlayer.value()->position = possibleCells[rng(0, static_cast<int>(possibleCells.size() - 1))];
+        target->position = possibleCells[rng(0, static_cast<int>(possibleCells.size() - 1))];
     }
 
     bool Teleport::isPossible() const {
-        return available() && env->getPlayer(target).has_value();
+        return available();
     }
 
     auto Teleport::getType() const -> gameModel::InterferenceType {
@@ -39,29 +42,23 @@ namespace gameController{
     }
 
     RangedAttack::RangedAttack(std::shared_ptr<gameModel::Environment> env, std::shared_ptr<gameModel::Team> team,
-                               gameModel::Position target) : Interference(std::move(env), std::move(team),
-                                       gameModel::InterferenceType::RangedAttack), target(target){}
+                               std::shared_ptr<gameModel::Player> target) : Interference(std::move(env), std::move(team),
+                                       gameModel::InterferenceType::RangedAttack), target(std::move(target)){}
 
     void RangedAttack::execute() const {
         if(!isPossible()){
             throw std::runtime_error("Interference not possible");
         }
 
-        auto targetPlayer = env->getPlayer(target);
-        if(env->quaffle->position == target){
+        if(env->quaffle->position == target->position){
             moveToAdjacent(env->quaffle, env);
         }
 
-        moveToAdjacent(targetPlayer.value(), env);
+        moveToAdjacent(target, env);
     }
 
     bool RangedAttack::isPossible() const {
-        auto player = env->getPlayer(target);
-        if(available() && player.has_value()){
-            return !team->hasMember(player.value());
-        }
-
-        return false;
+        return available() && !team->hasMember(target);
     }
 
     auto RangedAttack::getType() const -> gameModel::InterferenceType {
