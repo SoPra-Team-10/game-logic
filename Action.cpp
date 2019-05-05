@@ -50,8 +50,12 @@ namespace gameController{
             } else {
                 //Miss -> dispersion
                 auto possibleCells = getAllLandingCells();
-                int index = rng(0, static_cast<int>(possibleCells.size()) - 1);
-                ball->position = possibleCells[index];
+                if(!possibleCells.empty()){
+                    int index = rng(0, static_cast<int>(possibleCells.size()) - 1);
+                    ball->position = possibleCells[index];
+                } else {
+                    ball->position = target;
+                }
             }
         } else if(BLUDGERSHOT){
             auto playerOnTarget = env->getPlayer(target);
