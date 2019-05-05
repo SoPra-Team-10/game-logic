@@ -196,7 +196,7 @@ namespace gameController{
         }
         else if (actionResult == ActionResult::Foul) {
             std::vector<gameModel::Foul> fouls = this->checkForFoul();
-            for (const auto foul :  fouls) {
+            for (const auto &foul :  fouls) {
                 if (foul == gameModel::Foul::Ramming) {
                     rammingFoulFlag = true;
                 }
