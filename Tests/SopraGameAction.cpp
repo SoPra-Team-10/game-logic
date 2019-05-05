@@ -145,6 +145,18 @@ TEST(shot_test, invalid_bludger_shot_check_path_blocked){
     auto testShot = gameController::Shot(env, env->team2.beaters[1], env->bludgers[0], {5, 5});
     EXPECT_EQ(testShot.check(), gameController::ActionResult::Impossible);
 }
+
+//---------------------------Bludger shot execute-----------------------------------------------------------------------
+
+TEST(shot_test, bludger_shot_on_empty_cell){
+    auto env = std::make_shared<gameModel::Environment>(setup::createEnv());
+    env->bludgers[0]->position = env->team2.beaters[1]->position;
+    auto testShot = gameController::Shot(env, env->team2.beaters[1], env->bludgers[0], {6, 2});
+    testShot.execute();
+    EXPECT_EQ(env->bludgers[0]->position, gameModel::Position(6, 2));
+}
+
+
 //---------------------------Move tests---------------------------------------------------------------------------------
 
 TEST(move_test, move_foul0) {
