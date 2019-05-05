@@ -13,12 +13,15 @@ namespace gameController{
             std::shared_ptr<gameModel::Ball> ball, gameModel::Position target) :
             Action(std::move(env), std::move(actor), target), ball(std::move(ball)) {}
 
-    void Shot::execute() const{
-        if (check() == ActionResult::Impossible){
+    auto Shot::execute() const -> std::pair<std::vector<ShotResult>, std::vector<gameModel::Foul>> {
+        std::vector<gameModel::Foul> fouls;
+        std::vector<ShotResult> shotRes;
+        if (check() == ActionCheckResult::Impossible){
             throw std::runtime_error("Action is impossible");
         }
 
         if(QUAFFLETHROW){
+            bool intercept = false;
             for(const auto &pos : getInterceptionPositions()){
                 if(actionTriggered(env->config.gameDynamicsProbs.catchQuaffle)){
                     auto interceptPlayer = env->getPlayer(pos);
@@ -26,34 +29,37 @@ namespace gameController{
                         throw std::runtime_error("No Player at intercept position");
                     }
 
+                    intercept = true;
+                    shotRes.push_back(ShotResult::Intercepted);
                     auto &p = interceptPlayer.value();
                     if(INSTANCE_OF(p, gameModel::Chaser) || INSTANCE_OF(p, gameModel::Keeper)){
                         //Quaffle is catched
                         ball->position = pos;
-                        return;
                     } else {
                         //Quaffle bounces off
                         ball->position = pos;
                         moveToAdjacent(ball, env);
-                        return;
                     }
                 }
             }
 
             //Quaffle not intercepted
-
-            auto dist = getDistance(actor->position, target);
-            if(actionTriggered(std::pow(env->config.gameDynamicsProbs.throwSuccess, dist))){
-                //Throw successs
-                ball->position = target;
-            } else {
-                //Miss -> dispersion
-                auto possibleCells = getAllLandingCells();
-                if(!possibleCells.empty()){
-                    int index = rng(0, static_cast<int>(possibleCells.size()) - 1);
-                    ball->position = possibleCells[index];
-                } else {
+            if(!intercept){
+                auto dist = getDistance(actor->position, target);
+                if(actionTriggered(std::pow(env->config.gameDynamicsProbs.throwSuccess, dist))){
+                    //Throw successs
                     ball->position = target;
+                    shotRes.push_back(ShotResult::ThrowSuccess);
+                } else {
+                    //Miss -> dispersion
+                    shotRes.push_back(ShotResult::Miss);
+                    auto possibleCells = getAllLandingCells();
+                    if(!possibleCells.empty()){
+                        int index = rng(0, static_cast<int>(possibleCells.size()) - 1);
+                        ball->position = possibleCells[index];
+                    } else {
+                        ball->position = target;
+                    }
                 }
             }
         } else if(BLUDGERSHOT){
@@ -62,6 +68,7 @@ namespace gameController{
                 //Knock player out an place bludger on random free cell
                 if(!INSTANCE_OF(playerOnTarget.value(), gameModel::Beater) &&
                     actionTriggered(env->config.gameDynamicsProbs.knockOut)){
+                    shotRes.push_back(ShotResult::Knockout);
                     playerOnTarget.value()->knockedOut = true;
                     auto possibleCells = env->getAllFreeCells();
                     int index = rng(0, static_cast<int>(possibleCells.size()) - 1);
@@ -78,6 +85,8 @@ namespace gameController{
                 ball->position = target;
             }
         }
+
+        return {shotRes, fouls};
     }
 
     auto Shot::successProb() const -> double{
@@ -92,8 +101,8 @@ namespace gameController{
         }
     }
 
-    auto Shot::check() const -> ActionResult {
-        using res = ActionResult;
+    auto Shot::check() const -> ActionCheckResult {
+        using res = ActionCheckResult;
         if(actor->position == ball->position && gameModel::Environment::getCell(target) != gameModel::Cell::OutOfBounds){
             if(QUAFFLETHROW){
                 return res::Success;
@@ -171,30 +180,34 @@ namespace gameController{
     Move::Move(std::shared_ptr<gameModel::Environment> env, std::shared_ptr<gameModel::Player> actor, gameModel::Position target):
             Action(std::move(env), std::move(actor), target) {}
 
-    auto Move::check() const -> ActionResult{
+    auto Move::check() const -> ActionCheckResult{
 
         if (gameModel::Environment::getCell(this->target) == gameModel::Cell::OutOfBounds ||
             gameController::getDistance(this->actor->position, this->target) > 1) {
-            return ActionResult::Impossible;
+            return ActionCheckResult::Impossible;
         }
 
         if (this->checkForFoul().empty()) {
-            return ActionResult::Success;
+            return ActionCheckResult::Success;
         }
         else {
-            return ActionResult::Foul;
+            return ActionCheckResult::Foul;
         }
     }
 
-    void Move::execute() const {
+    auto Move::execute() const -> std::pair<std::vector<ShotResult>, std::vector<gameModel::Foul>> {
+        std::vector<gameModel::Foul> fouls;
+        std::vector<ShotResult> shots;
+
         // check move
         bool rammingFoulFlag = false;
-        ActionResult actionResult = this->check();
-        if (actionResult == ActionResult::Impossible) {
+        ActionCheckResult actionResult = this->check();
+
+        if (actionResult == ActionCheckResult::Impossible) {
             throw std::runtime_error("The selected move is impossible!");
         }
-        else if (actionResult == ActionResult::Foul) {
-            std::vector<gameModel::Foul> fouls = this->checkForFoul();
+        else if (actionResult == ActionCheckResult::Foul) {
+            fouls = this->checkForFoul();
             for (const auto &foul :  fouls) {
                 if (foul == gameModel::Foul::Ramming) {
                     rammingFoulFlag = true;
@@ -213,7 +226,7 @@ namespace gameController{
         auto oldActorPos = actor->position;
         this->actor->position = this->target;
 
-                // move the quaffel if necessary
+        // move the quaffel if necessary
         if (this->env->quaffle->position == oldActorPos) {
             this->env->quaffle->position = this->target;
         } else if(rammingFoulFlag && env->quaffle->position == target) {
@@ -225,6 +238,8 @@ namespace gameController{
         if (targetPlayer.has_value()) {
             gameController::moveToAdjacent(targetPlayer.value(), env);
         }
+
+        return {shots, fouls};
     }
 
     auto Move::successProb() const -> double {

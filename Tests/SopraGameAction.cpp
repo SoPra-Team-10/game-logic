@@ -15,7 +15,7 @@ TEST(shot_test, oob_throw_check) {
 
     env->quaffle->position = env->team1->keeper->position;
     gameController::Shot testShot(env, env->team1->keeper, env->quaffle, {0, 0});
-    EXPECT_EQ(testShot.check(), gameController::ActionResult::Impossible);
+    EXPECT_EQ(testShot.check(), gameController::ActionCheckResult::Impossible);
 }
 
 //Valid Keeper throw_check
@@ -24,7 +24,7 @@ TEST(shot_test, valid_keeper_throw_check) {
 
     env->quaffle->position = env->team1->keeper->position;
     gameController::Shot testShot(env, env->team1->keeper, env->quaffle, {12, 12});
-    EXPECT_EQ(testShot.check(), gameController::ActionResult::Success);
+    EXPECT_EQ(testShot.check(), gameController::ActionCheckResult::Success);
 }
 
 //Invalid Keeper throw_check (Ball not at keeper position)
@@ -33,7 +33,7 @@ TEST(shot_test, inv_keeper_throw_check){
 
     env->quaffle->position = env->team1->chasers[0]->position;
     gameController::Shot testShot(env, env->team1->keeper, env->quaffle, {12, 12});
-    EXPECT_EQ(testShot.check(), gameController::ActionResult::Impossible);
+    EXPECT_EQ(testShot.check(), gameController::ActionCheckResult::Impossible);
 }
 
 //Valid Chaser throw_check
@@ -42,7 +42,7 @@ TEST(shot_test, valid_chaser_throw_check){
 
     env->quaffle->position = env->team1->chasers[0]->position;
     gameController::Shot testShot(env, env->team1->chasers[0], env->quaffle, {12, 12});
-    EXPECT_EQ(testShot.check(), gameController::ActionResult::Success);
+    EXPECT_EQ(testShot.check(), gameController::ActionCheckResult::Success);
 }
 
 //Invalid Seeker throw_check
@@ -51,7 +51,7 @@ TEST(shot_test, inv_seeker_throw_check){
 
     env->quaffle->position = env->team1->seeker->position;
     gameController::Shot testShot(env, env->team1->seeker, env->quaffle, {12, 12});
-    EXPECT_EQ(testShot.check(), gameController::ActionResult::Impossible);
+    EXPECT_EQ(testShot.check(), gameController::ActionCheckResult::Impossible);
 }
 
 //Invalid Beater throw_check
@@ -60,7 +60,7 @@ TEST(shot_test, inv_beater_throw_check){
 
     env->quaffle->position = env->team1->beaters[0]->position;
     gameController::Shot testShot(env, env->team1->beaters[0], env->quaffle, {12, 12});
-    EXPECT_EQ(testShot.check(), gameController::ActionResult::Impossible);
+    EXPECT_EQ(testShot.check(), gameController::ActionCheckResult::Impossible);
 }
 
 //-----------------Throw execute----------------------------------------------------------------------------------------
@@ -114,41 +114,41 @@ TEST(shot_test, valid_bludger_shot_check){
     auto env = setup::createEnv();
     env->bludgers[0]->position = env->team2->beaters[1]->position;
     auto testShot = gameController::Shot(env, env->team2->beaters[1], env->bludgers[0], env->team1->seeker->position);
-    EXPECT_EQ(testShot.check(), gameController::ActionResult::Success);
+    EXPECT_EQ(testShot.check(), gameController::ActionCheckResult::Success);
 }
 
 TEST(shot_test, invalid_bludger_shot_check_no_ball){
     auto env = setup::createEnv();
     auto testShot = gameController::Shot(env, env->team2->beaters[1], env->bludgers[0], env->team1->seeker->position);
-    EXPECT_EQ(testShot.check(), gameController::ActionResult::Impossible);
+    EXPECT_EQ(testShot.check(), gameController::ActionCheckResult::Impossible);
 }
 
 TEST(shot_test, invalid_bludger_shot_check_oob){
     auto env = setup::createEnv();
     env->bludgers[0]->position = env->team2->beaters[1]->position;
     auto testShot = gameController::Shot(env, env->team2->beaters[1], env->bludgers[0], {0, 0});
-    EXPECT_EQ(testShot.check(), gameController::ActionResult::Impossible);
+    EXPECT_EQ(testShot.check(), gameController::ActionCheckResult::Impossible);
 }
 
 TEST(shot_test, invalid_bludger_shot_check_no_beater){
     auto env = setup::createEnv();
     env->bludgers[0]->position = env->team2->chasers[1]->position;
     auto testShot = gameController::Shot(env, env->team2->chasers[1], env->bludgers[0], env->team1->seeker->position);
-    EXPECT_EQ(testShot.check(), gameController::ActionResult::Impossible);
+    EXPECT_EQ(testShot.check(), gameController::ActionCheckResult::Impossible);
 }
 
 TEST(shot_test, invalid_bludger_shot_check_too_far){
     auto env = setup::createEnv();
     env->bludgers[0]->position = env->team2->beaters[1]->position;
     auto testShot = gameController::Shot(env, env->team2->beaters[1], env->bludgers[0], {9, 2});
-    EXPECT_EQ(testShot.check(), gameController::ActionResult::Impossible);
+    EXPECT_EQ(testShot.check(), gameController::ActionCheckResult::Impossible);
 }
 
 TEST(shot_test, invalid_bludger_shot_check_path_blocked){
     auto env = setup::createEnv();
     env->bludgers[0]->position = env->team2->beaters[1]->position;
     auto testShot = gameController::Shot(env, env->team2->beaters[1], env->bludgers[0], {5, 5});
-    EXPECT_EQ(testShot.check(), gameController::ActionResult::Impossible);
+    EXPECT_EQ(testShot.check(), gameController::ActionCheckResult::Impossible);
 }
 
 //---------------------------Bludger shot execute-----------------------------------------------------------------------
@@ -335,7 +335,7 @@ TEST(move_test, move_check_impossible0) {
 
     gameController::Move mv(env, env->team1->keeper, gameModel::Position(7, 3));
 
-    EXPECT_EQ(mv.check(), gameController::ActionResult::Impossible);
+    EXPECT_EQ(mv.check(), gameController::ActionCheckResult::Impossible);
 
 }
 
@@ -346,7 +346,7 @@ TEST(move_test, move_check_impossible1) {
 
     gameController::Move mv(env, env->team1->keeper, gameModel::Position(2, 0));
 
-    EXPECT_EQ(mv.check(), gameController::ActionResult::Impossible);
+    EXPECT_EQ(mv.check(), gameController::ActionCheckResult::Impossible);
 
 }
 
@@ -363,7 +363,7 @@ TEST(move_test, move_check_success) {
 
     gameController::Move mv(env, env->team1->keeper, gameModel::Position(7, 2));
 
-    EXPECT_EQ(mv.check(), gameController::ActionResult::Success);
+    EXPECT_EQ(mv.check(), gameController::ActionCheckResult::Success);
 }
 
 TEST(move_test, move_check_foul) {
@@ -374,7 +374,7 @@ TEST(move_test, move_check_foul) {
 
     gameController::Move mv(env, env->team1->chasers[1], gameModel::Position(12, 6));
 
-    EXPECT_EQ(mv.check(), gameController::ActionResult::Foul);
+    EXPECT_EQ(mv.check(), gameController::ActionCheckResult::Foul);
 }
 
 //---------------------------Move Execute Move--------------------------------------------------------------------------
