@@ -31,7 +31,7 @@ namespace gameController{
          * Gets the type of interference
          * @return
          */
-        virtual auto getType() const -> gameModel::InterferenceType = 0;
+        auto getType() const -> gameModel::InterferenceType;
     protected:
 
         std::shared_ptr<gameModel::Environment> env;
@@ -60,7 +60,6 @@ namespace gameController{
          * @return true if available
          */
         bool isPossible() const override;
-        auto getType() const -> gameModel::InterferenceType override;
 
     private:
         std::shared_ptr<gameModel::Player> target;
@@ -82,7 +81,6 @@ namespace gameController{
          * @return true if available and opponent target, false otherwise
          */
         bool isPossible() const override;
-        auto getType() const -> gameModel::InterferenceType override;
     private:
         std::shared_ptr<gameModel::Player> target;
     };
@@ -101,7 +99,6 @@ namespace gameController{
          * @return true if available, false otherwise
          */
         bool isPossible() const override;
-        auto getType() const -> gameModel::InterferenceType override;
     };
 
     class SnitchPush : public Interference {
@@ -118,7 +115,6 @@ namespace gameController{
          * @return true if available, false otherwise
          */
         bool isPossible() const override;
-        auto getType() const -> gameModel::InterferenceType override;
     };
 }
 

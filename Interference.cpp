@@ -1,11 +1,5 @@
 #include <utility>
 
-#include <utility>
-
-#include <utility>
-
-#include <utility>
-
 //
 // Created by timluchterhand on 05.05.19.
 //
@@ -19,6 +13,10 @@ namespace gameController{
 
     bool Interference::available() const {
         return team->fanblock.getUses(type) > 0;
+    }
+
+    auto Interference::getType() const -> gameModel::InterferenceType {
+        return type;
     }
 
     Teleport::Teleport(std::shared_ptr<gameModel::Environment> env, std::shared_ptr<gameModel::Team> team,
@@ -35,10 +33,6 @@ namespace gameController{
 
     bool Teleport::isPossible() const {
         return available();
-    }
-
-    auto Teleport::getType() const -> gameModel::InterferenceType {
-        return type;
     }
 
     RangedAttack::RangedAttack(std::shared_ptr<gameModel::Environment> env, std::shared_ptr<gameModel::Team> team,
@@ -59,10 +53,6 @@ namespace gameController{
 
     bool RangedAttack::isPossible() const {
         return available() && !team->hasMember(target);
-    }
-
-    auto RangedAttack::getType() const -> gameModel::InterferenceType {
-        return type;
     }
 
     Impulse::Impulse(std::shared_ptr<gameModel::Environment> env, std::shared_ptr<gameModel::Team> team) :
@@ -87,10 +77,6 @@ namespace gameController{
         return available();
     }
 
-    auto Impulse::getType() const -> gameModel::InterferenceType {
-        return type;
-    }
-
     SnitchPush::SnitchPush(std::shared_ptr<gameModel::Environment> env, std::shared_ptr<gameModel::Team> team) :
         Interference(std::move(env), std::move(team), gameModel::InterferenceType::SnitchPush){}
 
@@ -106,9 +92,5 @@ namespace gameController{
 
     bool SnitchPush::isPossible() const {
         return available();
-    }
-
-    auto SnitchPush::getType() const -> gameModel::InterferenceType {
-        return type;
     }
 }
