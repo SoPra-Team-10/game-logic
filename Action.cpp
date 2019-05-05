@@ -215,7 +215,14 @@ namespace gameController{
                 if (gameController::refereeDecision(foul, this->env->config)) {
                     this->actor->isFined = true;
                 }
-
+                if (foul == gameModel::Foul::ChargeGoal) {
+                    if (gameModel::Environment::getCell(this->target) == gameModel::Cell::RestrictedRight) {
+                        shots.push_back(ShotResult::ScoreLeft);
+                    }
+                    else if (gameModel::Environment::getCell(this->target) == gameModel::Cell::RestrictedLeft) {
+                        shots.push_back(ShotResult::ScoreRight);
+                    }
+                }
             }
         }
 
