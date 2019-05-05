@@ -90,11 +90,39 @@ TEST(ranged_attack_test, execute_target_with_quaffle){
 
 TEST(impulse_test, possible){
     auto env = setup::createEnv();
-    gameController::Impulse testImpuls(env, env->team1);
-    EXPECT_TRUE(testImpuls.isPossible());
+    gameController::Impulse testImpulse(env, env->team1);
+    EXPECT_TRUE(testImpulse.isPossible());
 }
 
 TEST(impulse_test, no_uses_left){
+    auto env = setup::createEnv();
+    gameController::Impulse testImpulse(env, env->team1);
+    while(env->team1->fanblock.getUses(testImpulse.getType())){
+        env->team1->fanblock.banFan(testImpulse.getType());
+    }
+
+    EXPECT_FALSE(testImpulse.isPossible());
+}
+
+
+TEST(impulse_test, execute){
+    using P = gameModel::Position;
+    auto env = setup::createEnv();
+    env->quaffle->position = env->team1->chasers[0]->position;
+    gameController::Impulse testImpulse(env, env->team1);
+    testImpulse.execute();
+    EXPECT_THAT(env->quaffle->position, testing::AnyOf(P(2, 9), P(1, 9), P(1, 10), P(2, 11), P(3, 11), P(3, 10), P(3, 9)));
+}
+
+//----------------------------------------------SnitchPush--------------------------------------------------------------
+
+TEST(snitch_push_test, possible){
+    auto env = setup::createEnv();
+    gameController::SnitchPush testSnitchPush(env, env->team1);
+    EXPECT_TRUE(testSnitchPush.isPossible());
+}
+
+TEST(snitch_push_test, no_uses_left){
     auto env = setup::createEnv();
     gameController::Impulse testImpuls(env, env->team1);
     while(env->team1->fanblock.getUses(testImpuls.getType())){
@@ -104,12 +132,14 @@ TEST(impulse_test, no_uses_left){
     EXPECT_FALSE(testImpuls.isPossible());
 }
 
-
-TEST(impulse_test, execute){
+TEST(snitch_push_test, execute){
     using P = gameModel::Position;
     auto env = setup::createEnv();
-    env->quaffle->position = env->team1->chasers[0]->position;
-    gameController::Impulse testImpuls(env, env->team1);
-    testImpuls.execute();
-    EXPECT_THAT(env->quaffle->position, testing::AnyOf(P(2, 9), P(1, 9), P(1, 10), P(2, 11), P(3, 11), P(3, 10), P(3, 9)));
+    env->snitch->exists = true;
+    env->snitch->position = {10, 8};
+    gameController::SnitchPush testSnitchPush(env, env->team1);
+    testSnitchPush.execute();
+
+    std::cout << "Pos {" << env->snitch->position.x << ", " << env->snitch->position.y << "}" << std::endl;
+    EXPECT_THAT(env->snitch->position, testing::AnyOf(P(11, 7), P(9, 7), P(9, 8), P(10, 9), P(11, 9)));
 }
