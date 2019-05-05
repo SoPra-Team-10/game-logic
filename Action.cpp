@@ -35,7 +35,7 @@ namespace gameController{
                     } else {
                         //Quaffle bounces off
                         ball->position = pos;
-                        moveToAdjacent(*ball, *env);
+                        moveToAdjacent(ball, env);
                         return;
                     }
                 }
@@ -50,19 +50,33 @@ namespace gameController{
             } else {
                 //Miss -> dispersion
                 auto possibleCells = getAllLandingCells();
-                int index = rng(0, static_cast<int>(possibleCells.size()) - 1);
-                ball->position = possibleCells[index];
+                if(!possibleCells.empty()){
+                    int index = rng(0, static_cast<int>(possibleCells.size()) - 1);
+                    ball->position = possibleCells[index];
+                } else {
+                    ball->position = target;
+                }
             }
         } else if(BLUDGERSHOT){
             auto playerOnTarget = env->getPlayer(target);
             if(playerOnTarget.has_value()){
                 //Knock player out an place bludger on random free cell
-                if(!INSTANCE_OF(playerOnTarget.value(), gameModel::Beater)){
+                if(!INSTANCE_OF(playerOnTarget.value(), gameModel::Beater) &&
+                    actionTriggered(env->config.gameDynamicsProbs.knockOut)){
                     playerOnTarget.value()->knockedOut = true;
                     auto possibleCells = env->getAllFreeCells();
                     int index = rng(0, static_cast<int>(possibleCells.size()) - 1);
                     ball->position = possibleCells[index];
+
+                    //fool quaffle away
+                    if(env->quaffle->position == target){
+                        moveToAdjacent(env->quaffle, env);
+                    }
+                } else {
+                    ball->position = target;
                 }
+            } else {
+                ball->position = target;
             }
         }
     }
@@ -85,7 +99,7 @@ namespace gameController{
             if(QUAFFLETHROW){
                 return res::Success;
             } else if(BLUDGERSHOT){
-                if(getDistance(actor->position, target) < 3){
+                if(getDistance(actor->position, target) <= 3){
                     bool blocked = false;
                     for(const auto &cell : getAllCrossedCells(actor->position, target)){
                         if(!env->cellIsFree(cell)){
@@ -187,7 +201,7 @@ namespace gameController{
         // move other player out of the way
         auto targetPlayer = env->getPlayer(this->target);
         if (targetPlayer.has_value()) {
-            gameController::moveToAdjacent(*targetPlayer.value(), *env);
+            gameController::moveToAdjacent(targetPlayer.value(), env);
         }
 
         // move the quaffle if necessary
@@ -195,7 +209,7 @@ namespace gameController{
             this->env->quaffle->position = this->target;
         } else if(checkForFoul() == gameModel::Foul::Ramming && env->quaffle->position == target) {
             //rammed player looses Quaffle
-            moveToAdjacent(*env->quaffle, *env);
+            moveToAdjacent(env->quaffle, env);
         }
 
 
