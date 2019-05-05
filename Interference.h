@@ -1,59 +1,67 @@
 //
-// Created by bjorn on 01.05.19.
+// Created by timluchterhand on 05.05.19.
 //
 
 #ifndef SOPRAGAMELOGIC_INTERFERENCE_H
 #define SOPRAGAMELOGIC_INTERFERENCE_H
 
-
 #include <memory>
-#include "sopraGameModel.h"
-#include "vector"
+#include <cmath>
+#include <vector>
+#include "GameController.h"
+#include "GameModel.h"
+namespace gameController{
+    class Interference {
+    public:
+        Interference(std::shared_ptr<gameModel::Environment> env, std::shared_ptr<gameModel::Team> team,
+                gameModel::InterferenceType type);
 
-class Interference {
-public:
-    std::shared_ptr<gameModel::Team> team;
+        virtual void execute() const = 0;
+        virtual bool isPossible() const = 0;
+    protected:
+        std::shared_ptr<gameModel::Environment> env;
+        std::shared_ptr<gameModel::Team> team;
+        gameModel::InterferenceType type;
+    };
 
-    Interference() = default;
-    explicit Interference(std::shared_ptr<gameModel::Team> team);
+    class Teleport : public Interference {
+    public:
+        Teleport(std::shared_ptr<gameModel::Environment> env, std::shared_ptr<gameModel::Team> team,
+                 gameModel::Position target);
+        void execute() const override;
+        bool isPossible() const override;
 
-    virtual bool isPossible(const gameModel::Environment &envi) = 0;
-    virtual void execute(gameModel::Environment &envi) = 0;
-    virtual std::vector<gameModel::Environment> executeAll(const gameModel::Environment &envi) = 0;
+    private:
+        gameModel::Position target;
+    };
 
-};
+    class RangedAttack : public Interference {
+    public:
+        RangedAttack(std::shared_ptr<gameModel::Environment> env, std::shared_ptr<gameModel::Team> team,
+                gameModel::Position target);
 
-class Teleportation : public Interference{
-public:
-    gameModel::Position position{};
+        void execute() const override;
+        bool isPossible() const override;
+    private:
+        gameModel::Position target;
+    };
 
-    Teleportation() = default;
-    explicit Teleportation(std::shared_ptr<gameModel::Team> team);
+    class Impulse : public Interference {
+    public:
+    Impulse(std::shared_ptr<gameModel::Environment> env, std::shared_ptr<gameModel::Team> team);
 
-    bool isPossible(const gameModel::Environment &envi) override;
-    void execute(gameModel::Environment &envi) override;
-    std::vector<gameModel::Environment> executeAll(const gameModel::Environment &envi) override;
-};
+        void execute() const override;
+        bool isPossible() const override;
+    };
 
-class RangedAttack : public Interference{
-public:
-    RangedAttack() = default;
-    explicit RangedAttack(const std::shared_ptr<gameModel::Team>& team);
+    class SnitchPush : public Interference {
+    public:
+        SnitchPush(std::shared_ptr<gameModel::Environment> env, std::shared_ptr<gameModel::Team> team);
 
-    bool isPossible(const gameModel::Environment &envi) override;
+        void execute() const override;
+        bool isPossible() const override;
+    };
+}
 
-    std::vector<gameModel::Environment> executeAll(const gameModel::Environment &envi) override;
 
-    void execute(gameModel::Environment &envi) override;
-};
-
-class Impulse : Interference{
-public:
-    Impulse() = default;
-    explicit Impulse(std::shared_ptr<gameModel::Team> team);
-
-    bool isPossible(const gameModel::Environment &envi) override;
-    void execute(gameModel::Environment &envi) override;
-    std::vector<gameModel::Environment> executeAll(const gameModel::Environment &envi) override;
-};
 #endif //SOPRAGAMELOGIC_INTERFERENCE_H
