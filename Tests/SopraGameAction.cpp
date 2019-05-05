@@ -101,7 +101,7 @@ TEST(shot_test, success_throw_execute_intercept_bounce_off){
 
 //--------------------------Bludger shot check------------------------------------------------------------------------
 
-TEST(shot_test, valid_bludger_shot_test){
+TEST(shot_test, valid_bludger_shot_check){
     auto env = std::make_shared<gameModel::Environment>(setup::createEnv());
     env->bludgers[0]->position = env->team2.beaters[1]->position;
     auto testShot = gameController::Shot(env, env->team2.beaters[1], env->bludgers[0], env->team1.seeker->position);
@@ -109,14 +109,14 @@ TEST(shot_test, valid_bludger_shot_test){
 }
 
 
-TEST(shot_test, invalid_bludger_shot_test_no_ball){
+TEST(shot_test, invalid_bludger_shot_check_no_ball){
     auto env = std::make_shared<gameModel::Environment>(setup::createEnv());
     auto testShot = gameController::Shot(env, env->team2.beaters[1], env->bludgers[0], env->team1.seeker->position);
     EXPECT_EQ(testShot.check(), gameController::ActionResult::Impossible);
 }
 
 
-TEST(shot_test, invalid_bludger_shot_test_oob){
+TEST(shot_test, invalid_bludger_shot_check_oob){
     auto env = std::make_shared<gameModel::Environment>(setup::createEnv());
     env->bludgers[0]->position = env->team2.beaters[1]->position;
     auto testShot = gameController::Shot(env, env->team2.beaters[1], env->bludgers[0], {0, 0});
@@ -124,10 +124,25 @@ TEST(shot_test, invalid_bludger_shot_test_oob){
 }
 
 
-TEST(shot_test, invalid_bludger_shot_test_no_beater){
+TEST(shot_test, invalid_bludger_shot_check_no_beater){
     auto env = std::make_shared<gameModel::Environment>(setup::createEnv());
     env->bludgers[0]->position = env->team2.chasers[1]->position;
     auto testShot = gameController::Shot(env, env->team2.chasers[1], env->bludgers[0], env->team1.seeker->position);
+    EXPECT_EQ(testShot.check(), gameController::ActionResult::Impossible);
+}
+
+
+TEST(shot_test, invalid_bludger_shot_check_too_far){
+    auto env = std::make_shared<gameModel::Environment>(setup::createEnv());
+    env->bludgers[0]->position = env->team2.beaters[1]->position;
+    auto testShot = gameController::Shot(env, env->team2.beaters[1], env->bludgers[0], {9, 2});
+    EXPECT_EQ(testShot.check(), gameController::ActionResult::Impossible);
+}
+
+TEST(shot_test, invalid_bludger_shot_check_path_blocked){
+    auto env = std::make_shared<gameModel::Environment>(setup::createEnv());
+    env->bludgers[0]->position = env->team2.beaters[1]->position;
+    auto testShot = gameController::Shot(env, env->team2.beaters[1], env->bludgers[0], {5, 5});
     EXPECT_EQ(testShot.check(), gameController::ActionResult::Impossible);
 }
 //---------------------------Move tests---------------------------------------------------------------------------------

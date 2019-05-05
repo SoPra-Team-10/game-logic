@@ -85,7 +85,7 @@ namespace gameController{
             if(QUAFFLETHROW){
                 return res::Success;
             } else if(BLUDGERSHOT){
-                if(getDistance(actor->position, target) < 3){
+                if(getDistance(actor->position, target) <= 3){
                     bool blocked = false;
                     for(const auto &cell : getAllCrossedCells(actor->position, target)){
                         if(!env->cellIsFree(cell)){
