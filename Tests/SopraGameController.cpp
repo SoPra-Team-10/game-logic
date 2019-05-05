@@ -59,3 +59,20 @@ TEST(controller_test, getAllCrossedCells2) {
     EXPECT_EQ(result3[1], expected3[1]);
     EXPECT_EQ(result3[2], expected3[2]);
 }
+
+TEST(controller_test, getAllCrossedCells3) {
+    std::vector<gameModel::Position> result = gameController::getAllCrossedCells({4, 2}, {13, 6});
+    std::vector<gameModel::Position> expected = {{5, 2}, {5, 3}, {6, 3}, {7, 3}, {8, 4},
+                                                  {9, 4}, {10, 5}, {11, 5}, {12, 5}, {12, 6}};
+    EXPECT_EQ(result.size(), expected.size());
+    EXPECT_EQ(result[0], expected[0]);
+    EXPECT_EQ(result[1], expected[1]);
+    EXPECT_EQ(result[2], expected[2]);
+    EXPECT_EQ(result[3], expected[3]);
+    EXPECT_EQ(result[4], expected[4]);
+    EXPECT_EQ(result[5], expected[5]);
+    EXPECT_EQ(result[6], expected[6]);
+    EXPECT_EQ(result[7], expected[7]);
+    EXPECT_EQ(result[8], expected[8]);
+    EXPECT_EQ(result[9], expected[9]);
+}
