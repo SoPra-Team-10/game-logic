@@ -13,6 +13,10 @@ namespace gameController{
     Interference::Interference(std::shared_ptr<gameModel::Environment> env, std::shared_ptr<gameModel::Team> team,
             gameModel::InterferenceType type) : env(std::move(env)), team(std::move(team)), type(type) {}
 
+    bool Interference::available() const {
+        return team->fanblock.getUses(type) > 0;
+    }
+
     void Teleport::execute() const {
 
     }
@@ -24,6 +28,10 @@ namespace gameController{
     Teleport::Teleport(std::shared_ptr<gameModel::Environment> env, std::shared_ptr<gameModel::Team> team,
                        gameModel::Position target) : Interference(std::move(env), std::move(team),
                                gameModel::InterferenceType::Teleport), target(target) {}
+
+    auto Teleport::getType() const -> gameModel::InterferenceType {
+        return type;
+    }
 
     RangedAttack::RangedAttack(std::shared_ptr<gameModel::Environment> env, std::shared_ptr<gameModel::Team> team,
                                gameModel::Position target) : Interference(std::move(env), std::move(team),
@@ -37,6 +45,10 @@ namespace gameController{
         return false;
     }
 
+    auto RangedAttack::getType() const -> gameModel::InterferenceType {
+        return type;
+    }
+
     Impulse::Impulse(std::shared_ptr<gameModel::Environment> env, std::shared_ptr<gameModel::Team> team) :
         Interference(std::move(env), std::move(team), gameModel::InterferenceType::Impulse){}
 
@@ -48,6 +60,10 @@ namespace gameController{
         return false;
     }
 
+    auto Impulse::getType() const -> gameModel::InterferenceType {
+        return type;
+    }
+
     SnitchPush::SnitchPush(std::shared_ptr<gameModel::Environment> env, std::shared_ptr<gameModel::Team> team) :
         Interference(std::move(env), std::move(team), gameModel::InterferenceType::SnitchPush){}
 
@@ -57,5 +73,9 @@ namespace gameController{
 
     bool SnitchPush::isPossible() const {
         return false;
+    }
+
+    auto SnitchPush::getType() const -> gameModel::InterferenceType {
+        return type;
     }
 }

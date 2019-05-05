@@ -16,12 +16,33 @@ namespace gameController{
         Interference(std::shared_ptr<gameModel::Environment> env, std::shared_ptr<gameModel::Team> team,
                 gameModel::InterferenceType type);
 
+        /**
+         * Executes the interference
+         */
         virtual void execute() const = 0;
+
+        /**
+         * Checks if the interference is possible
+         * @return
+         */
         virtual bool isPossible() const = 0;
+
+        /**
+         * Gets the type of interference
+         * @return
+         */
+        virtual auto getType() const -> gameModel::InterferenceType = 0;
     protected:
+
         std::shared_ptr<gameModel::Environment> env;
         std::shared_ptr<gameModel::Team> team;
         gameModel::InterferenceType type;
+
+        /**
+         * Checks if there are still enough fans left to execute the
+         * @return
+         */
+        bool available() const;
     };
 
     class Teleport : public Interference {
@@ -30,6 +51,7 @@ namespace gameController{
                  gameModel::Position target);
         void execute() const override;
         bool isPossible() const override;
+        auto getType() const -> gameModel::InterferenceType override;
 
     private:
         gameModel::Position target;
@@ -42,6 +64,7 @@ namespace gameController{
 
         void execute() const override;
         bool isPossible() const override;
+        auto getType() const -> gameModel::InterferenceType override;
     private:
         gameModel::Position target;
     };
@@ -52,6 +75,7 @@ namespace gameController{
 
         void execute() const override;
         bool isPossible() const override;
+        auto getType() const -> gameModel::InterferenceType override;
     };
 
     class SnitchPush : public Interference {
@@ -60,6 +84,7 @@ namespace gameController{
 
         void execute() const override;
         bool isPossible() const override;
+        auto getType() const -> gameModel::InterferenceType override;
     };
 }
 
