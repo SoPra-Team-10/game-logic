@@ -93,12 +93,12 @@ namespace gameModel{
         return ret;
     }
 
-    Environment::Environment(Config config,Team team1, Team team2) : config(std::move(config)), team1(std::move(team1)),
+    Environment::Environment(Config config, std::shared_ptr<Team> team1, std::shared_ptr<Team> team2) : config(std::move(config)), team1(std::move(team1)),
             team2(std::move(team2)), quaffle(std::make_shared<Quaffle>()), snitch(std::make_shared<Snitch>()),
             bludgers{std::make_shared<Bludger>(communication::messages::types::EntityId::BLUDGER1),
             std::make_shared<Bludger>(communication::messages::types::EntityId::BLUDGER2)} {}
 
-    Environment::Environment(Config config, Team team1, Team team2, std::shared_ptr<Quaffle> quaffle, std::shared_ptr<Snitch> snitch,
+    Environment::Environment(Config config, std::shared_ptr<Team> team1, std::shared_ptr<Team> team2, std::shared_ptr<Quaffle> quaffle, std::shared_ptr<Snitch> snitch,
                              std::array<std::shared_ptr<Bludger>, 2> bludgers) : config(std::move(config)), team1(std::move(team1)),
                              team2(std::move(team2)), quaffle(std::move(quaffle)), snitch(std::move(snitch)),
                              bludgers(std::move(bludgers)){}
@@ -107,17 +107,18 @@ namespace gameModel{
     Environment::Environment(communication::messages::broadcast::MatchConfig matchConfig, const communication::messages::request::TeamConfig& teamConfig1,
                 const communication::messages::request::TeamConfig& teamConfig2, communication::messages::request::TeamFormation teamFormation1,
                 communication::messages::request::TeamFormation teamFormation2) :
-                             Environment({matchConfig}, {teamConfig1, teamFormation1, true}, {teamConfig2, teamFormation2, false}){}
+                             Environment({matchConfig}, std::make_shared<Team>(teamConfig1, teamFormation1, true),
+                                     std::make_shared<Team>(teamConfig2, teamFormation2, false)){}
 
     auto Environment::getAllPlayers() const -> std::array<std::shared_ptr<Player>, 14> {
         std::array<std::shared_ptr<Player>, 14> ret;
         auto it = ret.begin();
-        for(const auto &p : team1.getAllPlayers()){
+        for(const auto &p : team1->getAllPlayers()){
             *it = p;
             it++;
         }
 
-        for(const auto &p : team2.getAllPlayers()){
+        for(const auto &p : team2->getAllPlayers()){
             *it = p;
             it++;
         }
@@ -167,7 +168,7 @@ namespace gameModel{
     }
 
     auto Environment::getTeamMates(const std::shared_ptr<Player>& player) const -> std::array<std::shared_ptr<Player>, 6> {
-        auto players = team1.hasMember(player) ? team1.getAllPlayers() : team2.getAllPlayers();
+        auto players = team1->hasMember(player) ? team1->getAllPlayers() : team2->getAllPlayers();
         std::array<std::shared_ptr<Player>, 6> ret;
         auto it = ret.begin();
         for(const auto &p : players){
@@ -181,7 +182,7 @@ namespace gameModel{
     }
 
     auto Environment::getOpponents(const std::shared_ptr<Player>& player) const -> std::array<std::shared_ptr<Player>, 7> {
-        return team1.hasMember(player) ? team2.getAllPlayers() : team1.getAllPlayers();
+        return team1->hasMember(player) ? team2->getAllPlayers() : team1->getAllPlayers();
     }
 
     auto Environment::getPlayer(const Position &position) const -> std::optional<std::shared_ptr<Player>> {
@@ -195,8 +196,8 @@ namespace gameModel{
     }
 
     auto Environment::arePlayerInSameTeam(const std::shared_ptr<Player>& p1, const std::shared_ptr<Player>& p2) const -> bool {
-        return (this->team1.hasMember(p1) && this->team1.hasMember(p2)) ||
-               (this->team2.hasMember(p1) && this->team2.hasMember(p2));
+        return (this->team1->hasMember(p1) && this->team1->hasMember(p2)) ||
+               (this->team2->hasMember(p1) && this->team2->hasMember(p2));
     }
 
     auto Environment::getAllValidCells() -> std::array<Position, 193> {
@@ -221,7 +222,12 @@ namespace gameModel{
         for(const auto &cell : getAllValidCells()){
             if(cellIsFree(cell)){
                 *it = cell;
-                it++;
+                if (it < ret.end() ) {
+                    it++;
+                }
+                else {
+                    throw std::runtime_error("There are less than 14 players on the field!");
+                }
             }
         }
 
@@ -229,30 +235,30 @@ namespace gameModel{
     }
 
     auto Environment::isPlayerInOwnRestrictedZone(const std::shared_ptr<Player>& player) const -> bool {
-        if (this->team1.hasMember(player) && this->getCell(player->position) == Cell::RestrictedLeft) {
+        if (this->team1->hasMember(player) && this->getCell(player->position) == Cell::RestrictedLeft) {
             return true;
         }
-        if (this->team2.hasMember(player) && this->getCell(player->position) == Cell::RestrictedRight) {
+        if (this->team2->hasMember(player) && this->getCell(player->position) == Cell::RestrictedRight) {
             return true;
         }
 
         return false;
     }
     auto Environment::isPlayerInOpponentRestrictedZone(const std::shared_ptr<Player>& player) const  -> bool {
-        if (this->team1.hasMember(player) && this->getCell(player->position) == Cell::RestrictedRight) {
+        if (this->team1->hasMember(player) && this->getCell(player->position) == Cell::RestrictedRight) {
             return true;
         }
-        if (this->team2.hasMember(player) && this->getCell(player->position) == Cell::RestrictedLeft) {
+        if (this->team2->hasMember(player) && this->getCell(player->position) == Cell::RestrictedLeft) {
             return true;
         }
         return false;
     }
 
-    auto Environment::getTeam(const std::shared_ptr<Player>& player) const -> const Team& {
-        if (this->team1.hasMember(player)) {
+    auto Environment::getTeam(const std::shared_ptr<Player>& player) const -> std::shared_ptr<Team> {
+        if (this->team1->hasMember(player)) {
             return this->team1;
         }
-        else if (this->team2.hasMember(player)) {
+        else if (this->team2->hasMember(player)) {
             return this->team2;
         }
 
@@ -267,11 +273,11 @@ namespace gameModel{
                 continue;
             }
 
-            if(team1.hasMember(player) && cell.x < 8 && cellIsFree(cell)){
+            if(team1->hasMember(player) && cell.x < 8 && cellIsFree(cell)){
                 possibleCells.push_back(cell);
             }
 
-            if(team2.hasMember(player) && cell.x > 8 && cellIsFree(cell)){
+            if(team2->hasMember(player) && cell.x > 8 && cellIsFree(cell)){
                 possibleCells.push_back(cell);
             }
         }
@@ -369,6 +375,17 @@ namespace gameModel{
         }
 
         return false;
+    }
+
+    int Team::numberOfBannedMembers() {
+        int ret = 0;
+        for(const auto &player :getAllPlayers()){
+            if(player->isFined){
+                ret++;
+            }
+        }
+
+        return ret;
     }
 
     // Config
