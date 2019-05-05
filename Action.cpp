@@ -204,22 +204,25 @@ namespace gameController{
             }
         }
 
-        // move other player out of the way
+        // get other player on target cell
         auto targetPlayer = env->getPlayer(this->target);
-        if (targetPlayer.has_value()) {
-            gameController::moveToAdjacent(targetPlayer.value(), env);
-        }
 
-        // move the quaffle if necessary
-        if (this->env->quaffle->position == this->actor->position) {
+        // move the player
+        auto oldActorPos = actor->position;
+        this->actor->position = this->target;
+
+                // move the quaffel if necessary
+        if (this->env->quaffle->position == oldActorPos) {
             this->env->quaffle->position = this->target;
         } else if(rammingFoulFlag && env->quaffle->position == target) {
-            //rammed player looses Quaffle
+            //rammed player looses quaffel
             moveToAdjacent(env->quaffle, env);
         }
 
-        // move the player
-        this->actor->position = this->target;
+        // move other player out of the way if necessary
+        if (targetPlayer.has_value()) {
+            gameController::moveToAdjacent(targetPlayer.value(), env);
+        }
     }
 
     auto Move::successProb() const -> double {

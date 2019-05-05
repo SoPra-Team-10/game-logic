@@ -80,7 +80,7 @@ TEST(shot_test, success_throw_execute_intercept){
     auto env = setup::createEnv({0, {}, {}, {1, 0, 0, 0, 1, 0}, {}});
 
     env->quaffle->position = env->team1.keeper->position;
-env->team2.chasers[1]->position = {9, 7};
+    env->team2.chasers[1]->position = {9, 7};
     gameController::Shot testShot(env, env->team1.keeper, env->quaffle, {8, 6});
     testShot.execute();
     EXPECT_EQ(env->quaffle->position, gameModel::Position(9, 7));
@@ -117,13 +117,11 @@ TEST(shot_test, valid_bludger_shot_check){
     EXPECT_EQ(testShot.check(), gameController::ActionResult::Success);
 }
 
-
 TEST(shot_test, invalid_bludger_shot_check_no_ball){
     auto env = setup::createEnv();
     auto testShot = gameController::Shot(env, env->team2.beaters[1], env->bludgers[0], env->team1.seeker->position);
     EXPECT_EQ(testShot.check(), gameController::ActionResult::Impossible);
 }
-
 
 TEST(shot_test, invalid_bludger_shot_check_oob){
     auto env = setup::createEnv();
@@ -132,14 +130,12 @@ TEST(shot_test, invalid_bludger_shot_check_oob){
     EXPECT_EQ(testShot.check(), gameController::ActionResult::Impossible);
 }
 
-
 TEST(shot_test, invalid_bludger_shot_check_no_beater){
     auto env = setup::createEnv();
     env->bludgers[0]->position = env->team2.chasers[1]->position;
     auto testShot = gameController::Shot(env, env->team2.chasers[1], env->bludgers[0], env->team1.seeker->position);
     EXPECT_EQ(testShot.check(), gameController::ActionResult::Impossible);
 }
-
 
 TEST(shot_test, invalid_bludger_shot_check_too_far){
     auto env = setup::createEnv();
@@ -195,7 +191,7 @@ TEST(shot_test, bludger_shot_on_Beater){
     EXPECT_FALSE(env->team1.beaters[1]->knockedOut);
 }
 
-//---------------------------Move tests---------------------------------------------------------------------------------
+//---------------------------Move Foul Check tests----------------------------------------------------------------------
 
 TEST(move_test, move_foul_ramming) {
     auto env = setup::createEnv();
@@ -330,6 +326,8 @@ TEST(move_test, move_foul_chargeGoal) {
     EXPECT_EQ(fouls[0], gameModel::Foul::ChargeGoal);
 }
 
+//---------------------------Move Check tests---------------------------------------------------------------------------
+
 TEST(move_test, move_check_impossible0) {
     auto env = setup::createEnv();
 
@@ -377,4 +375,74 @@ TEST(move_test, move_check_foul) {
     gameController::Move mv(env, env->team1.chasers[1], gameModel::Position(12, 6));
 
     EXPECT_EQ(mv.check(), gameController::ActionResult::Foul);
+}
+
+//---------------------------Move Execute Move--------------------------------------------------------------------------
+
+TEST(move_test, move_execute0) {
+    auto env = setup::createEnv({0, {}, {1, 1, 1, 1, 1, 1, 1, 1, 1}, {1, 1, 1, 1, 1, 1}, {}});
+
+    env->team1.chasers[0]->position = gameModel::Position(12, 6);
+    env->team1.chasers[1]->position = gameModel::Position(11, 5);
+    gameController::Move mv(env, env->team1.chasers[1], gameModel::Position(12, 5));
+
+    mv.execute();
+
+    EXPECT_TRUE(env->team1.chasers[1]->isFined);
+}
+
+TEST(move_test, move_execute1) {
+    auto env = setup::createEnv({0, {}, {1, 1, 1, 1, 1, 1, 1, 1, 1}, {1, 1, 1, 1, 1, 1}, {}});
+
+    env->team1.chasers[0]->position = gameModel::Position(13, 6);
+    env->quaffle->position = gameModel::Position(13, 6);
+    gameController::Move mv(env, env->team1.chasers[0], gameModel::Position(14, 6));
+
+    mv.execute();
+
+    EXPECT_TRUE(env->team1.chasers[0]->isFined);
+    EXPECT_EQ(env->quaffle->position, gameModel::Position(14, 6));
+}
+
+TEST(move_test, move_execute2) {
+    auto env = setup::createEnv({0, {}, {1, 1, 1, 1, 1, 1, 1, 1, 1}, {1, 1, 1, 1, 1, 1}, {}});
+
+    gameController::Move mv(env, env->team1.chasers[0], gameModel::Position(14, 6));
+
+    EXPECT_ANY_THROW(mv.execute());
+    EXPECT_EQ(env->team1.chasers[0]->position, gameModel::Position(2, 10));
+}
+
+TEST(move_test, move_execute3) {
+    auto env = setup::createEnv({0, {}, {1, 1, 1, 1, 1, 1, 1, 1, 1}, {1, 1, 1, 1, 1, 1}, {}});
+
+    gameController::Move mv(env, env->team1.chasers[0], gameModel::Position(0, 0));
+
+    EXPECT_ANY_THROW(mv.execute());
+    EXPECT_EQ(env->team1.chasers[0]->position, gameModel::Position(2, 10));
+}
+
+TEST(move_test, move_execute4) {
+    auto env = setup::createEnv({0, {}, {1, 1, 1, 1, 1, 1, 1, 1, 1}, {1, 1, 1, 1, 1, 1}, {}});
+
+    auto oldPos = env->team2.keeper->position;
+
+    env->quaffle->position = oldPos;
+    gameController::Move mv(env, env->team1.keeper, oldPos);
+
+    mv.execute();
+
+    EXPECT_TRUE(env->team1.keeper->isFined);
+    EXPECT_FALSE(env->team2.keeper->position == oldPos);
+    EXPECT_FALSE(env->quaffle->position == oldPos);
+}
+
+TEST(move_test, move_execute5) {
+    auto env = setup::createEnv({0, {}, {1, 1, 1, 1, 1, 1, 1, 1, 1}, {1, 1, 1, 1, 1, 1}, {}});
+
+    gameController::Move mv(env, env->team1.beaters[0], gameModel::Position(2, 4));
+
+    mv.execute();
+
+    EXPECT_TRUE(env->team1.beaters[0]->isFined);
 }
