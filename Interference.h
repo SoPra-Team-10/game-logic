@@ -25,7 +25,7 @@ namespace gameController{
          * Checks if the interference is possible
          * @return
          */
-        virtual bool isPossible() const = 0;
+        virtual bool isPossible() const;
 
         /**
          * Gets the type of interference
@@ -37,12 +37,6 @@ namespace gameController{
         std::shared_ptr<gameModel::Environment> env;
         std::shared_ptr<gameModel::Team> team;
         gameModel::InterferenceType type;
-
-        /**
-         * Checks if there are still enough fans left to execute the
-         * @return
-         */
-        bool available() const;
     };
 
     class Teleport : public Interference {
@@ -54,12 +48,6 @@ namespace gameController{
          * Teleports target player to random free location on the field
          */
         void execute() const override;
-
-        /**
-         *
-         * @return true if available
-         */
-        bool isPossible() const override;
 
     private:
         std::shared_ptr<gameModel::Player> target;
@@ -94,11 +82,6 @@ namespace gameController{
          */
         void execute() const override;
 
-        /**
-         *
-         * @return true if available, false otherwise
-         */
-        bool isPossible() const override;
     };
 
     class SnitchPush : public Interference {
@@ -109,12 +92,6 @@ namespace gameController{
          * Snitch is moved to random free adjacent position
          */
         void execute() const override;
-
-        /**
-         *
-         * @return true if available, false otherwise
-         */
-        bool isPossible() const override;
     };
 }
 

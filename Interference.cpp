@@ -11,12 +11,12 @@ namespace gameController{
     Interference::Interference(std::shared_ptr<gameModel::Environment> env, std::shared_ptr<gameModel::Team> team,
             gameModel::InterferenceType type) : env(std::move(env)), team(std::move(team)), type(type) {}
 
-    bool Interference::available() const {
-        return team->fanblock.getUses(type) > 0;
-    }
-
     auto Interference::getType() const -> gameModel::InterferenceType {
         return type;
+    }
+
+    bool Interference::isPossible() const {
+        return team->fanblock.getUses(type) > 0;
     }
 
     Teleport::Teleport(std::shared_ptr<gameModel::Environment> env, std::shared_ptr<gameModel::Team> team,
@@ -29,10 +29,6 @@ namespace gameController{
 
         auto possibleCells = env->getAllFreeCells();
         target->position = possibleCells[rng(0, static_cast<int>(possibleCells.size() - 1))];
-    }
-
-    bool Teleport::isPossible() const {
-        return available();
     }
 
     RangedAttack::RangedAttack(std::shared_ptr<gameModel::Environment> env, std::shared_ptr<gameModel::Team> team,
@@ -52,7 +48,7 @@ namespace gameController{
     }
 
     bool RangedAttack::isPossible() const {
-        return available() && !team->hasMember(target);
+        return Interference::isPossible() && !team->hasMember(target);
     }
 
     Impulse::Impulse(std::shared_ptr<gameModel::Environment> env, std::shared_ptr<gameModel::Team> team) :
@@ -73,10 +69,6 @@ namespace gameController{
         }
     }
 
-    bool Impulse::isPossible() const {
-        return available();
-    }
-
     SnitchPush::SnitchPush(std::shared_ptr<gameModel::Environment> env, std::shared_ptr<gameModel::Team> team) :
         Interference(std::move(env), std::move(team), gameModel::InterferenceType::SnitchPush){}
 
@@ -88,9 +80,5 @@ namespace gameController{
         if(env->snitch->exists){
             moveToAdjacent(env->snitch, env);
         }
-    }
-
-    bool SnitchPush::isPossible() const {
-        return available();
     }
 }
