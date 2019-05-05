@@ -149,6 +149,27 @@ TEST(env_tests, getSurroundingPositions_corner){
     }
 }
 
+TEST(env_test, getAllPlayerFreeCellsAround) {
+    auto env = setup::createEnv();
+
+    env->team1.chasers[0]->position = gameModel::Position(12, 12);
+    env->team1.chasers[1]->position = gameModel::Position(13, 11);
+    env->team1.chasers[2]->position = gameModel::Position(14, 11);
+
+    auto freeCells = env->getAllPlayerFreeCellsAround(env->team2.keeper->position);
+
+    EXPECT_EQ(freeCells.size(), 7);
+
+    EXPECT_EQ(freeCells[0], gameModel::Position(11, 10));
+    EXPECT_EQ(freeCells[1], gameModel::Position(12, 10));
+    EXPECT_EQ(freeCells[2], gameModel::Position(13, 10));
+    EXPECT_EQ(freeCells[3], gameModel::Position(14, 10));
+    EXPECT_EQ(freeCells[4], gameModel::Position(15, 10));
+    EXPECT_EQ(freeCells[5], gameModel::Position(11, 11));
+    EXPECT_EQ(freeCells[6], gameModel::Position(11, 12));
+}
+
+
 /*
 TEST(env_test, getAllFreeCells) {
 

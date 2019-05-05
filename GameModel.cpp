@@ -147,10 +147,10 @@ namespace gameModel{
         do {
             for (int i = startY; i <= endY; i++) {
                 for (int j = startX; j <= endX; j++) {
-                    if (i == position.x && j == position.y) {
+                    if (i == position.y && j == position.x) {
                         continue;
                     }
-                    if (Environment::getCell(j, i) != Cell::OutOfBounds && !this->getPlayer({j, i}).has_value()) {
+                    else if (Environment::getCell(j, i) != Cell::OutOfBounds && !this->getPlayer({j, i}).has_value()) {
                         resultVect.emplace_back(Position(j, i));
                     }
                 }
@@ -158,8 +158,8 @@ namespace gameModel{
 
             startX--;
             endX++;
-            startX--;
-            endX++;
+            startY--;
+            endY++;
 
         } while (resultVect.empty());
 
