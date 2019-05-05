@@ -196,12 +196,12 @@ namespace gameController{
         }
         else if (actionResult == ActionResult::Foul) {
             std::vector<gameModel::Foul> fouls = this->checkForFoul();
-            for (auto foul :  fouls) {
+            for (const auto foul :  fouls) {
                 if (foul == gameModel::Foul::Ramming) {
                     rammingFoulFlag = true;
                 }
                 if (gameController::refereeDecision(foul, this->env->config)) {
-                    this->actor->isFined;
+                    this->actor->isFined = true;
                 }
 
             }
