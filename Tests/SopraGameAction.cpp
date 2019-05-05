@@ -214,7 +214,10 @@ TEST(move_test, move_foul_ramming) {
 
     gameController::Move mv(env, env->team2.keeper, gameModel::Position(8, 6));
 
-    EXPECT_EQ(mv.checkForFoul(), gameModel::Foul::Ramming);
+    std::vector<gameModel::Foul> fouls = mv.checkForFoul();
+
+    EXPECT_EQ(fouls.size(), 1);
+    EXPECT_EQ(fouls[0], gameModel::Foul::Ramming);
 }
 
 TEST(move_test, move_foul_none) {
@@ -236,7 +239,9 @@ TEST(move_test, move_foul_none) {
 
     gameController::Move mv(env, env->team2.keeper, gameModel::Position(8, 6));
 
-    EXPECT_EQ(mv.checkForFoul(), gameModel::Foul::None);
+    std::vector<gameModel::Foul> fouls = mv.checkForFoul();
+
+    EXPECT_EQ(fouls.size(), 0);
 }
 
 TEST(move_test, move_foul_blocksnitch) {
@@ -257,7 +262,10 @@ TEST(move_test, move_foul_blocksnitch) {
 
     gameController::Move mv(env, env->team2.keeper, gameModel::Position(8, 6));
 
-    EXPECT_EQ(mv.checkForFoul(), gameModel::Foul::BlockSnitch);
+    std::vector<gameModel::Foul> fouls = mv.checkForFoul();
+
+    EXPECT_EQ(fouls.size(), 1);
+    EXPECT_EQ(fouls[0], gameModel::Foul::BlockSnitch);
 }
 
 TEST(move_test, move_foul_multipleoffence) {
@@ -273,7 +281,10 @@ TEST(move_test, move_foul_multipleoffence) {
 
     gameController::Move mv(env, env->team1.chasers[1], gameModel::Position(12, 7));
 
-    EXPECT_EQ(mv.checkForFoul(), gameModel::Foul::MultipleOffence);
+    std::vector<gameModel::Foul> fouls = mv.checkForFoul();
+
+    EXPECT_EQ(fouls.size(), 1);
+    EXPECT_EQ(fouls[0], gameModel::Foul::MultipleOffence);
 }
 
 TEST(move_test, move_foul_blockgoal) {
@@ -288,7 +299,10 @@ TEST(move_test, move_foul_blockgoal) {
 
     gameController::Move mv(env, env->team1.chasers[0], gameModel::Position(2, 6));
 
-    EXPECT_EQ(mv.checkForFoul(), gameModel::Foul::BlockGoal);
+    std::vector<gameModel::Foul> fouls = mv.checkForFoul();
+
+    EXPECT_EQ(fouls.size(), 1);
+    EXPECT_EQ(fouls[0], gameModel::Foul::BlockGoal);
 }
 
 TEST(move_test, move_foul_chargeGoal) {
@@ -310,7 +324,10 @@ TEST(move_test, move_foul_chargeGoal) {
 
     gameController::Move mv(env, env->team2.chasers[0], gameModel::Position(2, 6));
 
-    EXPECT_EQ(mv.checkForFoul(), gameModel::Foul::ChargeGoal);
+    std::vector<gameModel::Foul> fouls = mv.checkForFoul();
+
+    EXPECT_EQ(fouls.size(), 1);
+    EXPECT_EQ(fouls[0], gameModel::Foul::ChargeGoal);
 }
 
 TEST(move_test, move_check_impossible0) {
