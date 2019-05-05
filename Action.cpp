@@ -260,10 +260,10 @@ namespace gameController{
                     this->actor->isFined = true;
                 }
                 if (foul == gameModel::Foul::ChargeGoal) {
-                    if (gameModel::Environment::getCell(this->target) == gameModel::Cell::RestrictedRight) {
+                    if (gameModel::Environment::getCell(this->target) == gameModel::Cell::GoalRight) {
                         shots.push_back(ShotResult::ScoreLeft);
                     }
-                    else if (gameModel::Environment::getCell(this->target) == gameModel::Cell::RestrictedLeft) {
+                    else if (gameModel::Environment::getCell(this->target) == gameModel::Cell::GoalLeft) {
                         shots.push_back(ShotResult::ScoreRight);
                     }
                 }

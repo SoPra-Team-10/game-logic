@@ -387,6 +387,7 @@ TEST(move_test, move_check_foul) {
 
 //---------------------------Move Execute Move--------------------------------------------------------------------------
 
+// multiple offence
 TEST(move_test, move_execute0) {
     auto env = setup::createEnv({0, {}, {1, 1, 1, 1, 1, 1, 1, 1, 1}, {1, 1, 1, 1, 1, 1}, {}});
 
@@ -394,11 +395,16 @@ TEST(move_test, move_execute0) {
     env->team1->chasers[1]->position = gameModel::Position(11, 5);
     gameController::Move mv(env, env->team1->chasers[1], gameModel::Position(12, 5));
 
-    mv.execute();
+    auto mvRes = mv.execute();
 
     EXPECT_TRUE(env->team1->chasers[1]->isFined);
+    EXPECT_EQ(mvRes.first.size(), 0);
+    EXPECT_EQ(mvRes.second.size(), 1);
+    EXPECT_EQ(mvRes.second[0], gameModel::Foul::MultipleOffence);
+
 }
 
+// charge goal
 TEST(move_test, move_execute1) {
     auto env = setup::createEnv({0, {}, {1, 1, 1, 1, 1, 1, 1, 1, 1}, {1, 1, 1, 1, 1, 1}, {}});
 
@@ -406,30 +412,45 @@ TEST(move_test, move_execute1) {
     env->quaffle->position = gameModel::Position(13, 6);
     gameController::Move mv(env, env->team1->chasers[0], gameModel::Position(14, 6));
 
-    mv.execute();
+    auto mvRes = mv.execute();
 
     EXPECT_TRUE(env->team1->chasers[0]->isFined);
     EXPECT_EQ(env->quaffle->position, gameModel::Position(14, 6));
+    EXPECT_EQ(mvRes.first.size(), 1);
+    EXPECT_EQ(mvRes.first[0], gameController::ShotResult::ScoreLeft);
+    EXPECT_EQ(mvRes.second.size(), 1);
+    EXPECT_EQ(mvRes.second[0], gameModel::Foul::ChargeGoal);
 }
 
+// illegal move
 TEST(move_test, move_execute2) {
     auto env = setup::createEnv({0, {}, {1, 1, 1, 1, 1, 1, 1, 1, 1}, {1, 1, 1, 1, 1, 1}, {}});
 
     gameController::Move mv(env, env->team1->chasers[0], gameModel::Position(14, 6));
 
-    EXPECT_ANY_THROW(mv.execute());
+    std::pair<std::vector<gameController::ShotResult>, std::vector<gameModel::Foul>> mvRes;
+
+    EXPECT_ANY_THROW(mvRes = mv.execute());
     EXPECT_EQ(env->team1->chasers[0]->position, gameModel::Position(2, 10));
+    EXPECT_EQ(mvRes.first.size(), 0);
+    EXPECT_EQ(mvRes.second.size(), 0);
 }
 
+// illegal move
 TEST(move_test, move_execute3) {
     auto env = setup::createEnv({0, {}, {1, 1, 1, 1, 1, 1, 1, 1, 1}, {1, 1, 1, 1, 1, 1}, {}});
 
     gameController::Move mv(env, env->team1->chasers[0], gameModel::Position(0, 0));
 
-    EXPECT_ANY_THROW(mv.execute());
+    std::pair<std::vector<gameController::ShotResult>, std::vector<gameModel::Foul>> mvRes;
+
+    EXPECT_ANY_THROW(mvRes = mv.execute());
     EXPECT_EQ(env->team1->chasers[0]->position, gameModel::Position(2, 10));
+    EXPECT_EQ(mvRes.first.size(), 0);
+    EXPECT_EQ(mvRes.second.size(), 0);
 }
 
+// ramming
 TEST(move_test, move_execute4) {
     auto env = setup::createEnv({0, {}, {1, 1, 1, 1, 1, 1, 1, 1, 1}, {1, 1, 1, 1, 1, 1}, {}});
 
@@ -438,19 +459,43 @@ TEST(move_test, move_execute4) {
     env->quaffle->position = oldPos;
     gameController::Move mv(env, env->team1->keeper, oldPos);
 
-    mv.execute();
+    auto mvRes = mv.execute();
 
     EXPECT_TRUE(env->team1->keeper->isFined);
     EXPECT_FALSE(env->team2->keeper->position == oldPos);
     EXPECT_FALSE(env->quaffle->position == oldPos);
+    EXPECT_EQ(mvRes.first.size(), 0);
+    EXPECT_EQ(mvRes.second.size(), 1);
+    EXPECT_EQ(mvRes.second[0], gameModel::Foul::Ramming);
 }
 
+// block goal
 TEST(move_test, move_execute5) {
     auto env = setup::createEnv({0, {}, {1, 1, 1, 1, 1, 1, 1, 1, 1}, {1, 1, 1, 1, 1, 1}, {}});
 
     gameController::Move mv(env, env->team1->beaters[0], gameModel::Position(2, 4));
 
-    mv.execute();
+    auto mvRes = mv.execute();
 
     EXPECT_TRUE(env->team1->beaters[0]->isFined);
+    EXPECT_EQ(mvRes.first.size(), 0);
+    EXPECT_EQ(mvRes.second.size(), 1);
+    EXPECT_EQ(mvRes.second[0], gameModel::Foul::BlockGoal);
+}
+
+// block snitch
+TEST(move_test, move_execute6) {
+    auto env = setup::createEnv({0, {}, {1, 1, 1, 1, 1, 1, 1, 1, 1}, {1, 1, 1, 1, 1, 1}, {}});
+
+    env->snitch->exists = true;
+    env->snitch->position = gameModel::Position(2, 3);
+
+    gameController::Move mv(env, env->team1->beaters[0], gameModel::Position(2, 3));
+
+    auto mvRes = mv.execute();
+
+    EXPECT_TRUE(env->team1->beaters[0]->isFined);
+    EXPECT_EQ(mvRes.first.size(), 0);
+    EXPECT_EQ(mvRes.second.size(), 1);
+    EXPECT_EQ(mvRes.second[0], gameModel::Foul::BlockSnitch);
 }
