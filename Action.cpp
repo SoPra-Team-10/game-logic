@@ -108,7 +108,8 @@ namespace gameController{
 
     auto Shot::check() const -> ActionCheckResult {
         using res = ActionCheckResult;
-        if(actor->position == ball->position && gameModel::Environment::getCell(target) != gameModel::Cell::OutOfBounds){
+        if(actor->position == ball->position && gameModel::Environment::getCell(target) != gameModel::Cell::OutOfBounds &&
+            !actor->isFined && !actor->knockedOut){
             if(QUAFFLETHROW){
                 return res::Success;
             } else if(BLUDGERSHOT){
@@ -219,7 +220,8 @@ namespace gameController{
     auto Move::check() const -> ActionCheckResult{
 
         if (gameModel::Environment::getCell(this->target) == gameModel::Cell::OutOfBounds ||
-            gameController::getDistance(this->actor->position, this->target) > 1) {
+            gameController::getDistance(this->actor->position, this->target) > 1 ||
+            this->actor->isFined || this->actor->knockedOut){
             return ActionCheckResult::Impossible;
         }
 
