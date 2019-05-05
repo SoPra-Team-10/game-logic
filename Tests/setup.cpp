@@ -4,11 +4,11 @@
 
 #include "setup.h"
 
-auto setup::createEnv() -> gameModel::Environment {
+auto setup::createEnv() -> std::shared_ptr<gameModel::Environment> {
     return createEnv({0, {}, {}, {}, {}});
 }
 
-auto setup::createEnv(const gameModel::Config &config) -> gameModel::Environment {
+auto setup::createEnv(const gameModel::Config &config) -> std::shared_ptr<gameModel::Environment> {
     using ID = communication::messages::types::EntityId;
     gameModel::Chaser c1({2, 10}, "", {}, {}, ID::LEFT_CHASER1);
     gameModel::Chaser c2({8, 5}, "", {}, {}, ID::LEFT_CHASER2);
@@ -33,8 +33,7 @@ auto setup::createEnv(const gameModel::Config &config) -> gameModel::Environment
     gameModel::Team t1(s1, k1, {b1, b2}, {c1, c2, c3}, "", "", "", f);
     gameModel::Team t2(s2, k2, {b3, b4}, {c4, c5, c6}, "", "", "", f);
 
-    gameModel::Environment env(config, t1, t2);
-    return env;
+    return std::make_shared<gameModel::Environment>(config, t1, t2);
 }
 
 

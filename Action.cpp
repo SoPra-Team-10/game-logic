@@ -35,7 +35,7 @@ namespace gameController{
                     } else {
                         //Quaffle bounces off
                         ball->position = pos;
-                        moveToAdjacent(*ball, *env);
+                        moveToAdjacent(ball, env);
                         return;
                     }
                 }
@@ -67,6 +67,11 @@ namespace gameController{
                     auto possibleCells = env->getAllFreeCells();
                     int index = rng(0, static_cast<int>(possibleCells.size()) - 1);
                     ball->position = possibleCells[index];
+
+                    //fool quaffle away
+                    if(env->quaffle->position == target){
+                        moveToAdjacent(env->quaffle, env);
+                    }
                 } else {
                     ball->position = target;
                 }
@@ -196,7 +201,7 @@ namespace gameController{
         // move other player out of the way
         auto targetPlayer = env->getPlayer(this->target);
         if (targetPlayer.has_value()) {
-            gameController::moveToAdjacent(*targetPlayer.value(), *env);
+            gameController::moveToAdjacent(targetPlayer.value(), env);
         }
 
         // move the quaffle if necessary
@@ -204,7 +209,7 @@ namespace gameController{
             this->env->quaffle->position = this->target;
         } else if(checkForFoul() == gameModel::Foul::Ramming && env->quaffle->position == target) {
             //rammed player looses Quaffle
-            moveToAdjacent(*env->quaffle, *env);
+            moveToAdjacent(env->quaffle, env);
         }
 
 
