@@ -2,11 +2,11 @@ branches:
   except:
     - gh-pages
 
-#env:
-#  global:
-#    - GH_REPO_NAME: GameLogic
-#    - DOXYFILE: $TRAVIS_BUILD_DIR/DOXYFILE
-#    - GH_REPO_REF: github.com:SoPra-Team-10/GameLogic.git
+env:
+  global:
+    - GH_REPO_NAME: GameLogic
+    - DOXYFILE: $TRAVIS_BUILD_DIR/DOXYFILE
+    - GH_REPO_REF: github.com:SoPra-Team-10/GameLogic.git
 
 #addons:
 #  apt:
