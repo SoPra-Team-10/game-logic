@@ -60,9 +60,18 @@ git config user.email "sopra-bot@team-onestone.net"
 # can be safely cleaned, and it is sure that everything pushed later is the new
 # documentation.
 #rm -rf *
-rm -rf "$TRAVIS_BRANCH"
-mkdir -p  "$TRAVIS_BRANCH"
-cd "$TRAVIS_BRANCH"
+if [ "$TRAVIS_BRANCH" == "master" ]; then
+    rm -rf master
+	mkdir -p  master
+	cd master
+elif ["$TRAVIS_BRANCH" == "Develop"]
+    rm -rf Develop
+	mkdir -p  Develop
+	cd Develop
+else 
+	echo "No Doxygen Documentation for $TRAVIS_BRANCH Branch."
+	exit 0
+fi
 
 # Need to create a .nojekyll file to allow filenames starting with an underscore
 # to be seen on the gh-pages site. Therefore creating an empty .nojekyll file.
