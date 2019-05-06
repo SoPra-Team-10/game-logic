@@ -297,7 +297,14 @@ namespace gameModel{
         /**
          * gets the number of banned players in the team
          */
-        int numberOfBannedMembers();
+        int numberOfBannedMembers() const;
+
+        /**
+         * Get player by server entity ids
+         * @param id
+         * @return
+         */
+        auto getPlayerByID(communication::messages::types::EntityId id) const -> std::optional<std::shared_ptr<Player>>;
 
     };
 
@@ -422,6 +429,14 @@ namespace gameModel{
          * @return
          */
         auto getPlayer(const Position &position) const -> std::optional<std::shared_ptr<Player>>;
+
+        /**
+         * gets player by server entity id
+         * @param id
+         * @throws runtime_error when player cannot be found
+         * @return
+         */
+        auto getPlayerById(communication::messages::types::EntityId id) const -> std::shared_ptr<Player>;
 
         /**
          * get the corresponding team of a player.

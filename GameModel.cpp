@@ -294,7 +294,19 @@ namespace gameModel{
         return {Position{14, 4}, Position{14, 6}, Position{14, 8}};
     }
 
+    auto Environment::getPlayerById(communication::messages::types::EntityId id) const -> std::shared_ptr<Player> {
+        auto player = team1->getPlayerByID(id);
+        if(player.has_value()){
+            return player.value();
+        }
 
+        player = team2->getPlayerByID(id);
+        if(player.has_value()){
+            return player.value();
+        }
+
+        throw std::runtime_error("No player with specified in this match");
+    }
 
     // Ball Types
 
@@ -385,7 +397,7 @@ namespace gameModel{
         return false;
     }
 
-    int Team::numberOfBannedMembers() {
+    int Team::numberOfBannedMembers() const{
         int ret = 0;
         for(const auto &player :getAllPlayers()){
             if(player->isFined){
@@ -394,6 +406,16 @@ namespace gameModel{
         }
 
         return ret;
+    }
+
+    auto Team::getPlayerByID(communication::messages::types::EntityId id) const -> std::optional<std::shared_ptr<Player>> {
+        for(const auto &player : getAllPlayers()){
+            if(player->id == id){
+                return player;
+            }
+        }
+
+        return {};
     }
 
     // Config
