@@ -384,6 +384,11 @@ namespace gameModel{
          */
         static auto getSurroundingPositions(const Position &position) -> std::vector<Position>;
 
+        static auto getGoalsLeft() -> std::array<Position, 3>;
+
+        static auto getGoalsRight() -> std::array<Position, 3>;
+
+
         /**
          * Gets all players on the field
          * @return

@@ -12,12 +12,24 @@
 namespace gameController{
 
     /**
-     * Type of the result of an action
+     * Basic types of actions
      */
-    enum class ActionResult {
-        Impossible,
-        Success,
-        Foul
+    enum class ActionCheckResult {
+        Impossible, ///< Action violates game mechanics
+        Success, ///< Action is possible without risk of a foul
+        Foul ///< Action may result in a foul
+    };
+
+    /**
+     * Outcomes of a Shot
+     */
+    enum class ShotResult {
+        Intercepted, ///<Quaffle is intercepted
+        Miss, ///<Quaffle does not land on target position
+        ScoreRight, ///<Throw resulted in a goal for the right team
+        ScoreLeft, ///<Throw resulted in a goal for the left team
+        ThrowSuccess, ///<Quaffle landed on target position
+        Knockout ///Bludger knocked out a player
     };
 
     class Action {
@@ -39,9 +51,9 @@ namespace gameController{
 
 
         // functions
-        virtual void execute() const = 0;
+        virtual auto execute() const -> std::pair<std::vector<ShotResult>, std::vector<gameModel::Foul>> = 0;
         virtual auto successProb() const -> double = 0;
-        virtual auto check() const -> ActionResult = 0;
+        virtual auto check() const -> ActionCheckResult = 0;
         virtual auto executeAll() const -> std::vector<std::pair<gameModel::Environment, double>> = 0;
 
     protected:
@@ -73,7 +85,7 @@ namespace gameController{
         * execute the shot in a given environment (implementation of virtual function).
         * @param envi the environment in which the shot should be performed.
         */
-        void execute() const override;
+        auto execute() const -> std::pair<std::vector<ShotResult>, std::vector<gameModel::Foul>>;
         /**
          * get the success probability of the shot (implementation of virtual function).
          * @return the success probability of the shot as double.
@@ -84,7 +96,7 @@ namespace gameController{
          * @param envi the selected environment.
          * @return the result of the check as ActionResult.
          */
-        auto check() const -> ActionResult override;
+        auto check() const -> ActionCheckResult override;
         /**
          * execute all given shots in a given environment (implementation of virtual function).
          * @param envi the selected environment.
@@ -109,6 +121,12 @@ namespace gameController{
          * @return
          */
         auto getAllLandingCells() const -> std::vector<gameModel::Position>;
+
+        /**
+         * Checks if a goal was scored depending on the quaffles and actors current position
+         * @return
+         */
+        auto goalCheck() const -> std::vector<ShotResult>;
     };
 
     /**
@@ -136,7 +154,7 @@ namespace gameController{
          * execute the move in a given environment (implementation of virtual function).
          * @param envi the environment in which the shot should be performed.
          */
-        void execute() const override;
+        auto execute() const -> std::pair<std::vector<ShotResult>, std::vector<gameModel::Foul>>;
         /**
          * get the success probability of the move (implementation of virtual function). (implementation of virtual function).
          * @return the success probability of the move as double.
@@ -147,7 +165,7 @@ namespace gameController{
         * @param envi the selected environment.
         * @return the result of the check as ActionResult.
         */
-        auto check() const -> ActionResult override;
+        auto check() const -> ActionCheckResult override;
         /**
          * execute all given move in a given environment (implementation of virtual function).
          * @param envi the selected environment.

@@ -286,6 +286,14 @@ namespace gameModel{
         player->position = possibleCells[index];
     }
 
+     auto Environment::getGoalsLeft() -> std::array<Position, 3> {
+        return {Position{2, 4}, Position{2, 6}, Position{2, 8}};
+    }
+
+    auto Environment::getGoalsRight() -> std::array<Position, 3> {
+        return {Position{14, 4}, Position{14, 6}, Position{14, 8}};
+    }
+
     auto Environment::getPlayerById(communication::messages::types::EntityId id) const -> std::shared_ptr<Player> {
         auto player = team1->getPlayerByID(id);
         if(player.has_value()){
@@ -299,8 +307,6 @@ namespace gameModel{
 
         throw std::runtime_error("No player with specified in this match");
     }
-
-
 
     // Ball Types
 
@@ -462,7 +468,7 @@ namespace gameModel{
     }
 
     double Vector::abs() const{
-        return std::sqrt(pow(this->x, 2) + pow(this->x, 2));
+        return std::sqrt(x * x + y * y);
     }
 
     void Vector::normalize(){
