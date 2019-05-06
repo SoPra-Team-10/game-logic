@@ -66,6 +66,7 @@ namespace gameModel{
          * @param y y component of the vector.
          */
         Vector(double x, double y);
+        Vector(const Position &p1, const Position &p2);
 
         // objects
         double x;   ///< x component of the vector.
@@ -194,7 +195,7 @@ namespace gameModel{
          * @param fan the fan to check
          * @return number of left uses
          */
-        int getUses(InterferenceType fan);
+        int getUses(InterferenceType fan) const ;
 
         /**
          * Bans a fan by decreasing the number of allowed uses by one
