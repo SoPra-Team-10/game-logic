@@ -467,6 +467,11 @@ namespace gameModel{
         this->y = y;
     }
 
+    Vector::Vector(const Position &p1, const Position &p2) {
+        this->x = p2.x - p1.x;
+        this->y = p2.y - p1.y;
+    }
+
     double Vector::abs() const{
         return std::sqrt(x * x + y * y);
     }

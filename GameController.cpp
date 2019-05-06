@@ -128,4 +128,46 @@ namespace gameController {
                 return  false;
         }
     }
+
+    void moveBludger(std::shared_ptr<gameModel::Bludger> &bludger, std::shared_ptr<gameModel::Environment> &env) {
+        auto players = env->getAllPlayers();
+
+        // find nearest player
+        double minDistance = std::numeric_limits<double>::max();
+        std::shared_ptr<gameModel::Player> minDistancePlayer;
+        for (const auto &player: players) {
+
+            gameModel::Vector vect(player->position, bludger->position);
+
+            if (vect.abs() < minDistance) {
+                minDistance = vect.abs();
+                minDistancePlayer = player;
+            }
+        }
+
+        // move towards nearest player
+        auto crossedCells = getAllCrossedCells(bludger->position, minDistancePlayer->position);
+        if (crossedCells.empty()) {
+            // bludger will move on the players position
+            bludger->position = minDistancePlayer->position;
+
+            // roll the dices
+            if (actionTriggered(env->config.gameDynamicsProbs.knockOut)) {
+                // quaffel test
+                if (env->quaffle->position == minDistancePlayer->position) {
+                    moveToAdjacent(env->quaffle, env);
+                }
+                // move player
+                moveToAdjacent(minDistancePlayer, env);
+                // knockout player
+                minDistancePlayer->knockedOut = true;
+            }
+
+        }
+        else {
+            // move in the direction of the nearest player
+            bludger->position = crossedCells[0];
+        }
+
+    }
 }
