@@ -87,12 +87,24 @@ namespace gameController {
     }
 
     /**
-     * make the decision if a player will be punished or not after a foul.
+     * make the decision if a player will be punished or not after a foul.df
      * @param foul the foul type.
      * @param gameConf the current game configuration.
      * @return true if player shall be punished, else false.
      */
     auto refereeDecision(const gameModel::Foul &foul, const gameModel::Config &gameConf) -> bool;
+
+    /**
+     * move the selected bludger according to the game roles.
+     */
+    void moveBludger(std::shared_ptr<gameModel::Bludger> &bludger, std::shared_ptr<gameModel::Environment> &env);
+
+    /**
+     * check if a player can perform a shot.
+     */
+    bool playerCanShoot(const std::shared_ptr<gameModel::Player> &player,
+                        const std::shared_ptr<gameModel::Environment> &env);
+
 }
 
 
