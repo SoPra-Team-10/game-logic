@@ -19,7 +19,7 @@ namespace gameController{
         /**
          * Executes the interference
          */
-        virtual void execute() const = 0;
+        virtual auto execute() const -> gameController::ActionCheckResult = 0;
 
         /**
          * Checks if the interference is possible
@@ -47,7 +47,7 @@ namespace gameController{
         /**
          * Teleports target player to random free location on the field
          */
-        void execute() const override;
+        auto execute() const -> gameController::ActionCheckResult override;
 
     private:
         std::shared_ptr<gameModel::Player> target;
@@ -62,7 +62,7 @@ namespace gameController{
          * Pushes target player to a random free adjacent position
          * if target player previously held quaffle, quaffle will be moved to random free adjacent position
          */
-        void execute() const override;
+        auto execute() const -> gameController::ActionCheckResult override;
 
         /**
          *
@@ -80,7 +80,7 @@ namespace gameController{
         /**
          * If a Keeper or Chaser holds the quaffle, quaffle is moved to a random free adjacent position
          */
-        void execute() const override;
+        auto execute() const -> gameController::ActionCheckResult override;
 
     };
 
@@ -91,7 +91,7 @@ namespace gameController{
         /**
          * Snitch is moved to random free adjacent position
          */
-        void execute() const override;
+        auto execute() const -> gameController::ActionCheckResult override;
     };
 }
 
