@@ -14,6 +14,5 @@ var searchData=
   ['getteam',['getTeam',['../classgame_model_1_1_environment.html#a393a4957114c2361f17bc84d00cec55f',1,'gameModel::Environment']]],
   ['getteammates',['getTeamMates',['../classgame_model_1_1_environment.html#a3122c0963d935543e2a7da1303772124',1,'gameModel::Environment']]],
   ['gettype',['getType',['../classgame_controller_1_1_interference.html#a694aa2cd65bbb35c02f1ca4ed7701ebe',1,'gameController::Interference']]],
-  ['getuses',['getUses',['../classgame_model_1_1_fanblock.html#a65c17009e532bcda8316a30d9e9433cd',1,'gameModel::Fanblock']]],
-  ['gamelogic',['GameLogic',['../md__home_travis_build__so_pra-_team-10__game_logic__r_e_a_d_m_e.html',1,'']]]
+  ['getuses',['getUses',['../classgame_model_1_1_fanblock.html#a65c17009e532bcda8316a30d9e9433cd',1,'gameModel::Fanblock']]]
 ];
