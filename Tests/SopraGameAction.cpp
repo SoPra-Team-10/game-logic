@@ -118,6 +118,51 @@ TEST(shot_test, throw_execute_fail_and_disperse){
     std::cout << "landed on {" << env->quaffle->position.x << ", " << env->quaffle->position.y << "}" << std::endl;
 }
 
+TEST(shot_test, shot_on_goal){
+    auto env = setup::createEnv({0, {}, {}, {1, 0, 0, 0, 0, 0}, {}});
+
+    env->quaffle->position = env->team1->chasers[2]->position;
+    gameController::Shot testShot(env, env->team1->chasers[2], env->quaffle, {14, 8});
+    auto res = testShot.execute();
+    EXPECT_EQ(res.first.size(), 2);
+    EXPECT_EQ(res.first[0], gameController::ShotResult::ThrowSuccess);
+    EXPECT_EQ(res.first[1], gameController::ShotResult::ScoreLeft);
+    EXPECT_EQ(env->quaffle->position, gameModel::Position(14, 8));
+}
+
+TEST(shot_test, shot_on_goal1){
+    auto env = setup::createEnv({0, {}, {}, {1, 0, 0, 0, 0, 0}, {}});
+
+    env->quaffle->position = env->team1->chasers[2]->position;
+    gameController::Shot testShot(env, env->team1->chasers[2], env->quaffle, {14, 4});
+    auto res = testShot.execute();
+    EXPECT_EQ(res.first.size(), 2);
+    EXPECT_EQ(res.first[0], gameController::ShotResult::ThrowSuccess);
+    EXPECT_EQ(res.first[1], gameController::ShotResult::ScoreLeft);
+    EXPECT_EQ(env->quaffle->position, gameModel::Position(14, 4));
+}
+
+TEST(shot_test, invalid_shot_on_goal){
+    auto env = setup::createEnv({0, {}, {}, {1, 0, 0, 0, 0, 0}, {}});
+
+    env->quaffle->position = env->team2->chasers[0]->position;
+    gameController::Shot testShot(env, env->team2->chasers[0], env->quaffle, {2, 8});
+    auto res = testShot.execute();
+    EXPECT_EQ(res.first.size(), 1);
+    EXPECT_EQ(res.first[0], gameController::ShotResult::ThrowSuccess);
+    EXPECT_EQ(env->quaffle->position, gameModel::Position(2, 8));
+}
+
+TEST(shot_test, invalid_shot_on_goal1){
+    auto env = setup::createEnv({0, {}, {}, {1, 0, 0, 0, 0, 0}, {}});
+
+    env->quaffle->position = env->team1->chasers[0]->position;
+    gameController::Shot testShot(env, env->team1->chasers[0], env->quaffle, {2, 8});
+    auto res = testShot.execute();
+    EXPECT_EQ(res.first.size(), 1);
+    EXPECT_EQ(res.first[0], gameController::ShotResult::ThrowSuccess);
+    EXPECT_EQ(env->quaffle->position, gameModel::Position(2, 8));
+}
 //--------------------------Bludger shot check------------------------------------------------------------------------
 
 TEST(shot_test, valid_bludger_shot_check){

@@ -446,7 +446,7 @@ namespace gameModel{
     }
 
     double Vector::abs() const{
-        return std::sqrt(pow(this->x, 2) + pow(this->x, 2));
+        return std::sqrt(x * x + y * y);
     }
 
     void Vector::normalize(){
