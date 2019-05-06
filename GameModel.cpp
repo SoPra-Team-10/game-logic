@@ -436,7 +436,14 @@ namespace gameModel{
                  config.getProbFoulStooging(), config.getProbFoulBlatching(), config.getProbFoulSnitchnip(), config.getProbFoulElf(),
                  config.getProbFoulGoblin(), config.getProbFoulTroll(), config.getProbFoulSnitch()},
                  gameDynamicsProbs{config.getProbThrowSuccess(), config.getProbKnockOut(), config.getProbFoolAway(), config.getProbCatchSnitch(),
-                 config.getProbCatchQuaffle(), config.getProbWrestQuaffle()}{}
+                 config.getProbCatchQuaffle(), config.getProbWrestQuaffle()}{
+        using Broom = communication::messages::types::Broom;
+        extraTurnProbs.insert({Broom::CLEANSWEEP11, config.getProbExtraCleansweep()});
+        extraTurnProbs.insert({Broom::COMET260, config.getProbExtraComet()});
+        extraTurnProbs.insert({Broom::NIMBUS2001, config.getProbExtraNimbus()});
+        extraTurnProbs.insert({Broom::FIREBOLT, config.getProbExtraFirebolt()});
+        extraTurnProbs.insert({Broom::TINDERBLAST, config.getProbExtraTinderblast()});
+    }
 
 
     // Position
