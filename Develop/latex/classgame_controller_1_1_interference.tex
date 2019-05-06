@@ -13,7 +13,7 @@ Inheritance diagram for game\-Controller\-:\-:Interference\-:\begin{figure}[H]
 \hypertarget{classgame_controller_1_1_interference_a1e664266c768fafd6fc4339e08741d5a}{{\bfseries Interference} (std\-::shared\-\_\-ptr$<$ \hyperlink{classgame_model_1_1_environment}{game\-Model\-::\-Environment} $>$ env, std\-::shared\-\_\-ptr$<$ \hyperlink{classgame_model_1_1_team}{game\-Model\-::\-Team} $>$ team, game\-Model\-::\-Interference\-Type type)}\label{classgame_controller_1_1_interference_a1e664266c768fafd6fc4339e08741d5a}
 
 \item 
-virtual void \hyperlink{classgame_controller_1_1_interference_aa5ced37bf22486e1cc290bc6679c2db2}{execute} () const =0
+virtual auto \hyperlink{classgame_controller_1_1_interference_aee66a8480fccc6286b5bef04777a8a6a}{execute} () const -\/$>$ game\-Controller\-::\-Action\-Check\-Result=0
 \item 
 virtual bool \hyperlink{classgame_controller_1_1_interference_a06b9adc5df035e184e7ed0cf5d4a8814}{is\-Possible} () const 
 \item 
@@ -35,16 +35,16 @@ $<$ \hyperlink{classgame_model_1_1_environment}{game\-Model\-::\-Environment} $>
 
 
 \subsection{Member Function Documentation}
-\hypertarget{classgame_controller_1_1_interference_aa5ced37bf22486e1cc290bc6679c2db2}{\index{game\-Controller\-::\-Interference@{game\-Controller\-::\-Interference}!execute@{execute}}
+\hypertarget{classgame_controller_1_1_interference_aee66a8480fccc6286b5bef04777a8a6a}{\index{game\-Controller\-::\-Interference@{game\-Controller\-::\-Interference}!execute@{execute}}
 \index{execute@{execute}!gameController::Interference@{game\-Controller\-::\-Interference}}
-\subsubsection[{execute}]{\setlength{\rightskip}{0pt plus 5cm}virtual void game\-Controller\-::\-Interference\-::execute (
+\subsubsection[{execute}]{\setlength{\rightskip}{0pt plus 5cm}virtual auto game\-Controller\-::\-Interference\-::execute (
 \begin{DoxyParamCaption}
 {}
 \end{DoxyParamCaption}
-) const\hspace{0.3cm}{\ttfamily [pure virtual]}}}\label{classgame_controller_1_1_interference_aa5ced37bf22486e1cc290bc6679c2db2}
+) const -\/$>$  game\-Controller\-::\-Action\-Check\-Result\hspace{0.3cm}{\ttfamily [pure virtual]}}}\label{classgame_controller_1_1_interference_aee66a8480fccc6286b5bef04777a8a6a}
 Executes the interference 
 
-Implemented in \hyperlink{classgame_controller_1_1_snitch_push_a3abfb90f1d21c8b51971d75012485af4}{game\-Controller\-::\-Snitch\-Push}, \hyperlink{classgame_controller_1_1_impulse_aec92c13c5a3a55da3f8d948354a9b4f4}{game\-Controller\-::\-Impulse}, \hyperlink{classgame_controller_1_1_ranged_attack_a581a62b0f86ef2d510c17cd896382b46}{game\-Controller\-::\-Ranged\-Attack}, and \hyperlink{classgame_controller_1_1_teleport_a9e10c37934bf7447f1cee64545fbf138}{game\-Controller\-::\-Teleport}.
+Implemented in \hyperlink{classgame_controller_1_1_snitch_push_a8a2f83c287bbe0c619cc99fa012515b3}{game\-Controller\-::\-Snitch\-Push}, \hyperlink{classgame_controller_1_1_impulse_acd4697c3567adfacf7b657ffefe72d1d}{game\-Controller\-::\-Impulse}, \hyperlink{classgame_controller_1_1_ranged_attack_a7c5cb7567f7f6bc8fb844837240d7c09}{game\-Controller\-::\-Ranged\-Attack}, and \hyperlink{classgame_controller_1_1_teleport_a8afb230cf709b514e549ebe73f1fc68e}{game\-Controller\-::\-Teleport}.
 
 \hypertarget{classgame_controller_1_1_interference_a694aa2cd65bbb35c02f1ca4ed7701ebe}{\index{game\-Controller\-::\-Interference@{game\-Controller\-::\-Interference}!get\-Type@{get\-Type}}
 \index{get\-Type@{get\-Type}!gameController::Interference@{game\-Controller\-::\-Interference}}

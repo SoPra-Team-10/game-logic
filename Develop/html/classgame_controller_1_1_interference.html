@@ -110,8 +110,8 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a1e664266c768fafd6fc4339e08741d5a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1e664266c768fafd6fc4339e08741d5a"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>Interference</b> (std::shared_ptr&lt; <a class="el" href="classgame_model_1_1_environment.html">gameModel::Environment</a> &gt; env, std::shared_ptr&lt; <a class="el" href="classgame_model_1_1_team.html">gameModel::Team</a> &gt; team, gameModel::InterferenceType type)</td></tr>
 <tr class="separator:a1e664266c768fafd6fc4339e08741d5a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa5ced37bf22486e1cc290bc6679c2db2"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgame_controller_1_1_interference.html#aa5ced37bf22486e1cc290bc6679c2db2">execute</a> () const =0</td></tr>
-<tr class="separator:aa5ced37bf22486e1cc290bc6679c2db2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aee66a8480fccc6286b5bef04777a8a6a"><td class="memItemLeft" align="right" valign="top">virtual auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgame_controller_1_1_interference.html#aee66a8480fccc6286b5bef04777a8a6a">execute</a> () const -&gt; gameController::ActionCheckResult=0</td></tr>
+<tr class="separator:aee66a8480fccc6286b5bef04777a8a6a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a06b9adc5df035e184e7ed0cf5d4a8814"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgame_controller_1_1_interference.html#a06b9adc5df035e184e7ed0cf5d4a8814">isPossible</a> () const </td></tr>
 <tr class="separator:a06b9adc5df035e184e7ed0cf5d4a8814"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a694aa2cd65bbb35c02f1ca4ed7701ebe"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgame_controller_1_1_interference.html#a694aa2cd65bbb35c02f1ca4ed7701ebe">getType</a> () const -&gt; gameModel::InterferenceType</td></tr>
@@ -131,7 +131,7 @@ gameModel::InterferenceType&#160;</td><td class="memItemRight" valign="bottom"><
 <tr class="separator:af7bd9e6bb2f92cb4f547ca4f52e5f16c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a class="anchor" id="aa5ced37bf22486e1cc290bc6679c2db2"></a>
+<a class="anchor" id="aee66a8480fccc6286b5bef04777a8a6a"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -139,10 +139,10 @@ gameModel::InterferenceType&#160;</td><td class="memItemRight" valign="bottom"><
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual void gameController::Interference::execute </td>
+          <td class="memname">virtual auto gameController::Interference::execute </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
-          <td> const</td>
+          <td> const -&gt;  gameController::ActionCheckResult</td>
         </tr>
       </table>
   </td>
@@ -153,7 +153,7 @@ gameModel::InterferenceType&#160;</td><td class="memItemRight" valign="bottom"><
 </div><div class="memdoc">
 <p>Executes the interference </p>
 
-<p>Implemented in <a class="el" href="classgame_controller_1_1_snitch_push.html#a3abfb90f1d21c8b51971d75012485af4">gameController::SnitchPush</a>, <a class="el" href="classgame_controller_1_1_impulse.html#aec92c13c5a3a55da3f8d948354a9b4f4">gameController::Impulse</a>, <a class="el" href="classgame_controller_1_1_ranged_attack.html#a581a62b0f86ef2d510c17cd896382b46">gameController::RangedAttack</a>, and <a class="el" href="classgame_controller_1_1_teleport.html#a9e10c37934bf7447f1cee64545fbf138">gameController::Teleport</a>.</p>
+<p>Implemented in <a class="el" href="classgame_controller_1_1_snitch_push.html#a8a2f83c287bbe0c619cc99fa012515b3">gameController::SnitchPush</a>, <a class="el" href="classgame_controller_1_1_impulse.html#acd4697c3567adfacf7b657ffefe72d1d">gameController::Impulse</a>, <a class="el" href="classgame_controller_1_1_ranged_attack.html#a7c5cb7567f7f6bc8fb844837240d7c09">gameController::RangedAttack</a>, and <a class="el" href="classgame_controller_1_1_teleport.html#a8afb230cf709b514e549ebe73f1fc68e">gameController::Teleport</a>.</p>
 
 </div>
 </div>

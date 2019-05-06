@@ -106,8 +106,8 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a37354f13fe1dfb38e78b59f606961ad6"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a37354f13fe1dfb38e78b59f606961ad6"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>Impulse</b> (std::shared_ptr&lt; <a class="el" href="classgame_model_1_1_environment.html">gameModel::Environment</a> &gt; env, std::shared_ptr&lt; <a class="el" href="classgame_model_1_1_team.html">gameModel::Team</a> &gt; team)</td></tr>
 <tr class="separator:a37354f13fe1dfb38e78b59f606961ad6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aec92c13c5a3a55da3f8d948354a9b4f4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgame_controller_1_1_impulse.html#aec92c13c5a3a55da3f8d948354a9b4f4">execute</a> () const override</td></tr>
-<tr class="separator:aec92c13c5a3a55da3f8d948354a9b4f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acd4697c3567adfacf7b657ffefe72d1d"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgame_controller_1_1_impulse.html#acd4697c3567adfacf7b657ffefe72d1d">execute</a> () const -&gt; gameController::ActionCheckResult override</td></tr>
+<tr class="separator:acd4697c3567adfacf7b657ffefe72d1d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classgame_controller_1_1_interference"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classgame_controller_1_1_interference')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classgame_controller_1_1_interference.html">gameController::Interference</a></td></tr>
 <tr class="memitem:a1e664266c768fafd6fc4339e08741d5a inherit pub_methods_classgame_controller_1_1_interference"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1e664266c768fafd6fc4339e08741d5a"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>Interference</b> (std::shared_ptr&lt; <a class="el" href="classgame_model_1_1_environment.html">gameModel::Environment</a> &gt; env, std::shared_ptr&lt; <a class="el" href="classgame_model_1_1_team.html">gameModel::Team</a> &gt; team, gameModel::InterferenceType type)</td></tr>
@@ -132,7 +132,7 @@ gameModel::InterferenceType&#160;</td><td class="memItemRight" valign="bottom"><
 <tr class="separator:af7bd9e6bb2f92cb4f547ca4f52e5f16c inherit pro_attribs_classgame_controller_1_1_interference"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a class="anchor" id="aec92c13c5a3a55da3f8d948354a9b4f4"></a>
+<a class="anchor" id="acd4697c3567adfacf7b657ffefe72d1d"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -140,10 +140,10 @@ gameModel::InterferenceType&#160;</td><td class="memItemRight" valign="bottom"><
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void gameController::Impulse::execute </td>
+          <td class="memname">auto gameController::Impulse::execute </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
-          <td> const</td>
+          <td> const -&gt; gameController::ActionCheckResult</td>
         </tr>
       </table>
   </td>
@@ -154,7 +154,7 @@ gameModel::InterferenceType&#160;</td><td class="memItemRight" valign="bottom"><
 </div><div class="memdoc">
 <p>If a Keeper or Chaser holds the quaffle, quaffle is moved to a random free adjacent position </p>
 
-<p>Implements <a class="el" href="classgame_controller_1_1_interference.html#aa5ced37bf22486e1cc290bc6679c2db2">gameController::Interference</a>.</p>
+<p>Implements <a class="el" href="classgame_controller_1_1_interference.html#aee66a8480fccc6286b5bef04777a8a6a">gameController::Interference</a>.</p>
 
 </div>
 </div>
