@@ -2,20 +2,20 @@ branches:
   except:
     - gh-pages
 
-env:
-  global:
-    - GH_REPO_NAME: GameLogic
-    - DOXYFILE: $TRAVIS_BUILD_DIR/DOXYFILE
-    - GH_REPO_REF: github.com:SoPra-Team-10/GameLogic.git
+#env:
+#  global:
+#    - GH_REPO_NAME: GameLogic
+#    - DOXYFILE: $TRAVIS_BUILD_DIR/DOXYFILE
+#    - GH_REPO_REF: github.com:SoPra-Team-10/GameLogic.git
 
-addons:
-  apt:
-    packages:
-      - doxygen
-      - doxygen-doc
-      - doxygen-latex
-      - doxygen-gui
-      - graphviz
+#addons:
+#  apt:
+#    packages:
+#      - doxygen
+#      - doxygen-doc
+#      - doxygen-latex
+#      - doxygen-gui
+#      - graphviz
 
 services:
   - docker
@@ -26,10 +26,10 @@ before_install:
 script:
   - docker run gamelogic
   
- after_success:
-  - cd $TRAVIS_BUILD_DIR
-  - chmod +x generateDocumentationAndDeploy.sh
-  - ./generateDocumentationAndDeploy.sh
+# after_success:
+#  - cd $TRAVIS_BUILD_DIR
+#  - chmod +x generateDocumentationAndDeploy.sh
+#  - ./generateDocumentationAndDeploy.sh
   
 notifications:
     slack: soprateam10:wlcgvL7tR63frGyGP4BCuqNj
