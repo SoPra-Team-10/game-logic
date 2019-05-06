@@ -20,7 +20,6 @@ namespace gameModel{
         return !(*this == other);
     }
 
-    Ball::Ball(Position position, communication::messages::types::EntityId id) : Object(position, id) {}
 
     // Fanblock
 
@@ -75,16 +74,31 @@ namespace gameModel{
         }
     }
 
-    Cell Environment::getCell(Position position) {
+    Cell Environment::getCell(const Position &position) {
         return getCell(position.x, position.y);
     }
 
-    Environment::Environment(Config config,Team team1, Team team2) : config(std::move(config)), team1(std::move(team1)),
+    auto Environment::getSurroundingPositions(const Position &position) -> std::vector<Position>{
+        std::vector<Position> ret;
+        ret.reserve(8);
+        for(int x = position.x - 1; x <= position.x + 1; x++){
+            for(int y = position.y - 1; y <= position.y + 1; y++){
+                Position curr(x, y);
+                if(curr != position && getCell(curr) != Cell::OutOfBounds){
+                    ret.emplace_back(curr);
+                }
+            }
+        }
+
+        return ret;
+    }
+
+    Environment::Environment(Config config, std::shared_ptr<Team> team1, std::shared_ptr<Team> team2) : config(std::move(config)), team1(std::move(team1)),
             team2(std::move(team2)), quaffle(std::make_shared<Quaffle>()), snitch(std::make_shared<Snitch>()),
             bludgers{std::make_shared<Bludger>(communication::messages::types::EntityId::BLUDGER1),
             std::make_shared<Bludger>(communication::messages::types::EntityId::BLUDGER2)} {}
 
-    Environment::Environment(Config config, Team team1, Team team2, std::shared_ptr<Quaffle> quaffle, std::shared_ptr<Snitch> snitch,
+    Environment::Environment(Config config, std::shared_ptr<Team> team1, std::shared_ptr<Team> team2, std::shared_ptr<Quaffle> quaffle, std::shared_ptr<Snitch> snitch,
                              std::array<std::shared_ptr<Bludger>, 2> bludgers) : config(std::move(config)), team1(std::move(team1)),
                              team2(std::move(team2)), quaffle(std::move(quaffle)), snitch(std::move(snitch)),
                              bludgers(std::move(bludgers)){}
@@ -93,17 +107,18 @@ namespace gameModel{
     Environment::Environment(communication::messages::broadcast::MatchConfig matchConfig, const communication::messages::request::TeamConfig& teamConfig1,
                 const communication::messages::request::TeamConfig& teamConfig2, communication::messages::request::TeamFormation teamFormation1,
                 communication::messages::request::TeamFormation teamFormation2) :
-                             Environment({matchConfig}, {teamConfig1, teamFormation1, true}, {teamConfig2, teamFormation2, false}){}
+                             Environment({matchConfig}, std::make_shared<Team>(teamConfig1, teamFormation1, true),
+                                     std::make_shared<Team>(teamConfig2, teamFormation2, false)){}
 
     auto Environment::getAllPlayers() const -> std::array<std::shared_ptr<Player>, 14> {
         std::array<std::shared_ptr<Player>, 14> ret;
         auto it = ret.begin();
-        for(const auto &p : team1.getAllPlayers()){
+        for(const auto &p : team1->getAllPlayers()){
             *it = p;
             it++;
         }
 
-        for(const auto &p : team2.getAllPlayers()){
+        for(const auto &p : team2->getAllPlayers()){
             *it = p;
             it++;
         }
@@ -131,33 +146,33 @@ namespace gameModel{
         int endY = position.y + 1;
 
         do {
-            for (int i = startY; i <= endY; i++) {
-                for (int j = startX; j <= endX; j++) {
-                    if (i == position.x && j == position.y) {
+            for (int yPos = startY; yPos <= endY; yPos++) {
+                for (int xPos = startX; xPos <= endX; xPos++) {
+                    if (xPos == position.x && yPos == position.y) {
                         continue;
                     }
-                    if (Environment::getCell(j, i) != Cell::OutOfBounds && !this->getPlayer({j, i}).has_value()) {
-                        resultVect.emplace_back(Position(j, i));
+                    else if (Environment::getCell(xPos, yPos) != Cell::OutOfBounds && !this->getPlayer({xPos, yPos}).has_value()) {
+                        resultVect.emplace_back(Position(xPos, yPos));
                     }
                 }
             }
 
             startX--;
             endX++;
-            startX--;
-            endX++;
+            startY--;
+            endY++;
 
         } while (resultVect.empty());
 
         return resultVect;
     }
 
-    auto Environment::getTeamMates(const Player &player) const -> std::array<std::shared_ptr<Player>, 6> {
-        auto players = team1.hasMember(player) ? team1.getAllPlayers() : team2.getAllPlayers();
+    auto Environment::getTeamMates(const std::shared_ptr<Player>& player) const -> std::array<std::shared_ptr<Player>, 6> {
+        auto players = team1->hasMember(player) ? team1->getAllPlayers() : team2->getAllPlayers();
         std::array<std::shared_ptr<Player>, 6> ret;
         auto it = ret.begin();
         for(const auto &p : players){
-            if(*p != player){
+            if(*p != *player){
                 *it = p;
                 it++;
             }
@@ -166,11 +181,11 @@ namespace gameModel{
         return ret;
     }
 
-    auto Environment::getOpponents(const Player &player) const -> std::array<std::shared_ptr<Player>, 7> {
-        return team1.hasMember(player) ? team2.getAllPlayers() : team1.getAllPlayers();
+    auto Environment::getOpponents(const std::shared_ptr<Player>& player) const -> std::array<std::shared_ptr<Player>, 7> {
+        return team1->hasMember(player) ? team2->getAllPlayers() : team1->getAllPlayers();
     }
 
-    auto Environment::getPlayer(Position position) const -> std::optional<std::shared_ptr<Player>> {
+    auto Environment::getPlayer(const Position &position) const -> std::optional<std::shared_ptr<Player>> {
         for(const auto &p : getAllPlayers()){
             if(p->position == position){
                 return p;
@@ -180,9 +195,9 @@ namespace gameModel{
         return {};
     }
 
-    auto Environment::arePlayerInSameTeam(const Player &p1, const Player &p2) const -> bool {
-        return (this->team1.hasMember(p1) && this->team1.hasMember(p2)) ||
-               (this->team2.hasMember(p1) && this->team2.hasMember(p2));
+    auto Environment::arePlayerInSameTeam(const std::shared_ptr<Player>& p1, const std::shared_ptr<Player>& p2) const -> bool {
+        return (this->team1->hasMember(p1) && this->team1->hasMember(p2)) ||
+               (this->team2->hasMember(p1) && this->team2->hasMember(p2));
     }
 
     auto Environment::getAllValidCells() -> std::array<Position, 193> {
@@ -207,45 +222,50 @@ namespace gameModel{
         for(const auto &cell : getAllValidCells()){
             if(cellIsFree(cell)){
                 *it = cell;
-                it++;
+                if (it < ret.end() ) {
+                    it++;
+                }
+                else {
+                    throw std::runtime_error("There are less than 14 players on the field!");
+                }
             }
         }
 
         return ret;
     }
 
-    auto Environment::isPlayerInOwnRestrictedZone(const Player &player) const -> bool {
-        if (this->team1.hasMember(player) && this->getCell(player.position) == Cell::RestrictedLeft) {
+    auto Environment::isPlayerInOwnRestrictedZone(const std::shared_ptr<Player>& player) const -> bool {
+        if (this->team1->hasMember(player) && this->getCell(player->position) == Cell::RestrictedLeft) {
             return true;
         }
-        if (this->team2.hasMember(player) && this->getCell(player.position) == Cell::RestrictedRight) {
+        if (this->team2->hasMember(player) && this->getCell(player->position) == Cell::RestrictedRight) {
             return true;
         }
 
         return false;
     }
-    auto Environment::isPlayerInOpponentRestrictedZone(const Player &player) const  -> bool {
-        if (this->team1.hasMember(player) && this->getCell(player.position) == Cell::RestrictedRight) {
+    auto Environment::isPlayerInOpponentRestrictedZone(const std::shared_ptr<Player>& player) const  -> bool {
+        if (this->team1->hasMember(player) && this->getCell(player->position) == Cell::RestrictedRight) {
             return true;
         }
-        if (this->team2.hasMember(player) && this->getCell(player.position) == Cell::RestrictedLeft) {
+        if (this->team2->hasMember(player) && this->getCell(player->position) == Cell::RestrictedLeft) {
             return true;
         }
         return false;
     }
 
-    auto Environment::getTeam(const Player &player) const -> const Team& {
-        if (this->team1.hasMember(player)) {
+    auto Environment::getTeam(const std::shared_ptr<Player>& player) const -> std::shared_ptr<Team> {
+        if (this->team1->hasMember(player)) {
             return this->team1;
         }
-        else if (this->team2.hasMember(player)) {
+        else if (this->team2->hasMember(player)) {
             return this->team2;
         }
 
         throw std::runtime_error("The Player isn't part of any team.");
     }
 
-    void Environment::placePlayerOnRandomFreeCell(Player &player) {
+    void Environment::placePlayerOnRandomFreeCell(const std::shared_ptr<Player>& player) {
         std::vector<Position> possibleCells;
         possibleCells.reserve(82);
         for(const auto &cell : getAllValidCells()){
@@ -253,21 +273,44 @@ namespace gameModel{
                 continue;
             }
 
-            if(team1.hasMember(player) && cell.x < 8 && cellIsFree(cell)){
+            if(team1->hasMember(player) && cell.x < 8 && cellIsFree(cell)){
                 possibleCells.push_back(cell);
             }
 
-            if(team2.hasMember(player) && cell.x > 8 && cellIsFree(cell)){
+            if(team2->hasMember(player) && cell.x > 8 && cellIsFree(cell)){
                 possibleCells.push_back(cell);
             }
         }
 
         int index = gameController::rng(0, static_cast<int>(possibleCells.size() - 1));
-        player.position = possibleCells[index];
+        player->position = possibleCells[index];
     }
 
+     auto Environment::getGoalsLeft() -> std::array<Position, 3> {
+        return {Position{2, 4}, Position{2, 6}, Position{2, 8}};
+    }
+
+    auto Environment::getGoalsRight() -> std::array<Position, 3> {
+        return {Position{14, 4}, Position{14, 6}, Position{14, 8}};
+    }
+
+    auto Environment::getPlayerById(communication::messages::types::EntityId id) const -> std::shared_ptr<Player> {
+        auto player = team1->getPlayerByID(id);
+        if(player.has_value()){
+            return player.value();
+        }
+
+        player = team2->getPlayerByID(id);
+        if(player.has_value()){
+            return player.value();
+        }
+
+        throw std::runtime_error("No player with specified in this match");
+    }
 
     // Ball Types
+
+    Ball::Ball(Position position, communication::messages::types::EntityId id) : Object(position, id) {}
 
     Snitch::Snitch(Position position): Ball(position, communication::messages::types::EntityId::SNITCH) {}
 
@@ -344,9 +387,9 @@ namespace gameModel{
         return ret;
     }
 
-    bool Team::hasMember(const Player &player) const {
+    bool Team::hasMember(const std::shared_ptr<Player>& player) const {
         for(const auto &p : getAllPlayers()){
-            if(player == *p){
+            if(player == p){
                 return true;
             }
         }
@@ -354,6 +397,26 @@ namespace gameModel{
         return false;
     }
 
+    int Team::numberOfBannedMembers() const{
+        int ret = 0;
+        for(const auto &player :getAllPlayers()){
+            if(player->isFined){
+                ret++;
+            }
+        }
+
+        return ret;
+    }
+
+    auto Team::getPlayerByID(communication::messages::types::EntityId id) const -> std::optional<std::shared_ptr<Player>> {
+        for(const auto &player : getAllPlayers()){
+            if(player->id == id){
+                return player;
+            }
+        }
+
+        return {};
+    }
 
     // Config
 
@@ -375,6 +438,9 @@ namespace gameModel{
                  gameDynamicsProbs{config.getProbThrowSuccess(), config.getProbKnockOut(), config.getProbFoolAway(), config.getProbCatchSnitch(),
                  config.getProbCatchQuaffle(), config.getProbWrestQuaffle()}{}
 
+
+    // Position
+
     Position::Position(int x, int y) {
         this->x = x;
         this->y = y;
@@ -393,6 +459,7 @@ namespace gameModel{
                         static_cast<int>(p.y + round(this->y)));
     }
 
+
     // Vector
 
     Vector::Vector(double x, double y) {
@@ -401,7 +468,7 @@ namespace gameModel{
     }
 
     double Vector::abs() const{
-        return std::sqrt(pow(this->x, 2) + pow(this->x, 2));
+        return std::sqrt(x * x + y * y);
     }
 
     void Vector::normalize(){

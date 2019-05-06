@@ -71,7 +71,7 @@ namespace gameController {
      * @param object to be moved
      * @param env the environment to operate on
      */
-    void moveToAdjacent(gameModel::Object &object, const gameModel::Environment &env);
+    void moveToAdjacent(const std::shared_ptr<gameModel::Object> &object, const std::shared_ptr<gameModel::Environment> &env);
 
 
     template <>
