@@ -45,6 +45,24 @@ TEST(shot_test, valid_chaser_throw_check){
     EXPECT_EQ(testShot.check(), gameController::ActionCheckResult::Success);
 }
 
+TEST(shot_test, inv_chaser_throw_check_banned){
+    auto env = setup::createEnv();
+
+    env->quaffle->position = env->team1->chasers[0]->position;
+    env->team1->chasers[0]->isFined = true;
+    gameController::Shot testShot(env, env->team1->chasers[0], env->quaffle, {12, 12});
+    EXPECT_EQ(testShot.check(), gameController::ActionCheckResult::Impossible);
+}
+
+TEST(shot_test, inv_chaser_throw_check_knocked_out){
+    auto env = setup::createEnv();
+
+    env->quaffle->position = env->team1->chasers[0]->position;
+    env->team1->chasers[0]->knockedOut = true;
+    gameController::Shot testShot(env, env->team1->chasers[0], env->quaffle, {12, 12});
+    EXPECT_EQ(testShot.check(), gameController::ActionCheckResult::Impossible);
+}
+
 //Invalid Seeker throw_check
 TEST(shot_test, inv_seeker_throw_check){
     auto env = setup::createEnv();
