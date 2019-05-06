@@ -64,7 +64,7 @@ if [ "$TRAVIS_BRANCH" == "master" ]; then
     rm -rf master
 	mkdir -p  master
 	cd master
-elif ["$TRAVIS_BRANCH" == "Develop"]; then
+elif [ "$TRAVIS_BRANCH" == "Develop" ]; then
     rm -rf Develop
 	mkdir -p  Develop
 	cd Develop
