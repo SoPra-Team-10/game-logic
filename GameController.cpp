@@ -172,4 +172,13 @@ namespace gameController {
         }
 
     }
+
+    bool playerCanShoot(const std::shared_ptr<gameModel::Player> &player,
+                        const std::shared_ptr<gameModel::Environment> &env) {
+        // check if there is generally allowed to perform a shot and a ball to shot on the same position as the player
+        return !(player->isFined || player->knockedOut ||
+                 (env->bludgers[0]->position != player->position && env->bludgers[1]->position != player->position &&
+                  env->quaffle->position != player->position));
+
+    }
 }
