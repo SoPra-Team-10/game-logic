@@ -95,9 +95,15 @@ namespace gameController {
     auto refereeDecision(const gameModel::Foul &foul, const gameModel::Config &gameConf) -> bool;
 
     /**
-     * move the selected bludger according to the game roles
+     * move the selected bludger according to the game roles.
      */
     void moveBludger(std::shared_ptr<gameModel::Bludger> &bludger, std::shared_ptr<gameModel::Environment> &env);
+
+    /**
+     * check if a player can perform a shot.
+     */
+    bool playerCanShoot(const std::shared_ptr<gameModel::Player> &player,
+                        const std::shared_ptr<gameModel::Environment> &env);
 
 }
 
