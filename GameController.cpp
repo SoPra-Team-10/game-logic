@@ -134,16 +134,20 @@ namespace gameController {
         auto players = env->getAllPlayers();
 
         // find nearest player
-        double minDistance = std::numeric_limits<double>::max();
+        int minDistance = std::numeric_limits<int>::max();
         std::shared_ptr<gameModel::Player> minDistancePlayer;
         for (const auto &player: players) {
 
-            gameModel::Vector vect(player->position, bludger->position);
-
-            if (vect.abs() < minDistance) {
-                minDistance = vect.abs();
-                minDistancePlayer = player;
+            if (!INSTANCE_OF(player, gameModel::Beater)) {
+                if (getDistance(bludger->position, player->position) < minDistance) {
+                    minDistance = getDistance(bludger->position, player->position);
+                    minDistancePlayer = player;
+                }
             }
+        }
+
+        if (!minDistancePlayer) {
+            throw std::runtime_error("There are't enough player on the field!");
         }
 
         // move towards nearest player
