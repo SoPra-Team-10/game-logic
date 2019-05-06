@@ -35,7 +35,7 @@ namespace gameModel{
         fans.emplace(fan::SnitchPush, snitchPush);
     }
 
-    int Fanblock::getUses(InterferenceType fan) {
+    int Fanblock::getUses(InterferenceType fan) const {
         return fans.at(fan);
     }
 

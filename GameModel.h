@@ -195,7 +195,7 @@ namespace gameModel{
          * @param fan the fan to check
          * @return number of left uses
          */
-        int getUses(InterferenceType fan);
+        int getUses(InterferenceType fan) const ;
 
         /**
          * Bans a fan by decreasing the number of allowed uses by one
