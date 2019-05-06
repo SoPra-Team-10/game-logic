@@ -66,6 +66,7 @@ namespace gameModel{
          * @param y y component of the vector.
          */
         Vector(double x, double y);
+        Vector(const Position &p1, const Position &p2);
 
         // objects
         double x;   ///< x component of the vector.
