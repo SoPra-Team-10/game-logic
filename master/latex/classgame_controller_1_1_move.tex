@@ -1,0 +1,153 @@
+\hypertarget{classgame_controller_1_1_move}{\section{game\-Controller\-:\-:Move Class Reference}
+\label{classgame_controller_1_1_move}\index{game\-Controller\-::\-Move@{game\-Controller\-::\-Move}}
+}
+
+
+{\ttfamily \#include $<$Action.\-h$>$}
+
+Inheritance diagram for game\-Controller\-:\-:Move\-:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classgame_controller_1_1_move}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classgame_controller_1_1_move_a7336aaeac611eaa78bfeb93d978f9e7c}{Move} ()=default
+\item 
+\hyperlink{classgame_controller_1_1_move_a6b27870ecb6182853feb7607c78bd5bb}{Move} (std\-::shared\-\_\-ptr$<$ \hyperlink{classgame_model_1_1_environment}{game\-Model\-::\-Environment} $>$ env, std\-::shared\-\_\-ptr$<$ \hyperlink{classgame_model_1_1_player}{game\-Model\-::\-Player} $>$ actor, \hyperlink{structgame_model_1_1_position}{game\-Model\-::\-Position} target)
+\item 
+auto \hyperlink{classgame_controller_1_1_move_a57822a002472b25276be2a6678569f72}{execute} () const -\/$>$ std\-::pair$<$ std\-::vector$<$ Shot\-Result $>$, std\-::vector$<$ game\-Model\-::\-Foul $>$$>$
+\item 
+auto \hyperlink{classgame_controller_1_1_move_ae36dc4d09881c114cc8c9192e6f85988}{success\-Prob} () const -\/$>$ double override
+\item 
+auto \hyperlink{classgame_controller_1_1_move_a5ff9c2a76dbfdc59a0dd206b74279be0}{check} () const -\/$>$ Action\-Check\-Result override
+\item 
+auto \hyperlink{classgame_controller_1_1_move_a3b9266d42dfc66fe16c228a08927cb8a}{execute\-All} () const -\/$>$ std\-::vector$<$ std\-::pair$<$ \hyperlink{classgame_model_1_1_environment}{game\-Model\-::\-Environment}, double $>$$>$ override
+\item 
+auto \hyperlink{classgame_controller_1_1_move_acf276f2198a6229660727956a5f156ad}{check\-For\-Foul} () const -\/$>$ std\-::vector$<$ game\-Model\-::\-Foul $>$
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+class for a move in the game which can be executed by a player or a ball 
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classgame_controller_1_1_move_a7336aaeac611eaa78bfeb93d978f9e7c}{\index{game\-Controller\-::\-Move@{game\-Controller\-::\-Move}!Move@{Move}}
+\index{Move@{Move}!gameController::Move@{game\-Controller\-::\-Move}}
+\subsubsection[{Move}]{\setlength{\rightskip}{0pt plus 5cm}game\-Controller\-::\-Move\-::\-Move (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [default]}}}\label{classgame_controller_1_1_move_a7336aaeac611eaa78bfeb93d978f9e7c}
+default constructor for the \hyperlink{classgame_controller_1_1_move}{Move} Class. \hypertarget{classgame_controller_1_1_move_a6b27870ecb6182853feb7607c78bd5bb}{\index{game\-Controller\-::\-Move@{game\-Controller\-::\-Move}!Move@{Move}}
+\index{Move@{Move}!gameController::Move@{game\-Controller\-::\-Move}}
+\subsubsection[{Move}]{\setlength{\rightskip}{0pt plus 5cm}game\-Controller\-::\-Move\-::\-Move (
+\begin{DoxyParamCaption}
+\item[{std\-::shared\-\_\-ptr$<$ {\bf game\-Model\-::\-Environment} $>$}]{env, }
+\item[{std\-::shared\-\_\-ptr$<$ {\bf game\-Model\-::\-Player} $>$}]{actor, }
+\item[{{\bf game\-Model\-::\-Position}}]{target}
+\end{DoxyParamCaption}
+)}}\label{classgame_controller_1_1_move_a6b27870ecb6182853feb7607c78bd5bb}
+main constructor for the \hyperlink{classgame_controller_1_1_move}{Move} class. 
+\begin{DoxyParams}{Parameters}
+{\em env} & the environment to operate on \\
+\hline
+{\em actor} & the acting player or ball as shared pointer. \\
+\hline
+{\em target} & the target position of the move. \\
+\hline
+\end{DoxyParams}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classgame_controller_1_1_move_a5ff9c2a76dbfdc59a0dd206b74279be0}{\index{game\-Controller\-::\-Move@{game\-Controller\-::\-Move}!check@{check}}
+\index{check@{check}!gameController::Move@{game\-Controller\-::\-Move}}
+\subsubsection[{check}]{\setlength{\rightskip}{0pt plus 5cm}auto game\-Controller\-::\-Move\-::check (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const -\/$>$ Action\-Check\-Result\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}}\label{classgame_controller_1_1_move_a5ff9c2a76dbfdc59a0dd206b74279be0}
+check if the selected move is possible (implementation of virtual function) 
+\begin{DoxyParams}{Parameters}
+{\em envi} & the selected environment. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the result of the check as Action\-Result. 
+\end{DoxyReturn}
+
+
+Implements \hyperlink{classgame_controller_1_1_action}{game\-Controller\-::\-Action}.
+
+\hypertarget{classgame_controller_1_1_move_acf276f2198a6229660727956a5f156ad}{\index{game\-Controller\-::\-Move@{game\-Controller\-::\-Move}!check\-For\-Foul@{check\-For\-Foul}}
+\index{check\-For\-Foul@{check\-For\-Foul}!gameController::Move@{game\-Controller\-::\-Move}}
+\subsubsection[{check\-For\-Foul}]{\setlength{\rightskip}{0pt plus 5cm}auto game\-Controller\-::\-Move\-::check\-For\-Foul (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const -\/$>$ std\-::vector$<$game\-Model\-::\-Foul$>$}}\label{classgame_controller_1_1_move_acf276f2198a6229660727956a5f156ad}
+checks if the move is a foul. 
+\begin{DoxyParams}{Parameters}
+{\em envi} & the selected environment. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the type of foul. 
+\end{DoxyReturn}
+\hypertarget{classgame_controller_1_1_move_a57822a002472b25276be2a6678569f72}{\index{game\-Controller\-::\-Move@{game\-Controller\-::\-Move}!execute@{execute}}
+\index{execute@{execute}!gameController::Move@{game\-Controller\-::\-Move}}
+\subsubsection[{execute}]{\setlength{\rightskip}{0pt plus 5cm}auto game\-Controller\-::\-Move\-::execute (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const -\/$>$ std\-::pair$<$std\-::vector$<$Shot\-Result$>$, std\-::vector$<$game\-Model\-::\-Foul$>$$>$\hspace{0.3cm}{\ttfamily [virtual]}}}\label{classgame_controller_1_1_move_a57822a002472b25276be2a6678569f72}
+execute the move in a given environment (implementation of virtual function). 
+\begin{DoxyParams}{Parameters}
+{\em envi} & the environment in which the shot should be performed. \\
+\hline
+\end{DoxyParams}
+
+
+Implements \hyperlink{classgame_controller_1_1_action}{game\-Controller\-::\-Action}.
+
+\hypertarget{classgame_controller_1_1_move_a3b9266d42dfc66fe16c228a08927cb8a}{\index{game\-Controller\-::\-Move@{game\-Controller\-::\-Move}!execute\-All@{execute\-All}}
+\index{execute\-All@{execute\-All}!gameController::Move@{game\-Controller\-::\-Move}}
+\subsubsection[{execute\-All}]{\setlength{\rightskip}{0pt plus 5cm}auto game\-Controller\-::\-Move\-::execute\-All (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const -\/$>$ std\-::vector$<$std\-::pair$<${\bf game\-Model\-::\-Environment}, double$>$$>$\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}}\label{classgame_controller_1_1_move_a3b9266d42dfc66fe16c228a08927cb8a}
+execute all given move in a given environment (implementation of virtual function). 
+\begin{DoxyParams}{Parameters}
+{\em envi} & the selected environment. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the resulting environments an there probabilities as a pair. 
+\end{DoxyReturn}
+
+
+Implements \hyperlink{classgame_controller_1_1_action}{game\-Controller\-::\-Action}.
+
+\hypertarget{classgame_controller_1_1_move_ae36dc4d09881c114cc8c9192e6f85988}{\index{game\-Controller\-::\-Move@{game\-Controller\-::\-Move}!success\-Prob@{success\-Prob}}
+\index{success\-Prob@{success\-Prob}!gameController::Move@{game\-Controller\-::\-Move}}
+\subsubsection[{success\-Prob}]{\setlength{\rightskip}{0pt plus 5cm}auto game\-Controller\-::\-Move\-::success\-Prob (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const -\/$>$ double\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}}\label{classgame_controller_1_1_move_ae36dc4d09881c114cc8c9192e6f85988}
+get the success probability of the move (implementation of virtual function). (implementation of virtual function). \begin{DoxyReturn}{Returns}
+the success probability of the move as double. 
+\end{DoxyReturn}
+
+
+Implements \hyperlink{classgame_controller_1_1_action}{game\-Controller\-::\-Action}.
+
+
+
+The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}
+\item 
+/home/travis/build/\-So\-Pra-\/\-Team-\/10/\-Game\-Logic/Action.\-h\item 
+/home/travis/build/\-So\-Pra-\/\-Team-\/10/\-Game\-Logic/Action.\-cpp\end{DoxyCompactItemize}

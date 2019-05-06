@@ -1,0 +1,80 @@
+\hypertarget{classgame_model_1_1_vector}{\section{game\-Model\-:\-:Vector Class Reference}
+\label{classgame_model_1_1_vector}\index{game\-Model\-::\-Vector@{game\-Model\-::\-Vector}}
+}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classgame_model_1_1_vector_abfcad404f21198136afc5c8e8b820639}{Vector} (double \hyperlink{classgame_model_1_1_vector_a739e0039692645e340238e9154be214a}{x}, double \hyperlink{classgame_model_1_1_vector_a34f020c4e0e747a90002bb53d643a55c}{y})
+\item 
+\hypertarget{classgame_model_1_1_vector_a00a388626afcfefb1ab1bb22706863b0}{{\bfseries Vector} (const \hyperlink{structgame_model_1_1_position}{Position} \&p1, const \hyperlink{structgame_model_1_1_position}{Position} \&p2)}\label{classgame_model_1_1_vector_a00a388626afcfefb1ab1bb22706863b0}
+
+\item 
+double \hyperlink{classgame_model_1_1_vector_a3d4c4a7cce251f2522271891b23551ab}{abs} () const 
+\item 
+void \hyperlink{classgame_model_1_1_vector_ade91c1e7810dad34c4cbda5d87ad275f}{normalize} ()
+\item 
+\hypertarget{classgame_model_1_1_vector_a015dc4960d65f384dab4f11c2b3418f7}{bool {\bfseries operator==} (const \hyperlink{classgame_model_1_1_vector}{Vector} \&v) const }\label{classgame_model_1_1_vector_a015dc4960d65f384dab4f11c2b3418f7}
+
+\item 
+\hypertarget{classgame_model_1_1_vector_a365b826d3195eb95b9b2b81cbb13d26a}{\hyperlink{classgame_model_1_1_vector}{Vector} {\bfseries operator$\ast$} (const double \&c) const }\label{classgame_model_1_1_vector_a365b826d3195eb95b9b2b81cbb13d26a}
+
+\item 
+\hypertarget{classgame_model_1_1_vector_ac3a756df6a0cfe4811e1c2935507d910}{\hyperlink{classgame_model_1_1_vector}{Vector} {\bfseries operator+} (const \hyperlink{classgame_model_1_1_vector}{Vector} \&v) const }\label{classgame_model_1_1_vector_ac3a756df6a0cfe4811e1c2935507d910}
+
+\item 
+\hypertarget{classgame_model_1_1_vector_ad15455e6cf880d7f00586a66337d1b8b}{\hyperlink{structgame_model_1_1_position}{Position} {\bfseries operator+} (const \hyperlink{structgame_model_1_1_position}{Position} \&p) const }\label{classgame_model_1_1_vector_ad15455e6cf880d7f00586a66337d1b8b}
+
+\end{DoxyCompactItemize}
+\subsection*{Data Fields}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classgame_model_1_1_vector_a739e0039692645e340238e9154be214a}{double \hyperlink{classgame_model_1_1_vector_a739e0039692645e340238e9154be214a}{x}}\label{classgame_model_1_1_vector_a739e0039692645e340238e9154be214a}
+
+\begin{DoxyCompactList}\small\item\em x component of the vector. \end{DoxyCompactList}\item 
+\hypertarget{classgame_model_1_1_vector_a34f020c4e0e747a90002bb53d643a55c}{double \hyperlink{classgame_model_1_1_vector_a34f020c4e0e747a90002bb53d643a55c}{y}}\label{classgame_model_1_1_vector_a34f020c4e0e747a90002bb53d643a55c}
+
+\begin{DoxyCompactList}\small\item\em y component of the vector. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classgame_model_1_1_vector_abfcad404f21198136afc5c8e8b820639}{\index{game\-Model\-::\-Vector@{game\-Model\-::\-Vector}!Vector@{Vector}}
+\index{Vector@{Vector}!gameModel::Vector@{game\-Model\-::\-Vector}}
+\subsubsection[{Vector}]{\setlength{\rightskip}{0pt plus 5cm}game\-Model\-::\-Vector\-::\-Vector (
+\begin{DoxyParamCaption}
+\item[{double}]{x, }
+\item[{double}]{y}
+\end{DoxyParamCaption}
+)}}\label{classgame_model_1_1_vector_abfcad404f21198136afc5c8e8b820639}
+main constructor for the vector. 
+\begin{DoxyParams}{Parameters}
+{\em x} & x component of the vector. \\
+\hline
+{\em y} & y component of the vector. \\
+\hline
+\end{DoxyParams}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classgame_model_1_1_vector_a3d4c4a7cce251f2522271891b23551ab}{\index{game\-Model\-::\-Vector@{game\-Model\-::\-Vector}!abs@{abs}}
+\index{abs@{abs}!gameModel::Vector@{game\-Model\-::\-Vector}}
+\subsubsection[{abs}]{\setlength{\rightskip}{0pt plus 5cm}double game\-Model\-::\-Vector\-::abs (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}}\label{classgame_model_1_1_vector_a3d4c4a7cce251f2522271891b23551ab}
+get the euclidean norm of the vector. \begin{DoxyReturn}{Returns}
+the euclidean norm as double. 
+\end{DoxyReturn}
+\hypertarget{classgame_model_1_1_vector_ade91c1e7810dad34c4cbda5d87ad275f}{\index{game\-Model\-::\-Vector@{game\-Model\-::\-Vector}!normalize@{normalize}}
+\index{normalize@{normalize}!gameModel::Vector@{game\-Model\-::\-Vector}}
+\subsubsection[{normalize}]{\setlength{\rightskip}{0pt plus 5cm}void game\-Model\-::\-Vector\-::normalize (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{classgame_model_1_1_vector_ade91c1e7810dad34c4cbda5d87ad275f}
+normalize the vector. 
+
+The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}
+\item 
+/home/travis/build/\-So\-Pra-\/\-Team-\/10/\-Game\-Logic/Game\-Model.\-h\item 
+/home/travis/build/\-So\-Pra-\/\-Team-\/10/\-Game\-Logic/Game\-Model.\-cpp\end{DoxyCompactItemize}
