@@ -162,8 +162,6 @@ namespace gameController {
                 if (env->quaffle->position == minDistancePlayer->position) {
                     moveToAdjacent(env->quaffle, env);
                 }
-                // move player
-                moveToAdjacent(minDistancePlayer, env);
                 // knockout player
                 minDistancePlayer->knockedOut = true;
             }
