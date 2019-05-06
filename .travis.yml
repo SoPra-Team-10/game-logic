@@ -26,10 +26,10 @@ before_install:
 script:
   - docker run gamelogic
   
-# after_success:
-#  - cd $TRAVIS_BUILD_DIR
-#  - chmod +x generateDocumentationAndDeploy.sh
-#  - ./generateDocumentationAndDeploy.sh
+after_success:
+  - cd $TRAVIS_BUILD_DIR
+  - chmod +x generateDocumentationAndDeploy.sh
+  - ./generateDocumentationAndDeploy.sh
   
 notifications:
     slack: soprateam10:wlcgvL7tR63frGyGP4BCuqNj
