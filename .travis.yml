@@ -8,14 +8,14 @@ env:
     - DOXYFILE: $TRAVIS_BUILD_DIR/DOXYFILE
     - GH_REPO_REF: github.com:SoPra-Team-10/GameLogic.git
 
-#addons:
-#  apt:
-#    packages:
-#      - doxygen
-#      - doxygen-doc
-#      - doxygen-latex
-#      - doxygen-gui
-#      - graphviz
+addons:
+  apt:
+    packages:
+      - doxygen
+      - doxygen-doc
+      - doxygen-latex
+      - doxygen-gui
+      - graphviz
 
 services:
   - docker
