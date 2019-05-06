@@ -1,0 +1,76 @@
+\hypertarget{classgame_controller_1_1_action}{\section{game\-Controller\-:\-:Action Class Reference}
+\label{classgame_controller_1_1_action}\index{game\-Controller\-::\-Action@{game\-Controller\-::\-Action}}
+}
+Inheritance diagram for game\-Controller\-:\-:Action\-:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classgame_controller_1_1_action}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classgame_controller_1_1_action_a2bd3423680c850dcb88aa860a84cddee}{Action} ()=default
+\item 
+\hyperlink{classgame_controller_1_1_action_a74a9ef91e17f72be6d8f521931f24437}{Action} (std\-::shared\-\_\-ptr$<$ \hyperlink{classgame_model_1_1_environment}{game\-Model\-::\-Environment} $>$ env, std\-::shared\-\_\-ptr$<$ \hyperlink{classgame_model_1_1_player}{game\-Model\-::\-Player} $>$ actor, \hyperlink{structgame_model_1_1_position}{game\-Model\-::\-Position} target)
+\item 
+\hypertarget{classgame_controller_1_1_action_a7243ec6fcf8a36506d1a35a4abe333ec}{virtual auto {\bfseries execute} () const -\/$>$ std\-::pair$<$ std\-::vector$<$ Shot\-Result $>$, std\-::vector$<$ game\-Model\-::\-Foul $>$$>$=0}\label{classgame_controller_1_1_action_a7243ec6fcf8a36506d1a35a4abe333ec}
+
+\item 
+\hypertarget{classgame_controller_1_1_action_a9d9a301180bd5cd54a12ec912daf35c1}{virtual auto {\bfseries success\-Prob} () const -\/$>$ double=0}\label{classgame_controller_1_1_action_a9d9a301180bd5cd54a12ec912daf35c1}
+
+\item 
+\hypertarget{classgame_controller_1_1_action_abd249c0f371aac9d98a4fa60c4fd94c1}{virtual auto {\bfseries check} () const -\/$>$ Action\-Check\-Result=0}\label{classgame_controller_1_1_action_abd249c0f371aac9d98a4fa60c4fd94c1}
+
+\item 
+\hypertarget{classgame_controller_1_1_action_acb7adedb0d67ce14e3d825567dbc8585}{virtual auto {\bfseries execute\-All} () const -\/$>$ std\-::vector$<$ std\-::pair$<$ \hyperlink{classgame_model_1_1_environment}{game\-Model\-::\-Environment}, double $>$$>$=0}\label{classgame_controller_1_1_action_acb7adedb0d67ce14e3d825567dbc8585}
+
+\end{DoxyCompactItemize}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classgame_controller_1_1_action_a3941f4d176b7631affa1710990a0cb0f}{std\-::shared\-\_\-ptr\\*
+$<$ \hyperlink{classgame_model_1_1_player}{game\-Model\-::\-Player} $>$ {\bfseries actor}}\label{classgame_controller_1_1_action_a3941f4d176b7631affa1710990a0cb0f}
+
+\item 
+\hypertarget{classgame_controller_1_1_action_a77683804e62e608d15e4cc311c278c48}{std\-::shared\-\_\-ptr\\*
+$<$ \hyperlink{classgame_model_1_1_environment}{game\-Model\-::\-Environment} $>$ {\bfseries env}}\label{classgame_controller_1_1_action_a77683804e62e608d15e4cc311c278c48}
+
+\item 
+\hypertarget{classgame_controller_1_1_action_a84d08ebf577d3ef17ae996c4394d61b6}{\hyperlink{structgame_model_1_1_position}{game\-Model\-::\-Position} {\bfseries target} \{\}}\label{classgame_controller_1_1_action_a84d08ebf577d3ef17ae996c4394d61b6}
+
+\end{DoxyCompactItemize}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classgame_controller_1_1_action_a2bd3423680c850dcb88aa860a84cddee}{\index{game\-Controller\-::\-Action@{game\-Controller\-::\-Action}!Action@{Action}}
+\index{Action@{Action}!gameController::Action@{game\-Controller\-::\-Action}}
+\subsubsection[{Action}]{\setlength{\rightskip}{0pt plus 5cm}game\-Controller\-::\-Action\-::\-Action (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [default]}}}\label{classgame_controller_1_1_action_a2bd3423680c850dcb88aa860a84cddee}
+default constructor for the \hyperlink{classgame_controller_1_1_action}{Action} class. \hypertarget{classgame_controller_1_1_action_a74a9ef91e17f72be6d8f521931f24437}{\index{game\-Controller\-::\-Action@{game\-Controller\-::\-Action}!Action@{Action}}
+\index{Action@{Action}!gameController::Action@{game\-Controller\-::\-Action}}
+\subsubsection[{Action}]{\setlength{\rightskip}{0pt plus 5cm}game\-Controller\-::\-Action\-::\-Action (
+\begin{DoxyParamCaption}
+\item[{std\-::shared\-\_\-ptr$<$ {\bf game\-Model\-::\-Environment} $>$}]{env, }
+\item[{std\-::shared\-\_\-ptr$<$ {\bf game\-Model\-::\-Player} $>$}]{actor, }
+\item[{{\bf game\-Model\-::\-Position}}]{target}
+\end{DoxyParamCaption}
+)}}\label{classgame_controller_1_1_action_a74a9ef91e17f72be6d8f521931f24437}
+main constructor for the \hyperlink{classgame_controller_1_1_action}{Action} class. 
+\begin{DoxyParams}{Parameters}
+{\em env} & The environment to operate on \\
+\hline
+{\em actor} & the actor \\
+\hline
+{\em target} & the target position \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}
+\item 
+/home/travis/build/\-So\-Pra-\/\-Team-\/10/\-Game\-Logic/Action.\-h\item 
+/home/travis/build/\-So\-Pra-\/\-Team-\/10/\-Game\-Logic/Action.\-cpp\end{DoxyCompactItemize}

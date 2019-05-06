@@ -1,0 +1,131 @@
+\hypertarget{classgame_model_1_1_team}{\section{game\-Model\-:\-:Team Class Reference}
+\label{classgame_model_1_1_team}\index{game\-Model\-::\-Team@{game\-Model\-::\-Team}}
+}
+
+
+{\ttfamily \#include $<$Game\-Model.\-h$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classgame_model_1_1_team_a6254ef77ea2fd282421d1508457ba53f}{Team} (const communication\-::messages\-::request\-::\-Team\-Config \&t\-Conf, communication\-::messages\-::request\-::\-Team\-Formation t\-Form, bool left\-Team)
+\item 
+\hypertarget{classgame_model_1_1_team_a52a305b144f89973b3500335502c0cef}{{\bfseries Team} (\hyperlink{classgame_model_1_1_seeker}{Seeker} seeker, \hyperlink{classgame_model_1_1_keeper}{Keeper} keeper, std\-::array$<$ \hyperlink{classgame_model_1_1_beater}{Beater}, 2 $>$ beaters, std\-::array$<$ \hyperlink{classgame_model_1_1_chaser}{Chaser}, 3 $>$ chasers, std\-::string name, std\-::string color\-Main, std\-::string color\-Secondary, \hyperlink{classgame_model_1_1_fanblock}{Fanblock} fanblock)}\label{classgame_model_1_1_team_a52a305b144f89973b3500335502c0cef}
+
+\item 
+auto \hyperlink{classgame_model_1_1_team_a3add38a878f50ed9a847b01d996be4ca}{get\-All\-Players} () const -\/$>$ std\-::array$<$ std\-::shared\-\_\-ptr$<$ \hyperlink{classgame_model_1_1_player}{Player} $>$, 7 $>$
+\item 
+bool \hyperlink{classgame_model_1_1_team_af8385c0f7f70af2aa82d082a3b6c64d3}{has\-Member} (const std\-::shared\-\_\-ptr$<$ \hyperlink{classgame_model_1_1_player}{Player} $>$ \&player) const 
+\item 
+int \hyperlink{classgame_model_1_1_team_aa8c1000d942a20cf9a8de559338ff869}{number\-Of\-Banned\-Members} () const 
+\item 
+auto \hyperlink{classgame_model_1_1_team_a1e22097a639d37333176354a83ab3038}{get\-Player\-By\-I\-D} (communication\-::messages\-::types\-::\-Entity\-Id id) const -\/$>$ std\-::optional$<$ std\-::shared\-\_\-ptr$<$ \hyperlink{classgame_model_1_1_player}{Player} $>$$>$
+\end{DoxyCompactItemize}
+\subsection*{Data Fields}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classgame_model_1_1_team_a302e269f8d6d272ca2c56f3167daf39b}{std\-::shared\-\_\-ptr$<$ \hyperlink{classgame_model_1_1_seeker}{Seeker} $>$ {\bfseries seeker}}\label{classgame_model_1_1_team_a302e269f8d6d272ca2c56f3167daf39b}
+
+\item 
+\hypertarget{classgame_model_1_1_team_a425f35bd2eb0fbb8b284515ef98b2c7c}{std\-::shared\-\_\-ptr$<$ \hyperlink{classgame_model_1_1_keeper}{Keeper} $>$ {\bfseries keeper}}\label{classgame_model_1_1_team_a425f35bd2eb0fbb8b284515ef98b2c7c}
+
+\item 
+\hypertarget{classgame_model_1_1_team_a0636cb95d07be8501aaf13f80d5a20d9}{std\-::array$<$ std\-::shared\-\_\-ptr\\*
+$<$ \hyperlink{classgame_model_1_1_beater}{Beater} $>$, 2 $>$ {\bfseries beaters}}\label{classgame_model_1_1_team_a0636cb95d07be8501aaf13f80d5a20d9}
+
+\item 
+\hypertarget{classgame_model_1_1_team_afea41de9c9b5871774ea140f6e14bbdc}{std\-::array$<$ std\-::shared\-\_\-ptr\\*
+$<$ \hyperlink{classgame_model_1_1_chaser}{Chaser} $>$, 3 $>$ {\bfseries chasers}}\label{classgame_model_1_1_team_afea41de9c9b5871774ea140f6e14bbdc}
+
+\item 
+\hypertarget{classgame_model_1_1_team_a8a60b80727b62710d62506792f955e1f}{const std\-::string {\bfseries name}}\label{classgame_model_1_1_team_a8a60b80727b62710d62506792f955e1f}
+
+\item 
+\hypertarget{classgame_model_1_1_team_a4b47c344630336be16e749104527c8e4}{const std\-::string {\bfseries color\-Main}}\label{classgame_model_1_1_team_a4b47c344630336be16e749104527c8e4}
+
+\item 
+\hypertarget{classgame_model_1_1_team_a53adedaa19dd76d2a244e4ed4f641012}{const std\-::string {\bfseries color\-Secondary}}\label{classgame_model_1_1_team_a53adedaa19dd76d2a244e4ed4f641012}
+
+\item 
+\hypertarget{classgame_model_1_1_team_a1b3329955b8b3bde885f8ee8f0029213}{int {\bfseries score} \{\}}\label{classgame_model_1_1_team_a1b3329955b8b3bde885f8ee8f0029213}
+
+\item 
+\hypertarget{classgame_model_1_1_team_a89c473adc822535d64c38db6637c4eb2}{\hyperlink{classgame_model_1_1_fanblock}{Fanblock} {\bfseries fanblock}}\label{classgame_model_1_1_team_a89c473adc822535d64c38db6637c4eb2}
+
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Represents a \hyperlink{classgame_model_1_1_team}{Team} 
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classgame_model_1_1_team_a6254ef77ea2fd282421d1508457ba53f}{\index{game\-Model\-::\-Team@{game\-Model\-::\-Team}!Team@{Team}}
+\index{Team@{Team}!gameModel::Team@{game\-Model\-::\-Team}}
+\subsubsection[{Team}]{\setlength{\rightskip}{0pt plus 5cm}game\-Model\-::\-Team\-::\-Team (
+\begin{DoxyParamCaption}
+\item[{const communication\-::messages\-::request\-::\-Team\-Config \&}]{t\-Conf, }
+\item[{communication\-::messages\-::request\-::\-Team\-Formation}]{t\-Form, }
+\item[{bool}]{left\-Team}
+\end{DoxyParamCaption}
+)}}\label{classgame_model_1_1_team_a6254ef77ea2fd282421d1508457ba53f}
+Constructs a \hyperlink{classgame_model_1_1_team}{Team} from server config types 
+\begin{DoxyParams}{Parameters}
+{\em left\-Team} & select if team si on left or right side \\
+\hline
+\end{DoxyParams}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classgame_model_1_1_team_a3add38a878f50ed9a847b01d996be4ca}{\index{game\-Model\-::\-Team@{game\-Model\-::\-Team}!get\-All\-Players@{get\-All\-Players}}
+\index{get\-All\-Players@{get\-All\-Players}!gameModel::Team@{game\-Model\-::\-Team}}
+\subsubsection[{get\-All\-Players}]{\setlength{\rightskip}{0pt plus 5cm}auto game\-Model\-::\-Team\-::get\-All\-Players (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const -\/$>$ std\-::array$<$std\-::shared\-\_\-ptr$<${\bf Player}$>$, 7$>$}}\label{classgame_model_1_1_team_a3add38a878f50ed9a847b01d996be4ca}
+gets all Players of the team \begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+\hypertarget{classgame_model_1_1_team_a1e22097a639d37333176354a83ab3038}{\index{game\-Model\-::\-Team@{game\-Model\-::\-Team}!get\-Player\-By\-I\-D@{get\-Player\-By\-I\-D}}
+\index{get\-Player\-By\-I\-D@{get\-Player\-By\-I\-D}!gameModel::Team@{game\-Model\-::\-Team}}
+\subsubsection[{get\-Player\-By\-I\-D}]{\setlength{\rightskip}{0pt plus 5cm}auto game\-Model\-::\-Team\-::get\-Player\-By\-I\-D (
+\begin{DoxyParamCaption}
+\item[{communication\-::messages\-::types\-::\-Entity\-Id}]{id}
+\end{DoxyParamCaption}
+) const -\/$>$ std\-::optional$<$std\-::shared\-\_\-ptr$<${\bf Player}$>$$>$}}\label{classgame_model_1_1_team_a1e22097a639d37333176354a83ab3038}
+Get player by server entity ids 
+\begin{DoxyParams}{Parameters}
+{\em id} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+\hypertarget{classgame_model_1_1_team_af8385c0f7f70af2aa82d082a3b6c64d3}{\index{game\-Model\-::\-Team@{game\-Model\-::\-Team}!has\-Member@{has\-Member}}
+\index{has\-Member@{has\-Member}!gameModel::Team@{game\-Model\-::\-Team}}
+\subsubsection[{has\-Member}]{\setlength{\rightskip}{0pt plus 5cm}bool game\-Model\-::\-Team\-::has\-Member (
+\begin{DoxyParamCaption}
+\item[{const std\-::shared\-\_\-ptr$<$ {\bf Player} $>$ \&}]{player}
+\end{DoxyParamCaption}
+) const}}\label{classgame_model_1_1_team_af8385c0f7f70af2aa82d082a3b6c64d3}
+Determins wether a given player is a member of the team 
+\begin{DoxyParams}{Parameters}
+{\em player} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if player is a member of the team. false otherwise 
+\end{DoxyReturn}
+\hypertarget{classgame_model_1_1_team_aa8c1000d942a20cf9a8de559338ff869}{\index{game\-Model\-::\-Team@{game\-Model\-::\-Team}!number\-Of\-Banned\-Members@{number\-Of\-Banned\-Members}}
+\index{number\-Of\-Banned\-Members@{number\-Of\-Banned\-Members}!gameModel::Team@{game\-Model\-::\-Team}}
+\subsubsection[{number\-Of\-Banned\-Members}]{\setlength{\rightskip}{0pt plus 5cm}int game\-Model\-::\-Team\-::number\-Of\-Banned\-Members (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}}\label{classgame_model_1_1_team_aa8c1000d942a20cf9a8de559338ff869}
+gets the number of banned players in the team 
+
+The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}
+\item 
+/home/travis/build/\-So\-Pra-\/\-Team-\/10/\-Game\-Logic/Game\-Model.\-h\item 
+/home/travis/build/\-So\-Pra-\/\-Team-\/10/\-Game\-Logic/Game\-Model.\-cpp\end{DoxyCompactItemize}

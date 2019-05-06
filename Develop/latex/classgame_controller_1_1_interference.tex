@@ -1,0 +1,78 @@
+\hypertarget{classgame_controller_1_1_interference}{\section{game\-Controller\-:\-:Interference Class Reference}
+\label{classgame_controller_1_1_interference}\index{game\-Controller\-::\-Interference@{game\-Controller\-::\-Interference}}
+}
+Inheritance diagram for game\-Controller\-:\-:Interference\-:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=1.473684cm]{classgame_controller_1_1_interference}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classgame_controller_1_1_interference_a1e664266c768fafd6fc4339e08741d5a}{{\bfseries Interference} (std\-::shared\-\_\-ptr$<$ \hyperlink{classgame_model_1_1_environment}{game\-Model\-::\-Environment} $>$ env, std\-::shared\-\_\-ptr$<$ \hyperlink{classgame_model_1_1_team}{game\-Model\-::\-Team} $>$ team, game\-Model\-::\-Interference\-Type type)}\label{classgame_controller_1_1_interference_a1e664266c768fafd6fc4339e08741d5a}
+
+\item 
+virtual void \hyperlink{classgame_controller_1_1_interference_aa5ced37bf22486e1cc290bc6679c2db2}{execute} () const =0
+\item 
+virtual bool \hyperlink{classgame_controller_1_1_interference_a06b9adc5df035e184e7ed0cf5d4a8814}{is\-Possible} () const 
+\item 
+auto \hyperlink{classgame_controller_1_1_interference_a694aa2cd65bbb35c02f1ca4ed7701ebe}{get\-Type} () const -\/$>$ game\-Model\-::\-Interference\-Type
+\end{DoxyCompactItemize}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classgame_controller_1_1_interference_a599512f23ad5bca74521b15309ea4b88}{std\-::shared\-\_\-ptr\\*
+$<$ \hyperlink{classgame_model_1_1_environment}{game\-Model\-::\-Environment} $>$ {\bfseries env}}\label{classgame_controller_1_1_interference_a599512f23ad5bca74521b15309ea4b88}
+
+\item 
+\hypertarget{classgame_controller_1_1_interference_aed7a76226c2b0b99e896bcd45d9adc74}{std\-::shared\-\_\-ptr$<$ \hyperlink{classgame_model_1_1_team}{game\-Model\-::\-Team} $>$ {\bfseries team}}\label{classgame_controller_1_1_interference_aed7a76226c2b0b99e896bcd45d9adc74}
+
+\item 
+\hypertarget{classgame_controller_1_1_interference_af7bd9e6bb2f92cb4f547ca4f52e5f16c}{game\-Model\-::\-Interference\-Type {\bfseries type}}\label{classgame_controller_1_1_interference_af7bd9e6bb2f92cb4f547ca4f52e5f16c}
+
+\end{DoxyCompactItemize}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classgame_controller_1_1_interference_aa5ced37bf22486e1cc290bc6679c2db2}{\index{game\-Controller\-::\-Interference@{game\-Controller\-::\-Interference}!execute@{execute}}
+\index{execute@{execute}!gameController::Interference@{game\-Controller\-::\-Interference}}
+\subsubsection[{execute}]{\setlength{\rightskip}{0pt plus 5cm}virtual void game\-Controller\-::\-Interference\-::execute (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [pure virtual]}}}\label{classgame_controller_1_1_interference_aa5ced37bf22486e1cc290bc6679c2db2}
+Executes the interference 
+
+Implemented in \hyperlink{classgame_controller_1_1_snitch_push_a3abfb90f1d21c8b51971d75012485af4}{game\-Controller\-::\-Snitch\-Push}, \hyperlink{classgame_controller_1_1_impulse_aec92c13c5a3a55da3f8d948354a9b4f4}{game\-Controller\-::\-Impulse}, \hyperlink{classgame_controller_1_1_ranged_attack_a581a62b0f86ef2d510c17cd896382b46}{game\-Controller\-::\-Ranged\-Attack}, and \hyperlink{classgame_controller_1_1_teleport_a9e10c37934bf7447f1cee64545fbf138}{game\-Controller\-::\-Teleport}.
+
+\hypertarget{classgame_controller_1_1_interference_a694aa2cd65bbb35c02f1ca4ed7701ebe}{\index{game\-Controller\-::\-Interference@{game\-Controller\-::\-Interference}!get\-Type@{get\-Type}}
+\index{get\-Type@{get\-Type}!gameController::Interference@{game\-Controller\-::\-Interference}}
+\subsubsection[{get\-Type}]{\setlength{\rightskip}{0pt plus 5cm}auto game\-Controller\-::\-Interference\-::get\-Type (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const -\/$>$ game\-Model\-::\-Interference\-Type}}\label{classgame_controller_1_1_interference_a694aa2cd65bbb35c02f1ca4ed7701ebe}
+Gets the type of interference \begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+\hypertarget{classgame_controller_1_1_interference_a06b9adc5df035e184e7ed0cf5d4a8814}{\index{game\-Controller\-::\-Interference@{game\-Controller\-::\-Interference}!is\-Possible@{is\-Possible}}
+\index{is\-Possible@{is\-Possible}!gameController::Interference@{game\-Controller\-::\-Interference}}
+\subsubsection[{is\-Possible}]{\setlength{\rightskip}{0pt plus 5cm}bool game\-Controller\-::\-Interference\-::is\-Possible (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [virtual]}}}\label{classgame_controller_1_1_interference_a06b9adc5df035e184e7ed0cf5d4a8814}
+Checks if the interference is possible \begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+
+
+Reimplemented in \hyperlink{classgame_controller_1_1_ranged_attack_a95776ac1efedefee37dd42acd5308e6b}{game\-Controller\-::\-Ranged\-Attack}.
+
+
+
+The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}
+\item 
+/home/travis/build/\-So\-Pra-\/\-Team-\/10/\-Game\-Logic/Interference.\-h\item 
+/home/travis/build/\-So\-Pra-\/\-Team-\/10/\-Game\-Logic/Interference.\-cpp\end{DoxyCompactItemize}
