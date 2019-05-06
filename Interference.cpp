@@ -31,7 +31,7 @@ namespace gameController{
         target->position = possibleCells[rng(0, static_cast<int>(possibleCells.size() - 1))];
 
         if (gameController::actionTriggered(env->config.foulDetectionProbs.teleport)) {
-            team->fanblock.banFan(gameModel::InterferenceType::Teleport);
+            team->fanblock.banFan(this->getType());
             return gameController::ActionCheckResult::Foul;
         }
         else {
@@ -55,7 +55,7 @@ namespace gameController{
         moveToAdjacent(target, env);
 
         if (gameController::actionTriggered(env->config.foulDetectionProbs.rangedAttack)) {
-            team->fanblock.banFan(gameModel::InterferenceType::RangedAttack);
+            team->fanblock.banFan(this->getType());
             return gameController::ActionCheckResult::Foul;
         }
         else {
@@ -85,7 +85,7 @@ namespace gameController{
         }
 
         if (gameController::actionTriggered(env->config.foulDetectionProbs.impulse)) {
-            team->fanblock.banFan(gameModel::InterferenceType::Impulse);
+            team->fanblock.banFan(this->getType());
             return gameController::ActionCheckResult::Foul;
         }
         else {
@@ -106,7 +106,7 @@ namespace gameController{
         }
 
         if (gameController::actionTriggered(env->config.foulDetectionProbs.snitchPush)) {
-            team->fanblock.banFan(gameModel::InterferenceType::SnitchPush);
+            team->fanblock.banFan(this->getType());
             return gameController::ActionCheckResult::Foul;
         }
         else {
