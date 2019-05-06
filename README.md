@@ -21,3 +21,7 @@ and linked using
 ```
 -lSopraGameLogic
 ```
+
+## Docu
+- [Master Brnach Docu](https://sopra-team-10.github.io/GameLogic/master/html/index.html)
+- [Develop Branch Docu](https://sopra-team-10.github.io/GameLogic/Develop/html/index.html)
