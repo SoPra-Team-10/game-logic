@@ -22,20 +22,28 @@ namespace gameController{
     Teleport::Teleport(std::shared_ptr<gameModel::Environment> env, std::shared_ptr<gameModel::Team> team,
                        std::shared_ptr<gameModel::Player> target) : Interference(std::move(env), std::move(team),
                                                                   gameModel::InterferenceType::Teleport), target(std::move(target)) {}
-    void Teleport::execute() const {
+    auto Teleport::execute() const -> gameController::ActionCheckResult {
         if(!isPossible()){
             throw std::runtime_error("Interference not possible");
         }
 
         auto possibleCells = env->getAllFreeCells();
         target->position = possibleCells[rng(0, static_cast<int>(possibleCells.size() - 1))];
+
+        if (gameController::actionTriggered(env->config.foulDetectionProbs.teleport)) {
+            team->fanblock.banFan(gameModel::InterferenceType::Teleport);
+            return gameController::ActionCheckResult::Foul;
+        }
+        else {
+            return gameController::ActionCheckResult::Success;
+        }
     }
 
     RangedAttack::RangedAttack(std::shared_ptr<gameModel::Environment> env, std::shared_ptr<gameModel::Team> team,
                                std::shared_ptr<gameModel::Player> target) : Interference(std::move(env), std::move(team),
                                        gameModel::InterferenceType::RangedAttack), target(std::move(target)){}
 
-    void RangedAttack::execute() const {
+    auto RangedAttack::execute() const -> gameController::ActionCheckResult {
         if(!isPossible()){
             throw std::runtime_error("Interference not possible");
         }
@@ -45,6 +53,14 @@ namespace gameController{
         }
 
         moveToAdjacent(target, env);
+
+        if (gameController::actionTriggered(env->config.foulDetectionProbs.rangedAttack)) {
+            team->fanblock.banFan(gameModel::InterferenceType::RangedAttack);
+            return gameController::ActionCheckResult::Foul;
+        }
+        else {
+            return gameController::ActionCheckResult::Success;
+        }
     }
 
     bool RangedAttack::isPossible() const {
@@ -54,7 +70,7 @@ namespace gameController{
     Impulse::Impulse(std::shared_ptr<gameModel::Environment> env, std::shared_ptr<gameModel::Team> team) :
         Interference(std::move(env), std::move(team), gameModel::InterferenceType::Impulse){}
 
-    void Impulse::execute() const {
+    auto Impulse::execute() const -> gameController::ActionCheckResult {
         if(!isPossible()){
             throw std::runtime_error("Interference not possible");
         }
@@ -67,18 +83,34 @@ namespace gameController{
                 break;
             }
         }
+
+        if (gameController::actionTriggered(env->config.foulDetectionProbs.impulse)) {
+            team->fanblock.banFan(gameModel::InterferenceType::Impulse);
+            return gameController::ActionCheckResult::Foul;
+        }
+        else {
+            return gameController::ActionCheckResult::Success;
+        }
     }
 
     SnitchPush::SnitchPush(std::shared_ptr<gameModel::Environment> env, std::shared_ptr<gameModel::Team> team) :
         Interference(std::move(env), std::move(team), gameModel::InterferenceType::SnitchPush){}
 
-    void SnitchPush::execute() const {
+    auto SnitchPush::execute() const -> gameController::ActionCheckResult {
         if(!isPossible()){
             throw std::runtime_error("Interference not possible");
         }
 
         if(env->snitch->exists){
             moveToAdjacent(env->snitch, env);
+        }
+
+        if (gameController::actionTriggered(env->config.foulDetectionProbs.snitchPush)) {
+            team->fanblock.banFan(gameModel::InterferenceType::SnitchPush);
+            return gameController::ActionCheckResult::Foul;
+        }
+        else {
+            return gameController::ActionCheckResult::Success;
         }
     }
 }
