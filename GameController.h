@@ -105,7 +105,12 @@ namespace gameController {
     bool playerCanShoot(const std::shared_ptr<const gameModel::Player> &player,
                         const std::shared_ptr<const gameModel::Environment> &env);
 
+    /**
+     * make the move for the Snitch as in the Rules given
+     */
+    void moveSnitch(std::shared_ptr<gameModel::Snitch> &snitch, std::shared_ptr<gameModel::Environment> &env);
 }
+
 
 
 #endif //GAMELOGIC_SOPRAGAMECONTROLLER_H

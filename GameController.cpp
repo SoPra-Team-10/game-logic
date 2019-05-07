@@ -207,14 +207,16 @@ namespace gameController {
             minDistanceSeeker = disnatceTeam2;
             closestSeeker = env->team2->seeker;
         }
-        for(const auto &pos : env->getAllPlayerFreeCellsAround(snitch->position)) {
+        auto freeCells = env->getAllPlayerFreeCellsAround(snitch->position);
+        for(const auto &pos : freeCells) {
             if (getDistance(pos, closestSeeker->position) > minDistanceSeeker) {
                 possiblePositions.emplace_back(pos);
             }
         }
         if(possiblePositions.empty()){
-            throw  std::runtime_error("Fatal Error, no target Cell for Snitch found");
+            snitch->position = freeCells[rng(0, static_cast<int>(freeCells.size() - 1))];
+        }else {
+            snitch->position = possiblePositions[rng(0, static_cast<int>(possiblePositions.size() - 1))];
         }
-        snitch->position = possiblePositions[rng(0, static_cast<int>(possiblePositions.size() - 1))];
     }
 }
