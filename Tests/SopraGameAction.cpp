@@ -180,6 +180,7 @@ TEST(shot_test, invalid_shot_on_goal1){
     EXPECT_EQ(res.first[0], gameController::ShotResult::ThrowSuccess);
     EXPECT_EQ(env->quaffle->position, gameModel::Position(2, 8));
 }
+
 //--------------------------Bludger shot check------------------------------------------------------------------------
 
 TEST(shot_test, valid_bludger_shot_check){
