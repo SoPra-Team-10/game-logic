@@ -130,13 +130,13 @@ TEST(shot_test, throw_execute_fail_and_disperse){
     EXPECT_GE(res.first.size(), 2);
     EXPECT_EQ(res.first[0], gameController::ShotResult::Miss);
     EXPECT_EQ(res.first[1], gameController::ShotResult::ScoreRight);
-    EXPECT_THAT(env->quaffle->position, testing::AnyOf(gameModel::Position(11, 13), gameModel::Position(11, 14),
-                                                      gameModel::Position(10, 13), gameModel::Position(10, 14), gameModel::Position(10,15),
-                                                      gameModel::Position(9, 13), gameModel::Position(9, 14), gameModel::Position(9,15),
-                                                      gameModel::Position(8, 13), gameModel::Position(8, 14), gameModel::Position(8,15),
-                                                      gameModel::Position(7, 13), gameModel::Position(7, 14), gameModel::Position(7,15), gameModel::Position(7, 16),
-                                                      gameModel::Position(6, 13), gameModel::Position(6, 14), gameModel::Position(6,15), gameModel::Position(6, 16),
-                                                      gameModel::Position(5, 13), gameModel::Position(5, 14), gameModel::Position(5,15), gameModel::Position(5, 16)));
+    EXPECT_THAT(env->quaffle->position, testing::AnyOf(gameModel::Position(13,11), gameModel::Position(14,11),
+                                                      gameModel::Position(13, 10), gameModel::Position(14, 10), gameModel::Position(15 ,10),
+                                                      gameModel::Position(13, 9), gameModel::Position(14, 9), gameModel::Position(15, 9),
+                                                      gameModel::Position(13, 8), gameModel::Position(14, 8), gameModel::Position(15, 8), gameModel::Position(16, 7),
+                                                      gameModel::Position(13, 7), gameModel::Position(14, 7), gameModel::Position(15, 7), gameModel::Position(16, 7),
+                                                      gameModel::Position(13, 6), gameModel::Position(14, 6), gameModel::Position(15, 6), gameModel::Position(16, 6),
+                                                      gameModel::Position(13, 5), gameModel::Position(14, 5), gameModel::Position(15, 5), gameModel::Position(16, 5)));
     std::cout << "landed on {" << env->quaffle->position.x << ", " << env->quaffle->position.y << "}" << std::endl;
 }
 
