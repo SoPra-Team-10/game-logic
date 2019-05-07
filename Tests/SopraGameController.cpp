@@ -7,30 +7,41 @@
 #include "GameModel.h"
 #include "setup.h"
 
+//-----------------------------------Get Distance Tests-----------------------------------------------------------------
+
 TEST(controller_test, getDistance0) {
     EXPECT_EQ(gameController::getDistance({0, 0}, {0, 0}), -1);
 }
+
 TEST(controller_test, getDistance1) {
     EXPECT_EQ(gameController::getDistance({8, 6}, {8, 6}), 0);
 }
+
 TEST(controller_test, getDistance2) {
     EXPECT_EQ(gameController::getDistance({8, 6}, {8, 5}), 1);
 }
+
 TEST(controller_test, getDistance3) {
     EXPECT_EQ(gameController::getDistance({8, 6}, {8, 7}), 1);
 }
+
 TEST(controller_test, getDistance4) {
     EXPECT_EQ(gameController::getDistance({8, 6}, {11, 7}), 3);
 }
+
 TEST(controller_test, getDistance5) {
     EXPECT_EQ(gameController::getDistance({8, 6}, {9, 6}), 1);
 }
+
 TEST(controller_test, getDistance6) {
     EXPECT_EQ(gameController::getDistance({8, 6}, {9, 7}), 1);
 }
+
 TEST(controller_test, getDistance7) {
     EXPECT_EQ(gameController::getDistance({8, 6}, {9, 8}), 2);
 }
+
+//-----------------------------------Get all Crossed Cells Test---------------------------------------------------------
 
 TEST(controller_test, getAllCrossedCells0) {
     std::vector<gameModel::Position> result1 = gameController::getAllCrossedCells({12, 3}, {14, 4});
@@ -76,6 +87,32 @@ TEST(controller_test, getAllCrossedCells3) {
     EXPECT_EQ(result[7], expected[7]);
     EXPECT_EQ(result[8], expected[8]);
     EXPECT_EQ(result[9], expected[9]);
+}
+
+//-----------------------------------Bludger Move Test------------------------------------------------------------------
+
+TEST(controller_test, moveBludger0) {
+    auto env = setup::createEnv();
+
+    env->bludgers[0]->position = gameModel::Position(4, 11);
+    env->team1->beaters[0]->position = gameModel::Position(4, 12);
+
+    gameController::moveBludger(env->bludgers[0], env);
+
+    EXPECT_EQ(env->bludgers[0]->position, gameModel::Position(3, 11));
+}
+
+TEST(controller_test, moveBludger1) {
+    auto env = setup::createEnv({0, {}, {1, 1, 1, 1, 1, 1, 1, 1, 1}, {1, 1, 1, 1, 1, 1}, {}});
+
+    env->bludgers[0]->position = gameModel::Position(3, 10);
+    env->quaffle->position = gameModel::Position(2, 10);
+
+    gameController::moveBludger(env->bludgers[0], env);
+
+    EXPECT_EQ(env->bludgers[0]->position, gameModel::Position(2, 10));
+    EXPECT_TRUE(env->team1->chasers[0]->knockedOut);
+    EXPECT_FALSE(env->quaffle->position == gameModel::Position(2, 10));
 }
 
 TEST(controller_test, can_shoot_test_valid){
