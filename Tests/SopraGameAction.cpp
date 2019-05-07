@@ -6,7 +6,6 @@
 #include <gmock/gmock-matchers.h>
 #include "Action.h"
 #include "setup.h"
-
 //-----------------------------------Throw checks-----------------------------------------------------------------------
 
 //OOB throw_check
