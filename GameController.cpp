@@ -1,4 +1,5 @@
 #include <random>
+#include <deque>
 #include "GameController.h"
 
 namespace gameController {
@@ -130,7 +131,8 @@ namespace gameController {
     }
 
     // ToDo: TESTS!!!
-    void moveBludger(std::shared_ptr<gameModel::Bludger> &bludger, std::shared_ptr<gameModel::Environment> &env) {
+    auto moveBludger(std::shared_ptr<gameModel::Bludger> &bludger, std::shared_ptr<gameModel::Environment> &env)
+        -> std::optional<std::shared_ptr<gameModel::Player>> {
         auto players = env->getAllPlayers();
 
         // find nearest player
@@ -165,20 +167,56 @@ namespace gameController {
                 // knockout player
                 minDistancePlayer->knockedOut = true;
             }
+
+            return minDistancePlayer;
         }
         else {
             // move in the direction of the nearest player
             bludger->position = crossedCells[0];
         }
 
+        return {};
     }
 
-    bool playerCanShoot(const std::shared_ptr<gameModel::Player> &player,
-                        const std::shared_ptr<gameModel::Environment> &env) {
+    bool playerCanShoot(const std::shared_ptr<const gameModel::Player> &player,
+                        const std::shared_ptr<const gameModel::Environment> &env) {
+        if(player->knockedOut || player->isFined){
+            return false;
+        }
         // check if there is generally allowed to perform a shot and a ball to shot on the same position as the player
-        return !(player->isFined || player->knockedOut ||
-                 (env->bludgers[0]->position != player->position && env->bludgers[1]->position != player->position &&
-                  env->quaffle->position != player->position));
+        if(player->position == env->quaffle->position && (INSTANCE_OF(player, const gameModel::Chaser) ||
+            INSTANCE_OF(player, const gameModel::Keeper))){
+            return true;
+        } else if((player->position == env->bludgers[0]->position || player->position == env->bludgers[1]->position) &&
+                    INSTANCE_OF(player, const gameModel::Beater)){
+            return true;
+        }
 
+        return false;
+    }
+
+    void moveSnitch(std::shared_ptr<gameModel::Snitch> &snitch, std::shared_ptr<gameModel::Environment> &env){
+        if(!snitch->exists){
+            throw std::runtime_error("Snitch does not exist");
+        }
+        int minDistanceSeeker = getDistance(snitch->position, env->team1->seeker->position);
+        std::deque<gameModel::Position> possiblePositions;
+        auto closestSeeker = env->team1->seeker;
+        auto disnatceTeam2 = getDistance(snitch->position, env->team2->seeker->position);
+        if(disnatceTeam2 < minDistanceSeeker){
+            minDistanceSeeker = disnatceTeam2;
+            closestSeeker = env->team2->seeker;
+        }
+        auto freeCells = env->getAllPlayerFreeCellsAround(snitch->position);
+        for(const auto &pos : freeCells) {
+            if (getDistance(pos, closestSeeker->position) > minDistanceSeeker) {
+                possiblePositions.emplace_back(pos);
+            }
+        }
+        if(possiblePositions.empty()){
+            snitch->position = freeCells[rng(0, static_cast<int>(freeCells.size() - 1))];
+        }else {
+            snitch->position = possiblePositions[rng(0, static_cast<int>(possiblePositions.size() - 1))];
+        }
     }
 }

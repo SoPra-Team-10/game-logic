@@ -23,30 +23,73 @@ namespace gameModel{
 
     // Fanblock
 
-    Fanblock::Fanblock(int teleportation, int rangedAttack, int impulse, int snitchPush) : fans() {
+    Fanblock::Fanblock(int teleportation, int rangedAttack, int impulse, int snitchPush) : currFans(), initialFans() {
         if(teleportation + rangedAttack + impulse + snitchPush != 7){
             throw std::invalid_argument("Fanblock has to contain exactly 7 fans!");
         }
 
         using fan = InterferenceType ;
-        fans.emplace(fan::RangedAttack, rangedAttack);
-        fans.emplace(fan::Teleport, teleportation);
-        fans.emplace(fan::Impulse, impulse);
-        fans.emplace(fan::SnitchPush, snitchPush);
+        initialFans.emplace(fan::RangedAttack, rangedAttack);
+        initialFans.emplace(fan::Teleport, teleportation);
+        initialFans.emplace(fan::Impulse, impulse);
+        initialFans.emplace(fan::SnitchPush, snitchPush);
+        currFans.emplace(fan::RangedAttack, rangedAttack);
+        currFans.emplace(fan::Teleport, teleportation);
+        currFans.emplace(fan::Impulse, impulse);
+        currFans.emplace(fan::SnitchPush, snitchPush);
     }
 
     int Fanblock::getUses(InterferenceType fan) const {
-        return fans.at(fan);
+        return currFans.at(fan);
+    }
+
+    int Fanblock::getUses(communication::messages::types::FanType fan) const {
+        return getUses(fanToInterference(fan));
     }
 
     void Fanblock::banFan(InterferenceType fan) {
-        if(fans.at(fan) <= 0){
-            throw std::invalid_argument("No uses left");
+        if(--currFans.at(fan) < 0){
+            throw std::runtime_error("No fans left to ban!");
         }
-
-        fans.at(fan)--;
     }
 
+    void Fanblock::banFan(communication::messages::types::FanType fan) {
+        banFan(fanToInterference(fan));
+    }
+
+    auto Fanblock::fanToInterference(communication::messages::types::FanType fanType) const
+        -> InterferenceType {
+        using namespace communication::messages::types;
+        switch (fanType){
+            case FanType::GOBLIN:
+                return InterferenceType::RangedAttack;
+            case FanType::TROLL:
+                return InterferenceType::Impulse;
+            case FanType::ELF:
+                return InterferenceType::Teleport;
+            case FanType::NIFFLER:
+                return InterferenceType::SnitchPush;
+            default:
+                throw std::runtime_error("Fatal error! Enum out of range");
+        }
+    }
+
+    auto Fanblock::interferenceToFan(gameModel::InterferenceType type) const
+        -> communication::messages::types::FanType {
+        using namespace communication::messages::types;
+        switch (type){
+            case InterferenceType::RangedAttack:
+                return FanType::GOBLIN;
+            case InterferenceType::Teleport:
+                return FanType::ELF;
+            case InterferenceType::Impulse:
+                return FanType::TROLL;
+            case InterferenceType::SnitchPush:
+                return FanType::NIFFLER;
+            default:
+                throw std::runtime_error("Fatal error! Enum out of range");
+        }
+    }
 
     // Environment
 
@@ -308,6 +351,25 @@ namespace gameModel{
         throw std::runtime_error("No player with specified in this match");
     }
 
+    auto Environment::getBallByID(const communication::messages::types::EntityId &id) const -> std::shared_ptr<Ball> {
+        if (this->quaffle->id == id) {
+            return this->quaffle;
+        }
+        else if (this->snitch->id == id) {
+            return this->snitch;
+        }
+        else if (this->bludgers[0]->id == id) {
+            return this->bludgers[0];
+        }
+        else if (this->bludgers[1]->id == id) {
+            return this->bludgers[1];
+        }
+        else {
+            throw std::runtime_error("There is no matching Ball to the selected ID on the field!");
+        }
+    }
+
+
     // Ball Types
 
     Ball::Ball(Position position, communication::messages::types::EntityId id) : Object(position, id) {}
@@ -436,7 +498,14 @@ namespace gameModel{
                  config.getProbFoulStooging(), config.getProbFoulBlatching(), config.getProbFoulSnitchnip(), config.getProbFoulElf(),
                  config.getProbFoulGoblin(), config.getProbFoulTroll(), config.getProbFoulSnitch()},
                  gameDynamicsProbs{config.getProbThrowSuccess(), config.getProbKnockOut(), config.getProbFoolAway(), config.getProbCatchSnitch(),
-                 config.getProbCatchQuaffle(), config.getProbWrestQuaffle()}{}
+                 config.getProbCatchQuaffle(), config.getProbWrestQuaffle()}{
+        using Broom = communication::messages::types::Broom;
+        extraTurnProbs.emplace(Broom::CLEANSWEEP11, config.getProbExtraCleansweep());
+        extraTurnProbs.emplace(Broom::COMET260, config.getProbExtraComet());
+        extraTurnProbs.emplace(Broom::NIMBUS2001, config.getProbExtraNimbus());
+        extraTurnProbs.emplace(Broom::FIREBOLT, config.getProbExtraFirebolt());
+        extraTurnProbs.emplace(Broom::TINDERBLAST, config.getProbExtraTinderblast());
+    }
 
 
     // Position

@@ -97,15 +97,20 @@ namespace gameController {
     /**
      * move the selected bludger according to the game roles.
      */
-    void moveBludger(std::shared_ptr<gameModel::Bludger> &bludger, std::shared_ptr<gameModel::Environment> &env);
+    auto moveBludger(std::shared_ptr<gameModel::Bludger> &bludger, std::shared_ptr<gameModel::Environment> &env) -> std::optional<std::shared_ptr<gameModel::Player>>;
 
     /**
      * check if a player can perform a shot.
      */
-    bool playerCanShoot(const std::shared_ptr<gameModel::Player> &player,
-                        const std::shared_ptr<gameModel::Environment> &env);
+    bool playerCanShoot(const std::shared_ptr<const gameModel::Player> &player,
+                        const std::shared_ptr<const gameModel::Environment> &env);
 
+    /**
+     * make the move for the Snitch as in the Rules given
+     */
+    void moveSnitch(std::shared_ptr<gameModel::Snitch> &snitch, std::shared_ptr<gameModel::Environment> &env);
 }
+
 
 
 #endif //GAMELOGIC_SOPRAGAMECONTROLLER_H
