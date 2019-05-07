@@ -463,6 +463,13 @@ namespace gameModel{
          * @param player
           */
         void placePlayerOnRandomFreeCell(const std::shared_ptr<Player>& player);
+
+        /**
+         * Get the corresponding ball object to an given id.
+         * @param id the id of the ball.
+         * @return the corresponding ball object.
+         */
+        auto getBallByID(const communication::messages::types::EntityId &id) const -> std::shared_ptr<Ball>;
     };
 }
 
