@@ -275,7 +275,7 @@ TEST(shot_test, bludger_shot_on_Beater){
     EXPECT_FALSE(env->team1->beaters[1]->knockedOut);
 }
 
-//---------------------------getAllLandingCells----------------------------------------------------------------------
+//---------------------------getAllLandingCells Check Tests----------------------------------------------------------------------
 TEST(shot_test, shot_test_get_all_landing_cells_Test1){
     auto env = setup::createEnv({0, {}, {}, {0, 0, 0, 0, 0, 0}, {}});
 
@@ -604,4 +604,56 @@ TEST(move_test, move_execute6) {
     EXPECT_EQ(mvRes.first.size(), 0);
     EXPECT_EQ(mvRes.second.size(), 1);
     EXPECT_EQ(mvRes.second[0], gameModel::Foul::BlockSnitch);
+}
+
+//Catch Snitch
+TEST(move_test, move_execute7){
+    auto env = setup::createEnv({0, {}, {1, 1, 1, 1, 1, 1, 1, 1, 1}, {1, 1, 1, 1, 1, 1}, {}});
+    env->snitch->exists = true;
+    env->snitch->position = {3, 4};
+    env->team1->seeker->position = {3, 4};
+
+    gameController::Move mv(env, env->team1->seeker, gameModel::Position(3,4));
+    auto mvRes = mv.execute();
+
+    EXPECT_EQ(mvRes.first[0], gameController::ActionResult::SnitchCatch);
+}
+
+//Fail to catch the Snitch because Snitch doesn't exist
+TEST(move_test, move_execute8){
+    auto env = setup::createEnv({0, {}, {1, 1, 1, 1, 1, 1, 1, 1, 1}, {1, 1, 1, 1, 1, 1}, {}});
+    env->snitch->exists = false;
+    env->snitch->position = {3, 4};
+    env->team1->seeker->position = {3, 4};
+
+    gameController::Move mv(env, env->team1->seeker, gameModel::Position(3,4));
+    auto mvRes = mv.execute();
+
+    EXPECT_TRUE(mvRes.first.empty());
+}
+
+//Fail to catch the Snitch because Snitch hasn't the same Position like the Seeker
+TEST(move_test, move_execute9){
+    auto env = setup::createEnv({0, {}, {1, 1, 1, 1, 1, 1, 1, 1, 1}, {1, 1, 1, 1, 1, 1}, {}});
+    env->snitch->exists = true;
+    env->snitch->position = {3, 4};
+    env->team1->seeker->position = {3, 4};
+
+    gameController::Move mv(env, env->team1->seeker, gameModel::Position(4,4));
+    auto mvRes = mv.execute();
+
+    EXPECT_TRUE(mvRes.first.empty());
+}
+
+//Fail to catch the Snitch because there is no Seeker on the same field
+TEST(move_test, move_execute10){
+    auto env = setup::createEnv({0, {}, {1, 1, 1, 1, 1, 1, 1, 1, 1}, {1, 1, 1, 1, 1, 1}, {}});
+    env->snitch->exists = false;
+    env->snitch->position = {3, 4};
+    env->team1->keeper->position = {3, 4};
+
+    gameController::Move mv(env, env->team1->keeper, gameModel::Position(3,4));
+    auto mvRes = mv.execute();
+
+    EXPECT_TRUE(mvRes.first.empty());
 }
