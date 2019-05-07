@@ -185,6 +185,21 @@ TEST(shot_test, shot_on_goal1){
     EXPECT_EQ(env->quaffle->position, gameModel::Position(14, 4));
 }
 
+TEST(shot_test, shot_on_goal2){
+    auto env = setup::createEnv({0, {}, {}, {1, 0, 0, 0, 0, 0}, {}});
+
+    env->team2->chasers[0]->position = {14,4};
+    env->quaffle->position = env->team1->chasers[0]->position;
+    gameController::Shot testShot (env, env->team1->chasers[0], env->quaffle, {14,4});
+    auto res = testShot.execute();
+    EXPECT_EQ(res.first.size(),2);
+    EXPECT_EQ(res.first[0], gameController::ActionResult::ThrowSuccess);
+    EXPECT_EQ(res.first[1], gameController::ActionResult::Intercepted);
+    EXPECT_THAT(env->quaffle->position, testing::AnyOf(gameModel::Position(13,3), gameModel::Position(13,4), gameModel::Position(13,5),
+                                                        gameModel::Position(14,3), gameModel::Position(14,5),
+                                                        gameModel::Position(15,3), gameModel::Position(15,4), gameModel::Position(15,5)));
+}
+
 TEST(shot_test, invalid_shot_on_goal){
     auto env = setup::createEnv({0, {}, {}, {1, 0, 0, 0, 0, 0}, {}});
 
