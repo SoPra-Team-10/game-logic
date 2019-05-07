@@ -308,6 +308,25 @@ namespace gameModel{
         throw std::runtime_error("No player with specified in this match");
     }
 
+    auto Environment::getBallByID(const communication::messages::types::EntityId &id) const -> std::shared_ptr<Ball> {
+        if (this->quaffle->id == id) {
+            return this->quaffle;
+        }
+        else if (this->snitch->id == id) {
+            return this->snitch;
+        }
+        else if (this->bludgers[0]->id == id) {
+            return this->bludgers[0];
+        }
+        else if (this->bludgers[1]->id == id) {
+            return this->bludgers[1];
+        }
+        else {
+            throw std::runtime_error("There is no matching Ball to the selected ID on the field!");
+        }
+    }
+
+
     // Ball Types
 
     Ball::Ball(Position position, communication::messages::types::EntityId id) : Object(position, id) {}
