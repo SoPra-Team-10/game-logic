@@ -156,15 +156,13 @@ namespace gameController{
     }
 
     auto Shot::getAllLandingCells() const -> std::vector<gameModel::Position> {
-#warning Was tun bei n gerade? Dann lässt sich das Quadrat nicht mittig um target platzieren
         int n = static_cast<int>(std::ceil(getDistance(actor->position, target) / 7.0));
         std::vector<gameModel::Position> ret;
         using Env = gameModel::Environment;
         using Cell = gameModel::Cell;
-        auto players = env->getAllPlayers();
-        ret.reserve(n * n);
-        for(int x = target.x - n / 2; x <= target.x + n / 2; x++){
-            for(int y = target.y - n / 2; y <= target.y + n / 2; y++){
+        ret.reserve((2 * n + 1) * (2 * n + 1) -1);
+        for(int x = target.x - n; x <= target.x + n; x++){
+            for(int y = target.y - n; y <= target.y + n; y++){
                 if(gameModel::Position{x, y} == target){
                     continue;
                 }
