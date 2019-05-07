@@ -102,8 +102,8 @@ namespace gameController {
     /**
      * check if a player can perform a shot.
      */
-    bool playerCanShoot(const std::shared_ptr<gameModel::Player> &player,
-                        const std::shared_ptr<gameModel::Environment> &env);
+    bool playerCanShoot(const std::shared_ptr<const gameModel::Player> &player,
+                        const std::shared_ptr<const gameModel::Environment> &env);
 
 }
 
