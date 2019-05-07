@@ -8,6 +8,8 @@
 #include "GameController.h"
 #include "setup.h"
 
+//-----------------------------------------Environment Test-------------------------------------------------------------
+
 TEST(env_test, getCell){
     EXPECT_EQ(gameModel::Environment::getCell(6, 3), gameModel::Cell::Standard);
     EXPECT_EQ(gameModel::Environment::getCell(7, 8), gameModel::Cell::Standard);
@@ -129,7 +131,7 @@ TEST(env_test, getOpponents) {
     }
 }
 
-TEST(env_tests, getSurroundingPositions){
+TEST(env_test, getSurroundingPositions){
     using env = gameModel::Environment;
     using P = gameModel::Position;
     auto positions = env::getSurroundingPositions({10, 2});
@@ -139,7 +141,7 @@ TEST(env_tests, getSurroundingPositions){
     }
 }
 
-TEST(env_tests, getSurroundingPositions_corner){
+TEST(env_test, getSurroundingPositions_corner){
     using env = gameModel::Environment;
     using P = gameModel::Position;
     auto positions = env::getSurroundingPositions({2, 1});
@@ -167,4 +169,16 @@ TEST(env_test, getAllPlayerFreeCellsAround) {
     EXPECT_EQ(freeCells[4], gameModel::Position(15, 10));
     EXPECT_EQ(freeCells[5], gameModel::Position(11, 11));
     EXPECT_EQ(freeCells[6], gameModel::Position(11, 12));
+}
+
+//-----------------------------------------Fanblock Test----------------------------------------------------------------
+
+TEST(fanblock_test, banFan_and_getUses_and_getBannedCount) {
+    auto env = setup::createEnv();
+    // team1 has 3x impulse interferences
+
+    env->team1->fanblock.banFan(gameModel::InterferenceType::Impulse);
+
+    EXPECT_EQ(env->team1->fanblock.getBannedCount(gameModel::InterferenceType::Impulse), 1);
+    EXPECT_EQ(env->team1->fanblock.getUses(gameModel::InterferenceType::Impulse), 2);
 }
