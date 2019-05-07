@@ -130,8 +130,13 @@ TEST(shot_test, throw_execute_fail_and_disperse){
     EXPECT_GE(res.first.size(), 2);
     EXPECT_EQ(res.first[0], gameController::ShotResult::Miss);
     EXPECT_EQ(res.first[1], gameController::ShotResult::ScoreRight);
-    EXPECT_THAT(env->quaffle->position, testing::AnyOf(gameModel::Position(16, 7), gameModel::Position(15, 7),
-                                                      gameModel::Position(15, 8), gameModel::Position(15, 9)));
+    EXPECT_THAT(env->quaffle->position, testing::AnyOf(gameModel::Position(13,11), gameModel::Position(14,11),
+                                                      gameModel::Position(13, 10), gameModel::Position(14, 10), gameModel::Position(15 ,10),
+                                                      gameModel::Position(13, 9), gameModel::Position(14, 9), gameModel::Position(15, 9),
+                                                      gameModel::Position(13, 8), gameModel::Position(14, 8), gameModel::Position(15, 8), gameModel::Position(16, 7),
+                                                      gameModel::Position(13, 7), gameModel::Position(14, 7), gameModel::Position(15, 7), gameModel::Position(16, 7),
+                                                      gameModel::Position(13, 6), gameModel::Position(14, 6), gameModel::Position(15, 6), gameModel::Position(16, 6),
+                                                      gameModel::Position(13, 5), gameModel::Position(14, 5), gameModel::Position(15, 5), gameModel::Position(16, 5)));
     std::cout << "landed on {" << env->quaffle->position.x << ", " << env->quaffle->position.y << "}" << std::endl;
 }
 
@@ -269,6 +274,34 @@ TEST(shot_test, bludger_shot_on_Beater){
     EXPECT_EQ(env->bludgers[0]->position, env->team1->beaters[1]->position);
     EXPECT_FALSE(env->team1->beaters[1]->knockedOut);
 }
+
+//---------------------------getAllLandingCells----------------------------------------------------------------------
+/*TEST(shot_Test, get_free_landing_cells1){
+    auto env = setup::createEnv();
+    auto testShot = gameController::Shot(env, env->team1.get()->seeker, env->quaffle, gameModel::Position{16,8});
+    std::vector<gameModel::Position> testVector = {gameModel::Position(13,11), gameModel::Position(14,11),
+                                                   gameModel::Position(13, 10), gameModel::Position(14, 10), gameModel::Position(15 ,10),
+                                                   gameModel::Position(13, 9), gameModel::Position(14, 9), gameModel::Position(15, 9),
+                                                   gameModel::Position(13, 8), gameModel::Position(14, 8), gameModel::Position(15, 8),
+                                                   gameModel::Position(13, 7), gameModel::Position(14, 7), gameModel::Position(15, 7), gameModel::Position(16, 7),
+                                                   gameModel::Position(13, 6), gameModel::Position(14, 6), gameModel::Position(15, 6), gameModel::Position(16, 6),
+                                                   gameModel::Position(13, 5), gameModel::Position(14, 5), gameModel::Position(15, 5), gameModel::Position(16, 5)};
+    EXPECT_EQ(testShot.getAllLandingCells(), testVector);
+}
+
+TEST(shot_Test, get_free_landing_cells2){
+    auto env = setup::createEnv();
+    env->team1.get()->seeker.position = {15 , 6}
+    auto testShot = gameController::Shot(env, env->team1.get()->seeker, env->quaffle, gameModel::Position{16,8});
+    std::vector<gameModel::Position> testVector = {gameModel::Position(13,11), gameModel::Position(14,11),
+                                               gameModel::Position(13, 10), gameModel::Position(14, 10), gameModel::Position(15 ,10),
+                                               gameModel::Position(13, 9), gameModel::Position(14, 9), gameModel::Position(15, 9),
+                                               gameModel::Position(13, 8), gameModel::Position(14, 8), gameModel::Position(15, 8),
+                                               gameModel::Position(13, 7), gameModel::Position(14, 7), gameModel::Position(15, 7), gameModel::Position(16, 7),
+                                               gameModel::Position(13, 6), gameModel::Position(14, 6), gameModel::Position(16, 6),
+                                               gameModel::Position(13, 5), gameModel::Position(14, 5), gameModel::Position(15, 5), gameModel::Position(16, 5)};
+    EXPECT_EQ(testShot.getAllLandingCells(), testVector);
+}*/
 
 //---------------------------Move Foul Check tests----------------------------------------------------------------------
 
