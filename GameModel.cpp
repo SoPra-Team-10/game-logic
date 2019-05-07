@@ -65,7 +65,7 @@ namespace gameModel{
         banFan(fanToInterference(fan));
     }
 
-    auto Fanblock::fanToInterference(communication::messages::types::FanType fanType) const
+    auto Fanblock::fanToInterference(communication::messages::types::FanType fanType)
         -> InterferenceType {
         using namespace communication::messages::types;
         switch (fanType){
@@ -82,7 +82,7 @@ namespace gameModel{
         }
     }
 
-    auto Fanblock::interferenceToFan(gameModel::InterferenceType type) const
+    auto Fanblock::interferenceToFan(gameModel::InterferenceType type)
         -> communication::messages::types::FanType {
         using namespace communication::messages::types;
         switch (type){
