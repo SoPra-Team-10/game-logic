@@ -115,8 +115,6 @@ TEST(ranged_attack_test, execute_target_with_quaffle0){
 
     EXPECT_EQ(testAttack.execute(), gameController::ActionCheckResult::Success);
 
-    std::cout << "Position Quaffle {" << env->quaffle->position.x << ", " << env->quaffle->position.y << "}" << std::endl;
-    std::cout << "Position Keeper{" << env->team2->keeper->position.x << ", " << env->team2->keeper->position.y << "}" << std::endl;
     EXPECT_THAT(env->quaffle->position, testing::AnyOf(P(13, 11), P(12, 12), P(14, 11)));
     EXPECT_THAT(env->team2->keeper->position, testing::AnyOf(P(13, 11), P(12, 12), P(14, 11)));
 }
@@ -129,8 +127,6 @@ TEST(ranged_attack_test, execute_target_with_quaffle1){
 
     EXPECT_EQ(testAttack.execute(), gameController::ActionCheckResult::Foul);
 
-    std::cout << "Position Quaffle {" << env->quaffle->position.x << ", " << env->quaffle->position.y << "}" << std::endl;
-    std::cout << "Position Keeper{" << env->team2->keeper->position.x << ", " << env->team2->keeper->position.y << "}" << std::endl;
     EXPECT_THAT(env->quaffle->position, testing::AnyOf(P(13, 11), P(12, 12), P(14, 11)));
     EXPECT_THAT(env->team2->keeper->position, testing::AnyOf(P(13, 11), P(12, 12), P(14, 11)));
 }
@@ -202,7 +198,6 @@ TEST(snitch_push_test, execute0){
 
     EXPECT_EQ(testSnitchPush.execute(), gameController::ActionCheckResult::Success);
 
-    std::cout << "Pos {" << env->snitch->position.x << ", " << env->snitch->position.y << "}" << std::endl;
     EXPECT_THAT(env->snitch->position, testing::AnyOf(P(11, 7), P(9, 7), P(9, 8), P(10, 9), P(11, 9)));
 }
 
@@ -215,6 +210,5 @@ TEST(snitch_push_test, execute1){
 
     EXPECT_EQ(testSnitchPush.execute(), gameController::ActionCheckResult::Foul);
 
-    std::cout << "Pos {" << env->snitch->position.x << ", " << env->snitch->position.y << "}" << std::endl;
     EXPECT_THAT(env->snitch->position, testing::AnyOf(P(11, 7), P(9, 7), P(9, 8), P(10, 9), P(11, 9)));
 }

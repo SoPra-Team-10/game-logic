@@ -184,7 +184,6 @@ TEST(controller_test, moveSnitch0) {
 
     EXPECT_THAT(env->snitch->position, testing::AnyOf(gameModel::Position(16, 8), gameModel::Position(16,6), gameModel::Position(15,6),
                                                         gameModel::Position(15,8)));
-    std::cout << "landed on {" << env->snitch->position.x << ", " << env->snitch->position.y << "}" << std::endl;
 
 }
 
@@ -199,5 +198,4 @@ TEST(controller_test, moveSnitch1){
 
     EXPECT_THAT(env->snitch->position, testing::AnyOf(gameModel::Position(10,11), gameModel::Position(11,11), gameModel::Position(12,11),
                                                         gameModel::Position(12,10), gameModel::Position(12,9) ));
-    std::cout << "landed on {" << env->snitch->position.x << ", " << env->snitch->position.y << "}" << std::endl;
 }
