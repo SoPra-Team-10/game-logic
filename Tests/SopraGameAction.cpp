@@ -279,18 +279,11 @@ TEST(shot_test, bludger_shot_on_Beater){
 TEST(shot_test, shot_test_get_all_landing_cells_Test){
     auto env = setup::createEnv({0, {}, {}, {0, 0, 0, 0, 0, 0}, {}});
 
-    env->team1->keeper->position = {0, 8};
+    env->team1->keeper->position = {9, 8};
     env->quaffle->position = env->team1->keeper->position;
-    env->team2->seeker->position = {15, 10};
     gameController::Shot testShot(env, env->team1->keeper, env->quaffle, {16, 8});
     auto res = testShot.execute();
-    EXPECT_THAT(env->quaffle->position, testing::AnyOf(gameModel::Position(13, 11), gameModel::Position(14, 11),
-                                                       gameModel::Position(13, 10), gameModel::Position(14, 10),
-                                                       gameModel::Position(13, 9), gameModel::Position(14, 9), gameModel::Position(15, 9),
-                                                       gameModel::Position(13, 8), gameModel::Position(14, 8), gameModel::Position(15, 8),
-                                                       gameModel::Position(13, 7), gameModel::Position(14, 7), gameModel::Position(15, 7), gameModel::Position(16, 7),
-                                                       gameModel::Position(13, 6), gameModel::Position(14, 6), gameModel::Position(15, 6), gameModel::Position(16, 6),
-                                                       gameModel::Position(13, 5), gameModel::Position(14, 5), gameModel::Position(15, 5), gameModel::Position(16, 5)));
+    EXPECT_THAT(env->quaffle->position, testing::AnyOf(gameModel::Position(15, 10), gameModel::Position(15, 9), gameModel::Position(15, 8), gameModel::Position(16, 7), gameModel::Position{15,7}));
     std::cout << "landed on {" << env->quaffle->position.x << ", " << env->quaffle->position.y << "}" <<
     std::endl;
 }
