@@ -301,6 +301,7 @@ namespace gameController{
                 }
             }
         }
+
         if(env->snitch->exists) {
             if (this->env->snitch->position == this->target) {
                 if (INSTANCE_OF(this->actor, gameModel::Seeker)) {
@@ -395,6 +396,66 @@ namespace gameController{
     auto Move::executeAll() const ->
     std::vector<std::pair<gameModel::Environment, double>> {
 
+        std::vector<std::pair<gameModel::Environment, double>> resultVect;
+
+        // @toDo: da fehlt noch alles
+
+        return resultVect;
+    }
+
+    WrestQuaffle::WrestQuaffle(std::shared_ptr<gameModel::Environment> env, std::shared_ptr<gameModel::Chaser> actor,
+                                 gameModel::Position target):
+            Action(std::move(env), std::move(actor), target) {}
+
+    auto WrestQuaffle::execute() const -> std::pair<std::vector<ActionResult>, std::vector<gameModel::Foul>> {
+        std::vector<gameModel::Foul> fouls;
+        std::vector<ActionResult> actions;
+
+        // check snatch
+        ActionCheckResult actionResult = this->check();
+        if (actionResult == ActionCheckResult::Impossible) {
+            throw std::runtime_error("The selected quaffel wresting is impossible!");
+        }
+
+        // wrest the quaffel
+        if(actionTriggered(env->config.gameDynamicsProbs.wrestQuaffle)) {
+            env->quaffle->position =  actor->position;
+            actions.emplace_back(ActionResult::WrestQuaffel);
+        }
+
+        return {actions, fouls};
+    }
+    // fertig
+    auto WrestQuaffle::successProb() const -> double {
+        if (this->check() == ActionCheckResult::Success) {
+            return 1;
+        }
+        else {
+            return 0;
+        }
+    }
+    // fertig
+    auto WrestQuaffle::check() const -> ActionCheckResult {
+        auto player = env->getPlayer(target);
+        if (gameModel::Environment::getCell(this->target) == gameModel::Cell::OutOfBounds ||
+            gameController::getDistance(this->actor->position, this->target) > 1 ||
+            this->actor->isFined || this->actor->knockedOut ||
+            env->quaffle->position != target || !player.has_value()) {
+            return ActionCheckResult::Impossible;
+        }
+
+        if (INSTANCE_OF(player.value(), gameModel::Chaser)) {
+            return ActionCheckResult::Success;
+        }
+        else if (INSTANCE_OF(player.value(), gameModel::Keeper) && !env->isPlayerInOwnRestrictedZone(player.value())){
+            return ActionCheckResult::Success;
+        }
+        else {
+            return ActionCheckResult::Impossible;
+        }
+    }
+    // not now
+    auto WrestQuaffle::executeAll() const -> std::vector<std::pair<gameModel::Environment, double>> {
         std::vector<std::pair<gameModel::Environment, double>> resultVect;
 
         // @toDo: da fehlt noch alles

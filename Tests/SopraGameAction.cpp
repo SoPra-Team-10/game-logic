@@ -137,7 +137,6 @@ TEST(shot_test, throw_execute_fail_and_disperse){
                                                       gameModel::Position(13, 7), gameModel::Position(14, 7), gameModel::Position(15, 7), gameModel::Position(16, 7),
                                                       gameModel::Position(13, 6), gameModel::Position(14, 6), gameModel::Position(15, 6), gameModel::Position(16, 6),
                                                       gameModel::Position(13, 5), gameModel::Position(14, 5), gameModel::Position(15, 5), gameModel::Position(16, 5)));
-    std::cout << "landed on {" << env->quaffle->position.x << ", " << env->quaffle->position.y << "}" << std::endl;
 }
 
 TEST(shot_test, throw_disperse_and_succed){
@@ -316,8 +315,6 @@ TEST(shot_test, shot_test_get_all_landing_cells_Test1){
     gameController::Shot testShot(env, env->team1->keeper, env->quaffle, {16, 8});
     auto res = testShot.execute();
     EXPECT_THAT(env->quaffle->position, testing::AnyOf(gameModel::Position(15, 10), gameModel::Position(15, 9), gameModel::Position(15, 8), gameModel::Position(16, 7), gameModel::Position{15,7}));
-    std::cout << "landed on {" << env->quaffle->position.x << ", " << env->quaffle->position.y << "}" <<
-    std::endl;
 }
 
 TEST(shot_test, shot_test_get_all_landing_cells_Test2){
@@ -334,7 +331,6 @@ TEST(shot_test, shot_test_get_all_landing_cells_Test2){
                                                        gameModel::Position(13, 7), gameModel::Position(14, 7), gameModel::Position(15, 7), gameModel::Position(16, 7),
                                                        gameModel::Position(13, 6), gameModel::Position(14, 6), gameModel::Position(15, 6), gameModel::Position(16, 6),
                                                        gameModel::Position(13, 5), gameModel::Position(14, 5), gameModel::Position(15, 5), gameModel::Position(16, 5)));
-    std::cout << "landed on {" << env->quaffle->position.x << ", " << env->quaffle->position.y << "}" << std::endl;
 }
 
 //---------------------------Move Foul Check tests----------------------------------------------------------------------
@@ -688,4 +684,62 @@ TEST(move_test, move_execute10){
     auto mvRes = mv.execute();
 
     EXPECT_TRUE(mvRes.first.empty());
+}
+
+//---------------------------WrestQuaffle Execute Move------------------------------------------------------------------
+TEST(wrest_quaffel_test, wrest_execute0) {
+    auto env = setup::createEnv();
+
+    env->quaffle->position = env->team2->chasers[0]->position;
+    env->team1->chasers[0]->position = gameModel::Position(6,0);
+
+    gameController::WrestQuaffle action(env, env->team1->chasers[0], env->team2->chasers[0]->position);
+    auto mvRes = action.execute();
+
+    EXPECT_EQ(env->quaffle->position, env->team2->chasers[0]->position);
+    EXPECT_TRUE(mvRes.first.empty());
+
+}
+
+TEST(wrest_quaffel_test, wrest_execute1) {
+    auto env = setup::createEnv({0, {}, {1, 1, 1, 1, 1, 1, 1, 1, 1}, {1, 1, 1, 1, 1, 1}, {}});
+
+    env->quaffle->position = env->team2->chasers[0]->position;
+    env->team1->chasers[0]->position = gameModel::Position(6,0);
+
+    gameController::WrestQuaffle action(env, env->team1->chasers[0], env->team2->chasers[0]->position);
+    auto mvRes = action.execute();
+
+    EXPECT_EQ(env->quaffle->position, gameModel::Position(6,0));
+    EXPECT_FALSE(mvRes.first.empty());
+    EXPECT_EQ(mvRes.first[0], gameController::ActionResult::WrestQuaffel);
+
+}
+
+TEST(wrest_quaffel_test, wrest_execute2) {
+    auto env = setup::createEnv({0, {}, {1, 1, 1, 1, 1, 1, 1, 1, 1}, {1, 1, 1, 1, 1, 1}, {}});
+
+    env->team1->keeper->position = gameModel::Position(0, 4);
+    env->quaffle->position = env->team1->keeper->position;
+    env->team2->chasers[0]->position = gameModel::Position(0,5);
+
+    gameController::WrestQuaffle action(env, env->team2->chasers[0], env->team1->keeper->position);
+    EXPECT_ANY_THROW(action.execute());
+
+}
+
+TEST(wrest_quaffel_test, wrest_execute3) {
+    auto env = setup::createEnv({0, {}, {1, 1, 1, 1, 1, 1, 1, 1, 1}, {1, 1, 1, 1, 1, 1}, {}});
+
+    env->team1->keeper->position = gameModel::Position(16, 4);
+    env->quaffle->position = env->team1->keeper->position;
+    env->team2->chasers[0]->position = gameModel::Position(16,5);
+
+    gameController::WrestQuaffle action(env, env->team2->chasers[0], env->team1->keeper->position);
+    auto mvRes = action.execute();
+
+    EXPECT_EQ(env->quaffle->position, gameModel::Position(16,5));
+    EXPECT_FALSE(mvRes.first.empty());
+    EXPECT_EQ(mvRes.first[0], gameController::ActionResult::WrestQuaffel);
+
 }
