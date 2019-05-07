@@ -208,7 +208,7 @@ namespace gameController {
                 possiblePositions.emplace_back(pos);
             }
         }
-        if(possiblePositions.size() == 0){
+        if(possiblePositions.empty()){
             throw  std::runtime_error("Fatal Error, no target Cell for Snitch found");
         }
         snitch->position = possiblePositions[rng(0, static_cast<int>(possiblePositions.size() - 1))];
