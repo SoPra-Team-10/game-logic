@@ -143,6 +143,7 @@ namespace gameModel{
         double getExtraTurnProb(communication::messages::types::Broom broom) const;
     private:
         std::map<communication::messages::types::Broom, double> extraTurnProbs;
+        void
     };
 
     /**
