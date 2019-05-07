@@ -6,6 +6,7 @@
 #include "GameController.h"
 #include "GameModel.h"
 #include "setup.h"
+#include <gmock/gmock-matchers.h>
 
 //-----------------------------------Get Distance Tests-----------------------------------------------------------------
 
@@ -168,4 +169,35 @@ TEST(controller_test, can_shoot_test_wrong_player1){
 
     env->quaffle->position = env->team1->seeker->position;
     EXPECT_FALSE(gameController::playerCanShoot(env->team1->seeker, env));
+}
+
+//-----------------------------------Snitch Move Test------------------------------------------------------------------
+
+TEST(controller_test, moveSnitch0) {
+    auto env = setup::createEnv();
+    env->snitch->exists = true;
+    env->snitch->position = gameModel::Position(16, 7);
+    env->team1->seeker->position = gameModel::Position(15, 7);
+    env->team2->seeker->position = {0,8};
+
+    gameController::moveSnitch(env->snitch, env);
+
+    EXPECT_THAT(env->snitch->position, testing::AnyOf(gameModel::Position(16, 8), gameModel::Position(16,6), gameModel::Position(15,6),
+                                                        gameModel::Position(15,8)));
+    std::cout << "landed on {" << env->snitch->position.x << ", " << env->snitch->position.y << "}" << std::endl;
+
+}
+
+TEST(controller_test, moveSnitch1){
+    auto env = setup::createEnv();
+    env->snitch->exists = true;
+    env->snitch->position = gameModel::Position(11,10);
+    env->team1->seeker->position = gameModel::Position(10,9);
+    env->team2->seeker->position = {0,8};
+
+    gameController::moveSnitch(env->snitch, env);
+
+    EXPECT_THAT(env->snitch->position, testing::AnyOf(gameModel::Position(10,11), gameModel::Position(11,11), gameModel::Position(12,11),
+                                                        gameModel::Position(12,10), gameModel::Position(12,9) ));
+    std::cout << "landed on {" << env->snitch->position.x << ", " << env->snitch->position.y << "}" << std::endl;
 }
