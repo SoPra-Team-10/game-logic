@@ -166,8 +166,9 @@ namespace gameController {
                 }
                 // knockout player
                 minDistancePlayer->knockedOut = true;
-                return minDistancePlayer;
             }
+
+            return minDistancePlayer;
         }
         else {
             // move in the direction of the nearest player
