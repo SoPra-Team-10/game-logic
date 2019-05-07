@@ -29,7 +29,8 @@ namespace gameController{
         ScoreRight, ///<Throw resulted in a goal for the right team
         ScoreLeft, ///<Throw resulted in a goal for the left team
         ThrowSuccess, ///<Quaffle landed on target position
-        Knockout ///Bludger knocked out a player
+        Knockout ///<Bludger knocked out a player
+
     };
 
     class Action {

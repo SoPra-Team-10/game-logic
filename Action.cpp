@@ -205,15 +205,47 @@ namespace gameController{
 
         for(const auto &goal : gameModel::Environment::getGoalsLeft()){
             if(passThrough(goal)){
-                ret.push_back(ShotResult::ScoreRight);
-                break;
+
+                bool occupied = false;
+                for (const auto &player : env->team1->getAllPlayers()) {
+                    if (player->position == goal) {
+                        occupied = true;
+                    }
+                }
+
+                if (!occupied) {
+                    ret.push_back(ShotResult::ScoreRight);
+                    break;
+                }
+                else {
+                    ret.push_back(ShotResult::Intercepted);
+                    env->quaffle->position = goal;
+                    gameController::moveToAdjacent(env->quaffle, env);
+                    break;
+                }
             }
         }
 
         for(const auto &goal : gameModel::Environment::getGoalsRight()){
             if(passThrough(goal)){
-                ret.push_back(ShotResult::ScoreLeft);
-                break;
+
+                bool occupied = false;
+                for (const auto &player : env->team2->getAllPlayers()) {
+                    if (player->position == goal) {
+                        occupied = true;
+                    }
+                }
+
+                if (!occupied) {
+                    ret.push_back(ShotResult::ScoreLeft);
+                    break;
+                }
+                else {
+                    ret.push_back(ShotResult::Intercepted);
+                    env->quaffle->position = goal;
+                    gameController::moveToAdjacent(env->quaffle, env);
+                    break;
+                }
             }
         }
 
