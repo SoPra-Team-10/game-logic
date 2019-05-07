@@ -47,6 +47,14 @@ namespace gameModel{
         return getUses(fanToInterference(fan));
     }
 
+    int Fanblock::getBannedCount(gameModel::InterferenceType fan) const {
+        return initialFans.at(fan) - currFans.at(fan);
+    }
+
+    int Fanblock::getBannedCount(communication::messages::types::FanType fan) const {
+        return getBannedCount(fanToInterference(fan));
+    }
+
     void Fanblock::banFan(InterferenceType fan) {
         if(--currFans.at(fan) < 0){
             throw std::runtime_error("No fans left to ban!");

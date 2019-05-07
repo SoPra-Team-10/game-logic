@@ -145,6 +145,9 @@ namespace gameModel{
         std::map<communication::messages::types::Broom, double> extraTurnProbs;
     };
 
+    /**
+     * Base class for game objects like a ball or a player.
+     * */
     class Object{
     public:
         Object() = default;
@@ -199,6 +202,9 @@ namespace gameModel{
 
         int getUses(communication::messages::types::FanType fan) const;
 
+        int getBannedCount(InterferenceType fan) const;
+        int getBannedCount(communication::messages::types::FanType fan) const;
+
         /**
          * Bans a fan by decreasing the number of allowed uses by one
          * @param fan the fan to be banned
@@ -206,6 +212,7 @@ namespace gameModel{
          */
         void banFan(InterferenceType fan);
         void banFan(communication::messages::types::FanType fan);
+
         auto fanToInterference(communication::messages::types::FanType fanType) const -> InterferenceType;
         auto interferenceToFan(InterferenceType type) const -> communication::messages::types::FanType;
     private:

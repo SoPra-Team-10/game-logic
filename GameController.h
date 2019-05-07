@@ -10,7 +10,7 @@
 namespace gameController {
     class Shot;
     class Move;
-
+    class WrestQuaffle;
 
     /**
      *
@@ -54,7 +54,7 @@ namespace gameController {
      * @return a shots vector
      */
     auto getAllPossibleShots(std::shared_ptr<gameModel::Player> actor, const gameModel::Environment &envi) ->
-    std::vector<Shot>;
+        std::vector<Shot>;
 
     /**
      * Get all currently possible moves of a given actor in a given environment
@@ -63,8 +63,8 @@ namespace gameController {
      * @param envi the selected environment.
      * @return a action vector
      */
-    auto getAllPossibleMoves(std::shared_ptr<gameModel::Player> actor, const gameModel::Environment &envi)
-    -> std::vector<Move>;
+    auto getAllPossibleMoves(std::shared_ptr<gameModel::Player> actor, const gameModel::Environment &envi) ->
+        std::vector<Move>;
 
     /**
      * moves the specified game object to an adjacent position according to the game rules
@@ -97,7 +97,8 @@ namespace gameController {
     /**
      * move the selected bludger according to the game roles.
      */
-    auto moveBludger(std::shared_ptr<gameModel::Bludger> &bludger, std::shared_ptr<gameModel::Environment> &env) -> std::optional<std::shared_ptr<gameModel::Player>>;
+    auto moveBludger(std::shared_ptr<gameModel::Bludger> &bludger, std::shared_ptr<gameModel::Environment> &env) ->
+        std::optional<std::shared_ptr<gameModel::Player>>;
 
     /**
      * check if a player can perform a shot.
