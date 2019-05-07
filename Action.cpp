@@ -58,7 +58,7 @@ namespace gameController{
                         int index = rng(0, static_cast<int>(possibleCells.size()) - 1);
                         ball->position = possibleCells[index];
                     } else {
-                        moveToAdjacent(ball, env);
+                        ball->position = target;
                     }
                 }
             }
