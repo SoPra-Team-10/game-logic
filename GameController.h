@@ -97,7 +97,7 @@ namespace gameController {
     /**
      * move the selected bludger according to the game roles.
      */
-    bool moveBludger(std::shared_ptr<gameModel::Bludger> &bludger, std::shared_ptr<gameModel::Environment> &env);
+    auto moveBludger(std::shared_ptr<gameModel::Bludger> &bludger, std::shared_ptr<gameModel::Environment> &env) -> std::optional<std::shared_ptr<gameModel::Player>>;
 
     /**
      * check if a player can perform a shot.
