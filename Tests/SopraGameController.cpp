@@ -114,7 +114,7 @@ TEST(controller_test, moveBludger1) {
     EXPECT_TRUE(env->team1->chasers[0]->knockedOut);
     EXPECT_FALSE(env->quaffle->position == gameModel::Position(2, 10));
 }
-}
+
 TEST(controller_test, can_shoot_test_valid){
     auto env = setup::createEnv();
 
