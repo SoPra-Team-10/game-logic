@@ -294,8 +294,9 @@ TEST(shot_test, bludger_shot_on_Chaser_with_ball){
     env->quaffle->position = env->team2->chasers[0]->position;
     auto testShot = gameController::Shot(env, env->team2->beaters[1], env->bludgers[0], env->team2->chasers[0]->position);
     auto res = testShot.execute();
-    EXPECT_EQ(res.first.size(), 1);
+    EXPECT_EQ(res.first.size(), 2);
     EXPECT_EQ(res.first[0], gameController::ActionResult::Knockout);
+    EXPECT_EQ(res.first[1], gameController::ActionResult::FoolAway);
     EXPECT_NE(env->bludgers[0]->position, env->team1->seeker->position);
     EXPECT_TRUE(env->team2->chasers[0]->knockedOut);
     EXPECT_THAT(env->quaffle->position, testing::AnyOf(P(7, 0), P(6, 0), P(5, 0), P(5, 1), P(5, 2), P(6, 2), P(7, 2), P(7, 1)));
@@ -603,7 +604,8 @@ TEST(move_test, move_execute4) {
     EXPECT_TRUE(env->team1->keeper->isFined);
     EXPECT_FALSE(env->team2->keeper->position == oldPos);
     EXPECT_FALSE(env->quaffle->position == oldPos);
-    EXPECT_EQ(mvRes.first.size(), 0);
+    EXPECT_EQ(mvRes.first.size(), 1);
+    EXPECT_EQ(mvRes.first[0], gameController::ActionResult::FoolAway);
     EXPECT_EQ(mvRes.second.size(), 1);
     EXPECT_EQ(mvRes.second[0], gameModel::Foul::Ramming);
 }

@@ -81,6 +81,7 @@ namespace gameController{
                     //fool quaffle away
                     if(env->quaffle->position == target){
                         moveToAdjacent(env->quaffle, env);
+                        shotRes.push_back(ActionResult::FoolAway);
                     }
                 } else {
                     ball->position = target;
@@ -339,6 +340,7 @@ namespace gameController{
         } else if(rammingFoulFlag && env->quaffle->position == target) {
             //rammed player looses quaffel
             moveToAdjacent(env->quaffle, env);
+            actions.push_back(ActionResult::FoolAway);
         }
 
         // move other player out of the way if necessary

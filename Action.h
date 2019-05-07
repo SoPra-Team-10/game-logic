@@ -31,7 +31,8 @@ namespace gameController{
         ThrowSuccess, ///<Quaffle landed on target position
         Knockout, ///<Bludger knocked out a player
         SnitchCatch, ///Snitch is catched
-        WrestQuaffel ///>Quaffel was wrested
+        WrestQuaffel, ///>Quaffel was wrested
+        FoolAway
     };
 
     class Action {
