@@ -192,6 +192,9 @@ namespace gameController {
     }
 
     void moveSnitch(std::shared_ptr<gameModel::Snitch> &snitch, std::shared_ptr<gameModel::Environment> &env){
+        if(!snitch->exists){
+            throw std::runtime_error("Snitch does not exist");
+        }
         int minDistanceSeeker = getDistance(snitch->position, env->team1->seeker->position);
         std::deque<gameModel::Position> possiblePositions;
         auto closestSeeker = env->team1->seeker;
