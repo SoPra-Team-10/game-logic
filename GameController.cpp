@@ -1,4 +1,5 @@
 #include <random>
+#include <deque>
 #include "GameController.h"
 
 namespace gameController {
@@ -188,5 +189,28 @@ namespace gameController {
         }
 
         return false;
+    }
+
+    void moveSnitch(std::shared_ptr<gameModel::Snitch> &snitch, std::shared_ptr<gameModel::Environment> &env){
+        if(!snitch->exists){
+            throw std::runtime_error("Snitch does not exist");
+        }
+        int minDistanceSeeker = getDistance(snitch->position, env->team1->seeker->position);
+        std::deque<gameModel::Position> possiblePositions;
+        auto closestSeeker = env->team1->seeker;
+        auto disnatceTeam2 = getDistance(snitch->position, env->team2->seeker->position);
+        if(disnatceTeam2 < minDistanceSeeker){
+            minDistanceSeeker = disnatceTeam2;
+            closestSeeker = env->team2->seeker;
+        }
+        for(const auto &pos : env->getAllPlayerFreeCellsAround(snitch->position)) {
+            if (getDistance(pos, closestSeeker->position) > minDistanceSeeker) {
+                possiblePositions.emplace_back(pos);
+            }
+        }
+        if(possiblePositions.empty()){
+            throw  std::runtime_error("Fatal Error, no target Cell for Snitch found");
+        }
+        snitch->position = possiblePositions[rng(0, static_cast<int>(possiblePositions.size() - 1))];
     }
 }
