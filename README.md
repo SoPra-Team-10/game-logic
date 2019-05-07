@@ -22,6 +22,6 @@ and linked using
 -lSopraGameLogic
 ```
 
-## Docu
-- [Master Brnach Docu](https://sopra-team-10.github.io/GameLogic/master/html/index.html)
-- [Develop Branch Docu](https://sopra-team-10.github.io/GameLogic/Develop/html/index.html)
+## Doxygen-Dokumentation
+- [Master Branch Dokumentation](https://sopra-team-10.github.io/GameLogic/master/html/index.html)
+- [Develop Branch Dokumentation](https://sopra-team-10.github.io/GameLogic/Develop/html/index.html)
