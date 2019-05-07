@@ -92,29 +92,45 @@ TEST(controller_test, getAllCrossedCells3) {
 
 //-----------------------------------Bludger Move Test------------------------------------------------------------------
 
-TEST(controller_test, moveBludger0) {
+TEST(controller_test, moveBludger_towards_player) {
     auto env = setup::createEnv();
 
     env->bludgers[0]->position = gameModel::Position(4, 11);
     env->team1->beaters[0]->position = gameModel::Position(4, 12);
 
-    gameController::moveBludger(env->bludgers[0], env);
-
+    auto res = gameController::moveBludger(env->bludgers[0], env);
+    EXPECT_FALSE(res.has_value());
     EXPECT_EQ(env->bludgers[0]->position, gameModel::Position(3, 11));
 }
 
-TEST(controller_test, moveBludger1) {
+TEST(controller_test, moveBludger_knock_out) {
     auto env = setup::createEnv({0, {}, {1, 1, 1, 1, 1, 1, 1, 1, 1}, {1, 1, 1, 1, 1, 1}, {}});
 
     env->bludgers[0]->position = gameModel::Position(3, 10);
     env->quaffle->position = gameModel::Position(2, 10);
 
-    gameController::moveBludger(env->bludgers[0], env);
+    auto res = gameController::moveBludger(env->bludgers[0], env);
 
-    EXPECT_EQ(env->bludgers[0]->position, gameModel::Position(2, 10));
+    EXPECT_TRUE(res.has_value());
+    EXPECT_NE(env->bludgers[0]->position, gameModel::Position(2, 10));
     EXPECT_TRUE(env->team1->chasers[0]->knockedOut);
     EXPECT_FALSE(env->quaffle->position == gameModel::Position(2, 10));
 }
+
+TEST(controller_test, moveBludger_no_knock_out) {
+    auto env = setup::createEnv();
+
+    env->bludgers[0]->position = gameModel::Position(3, 10);
+    env->quaffle->position = gameModel::Position(2, 10);
+
+    auto res = gameController::moveBludger(env->bludgers[0], env);
+
+    EXPECT_TRUE(res.has_value());
+    EXPECT_EQ(env->bludgers[0]->position, gameModel::Position(2, 10));
+    EXPECT_FALSE(env->team1->chasers[0]->knockedOut);
+    EXPECT_TRUE(env->quaffle->position == gameModel::Position(2, 10));
+}
+//------------------------------can shoot test--------------------------------------------------------------------------
 
 TEST(controller_test, can_shoot_test_valid){
     auto env = setup::createEnv();
