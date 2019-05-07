@@ -320,6 +320,10 @@ namespace gameModel{
          */
         auto getPlayerByID(communication::messages::types::EntityId id) const -> std::optional<std::shared_ptr<Player>>;
 
+        static bool checkTeamConfig(const communication::messages::request::TeamConfig &config);
+
+        static bool checkTeamFormation(const communication::messages::request::TeamFormation &formation);
+
     };
 
     /**
