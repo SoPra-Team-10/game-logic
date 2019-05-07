@@ -114,3 +114,58 @@ TEST(controller_test, moveBludger1) {
     EXPECT_TRUE(env->team1->chasers[0]->knockedOut);
     EXPECT_FALSE(env->quaffle->position == gameModel::Position(2, 10));
 }
+}
+TEST(controller_test, can_shoot_test_valid){
+    auto env = setup::createEnv();
+
+    env->quaffle->position = env->team1->keeper->position;
+    EXPECT_TRUE(gameController::playerCanShoot(env->team1->keeper, env));
+}
+
+TEST(controller_test, can_shoot_test_valid1){
+    auto env = setup::createEnv();
+
+    env->bludgers[0]->position = env->team1->beaters[0]->position;
+    EXPECT_TRUE(gameController::playerCanShoot(env->team1->beaters[0], env));
+}
+
+TEST(controller_test, can_shoot_test_no_quaffle){
+    auto env = setup::createEnv();
+
+    EXPECT_FALSE(gameController::playerCanShoot(env->team1->keeper, env));
+}
+
+TEST(controller_test, can_shoot_test_wrong_ball){
+    auto env = setup::createEnv();
+
+    env->bludgers[0]->position = env->team1->keeper->position;
+    EXPECT_FALSE(gameController::playerCanShoot(env->team1->keeper, env));
+}
+
+TEST(controller_test, can_shoot_test_wrong_ball1){
+    auto env = setup::createEnv();
+
+    env->quaffle->position = env->team1->beaters[0]->position;
+    EXPECT_FALSE(gameController::playerCanShoot(env->team1->beaters[0], env));
+}
+
+TEST(controller_test, can_shoot_test_wrong_ball2){
+    auto env = setup::createEnv();
+
+    env->snitch->position = env->team1->beaters[0]->position;
+    EXPECT_FALSE(gameController::playerCanShoot(env->team1->beaters[0], env));
+}
+
+TEST(controller_test, can_shoot_test_wrong_player){
+    auto env = setup::createEnv();
+
+    env->bludgers[0]->position = env->team1->seeker->position;
+    EXPECT_FALSE(gameController::playerCanShoot(env->team1->seeker, env));
+}
+
+TEST(controller_test, can_shoot_test_wrong_player1){
+    auto env = setup::createEnv();
+
+    env->quaffle->position = env->team1->seeker->position;
+    EXPECT_FALSE(gameController::playerCanShoot(env->team1->seeker, env));
+}
