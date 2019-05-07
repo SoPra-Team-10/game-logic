@@ -96,6 +96,7 @@ namespace gameController {
 
     /**
      * move the selected bludger according to the game roles.
+     * @return the player the bludger attempted to knock out
      */
     auto moveBludger(std::shared_ptr<gameModel::Bludger> &bludger, std::shared_ptr<gameModel::Environment> &env) ->
         std::optional<std::shared_ptr<gameModel::Player>>;
