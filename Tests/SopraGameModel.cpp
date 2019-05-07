@@ -173,11 +173,12 @@ TEST(env_test, getAllPlayerFreeCellsAround) {
 
 //-----------------------------------------Fanblock Test----------------------------------------------------------------
 
-TEST(fanblock_test, getUses) {
+TEST(fanblock_test, banFan_and_getUses_and_getBannedCount) {
     auto env = setup::createEnv();
+    // team1 has 3x impulse interferences
 
-    // hat 3x impuls
     env->team1->fanblock.banFan(gameModel::InterferenceType::Impulse);
 
+    EXPECT_EQ(env->team1->fanblock.getBannedCount(gameModel::InterferenceType::Impulse), 1);
     EXPECT_EQ(env->team1->fanblock.getUses(gameModel::InterferenceType::Impulse), 2);
 }

@@ -213,8 +213,8 @@ namespace gameModel{
         void banFan(InterferenceType fan);
         void banFan(communication::messages::types::FanType fan);
 
-        auto fanToInterference(communication::messages::types::FanType fanType) const -> InterferenceType;
-        auto interferenceToFan(InterferenceType type) const -> communication::messages::types::FanType;
+        static auto fanToInterference(communication::messages::types::FanType fanType) -> InterferenceType;
+        static auto interferenceToFan(InterferenceType type) -> communication::messages::types::FanType;
     private:
         std::map<InterferenceType, int> currFans;
         std::map<InterferenceType, const int> initialFans;
