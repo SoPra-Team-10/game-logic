@@ -6,7 +6,7 @@
 
 namespace gameController{
     Action::Action(std::shared_ptr<gameModel::Environment> env, std::shared_ptr<gameModel::Player> actor,
-            gameModel::Position target) : env(std::move(env)), actor(std::move(actor)), target(target){}
+            gameModel::Position target) :  actor(std::move(actor)), env(std::move(env)), target(target){}
 
 
     Shot::Shot(std::shared_ptr<gameModel::Environment> env, std::shared_ptr<gameModel::Player> actor,
