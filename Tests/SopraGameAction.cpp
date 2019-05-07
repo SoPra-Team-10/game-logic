@@ -140,6 +140,28 @@ TEST(shot_test, throw_execute_fail_and_disperse){
     std::cout << "landed on {" << env->quaffle->position.x << ", " << env->quaffle->position.y << "}" << std::endl;
 }
 
+TEST(shot_test, throw_disperse_and_succed){
+    auto env = setup::createEnv({0, {}, {1, 1, 1, 1, 1, 1, 1, 1, 1}, {0, 1, 1, 1, 0, 1}, {}});
+    env->team1->chasers[0]->position = {6,6};
+    env->quaffle->position = env->team1->chasers[0]->position;
+    env->team1->chasers[1]->position = {7,7};
+    env->team2->chasers[1]->position = {9,5};
+    env->team1->chasers[2]->position = {7,5};
+    env->team1->beaters[0]->position = {8,5};
+    env->team1->beaters[1]->position = {8,7};
+    env->team1->seeker->position = {9,6};
+    env->team1->keeper->position = {9,7};
+    env->team2->chasers[0]->position = {9,8};
+    env->team2->chasers[2]->position = {7,6};
+    gameController::Shot testShot = {env, env->team1->chasers[0], env->quaffle, {8,6}};
+    testShot.execute();
+    EXPECT_THAT(env->quaffle->position, testing::AnyOf(gameModel::Position(6,8), gameModel::Position(7,8), gameModel::Position(8,8), gameModel::Position(9,8), gameModel::Position(10,8),
+                                                gameModel::Position(6,7), gameModel::Position(10,7), gameModel::Position(6,6), gameModel::Position(10,6),
+                                                gameModel::Position(6,5), gameModel::Position(10,5),
+                                                gameModel::Position(6,4), gameModel::Position(7,4), gameModel::Position(8,4), gameModel::Position(9,4), gameModel::Position(10,4)));
+    std::cout << "landed on {" << env->quaffle->position.x << ", " << env->quaffle->position.y << "}" << std::endl;
+}
+
 TEST(shot_test, shot_on_goal){
     auto env = setup::createEnv({0, {}, {}, {1, 0, 0, 0, 0, 0}, {}});
 
@@ -185,6 +207,16 @@ TEST(shot_test, invalid_shot_on_goal1){
     EXPECT_EQ(res.first[0], gameController::ActionResult::ThrowSuccess);
     EXPECT_EQ(env->quaffle->position, gameModel::Position(2, 8));
 }
+
+//---------------------------Quaffelshot Execute goalCheck--------------------------------------------------------------------------
+
+/*TEST(shot_test, goalcheck0){
+    auto env = setup::createEnv();
+
+    env->quaffle->position = env->team1->chasers[0]->position;
+    gameController::Shot testShot(env, env->team1->chasers[0], env->quaffle, {14,4});
+    EXPECT_EQ(testShot.execute(), gameController::ActionResult::ScoreLeft);
+}*/
 
 //--------------------------Bludger shot check------------------------------------------------------------------------
 
