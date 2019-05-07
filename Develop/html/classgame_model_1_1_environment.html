@@ -131,6 +131,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a6dc6b12234cb9d31841b5d23153cb22d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a585e52dc36311ec40c350cb2a7fae9c3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgame_model_1_1_environment.html#a585e52dc36311ec40c350cb2a7fae9c3">placePlayerOnRandomFreeCell</a> (const std::shared_ptr&lt; <a class="el" href="classgame_model_1_1_player.html">Player</a> &gt; &amp;player)</td></tr>
 <tr class="separator:a585e52dc36311ec40c350cb2a7fae9c3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a67ac4b2693c8dc1e049fa1fb24357604"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgame_model_1_1_environment.html#a67ac4b2693c8dc1e049fa1fb24357604">getBallByID</a> (const communication::messages::types::EntityId &amp;id) const -&gt; std::shared_ptr&lt; <a class="el" href="classgame_model_1_1_ball.html">Ball</a> &gt;</td></tr>
+<tr class="separator:a67ac4b2693c8dc1e049fa1fb24357604"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
@@ -408,6 +410,30 @@ std::array&lt; std::shared_ptr<br class="typebreak"/>
 </div><div class="memdoc">
 <p>Gets all Positions which are not out of bounds </p>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a67ac4b2693c8dc1e049fa1fb24357604"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">auto gameModel::Environment::getBallByID </td>
+          <td>(</td>
+          <td class="paramtype">const communication::messages::types::EntityId &amp;&#160;</td>
+          <td class="paramname"><em>id</em></td><td>)</td>
+          <td> const -&gt; std::shared_ptr&lt;<a class="el" href="classgame_model_1_1_ball.html">Ball</a>&gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Get the corresponding ball object to an given id. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">id</td><td>the id of the ball. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>the corresponding ball object. </dd></dl>
 
 </div>
 </div>

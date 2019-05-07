@@ -4,6 +4,7 @@ var searchData=
   ['getallplayerfreecellsaround',['getAllPlayerFreeCellsAround',['../classgame_model_1_1_environment.html#a9ce8f0bc1d424b585bdc030205d48903',1,'gameModel::Environment']]],
   ['getallplayers',['getAllPlayers',['../classgame_model_1_1_team.html#a3add38a878f50ed9a847b01d996be4ca',1,'gameModel::Team::getAllPlayers()'],['../classgame_model_1_1_environment.html#a33e0d834f58e41ad5551a06ee220076a',1,'gameModel::Environment::getAllPlayers()']]],
   ['getallvalidcells',['getAllValidCells',['../classgame_model_1_1_environment.html#a13fbde88faea456678ae3471f20b11c2',1,'gameModel::Environment']]],
+  ['getballbyid',['getBallByID',['../classgame_model_1_1_environment.html#a67ac4b2693c8dc1e049fa1fb24357604',1,'gameModel::Environment']]],
   ['getcell',['getCell',['../classgame_model_1_1_environment.html#a7c095b6202f82cc67d89aa3ec66f387d',1,'gameModel::Environment::getCell(int x, int y)'],['../classgame_model_1_1_environment.html#a71dc1b8596a609a49215beb0d0870489',1,'gameModel::Environment::getCell(const Position &amp;position)']]],
   ['getextraturnprob',['getExtraTurnProb',['../classgame_model_1_1_config.html#a7e2134a72f3b75c43610d337abf8e9c0',1,'gameModel::Config']]],
   ['getopponents',['getOpponents',['../classgame_model_1_1_environment.html#ab3bc9e490d18df58fbbe4f5f3dfd1b05',1,'gameModel::Environment']]],
