@@ -64,6 +64,13 @@ namespace gameController{
             }
 
             for(const auto &res : goalCheck()){
+                if(res == ActionResult::ScoreLeft){
+                    env->team1->score += 10;
+                } else if(res == ActionResult::ScoreRight){
+                    env->team2->score += 10;
+                } else {
+                    throw std::runtime_error("Fatal error. goalcheck returned unexpected result");
+                }
                 shotRes.push_back(res);
             }
         } else if(BLUDGERSHOT){
@@ -309,9 +316,11 @@ namespace gameController{
                 if (foul == gameModel::Foul::ChargeGoal) {
                     if (gameModel::Environment::getCell(this->target) == gameModel::Cell::GoalRight) {
                         actions.push_back(ActionResult::ScoreLeft);
+                        env->team1->score += 10;
                     }
                     else if (gameModel::Environment::getCell(this->target) == gameModel::Cell::GoalLeft) {
                         actions.push_back(ActionResult::ScoreRight);
+                        env->team2->score += 10;
                     }
                 }
             }
@@ -322,6 +331,7 @@ namespace gameController{
                 if (INSTANCE_OF(this->actor, gameModel::Seeker)) {
                     if (actionTriggered(env->config.gameDynamicsProbs.catchSnitch)) {
                         actions.push_back(ActionResult::SnitchCatch);
+                        env->getTeam(actor)->score += 30;
                     }
                 }
             }
