@@ -145,6 +145,9 @@ namespace gameModel{
         std::map<communication::messages::types::Broom, double> extraTurnProbs;
     };
 
+    /**
+     * Base class for game objects like a ball or a player.
+     * */
     class Object{
     public:
         Object() = default;
