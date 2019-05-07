@@ -128,8 +128,8 @@ TEST(shot_test, throw_execute_fail_and_disperse){
     gameController::Shot testShot(env, env->team1->keeper, env->quaffle, {16, 8});
     auto res = testShot.execute();
     EXPECT_GE(res.first.size(), 2);
-    EXPECT_EQ(res.first[0], gameController::ShotResult::Miss);
-    EXPECT_EQ(res.first[1], gameController::ShotResult::ScoreRight);
+    EXPECT_EQ(res.first[0], gameController::ActionResult::Miss);
+    EXPECT_EQ(res.first[1], gameController::ActionResult::ScoreRight);
     EXPECT_THAT(env->quaffle->position, testing::AnyOf(gameModel::Position(13,11), gameModel::Position(14,11),
                                                       gameModel::Position(13, 10), gameModel::Position(14, 10), gameModel::Position(15 ,10),
                                                       gameModel::Position(13, 9), gameModel::Position(14, 9), gameModel::Position(15, 9),
