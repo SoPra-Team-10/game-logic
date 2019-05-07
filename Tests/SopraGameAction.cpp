@@ -275,7 +275,7 @@ TEST(shot_test, bludger_shot_on_Beater){
 }
 
 //---------------------------getAllLandingCells----------------------------------------------------------------------
-TEST(shot_Test, get_free_landing_cells1){
+/*TEST(shot_Test, get_free_landing_cells1){
     auto env = setup::createEnv();
     auto testShot = gameController::Shot(env, env->team1.get()->seeker, env->quaffle, gameModel::Position{16,8});
     std::vector<gameModel::Position> testVector = {gameModel::Position(13,11), gameModel::Position(14,11),
@@ -300,7 +300,7 @@ TEST(shot_Test, get_free_landing_cells2){
                                                gameModel::Position(13, 6), gameModel::Position(14, 6), gameModel::Position(16, 6),
                                                gameModel::Position(13, 5), gameModel::Position(14, 5), gameModel::Position(15, 5), gameModel::Position(16, 5)};
     EXPECT_EQ(testShot.getAllLandingCells(), testVector);
-}
+}*/
 
 //---------------------------Move Foul Check tests----------------------------------------------------------------------
 
