@@ -303,11 +303,12 @@ namespace gameController{
                 }
             }
         }
-
-        if(this->env->snitch->position == this->target){
-            if(INSTANCE_OF(this->actor, gameModel::Seeker)) {
-                if (actionTriggered(env->config.gameDynamicsProbs.catchSnitch)) {
-                    actions.push_back(ActionResult::SnitchCatch);
+        if(env->snitch->exists) {
+            if (this->env->snitch->position == this->target) {
+                if (INSTANCE_OF(this->actor, gameModel::Seeker)) {
+                    if (actionTriggered(env->config.gameDynamicsProbs.catchSnitch)) {
+                        actions.push_back(ActionResult::SnitchCatch);
+                    }
                 }
             }
         }
