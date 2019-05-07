@@ -161,21 +161,35 @@ namespace gameController{
         using Env = gameModel::Environment;
         using Cell = gameModel::Cell;
         ret.reserve((2 * n + 1) * (2 * n + 1) -1);
-        for(int x = target.x - n; x <= target.x + n; x++){
-            for(int y = target.y - n; y <= target.y + n; y++){
-                if(gameModel::Position{x, y} == target){
-                    continue;
-                }
 
-                if(Env::getCell(x, y) == Cell::OutOfBounds){
-                    continue;
-                }
+        int startX = target.x - n;
+        int endX = target.x + n;
+        int startY = target.y - n;
+        int endY = target.y + n;
 
-                if(env->cellIsFree({x, y})){
-                    ret.emplace_back(x, y);
+        do {
+            for(int yPos = startY; yPos <= endY; yPos++){
+                for(int xPos = startX; xPos <= endX; xPos++){
+
+                    if(gameModel::Position{xPos, yPos} == target){
+                        continue;
+                    }
+
+                    if(Env::getCell(xPos, yPos) == Cell::OutOfBounds){
+                        continue;
+                    }
+
+                    if(env->cellIsFree({xPos, yPos})){
+                        ret.emplace_back(xPos, yPos);
+                    }
                 }
             }
-        }
+
+            startX--;
+            endX++;
+            startY--;
+            endY++;
+        } while (ret.empty());
 
         return ret;
     }
