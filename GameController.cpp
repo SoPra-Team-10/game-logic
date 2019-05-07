@@ -131,7 +131,7 @@ namespace gameController {
     }
 
     // ToDo: TESTS!!!
-    void moveBludger(std::shared_ptr<gameModel::Bludger> &bludger, std::shared_ptr<gameModel::Environment> &env) {
+    bool moveBludger(std::shared_ptr<gameModel::Bludger> &bludger, std::shared_ptr<gameModel::Environment> &env) {
         auto players = env->getAllPlayers();
 
         // find nearest player
@@ -165,6 +165,7 @@ namespace gameController {
                 }
                 // knockout player
                 minDistancePlayer->knockedOut = true;
+                return true;
             }
         }
         else {
@@ -172,6 +173,7 @@ namespace gameController {
             bludger->position = crossedCells[0];
         }
 
+        return false;
     }
 
     bool playerCanShoot(const std::shared_ptr<const gameModel::Player> &player,
