@@ -223,10 +223,10 @@ namespace gameController {
             if(!snitch->exists){
                 throw std::runtime_error("Snitch does not exist");
             }
-            int minDistanceMiddle = getDistance(snitch->position, gameModel::Position{6,8});
+            int minDistanceMiddle = getDistance(snitch->position, gameModel::Position{8,6});
             auto freeCells = env->getAllPlayerFreeCellsAround(snitch->position);
             for(const auto &pos : freeCells){
-                if(getDistance(pos, gameModel::Position{6,8}) < minDistanceMiddle){
+                if(getDistance(pos, gameModel::Position{8,6}) < minDistanceMiddle){
                     possiblePositions.emplace_back(pos);
                 }
             }
