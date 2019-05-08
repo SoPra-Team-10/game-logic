@@ -245,18 +245,9 @@ namespace gameController {
             auto closestSeeker = env->team1->seeker;
             auto disnatceTeam2 = getDistance(snitch->position, env->team2->seeker->position);
             if (disnatceTeam2 < minDistanceSeeker) {
-                minDistanceSeeker = disnatceTeam2;
                 closestSeeker = env->team2->seeker;
             }
-            auto freeCells = env->getAllPlayerFreeCellsAround(snitch->position);
-            for (const auto &pos : freeCells) {
-                if (getDistance(pos, closestSeeker->position) < minDistanceSeeker) {
-                    possiblePositions.emplace_back(pos);
-                }
-            }
-            if (!possiblePositions.empty()) {
-                snitch->position = possiblePositions[rng(0, static_cast<int>(possiblePositions.size() - 1))];
-            }
+            snitch->position = closestSeeker->position;
 
         }else{
             throw std::runtime_error("Something went really wrong");
