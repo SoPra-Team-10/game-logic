@@ -30,7 +30,7 @@ __AUTHOR__="Jeroen de Bruijn"
 # the gh-pages branch of a repository specified by GH_REPO_REF.
 # Before this script is used there should already be a gh-pages branch in the
 # repository.
-# 
+#
 ################################################################################
 
 ################################################################################
@@ -46,6 +46,10 @@ cd code_docs
 # Get the current gh-pages branch
 git clone -b gh-pages https://git@$GH_REPO_REF
 cd $GH_REPO_NAME
+
+# Copy the README
+rm README.md
+cp ${TRAVIS_BUILD_DIR}/README.md .
 
 ##### Configure git.
 # Set the push default to simple i.e. push only the current branch.
@@ -68,7 +72,7 @@ elif [ "$TRAVIS_BRANCH" == "Develop" ]; then
     rm -rf Develop
 	mkdir -p  Develop
 	cd Develop
-else 
+else
 	echo "No Doxygen Documentation for $TRAVIS_BRANCH Branch."
 	exit 0
 fi
