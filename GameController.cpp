@@ -166,6 +166,10 @@ namespace gameController {
                 }
                 // knockout player
                 minDistancePlayer->knockedOut = true;
+
+                //Set Bludger to new random position
+                auto possiblePositions = env->getAllFreeCells();
+                bludger->position = possiblePositions[rng(0, static_cast<int>(possiblePositions.size() - 1))];
             }
 
             return minDistancePlayer;
