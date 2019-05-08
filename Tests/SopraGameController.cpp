@@ -180,7 +180,7 @@ TEST(controller_test, moveSnitch0) {
     env->team1->seeker->position = gameModel::Position(15, 7);
     env->team2->seeker->position = {0,8};
 
-    gameController::moveSnitch(env->snitch, env);
+    gameController::moveSnitch(env->snitch, env, gameModel::SnitchPhases::Normal);
 
     EXPECT_THAT(env->snitch->position, testing::AnyOf(gameModel::Position(16, 8), gameModel::Position(16,6), gameModel::Position(15,6),
                                                         gameModel::Position(15,8)));
@@ -194,7 +194,7 @@ TEST(controller_test, moveSnitch1){
     env->team1->seeker->position = gameModel::Position(10,9);
     env->team2->seeker->position = {0,8};
 
-    gameController::moveSnitch(env->snitch, env);
+    gameController::moveSnitch(env->snitch, env, gameModel::SnitchPhases::Normal);
 
     EXPECT_THAT(env->snitch->position, testing::AnyOf(gameModel::Position(10,11), gameModel::Position(11,11), gameModel::Position(12,11),
                                                         gameModel::Position(12,10), gameModel::Position(12,9) ));
