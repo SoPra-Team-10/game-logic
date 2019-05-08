@@ -195,28 +195,67 @@ namespace gameController {
         return false;
     }
 
-    void moveSnitch(std::shared_ptr<gameModel::Snitch> &snitch, std::shared_ptr<gameModel::Environment> &env){
-        if(!snitch->exists){
-            throw std::runtime_error("Snitch does not exist");
-        }
-        int minDistanceSeeker = getDistance(snitch->position, env->team1->seeker->position);
+    void moveSnitch(std::shared_ptr<gameModel::Snitch> &snitch, std::shared_ptr<gameModel::Environment> &env, gameModel::SnitchPhases snitchPhases){
         std::deque<gameModel::Position> possiblePositions;
-        auto closestSeeker = env->team1->seeker;
-        auto disnatceTeam2 = getDistance(snitch->position, env->team2->seeker->position);
-        if(disnatceTeam2 < minDistanceSeeker){
-            minDistanceSeeker = disnatceTeam2;
-            closestSeeker = env->team2->seeker;
-        }
-        auto freeCells = env->getAllPlayerFreeCellsAround(snitch->position);
-        for(const auto &pos : freeCells) {
-            if (getDistance(pos, closestSeeker->position) > minDistanceSeeker) {
-                possiblePositions.emplace_back(pos);
+        if(snitchPhases == gameModel::SnitchPhases::Normal) {
+            if (!snitch->exists) {
+                throw std::runtime_error("Snitch does not exist");
             }
-        }
-        if(possiblePositions.empty()){
-            snitch->position = freeCells[rng(0, static_cast<int>(freeCells.size() - 1))];
-        }else {
-            snitch->position = possiblePositions[rng(0, static_cast<int>(possiblePositions.size() - 1))];
+            int minDistanceSeeker = getDistance(snitch->position, env->team1->seeker->position);
+            auto closestSeeker = env->team1->seeker;
+            auto disnatceTeam2 = getDistance(snitch->position, env->team2->seeker->position);
+            if (disnatceTeam2 < minDistanceSeeker) {
+                minDistanceSeeker = disnatceTeam2;
+                closestSeeker = env->team2->seeker;
+            }
+            auto freeCells = env->getAllPlayerFreeCellsAround(snitch->position);
+            for (const auto &pos : freeCells) {
+                if (getDistance(pos, closestSeeker->position) > minDistanceSeeker) {
+                    possiblePositions.emplace_back(pos);
+                }
+            }
+            if (possiblePositions.empty()) {
+                snitch->position = freeCells[rng(0, static_cast<int>(freeCells.size() - 1))];
+            } else {
+                snitch->position = possiblePositions[rng(0, static_cast<int>(possiblePositions.size() - 1))];
+            }
+        }else if(snitchPhases == gameModel::SnitchPhases::ExcessLength){
+            if(!snitch->exists){
+                throw std::runtime_error("Snitch does not exist");
+            }
+            int minDistanceMiddle = getDistance(snitch->position, gameModel::Position{6,8});
+            auto freeCells = env->getAllPlayerFreeCellsAround(snitch->position);
+            for(const auto &pos : freeCells){
+                if(getDistance(pos, gameModel::Position{6,8}) < minDistanceMiddle){
+                    possiblePositions.emplace_back(pos);
+                }
+            }
+            if(!possiblePositions.empty()){
+                snitch->position = possiblePositions[gameController::rng(0, static_cast<int> (possiblePositions.size() -1))];
+            }
+        }else if(snitchPhases == gameModel::SnitchPhases::DirectEnd){
+            if(!snitch->exists){
+                throw std::runtime_error("Snitch does not exist");
+            }
+            int minDistanceSeeker = getDistance(snitch->position, env->team1->seeker->position);
+            auto closestSeeker = env->team1->seeker;
+            auto disnatceTeam2 = getDistance(snitch->position, env->team2->seeker->position);
+            if (disnatceTeam2 < minDistanceSeeker) {
+                minDistanceSeeker = disnatceTeam2;
+                closestSeeker = env->team2->seeker;
+            }
+            auto freeCells = env->getAllPlayerFreeCellsAround(snitch->position);
+            for (const auto &pos : freeCells) {
+                if (getDistance(pos, closestSeeker->position) < minDistanceSeeker) {
+                    possiblePositions.emplace_back(pos);
+                }
+            }
+            if (!possiblePositions.empty()) {
+                snitch->position = possiblePositions[rng(0, static_cast<int>(possiblePositions.size() - 1))];
+            }
+
+        }else{
+            throw std::runtime_error("Something went really wrong");
         }
     }
 }

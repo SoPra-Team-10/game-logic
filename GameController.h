@@ -109,7 +109,7 @@ namespace gameController {
     /**
      * make the move for the Snitch as in the Rules given
      */
-    void moveSnitch(std::shared_ptr<gameModel::Snitch> &snitch, std::shared_ptr<gameModel::Environment> &env);
+    void moveSnitch(std::shared_ptr<gameModel::Snitch> &snitch, std::shared_ptr<gameModel::Environment> &env, gameModel::SnitchPhases snitchPhases);
 }
 
 
