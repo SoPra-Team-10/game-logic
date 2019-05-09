@@ -392,6 +392,13 @@ namespace gameModel{
         static Cell getCell(const Position &position);
 
         /**
+         * get all field around (also occupied ones) a given position which are part of the game field.
+         * @param position
+         * @return a vector of positions.
+         */
+        static auto getCellsAround(const Position &position) -> std::vector<Position>;
+
+        /**
          * Gets all valid Position surrounding the given position
          * @param position
          * @return

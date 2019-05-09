@@ -218,6 +218,24 @@ namespace gameModel{
         return resultVect;
     }
 
+    auto Environment::getCellsAround(const Position &position) -> std::vector<Position> {
+        std::vector<Position> resultVect;
+        resultVect.reserve(8);
+
+        for (int yPos = position.y - 1; yPos <= position.y + 1; yPos++) {
+            for (int xPos = position.x - 1; xPos <= position.x + 1; xPos++) {
+                if (xPos == position.x && yPos == position.y) {
+                    continue;
+                }
+                else if (Environment::getCell(xPos, yPos) != Cell::OutOfBounds) {
+                    resultVect.emplace_back(Position(xPos, yPos));
+                }
+            }
+        }
+
+        return resultVect;
+    }
+
     auto Environment::getTeamMates(const std::shared_ptr<Player>& player) const -> std::array<std::shared_ptr<Player>, 6> {
         auto players = team1->hasMember(player) ? team1->getAllPlayers() : team2->getAllPlayers();
         std::array<std::shared_ptr<Player>, 6> ret;

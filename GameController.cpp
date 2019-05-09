@@ -182,11 +182,12 @@ namespace gameController {
         return {};
     }
 
-    bool playerCanShoot(const std::shared_ptr<const gameModel::Player> &player,
-                        const std::shared_ptr<const gameModel::Environment> &env) {
+    bool playerCanPerformAction(const std::shared_ptr<const gameModel::Player> &player,
+                                const std::shared_ptr<const gameModel::Environment> &env) {
         if(player->knockedOut || player->isFined){
             return false;
         }
+
         // check if there is generally allowed to perform a shot and a ball to shot on the same position as the player
         if(player->position == env->quaffle->position && (INSTANCE_OF(player, const gameModel::Chaser) ||
             INSTANCE_OF(player, const gameModel::Keeper))){
@@ -194,6 +195,15 @@ namespace gameController {
         } else if((player->position == env->bludgers[0]->position || player->position == env->bludgers[1]->position) &&
                     INSTANCE_OF(player, const gameModel::Beater)){
             return true;
+        }
+
+        // check if player can wrest quaffel
+        auto cells = gameModel::Environment::getCellsAround(player->position);
+        for (const auto &cell : cells) {
+            gameController::WrestQuaffle act(env, player, cell);
+            if (act.check() == ActionCheckResult::Success) {
+                return true;
+            }
         }
 
         return false;
