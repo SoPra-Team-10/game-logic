@@ -271,7 +271,6 @@ TEST(controller_test, moveSnitch1){
 
     EXPECT_THAT(env->snitch->position, testing::AnyOf(gameModel::Position(10,11), gameModel::Position(11,11), gameModel::Position(12,11),
                                                         gameModel::Position(12,10), gameModel::Position(12,9) ));
-    std::cout << "landed on {" << env->snitch->position.x << ", " << env->snitch->position.y << "}" << std::endl;
 }
 
 TEST(controller_test, moveSnitch2){
@@ -315,7 +314,6 @@ TEST(controller_test, moveSnitch6){
     env->snitch->position = gameModel::Position{8,6};
     gameController::moveSnitch(env->snitch, env, gameController::ExcessLength::Stage3);
     EXPECT_EQ(env->snitch->position, gameModel::Position(10,6));
-    std::cout << "landed on {" << env->snitch->position.x << ", " << env->snitch->position.y << "}" << std::endl;
 }
 
 TEST(controller_test, moveSnitch7){
@@ -327,7 +325,6 @@ TEST(controller_test, moveSnitch7){
     env->team1->chasers[1]->position = gameModel::Position{0,6};
     gameController::moveSnitch(env->snitch, env, gameController::ExcessLength::None);
     EXPECT_THAT(env->snitch->position, testing::AnyOf(gameModel::Position(8,5), gameModel::Position(8,7)));
-    std::cout << "landed on {" << env->snitch->position.x << ", " << env->snitch->position.y << "}" << std::endl;
 }
 
 TEST(controller_test, moveSnitch8){
@@ -338,5 +335,4 @@ TEST(controller_test, moveSnitch8){
     env->team2->seeker->position = gameModel::Position{6,4};
     gameController::moveSnitch(env->snitch, env, gameController::ExcessLength::None);
     EXPECT_THAT(env->snitch->position, testing::AnyOf(gameModel::Position(7,7), gameModel::Position(9,5)));
-    std::cout << "landed on {" << env->snitch->position.x << ", " << env->snitch->position.y << "}" << std::endl;
 }
