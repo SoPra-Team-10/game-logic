@@ -266,6 +266,7 @@ namespace gameController {
                     closestSeeker = env->team2->seeker;
                 }
                 snitch->position = closestSeeker->position;
+                env->getTeam(closestSeeker)->score += 30;
             }break;
         }
     }
