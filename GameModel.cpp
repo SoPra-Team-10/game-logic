@@ -377,6 +377,22 @@ namespace gameModel{
         }
     }
 
+    auto Environment::isGoalCell(const Position &pos) -> bool {
+
+        for (const Position &goalPos : getGoalsLeft()) {
+            if (goalPos == pos) {
+                return true;
+            }
+        }
+
+        for (const Position &goalPos : getGoalsRight()) {
+            if (goalPos == pos) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 
     // Ball Types
 
