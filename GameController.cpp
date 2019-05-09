@@ -199,58 +199,51 @@ namespace gameController {
         return false;
     }
 
-    void moveSnitch(std::shared_ptr<gameModel::Snitch> &snitch, std::shared_ptr<gameModel::Environment> &env, gameModel::SnitchPhases snitchPhases){
+    void moveSnitch(std::shared_ptr<gameModel::Snitch> &snitch, std::shared_ptr<gameModel::Environment> &env, ExcessLength excessLength){
+        if (!snitch->exists) {
+            throw std::runtime_error("Snitch does not exist");
+        }
         std::deque<gameModel::Position> possiblePositions;
-        if(snitchPhases == gameModel::SnitchPhases::Normal) {
-            if (!snitch->exists) {
-                throw std::runtime_error("Snitch does not exist");
-            }
-            int minDistanceSeeker = getDistance(snitch->position, env->team1->seeker->position);
-            auto closestSeeker = env->team1->seeker;
-            auto disnatceTeam2 = getDistance(snitch->position, env->team2->seeker->position);
-            if (disnatceTeam2 < minDistanceSeeker) {
-                minDistanceSeeker = disnatceTeam2;
-                closestSeeker = env->team2->seeker;
-            }
-            auto freeCells = env->getAllPlayerFreeCellsAround(snitch->position);
-            for (const auto &pos : freeCells) {
-                if (getDistance(pos, closestSeeker->position) > minDistanceSeeker) {
-                    possiblePositions.emplace_back(pos);
+        switch (excessLength) {
+            case ExcessLength::None : {
+                int minDistanceSeeker = getDistance(snitch->position, env->team1->seeker->position);
+                auto closestSeeker = env->team1->seeker;
+                auto disnatceTeam2 = getDistance(snitch->position, env->team2->seeker->position);
+                if (disnatceTeam2 < minDistanceSeeker) {
+                    minDistanceSeeker = disnatceTeam2;
+                    closestSeeker = env->team2->seeker;
+                }
+                auto freeCells = env->getAllPlayerFreeCellsAround(snitch->position);
+                for (const auto &pos : freeCells) {
+                    if (getDistance(pos, closestSeeker->position) > minDistanceSeeker) {
+                        possiblePositions.emplace_back(pos);
+                    }
+                }
+                if (possiblePositions.empty()) {
+                    snitch->position = freeCells[rng(0, static_cast<int>(freeCells.size() - 1))];
+                } else {
+                    snitch->position = possiblePositions[rng(0, static_cast<int>(possiblePositions.size() - 1))];
                 }
             }
-            if (possiblePositions.empty()) {
-                snitch->position = freeCells[rng(0, static_cast<int>(freeCells.size() - 1))];
-            } else {
-                snitch->position = possiblePositions[rng(0, static_cast<int>(possiblePositions.size() - 1))];
-            }
-        }else if(snitchPhases == gameModel::SnitchPhases::ExcessLength){
-            if(!snitch->exists){
-                throw std::runtime_error("Snitch does not exist");
-            }
-            int minDistanceMiddle = getDistance(snitch->position, gameModel::Position{8,6});
-            auto freeCells = env->getAllPlayerFreeCellsAround(snitch->position);
-            for(const auto &pos : freeCells){
-                if(getDistance(pos, gameModel::Position{8,6}) < minDistanceMiddle){
-                    possiblePositions.emplace_back(pos);
+            break;
+            case ExcessLength::Stage1:
+                break;
+            case ExcessLength::Stage2: {
+                std::vector<gameModel::Position> newPosition = getAllCrossedCells(snitch->position,
+                                                                                  gameModel::Position(8, 6));
+                if (!newPosition.empty()) {
+                    snitch->position = newPosition[0];
                 }
-            }
-            if(!possiblePositions.empty()){
-                snitch->position = possiblePositions[gameController::rng(0, static_cast<int> (possiblePositions.size() -1))];
-            }
-        }else if(snitchPhases == gameModel::SnitchPhases::DirectEnd){
-            if(!snitch->exists){
-                throw std::runtime_error("Snitch does not exist");
-            }
-            int minDistanceSeeker = getDistance(snitch->position, env->team1->seeker->position);
-            auto closestSeeker = env->team1->seeker;
-            auto disnatceTeam2 = getDistance(snitch->position, env->team2->seeker->position);
-            if (disnatceTeam2 < minDistanceSeeker) {
-                closestSeeker = env->team2->seeker;
-            }
-            snitch->position = closestSeeker->position;
-
-        }else{
-            throw std::runtime_error("Something went really wrong");
+            }break;
+            case ExcessLength::Stage3: {
+                int minDistanceSeeker = getDistance(snitch->position, env->team1->seeker->position);
+                auto closestSeeker = env->team1->seeker;
+                auto disnatceTeam2 = getDistance(snitch->position, env->team2->seeker->position);
+                if (disnatceTeam2 < minDistanceSeeker) {
+                    closestSeeker = env->team2->seeker;
+                }
+                snitch->position = closestSeeker->position;
+            }break;
         }
     }
 }

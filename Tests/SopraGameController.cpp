@@ -196,7 +196,7 @@ TEST(controller_test, moveSnitch0) {
     env->team1->seeker->position = gameModel::Position(15, 7);
     env->team2->seeker->position = {0,8};
 
-    gameController::moveSnitch(env->snitch, env, gameModel::SnitchPhases::Normal);
+    gameController::moveSnitch(env->snitch, env, gameController::ExcessLength::None);
 
     EXPECT_THAT(env->snitch->position, testing::AnyOf(gameModel::Position(16, 8), gameModel::Position(16,6), gameModel::Position(15,6),
                                                         gameModel::Position(15,8)));
@@ -210,7 +210,7 @@ TEST(controller_test, moveSnitch1){
     env->team1->seeker->position = gameModel::Position(10,9);
     env->team2->seeker->position = {0,8};
 
-    gameController::moveSnitch(env->snitch, env, gameModel::SnitchPhases::Normal);
+    gameController::moveSnitch(env->snitch, env, gameController::ExcessLength::None);
 
     EXPECT_THAT(env->snitch->position, testing::AnyOf(gameModel::Position(10,11), gameModel::Position(11,11), gameModel::Position(12,11),
                                                         gameModel::Position(12,10), gameModel::Position(12,9) ));
@@ -220,25 +220,34 @@ TEST(controller_test, moveSnitch2){
     auto env = setup::createEnv();
     env->snitch->exists = true;
     env->snitch->position = gameModel::Position{6,4};
-    gameController::moveSnitch(env->snitch, env, gameModel::SnitchPhases::ExcessLength);
-    EXPECT_EQ(env->snitch->position, gameModel::Position(7,5));
+    gameController::moveSnitch(env->snitch, env, gameController::ExcessLength::Stage1);
+    EXPECT_EQ(env->snitch->position, gameModel::Position(6,4));
 }
+
 
 TEST(controller_test, moveSnitch3){
     auto env = setup::createEnv();
     env->snitch->exists = true;
-    env->snitch->position = gameModel::Position{8,6};
-    gameController::moveSnitch(env->snitch, env, gameModel::SnitchPhases::ExcessLength);
-    EXPECT_EQ(env->snitch->position, gameModel::Position(8,6));
+    env->snitch->position = gameModel::Position{6,4};
+    gameController::moveSnitch(env->snitch, env, gameController::ExcessLength::Stage2);
+    EXPECT_EQ(env->snitch->position, gameModel::Position(7,5));
 }
 
 TEST(controller_test, moveSnitch4){
     auto env = setup::createEnv();
     env->snitch->exists = true;
+    env->snitch->position = gameModel::Position{8,6};
+    gameController::moveSnitch(env->snitch, env, gameController::ExcessLength::Stage2);
+    EXPECT_EQ(env->snitch->position, gameModel::Position(8,6));
+}
+
+TEST(controller_test, moveSnitch5){
+    auto env = setup::createEnv();
+    env->snitch->exists = true;
     env->team1->seeker->position = gameModel::Position(10,6);
     env->team2->seeker->position = gameModel::Position(0,6);
     env->snitch->position = gameModel::Position{8,6};
-    gameController::moveSnitch(env->snitch, env, gameModel::SnitchPhases::DirectEnd);
+    gameController::moveSnitch(env->snitch, env, gameController::ExcessLength::Stage3);
     EXPECT_EQ(env->snitch->position, gameModel::Position(10,6));
     std::cout << "landed on {" << env->snitch->position.x << ", " << env->snitch->position.y << "}" << std::endl;
 }

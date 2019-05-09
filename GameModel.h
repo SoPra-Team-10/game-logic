@@ -122,12 +122,6 @@ namespace gameModel{
         SnitchPush
     };
 
-    enum class SnitchPhases{
-        Normal,
-        ExcessLength,
-        DirectEnd
-    };
-
     /**
      * Class containing metadata for a match
      */
@@ -268,7 +262,6 @@ namespace gameModel{
     class Snitch : public Ball{
     public:
         bool exists = false;
-        const SnitchPhases snitchPhases = {};
 
         /**
          * Places Snitch on random position on the field and makes it non existent
