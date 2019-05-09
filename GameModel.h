@@ -402,6 +402,8 @@ namespace gameModel{
 
         static auto getGoalsRight() -> std::array<Position, 3>;
 
+        static auto isGoalCell(const Position &pos) -> bool;
+
 
         /**
          * Gets all players on the field

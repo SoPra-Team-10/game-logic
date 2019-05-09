@@ -158,7 +158,6 @@ TEST(shot_test, throw_disperse_and_succed){
                                                 gameModel::Position(6,7), gameModel::Position(10,7), gameModel::Position(6,6), gameModel::Position(10,6),
                                                 gameModel::Position(6,5), gameModel::Position(10,5),
                                                 gameModel::Position(6,4), gameModel::Position(7,4), gameModel::Position(8,4), gameModel::Position(9,4), gameModel::Position(10,4)));
-    std::cout << "landed on {" << env->quaffle->position.x << ", " << env->quaffle->position.y << "}" << std::endl;
 }
 
 TEST(shot_test, shot_on_goal){
@@ -192,9 +191,8 @@ TEST(shot_test, shot_on_goal2){
     env->quaffle->position = env->team1->chasers[0]->position;
     gameController::Shot testShot (env, env->team1->chasers[0], env->quaffle, {14,4});
     auto res = testShot.execute();
-    EXPECT_EQ(res.first.size(),2);
-    EXPECT_EQ(res.first[0], gameController::ActionResult::ThrowSuccess);
-    EXPECT_EQ(res.first[1], gameController::ActionResult::Intercepted);
+    EXPECT_EQ(res.first.size(),1);
+    EXPECT_EQ(res.first[0], gameController::ActionResult::Intercepted);
     EXPECT_THAT(env->quaffle->position, testing::AnyOf(gameModel::Position(13,3), gameModel::Position(13,4), gameModel::Position(13,5),
                                                         gameModel::Position(14,3), gameModel::Position(14,5),
                                                         gameModel::Position(15,3), gameModel::Position(15,4), gameModel::Position(15,5)));
