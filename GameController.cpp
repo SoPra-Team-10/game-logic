@@ -266,6 +266,11 @@ namespace gameController {
                     closestSeeker = env->team2->seeker;
                 }
                 snitch->position = closestSeeker->position;
+                if(closestSeeker->id == communication::messages::types::EntityId::LEFT_SEEKER){
+                    env->team1->score += 30;
+                }else{
+                    env->team2->score += 30;
+                }
             }break;
         }
     }
