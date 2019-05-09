@@ -209,18 +209,16 @@ namespace gameController {
                 int minDistanceSeeker = getDistance(snitch->position, env->team1->seeker->position);
                 auto closestSeeker = env->team1->seeker;
                 auto disnatceTeam2 = getDistance(snitch->position, env->team2->seeker->position);
-                std::vector<gameModel::Position> freeCells;
+                std::vector<gameModel::Position> freeCells = env->getAllPlayerFreeCellsAround(snitch->position);
                 if(minDistanceSeeker == disnatceTeam2) {
-                    freeCells = env->getAllPlayerFreeCellsAround(snitch->position);
                     for (const auto &pos : freeCells) {
-                        if (getDistance(pos, closestSeeker->position) == minDistanceSeeker && getDistance(pos, env->team2->seeker->position) == minDistanceSeeker) {
+                        if (getDistance(pos, closestSeeker->position) == getDistance(pos, env->team2->seeker->position)) {
                             possiblePositions.emplace_back(pos);
                         }
                     }
                 }else if (disnatceTeam2 < minDistanceSeeker) {
                     minDistanceSeeker = disnatceTeam2;
                     closestSeeker = env->team2->seeker;
-                    freeCells = env->getAllPlayerFreeCellsAround(snitch->position);
                     for (const auto &pos : freeCells) {
                         if (getDistance(pos, closestSeeker->position) > minDistanceSeeker) {
                             possiblePositions.emplace_back(pos);
@@ -239,7 +237,7 @@ namespace gameController {
             case ExcessLength::Stage2: {
                 std::vector<gameModel::Position> newPosition = getAllCrossedCells(snitch->position,
                                                                                   gameModel::Position(8, 6));
-                if (!newPosition.empty()) {
+                if (newPosition.empty()) {
                     snitch->position = gameModel::Position{8,6};
                 }else{
                     snitch->position = newPosition[0];

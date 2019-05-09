@@ -194,7 +194,7 @@ TEST(controller_test, moveSnitch0) {
     env->snitch->exists = true;
     env->snitch->position = gameModel::Position(16, 7);
     env->team1->seeker->position = gameModel::Position(15, 7);
-    env->team2->seeker->position = {0,8};
+    env->team2->seeker->position = gameModel::Position(0,8);
 
     gameController::moveSnitch(env->snitch, env, gameController::ExcessLength::None);
 
