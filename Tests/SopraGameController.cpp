@@ -236,7 +236,7 @@ TEST(controller_test, moveSnitch3){
 TEST(controller_test, moveSnitch4){
     auto env = setup::createEnv();
     env->snitch->exists = true;
-    env->snitch->position = gameModel::Position{8,6};
+    env->snitch->position = gameModel::Position{7,5};
     gameController::moveSnitch(env->snitch, env, gameController::ExcessLength::Stage2);
     EXPECT_EQ(env->snitch->position, gameModel::Position(8,6));
 }
@@ -244,10 +244,41 @@ TEST(controller_test, moveSnitch4){
 TEST(controller_test, moveSnitch5){
     auto env = setup::createEnv();
     env->snitch->exists = true;
+    env->snitch->position = gameModel::Position{8,6};
+    gameController::moveSnitch(env->snitch, env, gameController::ExcessLength::Stage2);
+    EXPECT_EQ(env->snitch->position, gameModel::Position(8,6));
+}
+
+TEST(controller_test, moveSnitch6){
+    auto env = setup::createEnv();
+    env->snitch->exists = true;
     env->team1->seeker->position = gameModel::Position(10,6);
     env->team2->seeker->position = gameModel::Position(0,6);
     env->snitch->position = gameModel::Position{8,6};
     gameController::moveSnitch(env->snitch, env, gameController::ExcessLength::Stage3);
     EXPECT_EQ(env->snitch->position, gameModel::Position(10,6));
+    std::cout << "landed on {" << env->snitch->position.x << ", " << env->snitch->position.y << "}" << std::endl;
+}
+
+TEST(controller_test, moveSnitch7){
+    auto env = setup::createEnv();
+    env->snitch->exists = true;
+    env->snitch->position = gameModel::Position{8,6};
+    env->team1->seeker->position = gameModel::Position{10,6};
+    env->team2->seeker->position = gameModel::Position{6,6};
+    env->team1->chasers[1]->position = gameModel::Position{0,6};
+    gameController::moveSnitch(env->snitch, env, gameController::ExcessLength::None);
+    EXPECT_THAT(env->snitch->position, testing::AnyOf(gameModel::Position(8,5), gameModel::Position(8,7)));
+    std::cout << "landed on {" << env->snitch->position.x << ", " << env->snitch->position.y << "}" << std::endl;
+}
+
+TEST(controller_test, moveSnitch8){
+    auto env = setup::createEnv();
+    env->snitch->exists = true;
+    env->snitch->position = gameModel::Position{8,6};
+    env->team1->seeker->position = gameModel::Position{10,8};
+    env->team2->seeker->position = gameModel::Position{6,4};
+    gameController::moveSnitch(env->snitch, env, gameController::ExcessLength::None);
+    EXPECT_THAT(env->snitch->position, testing::AnyOf(gameModel::Position(7,7), gameModel::Position(9,5)));
     std::cout << "landed on {" << env->snitch->position.x << ", " << env->snitch->position.y << "}" << std::endl;
 }
