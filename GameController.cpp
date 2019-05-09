@@ -224,6 +224,12 @@ namespace gameController {
                             possiblePositions.emplace_back(pos);
                         }
                     }
+                }else{
+                    for (const auto &pos : freeCells) {
+                        if (getDistance(pos, closestSeeker->position) > minDistanceSeeker) {
+                            possiblePositions.emplace_back(pos);
+                        }
+                    }
                 }
                 if (possiblePositions.empty()) {
                     snitch->position = freeCells[rng(0, static_cast<int>(freeCells.size() - 1))];
