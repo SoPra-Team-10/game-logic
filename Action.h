@@ -31,7 +31,8 @@ namespace gameController{
         ThrowSuccess, ///<Quaffle landed on target position
         Knockout, ///<Bludger knocked out a player
         SnitchCatch, ///Snitch is catched
-        WrestQuaffel ///>Quaffel was wrested
+        WrestQuaffel, ///>Quaffel was wrested
+        FoolAway
     };
 
     class Action {
@@ -128,7 +129,7 @@ namespace gameController{
          * Checks if a goal was scored depending on the quaffles and actors current position
          * @return
          */
-        auto goalCheck() const -> std::vector<ActionResult>;
+        auto goalCheck(const gameModel::Position &pos) const -> std::vector<ActionResult>;
     };
 
     /**
