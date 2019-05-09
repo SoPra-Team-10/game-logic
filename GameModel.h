@@ -267,7 +267,7 @@ namespace gameModel{
          * Places Snitch on random position on the field and makes it non existent
          */
         Snitch();
-        explicit Snitch(Position position);
+        Snitch(Position position);
     };
 
     /**
@@ -319,6 +319,10 @@ namespace gameModel{
          * @return
          */
         auto getPlayerByID(communication::messages::types::EntityId id) const -> std::optional<std::shared_ptr<Player>>;
+
+        static bool checkTeamConfig(const communication::messages::request::TeamConfig &config);
+
+        static bool checkTeamFormation(const communication::messages::request::TeamFormation &formation);
 
     };
 

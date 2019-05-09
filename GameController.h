@@ -12,6 +12,13 @@ namespace gameController {
     class Move;
     class WrestQuaffle;
 
+    enum class ExcessLength{
+        None,
+        Stage1,
+        Stage2,
+        Stage3
+    };
+
     /**
      *
      * @tparam T Type of random number (int or double)
@@ -110,7 +117,7 @@ namespace gameController {
     /**
      * make the move for the Snitch as in the Rules given
      */
-    void moveSnitch(std::shared_ptr<gameModel::Snitch> &snitch, std::shared_ptr<gameModel::Environment> &env);
+    void moveSnitch(std::shared_ptr<gameModel::Snitch> &snitch, std::shared_ptr<gameModel::Environment> &env, ExcessLength excessLength);
 }
 
 
