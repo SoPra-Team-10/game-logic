@@ -129,7 +129,7 @@ namespace gameController{
          * Checks if a goal was scored depending on the quaffles and actors current position
          * @return
          */
-        auto goalCheck() const -> std::vector<ActionResult>;
+        auto goalCheck(const gameModel::Position &pos) const -> std::vector<ActionResult>;
     };
 
     /**

@@ -22,15 +22,43 @@ namespace gameController{
 
         if(QUAFFLETHROW){
             bool intercept = false;
-            for(const auto &pos : getInterceptionPositions()){
-                if(actionTriggered(env->config.gameDynamicsProbs.catchQuaffle)){
+            auto positionToCheck = getInterceptionPositions();
+            if (env->getPlayer(target).has_value()) {
+                positionToCheck.emplace_back(target);
+            }
+            for(const auto &pos : positionToCheck) {
+
+                if (gameModel::Environment::isGoalCell(pos)) {
+                    intercept = true;
+                    shotRes.push_back(ActionResult::Intercepted);
+                    //Quaffle bounces off
+                    ball->position = pos;
+                    moveToAdjacent(ball, env);
+                    break;
+                }
+                else if(actionTriggered(env->config.gameDynamicsProbs.catchQuaffle)) {
+                    intercept = true;
+                    shotRes.push_back(ActionResult::Intercepted);
+
                     auto interceptPlayer = env->getPlayer(pos);
                     if(!interceptPlayer.has_value()){
                         throw std::runtime_error("No Player at intercept position");
                     }
 
-                    intercept = true;
-                    shotRes.push_back(ActionResult::Intercepted);
+                    auto goalCheckRes = goalCheck(pos);
+                    if (!goalCheckRes.empty()) {
+                        for(const auto &res : goalCheckRes){
+                            if(res == ActionResult::ScoreLeft){
+                                env->team1->score += 10;
+                            } else if(res == ActionResult::ScoreRight){
+                                env->team2->score += 10;
+                            } else {
+                                throw std::runtime_error("Fatal error. goalcheck returned unexpected result");
+                            }
+                            shotRes.push_back(res);
+                        }
+                    }
+
                     auto &p = interceptPlayer.value();
                     if(INSTANCE_OF(p, gameModel::Chaser) || INSTANCE_OF(p, gameModel::Keeper)){
                         //Quaffle is catched
@@ -40,6 +68,8 @@ namespace gameController{
                         ball->position = pos;
                         moveToAdjacent(ball, env);
                     }
+
+                    break;
                 }
             }
 
@@ -61,18 +91,19 @@ namespace gameController{
                         ball->position = target;
                     }
                 }
+
+                for(const auto &res : goalCheck(env->quaffle->position)){
+                    if(res == ActionResult::ScoreLeft){
+                        env->team1->score += 10;
+                    } else if(res == ActionResult::ScoreRight){
+                        env->team2->score += 10;
+                    } else {
+                        throw std::runtime_error("Fatal error. goalcheck returned unexpected result");
+                    }
+                    shotRes.push_back(res);
+                }
             }
 
-            for(const auto &res : goalCheck()){
-                if(res == ActionResult::ScoreLeft){
-                    env->team1->score += 10;
-                } else if(res == ActionResult::ScoreRight){
-                    env->team2->score += 10;
-                } else {
-                    throw std::runtime_error("Fatal error. goalcheck returned unexpected result");
-                }
-                shotRes.push_back(res);
-            }
         } else if(BLUDGERSHOT){
             auto playerOnTarget = env->getPlayer(target);
             if(playerOnTarget.has_value()){
@@ -202,16 +233,17 @@ namespace gameController{
         return ret;
     }
 
-    auto Shot::goalCheck() const -> std::vector<ActionResult> {
-        if(actor->position.x == env->quaffle->position.x){
+    auto Shot::goalCheck(const gameModel::Position &pos) const -> std::vector<ActionResult> {
+        // sekrechter wurf
+        if(actor->position.x == pos.x){
             return {};
         }
 
         std::vector<ActionResult> ret;
-        double m = (env->quaffle->position.y - actor->position.y) / static_cast<double>((env->quaffle->position.x - actor->position.x));
+        double m = (pos.y - actor->position.y) / static_cast<double>((pos.x - actor->position.x));
         double c = actor->position.y - m * actor->position.x;
-        auto left = std::min(actor->position.x, env->quaffle->position.x);
-        auto right = std::max(actor->position.x, env->quaffle->position.x);
+        auto left = std::min(actor->position.x, pos.x);
+        auto right = std::max(actor->position.x, pos.x);
         auto passThrough = [m, c, left, right](const gameModel::Position &p){
             if(p.x < left || p.x > right){
                 return false;
@@ -239,12 +271,6 @@ namespace gameController{
                     ret.push_back(ActionResult::ScoreRight);
                     break;
                 }
-                else {
-                    ret.push_back(ActionResult::Intercepted);
-                    env->quaffle->position = goal;
-                    gameController::moveToAdjacent(env->quaffle, env);
-                    break;
-                }
             }
         }
 
@@ -260,12 +286,6 @@ namespace gameController{
 
                 if (!occupied) {
                     ret.push_back(ActionResult::ScoreLeft);
-                    break;
-                }
-                else {
-                    ret.push_back(ActionResult::Intercepted);
-                    env->quaffle->position = goal;
-                    gameController::moveToAdjacent(env->quaffle, env);
                     break;
                 }
             }
