@@ -130,7 +130,7 @@ TEST(controller_test, moveBludger_no_knock_out) {
     EXPECT_FALSE(env->team1->chasers[0]->knockedOut);
     EXPECT_TRUE(env->quaffle->position == gameModel::Position(2, 10));
 }
-//------------------------------can shoot test--------------------------------------------------------------------------
+//------------------------------can perform action test--------------------------------------------------------------------------
 
 TEST(controller_test, can_shoot_test_valid){
     auto env = setup::createEnv();
@@ -187,6 +187,63 @@ TEST(controller_test, can_shoot_test_wrong_player1){
     EXPECT_FALSE(gameController::playerCanPerformAction(env->team1->seeker, env));
 }
 
+TEST(controller_test, valid_can_wrest){
+    auto env = setup::createEnv();
+
+    env->quaffle->position = env->team1->chasers[1]->position;
+    env->team2->chasers[2]->position = {8, 4};
+
+    EXPECT_TRUE(gameController::playerCanPerformAction(env->team2->chasers[2], env));
+}
+
+TEST(controller_test, valid_can_wrest1){
+    auto env = setup::createEnv();
+
+    env->quaffle->position = env->team1->keeper->position;
+    env->team2->chasers[2]->position = {12, 10};
+
+    EXPECT_TRUE(gameController::playerCanPerformAction(env->team2->chasers[2], env));
+}
+
+TEST(controller_test, valid_can_wrest2){
+    auto env = setup::createEnv();
+    env->team1->keeper->position = {13, 7};
+    env->quaffle->position = env->team1->keeper->position;
+    env->team2->chasers[2]->position = {12, 8};
+
+    EXPECT_TRUE(gameController::playerCanPerformAction(env->team2->chasers[2], env));
+}
+
+TEST(controller_test, invalid_can_wrest_keeper_protected){
+    auto env = setup::createEnv();
+    env->team1->keeper->position = {3, 7};
+    env->quaffle->position = env->team1->keeper->position;
+    env->team2->chasers[2]->position = {4, 7};
+
+    EXPECT_FALSE(gameController::playerCanPerformAction(env->team2->chasers[2], env));
+}
+
+TEST(controller_test, invalid_can_wrest_wrong_player){
+    auto env = setup::createEnv();
+    env->quaffle->position = env->team1->keeper->position;
+
+    EXPECT_FALSE(gameController::playerCanPerformAction(env->team2->keeper, env));
+}
+
+TEST(controller_test, invalid_can_wrest_out_of_range){
+    auto env = setup::createEnv();
+
+    env->quaffle->position = env->team1->keeper->position;
+    env->team2->chasers[2]->position = {10, 10};
+
+    EXPECT_FALSE(gameController::playerCanPerformAction(env->team2->chasers[2], env));
+}
+
+TEST(controller_test, invalid_can_wrest_no_one_holding){
+    auto env = setup::createEnv();
+
+    EXPECT_FALSE(gameController::playerCanPerformAction(env->team1->chasers[1], env));
+}
 //-----------------------------------Snitch Move Test------------------------------------------------------------------
 
 TEST(controller_test, moveSnitch0) {
