@@ -198,12 +198,11 @@ namespace gameController {
         }
 
         // check if player can wrest quaffel
-        auto cells = gameModel::Environment::getCellsAround(player->position);
-        for (const auto &cell : cells) {
-            gameController::WrestQuaffle act(env, player, cell);
-            if (act.check() == ActionCheckResult::Success) {
-                return true;
-            }
+        auto playerHoldingQuaffle = env->getPlayer(env->quaffle->position);
+        if(INSTANCE_OF(player, const gameModel::Chaser) && getDistance(player->position, env->quaffle->position) == 1 &&
+            playerHoldingQuaffle.has_value() && (INSTANCE_OF(playerHoldingQuaffle.value(), gameModel::Chaser) ||
+                (INSTANCE_OF(playerHoldingQuaffle.value(), gameModel::Keeper) && !env->isPlayerInOwnRestrictedZone(playerHoldingQuaffle.value())))){
+            return true;
         }
 
         return false;
