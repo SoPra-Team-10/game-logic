@@ -208,47 +208,53 @@ namespace gameController {
         return false;
     }
 
-    void moveSnitch(std::shared_ptr<gameModel::Snitch> &snitch, std::shared_ptr<gameModel::Environment> &env, ExcessLength excessLength){
+    bool moveSnitch(std::shared_ptr<gameModel::Snitch> &snitch, std::shared_ptr<gameModel::Environment> &env, ExcessLength excessLength){
         if (!snitch->exists) {
             throw std::runtime_error("Snitch does not exist");
         }
+
         std::deque<gameModel::Position> possiblePositions;
+        int minDistanceSeeker = getDistance(snitch->position, env->team1->seeker->position);
+        auto closestSeeker = env->team1->seeker;
+        bool equalDistance = false;
+        if(minDistanceSeeker == getDistance(snitch->position, env->team2->seeker->position)){
+            equalDistance = true;
+        } else if(minDistanceSeeker > getDistance(snitch->position, env->team2->seeker->position)){
+            minDistanceSeeker = getDistance(snitch->position, env->team2->seeker->position);
+            closestSeeker = env->team2->seeker;
+        }
+
         switch (excessLength) {
             case ExcessLength::None : {
-                int minDistanceSeeker = getDistance(snitch->position, env->team1->seeker->position);
-                auto closestSeeker = env->team1->seeker;
-                auto distanceTeam2 = getDistance(snitch->position, env->team2->seeker->position);
                 std::vector<gameModel::Position> freeCells = env->getAllPlayerFreeCellsAround(snitch->position);
-                if(minDistanceSeeker == distanceTeam2) {
-                    for (const auto &pos : freeCells) {
-                        if (getDistance(pos, closestSeeker->position) == getDistance(pos, env->team2->seeker->position)) {
-                            possiblePositions.emplace_back(pos);
-                        }
+                for(const auto &pos : freeCells){
+                    if((!equalDistance && getDistance(pos, closestSeeker->position) > minDistanceSeeker) ||
+                    (equalDistance && getDistance(pos, env->team1->seeker->position) > minDistanceSeeker &&
+                    getDistance(pos, env->team2->seeker->position) > minDistanceSeeker)){
+                        possiblePositions.emplace_back(pos);
                     }
-                }else if (distanceTeam2 < minDistanceSeeker) {
-                    minDistanceSeeker = distanceTeam2;
-                    closestSeeker = env->team2->seeker;
-                    for (const auto &pos : freeCells) {
-                        if (getDistance(pos, closestSeeker->position) > minDistanceSeeker) {
-                            possiblePositions.emplace_back(pos);
-                        }
-                    }
-                }else{
-                    for (const auto &pos : freeCells) {
-                        if (getDistance(pos, closestSeeker->position) > minDistanceSeeker) {
+                }
+
+                if(possiblePositions.empty()){
+                    for(const auto &pos : freeCells){
+                        if((!equalDistance && getDistance(pos, closestSeeker->position) >= minDistanceSeeker) ||
+                           (equalDistance && getDistance(pos, env->team1->seeker->position) >= minDistanceSeeker &&
+                            getDistance(pos, env->team2->seeker->position) >= minDistanceSeeker)){
                             possiblePositions.emplace_back(pos);
                         }
                     }
                 }
+
                 if (possiblePositions.empty()) {
                     snitch->position = freeCells[rng(0, static_cast<int>(freeCells.size() - 1))];
                 } else {
                     snitch->position = possiblePositions[rng(0, static_cast<int>(possiblePositions.size() - 1))];
                 }
             }
-            break;
+
+                return false;
             case ExcessLength::Stage1:
-                break;
+                return false;
             case ExcessLength::Stage2: {
                 std::vector<gameModel::Position> newPosition = getAllCrossedCells(snitch->position,
                                                                                   gameModel::Position(8, 6));
@@ -257,17 +263,26 @@ namespace gameController {
                 }else{
                     snitch->position = newPosition[0];
                 }
-            }break;
-            case ExcessLength::Stage3: {
-                int minDistanceSeeker = getDistance(snitch->position, env->team1->seeker->position);
-                auto closestSeeker = env->team1->seeker;
-                auto distanceTeam2 = getDistance(snitch->position, env->team2->seeker->position);
-                if (distanceTeam2 < minDistanceSeeker) {
-                    closestSeeker = env->team2->seeker;
+
+                auto playerOnSnitch = env->getPlayer(snitch->position);
+                if(playerOnSnitch.has_value()){
+                    if(INSTANCE_OF(playerOnSnitch.value(), gameModel::Seeker)){
+                        env->getTeam(playerOnSnitch.value())->score += 30;
+                        return true;
+                    } else{
+                        return false;
+                    }
+                } else {
+                    return false;
                 }
+            }
+            case ExcessLength::Stage3: {
                 snitch->position = closestSeeker->position;
                 env->getTeam(closestSeeker)->score += 30;
-            }break;
+                return true;
+            }
+            default:
+                throw std::runtime_error("Fatal error! Enum out of bounds");
         }
     }
 }
