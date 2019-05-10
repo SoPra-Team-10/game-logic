@@ -255,7 +255,7 @@ namespace gameModel{
         /**
          * Places Bludger in the centre of the field
          */
-        Bludger(communication::messages::types::EntityId id);
+        explicit Bludger(communication::messages::types::EntityId id);
         Bludger(Position position, communication::messages::types::EntityId id);
     };
 
@@ -319,7 +319,6 @@ namespace gameModel{
          * @return
          */
         auto getPlayerByID(communication::messages::types::EntityId id) const -> std::optional<std::shared_ptr<Player>>;
-
     };
 
     /**

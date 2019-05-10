@@ -130,63 +130,120 @@ TEST(controller_test, moveBludger_no_knock_out) {
     EXPECT_FALSE(env->team1->chasers[0]->knockedOut);
     EXPECT_TRUE(env->quaffle->position == gameModel::Position(2, 10));
 }
-//------------------------------can shoot test--------------------------------------------------------------------------
+//------------------------------can perform action test--------------------------------------------------------------------------
 
 TEST(controller_test, can_shoot_test_valid){
     auto env = setup::createEnv();
 
     env->quaffle->position = env->team1->keeper->position;
-    EXPECT_TRUE(gameController::playerCanShoot(env->team1->keeper, env));
+    EXPECT_TRUE(gameController::playerCanPerformAction(env->team1->keeper, env));
 }
 
 TEST(controller_test, can_shoot_test_valid1){
     auto env = setup::createEnv();
 
     env->bludgers[0]->position = env->team1->beaters[0]->position;
-    EXPECT_TRUE(gameController::playerCanShoot(env->team1->beaters[0], env));
+    EXPECT_TRUE(gameController::playerCanPerformAction(env->team1->beaters[0], env));
 }
 
 TEST(controller_test, can_shoot_test_no_quaffle){
     auto env = setup::createEnv();
 
-    EXPECT_FALSE(gameController::playerCanShoot(env->team1->keeper, env));
+    EXPECT_FALSE(gameController::playerCanPerformAction(env->team1->keeper, env));
 }
 
 TEST(controller_test, can_shoot_test_wrong_ball){
     auto env = setup::createEnv();
 
     env->bludgers[0]->position = env->team1->keeper->position;
-    EXPECT_FALSE(gameController::playerCanShoot(env->team1->keeper, env));
+    EXPECT_FALSE(gameController::playerCanPerformAction(env->team1->keeper, env));
 }
 
 TEST(controller_test, can_shoot_test_wrong_ball1){
     auto env = setup::createEnv();
 
     env->quaffle->position = env->team1->beaters[0]->position;
-    EXPECT_FALSE(gameController::playerCanShoot(env->team1->beaters[0], env));
+    EXPECT_FALSE(gameController::playerCanPerformAction(env->team1->beaters[0], env));
 }
 
 TEST(controller_test, can_shoot_test_wrong_ball2){
     auto env = setup::createEnv();
 
     env->snitch->position = env->team1->beaters[0]->position;
-    EXPECT_FALSE(gameController::playerCanShoot(env->team1->beaters[0], env));
+    EXPECT_FALSE(gameController::playerCanPerformAction(env->team1->beaters[0], env));
 }
 
 TEST(controller_test, can_shoot_test_wrong_player){
     auto env = setup::createEnv();
 
     env->bludgers[0]->position = env->team1->seeker->position;
-    EXPECT_FALSE(gameController::playerCanShoot(env->team1->seeker, env));
+    EXPECT_FALSE(gameController::playerCanPerformAction(env->team1->seeker, env));
 }
 
 TEST(controller_test, can_shoot_test_wrong_player1){
     auto env = setup::createEnv();
 
     env->quaffle->position = env->team1->seeker->position;
-    EXPECT_FALSE(gameController::playerCanShoot(env->team1->seeker, env));
+    EXPECT_FALSE(gameController::playerCanPerformAction(env->team1->seeker, env));
 }
 
+TEST(controller_test, valid_can_wrest){
+    auto env = setup::createEnv();
+
+    env->quaffle->position = env->team1->chasers[1]->position;
+    env->team2->chasers[2]->position = {8, 4};
+
+    EXPECT_TRUE(gameController::playerCanPerformAction(env->team2->chasers[2], env));
+}
+
+TEST(controller_test, valid_can_wrest1){
+    auto env = setup::createEnv();
+
+    env->quaffle->position = env->team1->keeper->position;
+    env->team2->chasers[2]->position = {12, 10};
+
+    EXPECT_TRUE(gameController::playerCanPerformAction(env->team2->chasers[2], env));
+}
+
+TEST(controller_test, valid_can_wrest2){
+    auto env = setup::createEnv();
+    env->team1->keeper->position = {13, 7};
+    env->quaffle->position = env->team1->keeper->position;
+    env->team2->chasers[2]->position = {12, 8};
+
+    EXPECT_TRUE(gameController::playerCanPerformAction(env->team2->chasers[2], env));
+}
+
+TEST(controller_test, invalid_can_wrest_keeper_protected){
+    auto env = setup::createEnv();
+    env->team1->keeper->position = {3, 7};
+    env->quaffle->position = env->team1->keeper->position;
+    env->team2->chasers[2]->position = {4, 7};
+
+    EXPECT_FALSE(gameController::playerCanPerformAction(env->team2->chasers[2], env));
+}
+
+TEST(controller_test, invalid_can_wrest_wrong_player){
+    auto env = setup::createEnv();
+    env->quaffle->position = env->team1->keeper->position;
+
+    EXPECT_FALSE(gameController::playerCanPerformAction(env->team2->keeper, env));
+}
+
+TEST(controller_test, invalid_can_wrest_out_of_range){
+    auto env = setup::createEnv();
+
+    env->quaffle->position = env->team1->keeper->position;
+    env->team2->chasers[2]->position = {10, 10};
+
+    EXPECT_FALSE(gameController::playerCanPerformAction(env->team2->chasers[2], env));
+}
+
+TEST(controller_test, invalid_can_wrest_no_one_holding){
+    auto env = setup::createEnv();
+
+    EXPECT_FALSE(gameController::playerCanPerformAction(env->team1->chasers[1], env));
+}
 //-----------------------------------Snitch Move Test------------------------------------------------------------------
 
 TEST(controller_test, moveSnitch0) {
@@ -194,9 +251,9 @@ TEST(controller_test, moveSnitch0) {
     env->snitch->exists = true;
     env->snitch->position = gameModel::Position(16, 7);
     env->team1->seeker->position = gameModel::Position(15, 7);
-    env->team2->seeker->position = {0,8};
+    env->team2->seeker->position = gameModel::Position(0,8);
 
-    gameController::moveSnitch(env->snitch, env);
+    gameController::moveSnitch(env->snitch, env, gameController::ExcessLength::None);
 
     EXPECT_THAT(env->snitch->position, testing::AnyOf(gameModel::Position(16, 8), gameModel::Position(16,6), gameModel::Position(15,6),
                                                         gameModel::Position(15,8)));
@@ -210,8 +267,72 @@ TEST(controller_test, moveSnitch1){
     env->team1->seeker->position = gameModel::Position(10,9);
     env->team2->seeker->position = {0,8};
 
-    gameController::moveSnitch(env->snitch, env);
+    gameController::moveSnitch(env->snitch, env, gameController::ExcessLength::None);
 
     EXPECT_THAT(env->snitch->position, testing::AnyOf(gameModel::Position(10,11), gameModel::Position(11,11), gameModel::Position(12,11),
                                                         gameModel::Position(12,10), gameModel::Position(12,9) ));
+}
+
+TEST(controller_test, moveSnitch2){
+    auto env = setup::createEnv();
+    env->snitch->exists = true;
+    env->snitch->position = gameModel::Position{6,4};
+    gameController::moveSnitch(env->snitch, env, gameController::ExcessLength::Stage1);
+    EXPECT_EQ(env->snitch->position, gameModel::Position(6,4));
+}
+
+
+TEST(controller_test, moveSnitch3){
+    auto env = setup::createEnv();
+    env->snitch->exists = true;
+    env->snitch->position = gameModel::Position{6,4};
+    gameController::moveSnitch(env->snitch, env, gameController::ExcessLength::Stage2);
+    EXPECT_EQ(env->snitch->position, gameModel::Position(7,5));
+}
+
+TEST(controller_test, moveSnitch4){
+    auto env = setup::createEnv();
+    env->snitch->exists = true;
+    env->snitch->position = gameModel::Position{7,5};
+    gameController::moveSnitch(env->snitch, env, gameController::ExcessLength::Stage2);
+    EXPECT_EQ(env->snitch->position, gameModel::Position(8,6));
+}
+
+TEST(controller_test, moveSnitch5){
+    auto env = setup::createEnv();
+    env->snitch->exists = true;
+    env->snitch->position = gameModel::Position{8,6};
+    gameController::moveSnitch(env->snitch, env, gameController::ExcessLength::Stage2);
+    EXPECT_EQ(env->snitch->position, gameModel::Position(8,6));
+}
+
+TEST(controller_test, moveSnitch6){
+    auto env = setup::createEnv();
+    env->snitch->exists = true;
+    env->team1->seeker->position = gameModel::Position(10,6);
+    env->team2->seeker->position = gameModel::Position(0,6);
+    env->snitch->position = gameModel::Position{8,6};
+    gameController::moveSnitch(env->snitch, env, gameController::ExcessLength::Stage3);
+    EXPECT_EQ(env->snitch->position, gameModel::Position(10,6));
+}
+
+TEST(controller_test, moveSnitch7){
+    auto env = setup::createEnv();
+    env->snitch->exists = true;
+    env->snitch->position = gameModel::Position{8,6};
+    env->team1->seeker->position = gameModel::Position{10,6};
+    env->team2->seeker->position = gameModel::Position{6,6};
+    env->team1->chasers[1]->position = gameModel::Position{0,6};
+    gameController::moveSnitch(env->snitch, env, gameController::ExcessLength::None);
+    EXPECT_THAT(env->snitch->position, testing::AnyOf(gameModel::Position(8,5), gameModel::Position(8,7)));
+}
+
+TEST(controller_test, moveSnitch8){
+    auto env = setup::createEnv();
+    env->snitch->exists = true;
+    env->snitch->position = gameModel::Position{8,6};
+    env->team1->seeker->position = gameModel::Position{10,8};
+    env->team2->seeker->position = gameModel::Position{6,4};
+    gameController::moveSnitch(env->snitch, env, gameController::ExcessLength::None);
+    EXPECT_THAT(env->snitch->position, testing::AnyOf(gameModel::Position(7,7), gameModel::Position(9,5)));
 }
