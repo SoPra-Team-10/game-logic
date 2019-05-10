@@ -80,6 +80,8 @@ namespace gameController {
      */
     void moveToAdjacent(const std::shared_ptr<gameModel::Object> &object, const std::shared_ptr<gameModel::Environment> &env);
 
+    void moveQuaffelAfterGoal(const std::shared_ptr<gameModel::Environment> &env);
+
 
     template <>
     double rng(double min, double max);

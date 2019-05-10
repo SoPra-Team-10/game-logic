@@ -102,6 +102,33 @@ namespace gameController {
         object->position = positions[rng(0, static_cast<int>(positions.size()) - 1)];
     }
 
+    void moveQuaffelAfterGoal(const std::shared_ptr<gameModel::Environment> &env) {
+        if (gameModel::Environment::getCell(env->quaffle->position) == gameModel::Cell::GoalRight) {
+            if (env->isPlayerInOwnRestrictedZone(env->team2->keeper)) {
+                env->quaffle->position = env->team2->keeper->position;
+            }
+            else if (env->cellIsFree({8, 6})) {
+                env->quaffle->position = {8, 6};
+            }
+            else {
+                env->quaffle->position = {8, 6};
+                gameController::moveToAdjacent(env->quaffle, env);
+            }
+        }
+        else if (gameModel::Environment::getCell(env->quaffle->position) == gameModel::Cell::GoalLeft) {
+            if (env->isPlayerInOwnRestrictedZone(env->team1->keeper)) {
+                env->quaffle->position = env->team1->keeper->position;
+            }
+            else if (env->cellIsFree({8, 6})) {
+                env->quaffle->position = {8, 6};
+            }
+            else {
+                env->quaffle->position = {8, 6};
+                gameController::moveToAdjacent(env->quaffle, env);
+            }
+        }
+    }
+
     auto getAllPossibleMoves(std::shared_ptr<gameModel::Player>, const gameModel::Environment&) -> std::vector<Move> {
         return std::vector<Move>();
         // @ToDo: Nicht für Server relevant
