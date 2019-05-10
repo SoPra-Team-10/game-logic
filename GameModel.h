@@ -255,7 +255,7 @@ namespace gameModel{
         /**
          * Places Bludger in the centre of the field
          */
-        Bludger(communication::messages::types::EntityId id);
+        explicit Bludger(communication::messages::types::EntityId id);
         Bludger(Position position, communication::messages::types::EntityId id);
     };
 
@@ -267,7 +267,7 @@ namespace gameModel{
          * Places Snitch on random position on the field and makes it non existent
          */
         Snitch();
-        Snitch(Position position);
+        explicit Snitch(Position position);
     };
 
     /**
@@ -319,11 +319,6 @@ namespace gameModel{
          * @return
          */
         auto getPlayerByID(communication::messages::types::EntityId id) const -> std::optional<std::shared_ptr<Player>>;
-
-        static bool checkTeamConfig(const communication::messages::request::TeamConfig &config);
-
-        static bool checkTeamFormation(const communication::messages::request::TeamFormation &formation);
-
     };
 
     /**

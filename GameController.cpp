@@ -217,16 +217,16 @@ namespace gameController {
             case ExcessLength::None : {
                 int minDistanceSeeker = getDistance(snitch->position, env->team1->seeker->position);
                 auto closestSeeker = env->team1->seeker;
-                auto disnatceTeam2 = getDistance(snitch->position, env->team2->seeker->position);
+                auto distanceTeam2 = getDistance(snitch->position, env->team2->seeker->position);
                 std::vector<gameModel::Position> freeCells = env->getAllPlayerFreeCellsAround(snitch->position);
-                if(minDistanceSeeker == disnatceTeam2) {
+                if(minDistanceSeeker == distanceTeam2) {
                     for (const auto &pos : freeCells) {
                         if (getDistance(pos, closestSeeker->position) == getDistance(pos, env->team2->seeker->position)) {
                             possiblePositions.emplace_back(pos);
                         }
                     }
-                }else if (disnatceTeam2 < minDistanceSeeker) {
-                    minDistanceSeeker = disnatceTeam2;
+                }else if (distanceTeam2 < minDistanceSeeker) {
+                    minDistanceSeeker = distanceTeam2;
                     closestSeeker = env->team2->seeker;
                     for (const auto &pos : freeCells) {
                         if (getDistance(pos, closestSeeker->position) > minDistanceSeeker) {
@@ -261,8 +261,8 @@ namespace gameController {
             case ExcessLength::Stage3: {
                 int minDistanceSeeker = getDistance(snitch->position, env->team1->seeker->position);
                 auto closestSeeker = env->team1->seeker;
-                auto disnatceTeam2 = getDistance(snitch->position, env->team2->seeker->position);
-                if (disnatceTeam2 < minDistanceSeeker) {
+                auto distanceTeam2 = getDistance(snitch->position, env->team2->seeker->position);
+                if (distanceTeam2 < minDistanceSeeker) {
                     closestSeeker = env->team2->seeker;
                 }
                 snitch->position = closestSeeker->position;
