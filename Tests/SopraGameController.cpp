@@ -269,9 +269,8 @@ TEST(controller_test, moveSnitch1){
     env->team2->seeker->position = {0,8};
 
     gameController::moveSnitch(env->snitch, env, gameController::ExcessLength::None);
-
-    EXPECT_THAT(env->snitch->position, testing::AnyOf(gameModel::Position(10,11), gameModel::Position(11,11), gameModel::Position(12,11),
-                                                        gameModel::Position(12,10), gameModel::Position(12,9) ));
+    EXPECT_THAT(env->snitch->position, testing::AnyOf(gameModel::Position(10,11), gameModel::Position(11,11),
+                                                        gameModel::Position(12,10), gameModel::Position(12,9)));
 }
 
 TEST(controller_test, moveSnitch2){
