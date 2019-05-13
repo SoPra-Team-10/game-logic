@@ -393,6 +393,32 @@ namespace gameModel{
         return false;
     }
 
+    void Environment::removeAllShit() {
+        this->cubesOfShit.clear();
+    }
+
+    void Environment::removeShitOnCell(const Position &position) {
+
+        for (auto it = this->cubesOfShit.begin(); it < this->cubesOfShit.end();) {
+            if ((*it)->position == position) {
+                it = this->cubesOfShit.erase(it);
+            }
+            else {
+                it++;
+            }
+        }
+    }
+
+    auto Environment::isShitOnCell(const Position &position) const -> bool {
+        for (const auto &shit : this->cubesOfShit) {
+            if (shit->position == position) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
 
     // Ball Types
 
@@ -592,4 +618,6 @@ namespace gameModel{
     }
 
     Object::Object(const Position &position, communication::messages::types::EntityId id) : position(position), id(id){}
+
+    CubeOfShit::CubeOfShit(const Position &position, communication::messages::types::EntityId id) : Object(position, id) {}
 }

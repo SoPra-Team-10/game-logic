@@ -6,6 +6,7 @@
 #include <map>
 #include <vector>
 #include <memory>
+#include <deque>
 #include <SopraMessages/types.hpp>
 #include <SopraMessages/MatchConfig.hpp>
 #include <SopraMessages/TeamConfig.hpp>
@@ -187,6 +188,14 @@ namespace gameModel{
     };
 
     /**
+     * Represents the cube of shit that can be placed on a cell by a wombat.
+     */
+    class CubeOfShit : public Object {
+    public:
+        CubeOfShit(const Position &position, communication::messages::types::EntityId id);
+    };
+
+    /**
      * Represents available fans for a Team
      */
     class Fanblock{
@@ -331,6 +340,7 @@ namespace gameModel{
         std::shared_ptr<Quaffle> quaffle;
         std::shared_ptr<Snitch> snitch;
         std::array<std::shared_ptr<Bludger>, 2> bludgers;
+        std::deque<std::shared_ptr<CubeOfShit>> cubesOfShit;
 
         /**
          * Constructs an Environment from server config types
@@ -497,6 +507,15 @@ namespace gameModel{
          * @return the corresponding ball object.
          */
         auto getBallByID(const communication::messages::types::EntityId &id) const -> std::shared_ptr<Ball>;
+
+        /**
+         * Removes all the cubes of shit which were corrently on the game field.
+         */
+        void removeAllShit();
+
+        void removeShitOnCell(const Position &position);
+
+        auto isShitOnCell(const Position &position) const -> bool;
     };
 }
 

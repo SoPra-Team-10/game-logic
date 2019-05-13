@@ -301,6 +301,7 @@ namespace gameController{
 
         if (gameModel::Environment::getCell(this->target) == gameModel::Cell::OutOfBounds ||
             gameController::getDistance(this->actor->position, this->target) > 1 ||
+            this->env->isShitOnCell(this->target) ||
             this->actor->isFined || this->actor->knockedOut){
             return ActionCheckResult::Impossible;
         }
