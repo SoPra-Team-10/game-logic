@@ -156,6 +156,8 @@ namespace gameModel{
 
         Position position = {};
         const communication::messages::types::EntityId id{};
+
+        virtual ~Object() = default;
     };
 
     /**
@@ -193,6 +195,8 @@ namespace gameModel{
     class CubeOfShit : public Object {
     public:
         CubeOfShit(const Position &position, communication::messages::types::EntityId id);
+
+        virtual ~CubeOfShit() = default;
     };
 
     /**
