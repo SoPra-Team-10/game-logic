@@ -20,7 +20,8 @@ namespace gameModel{
         double blockGoal,
                 chargeGoal, multipleOffence,
                 ramming, blockSnitch, teleport,
-                rangedAttack, impulse, snitchPush;
+                rangedAttack, impulse, snitchPush,
+                blockCell;
     };
 
     /**
@@ -119,7 +120,8 @@ namespace gameModel{
         RangedAttack,
         Teleport,
         Impulse,
-        SnitchPush
+        SnitchPush,
+        BlockCell
     };
 
     /**
@@ -184,6 +186,10 @@ namespace gameModel{
         Ball(Position position, communication::messages::types::EntityId id);
 
         virtual ~Ball() = default;
+    };
+
+    class PeaceOfShit : public Object{
+        PeaceOfShit(Position &position, communication::messages::types::EntityId id);
     };
 
     /**
@@ -430,6 +436,8 @@ namespace gameModel{
          * @return true if occupied, false otherwise
          */
         bool cellIsFree(const Position &position) const;
+
+        bool cellIsFreeFromObject(const Position &position) const;
 
         /**
          * get all Positions around a given position where no other player is on. If all surrounding

@@ -93,6 +93,16 @@ namespace gameController{
          */
         auto execute() const -> gameController::ActionCheckResult override;
     };
+
+    class BlockCell : public Interference{
+    public:
+        BlockCell(std::shared_ptr<gameModel::Environment> env, const std::shared_ptr<gameModel::Team>& team, gameModel::Position position);
+
+        bool isPossible() const override ;
+    private:
+        gameModel::Position position;
+        auto execute() const -> gameController::ActionCheckResult override;
+    };
 }
 
 

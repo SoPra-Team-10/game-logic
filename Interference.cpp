@@ -111,4 +111,32 @@ namespace gameController{
             return gameController::ActionCheckResult::Success;
         }
     }
+
+    BlockCell::BlockCell(std::shared_ptr<gameModel::Environment> env, const std::shared_ptr<gameModel::Team>& team, gameModel::Position position) :
+            Interference(std::move(env), std::move(team), gameModel::InterferenceType::BlockCell), position(position) {}
+
+    auto BlockCell::execute() const -> gameController::ActionCheckResult {
+        if(!isPossible()){
+            throw std::runtime_error("Interfernce not possible");
+        }
+        for(auto &player : env->getAllPlayers()){
+            if(position == player->position){
+                return gameController::ActionCheckResult::Impossible;
+            }
+        }
+        if(env->quaffle->position == position && env->snitch->position == position && env->bludgers[0]->position == position && env->bludgers[1]->position == position){
+            return gameController::ActionCheckResult::Impossible;
+        }
+        if (gameController::actionTriggered(env->config.foulDetectionProbs.blockCell)) {
+            team->fanblock.banFan(this->getType());
+            return gameController::ActionCheckResult::Foul;
+        }
+        else {
+            return gameController::ActionCheckResult::Success;
+        }
+    }
+
+    bool BlockCell::isPossible() const {
+        return Interference::isPossible() && Interference::env->cellIsFree(position);
+    }
 }
