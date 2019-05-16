@@ -397,8 +397,37 @@ namespace gameModel{
         if(!cellIsFree(position)){
             return false;
         }
-        return !(bludgers[0]->position == position || bludgers[1]->position == position ||
-                 snitch->position == position || quaffle->position == position);
+        if(bludgers[0]->position == position || bludgers[1]->position == position ||
+                 snitch->position == position || quaffle->position == position){
+            return false;
+        }
+        return !isShitOnCell(position);
+    }
+
+    void Environment::removeAllShit() {
+        this->cubesOfShit.clear();
+    }
+
+    void Environment::removeShitOnCell(const Position &position) {
+
+        for (auto it = this->cubesOfShit.begin(); it < this->cubesOfShit.end();) {
+            if ((*it)->position == position) {
+                it = this->cubesOfShit.erase(it);
+            }
+            else {
+                it++;
+            }
+        }
+    }
+
+    auto Environment::isShitOnCell(const Position &position) const -> bool {
+        for (const auto &shit : this->cubesOfShit) {
+            if (shit->position == position) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
 
