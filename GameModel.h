@@ -6,6 +6,7 @@
 #include <map>
 #include <vector>
 #include <memory>
+#include <deque>
 #include <SopraMessages/types.hpp>
 #include <SopraMessages/MatchConfig.hpp>
 #include <SopraMessages/TeamConfig.hpp>
@@ -157,6 +158,8 @@ namespace gameModel{
 
         Position position = {};
         const communication::messages::types::EntityId id{};
+
+        virtual ~Object() = default;
     };
 
     /**
@@ -190,6 +193,16 @@ namespace gameModel{
 
     class PeaceOfShit : public Object{
         PeaceOfShit(Position &position, communication::messages::types::EntityId id);
+    };
+
+    /**
+     * Represents the cube of shit that can be placed on a cell by a wombat.
+     */
+    class CubeOfShit : public Object {
+    public:
+        CubeOfShit(const Position &position, communication::messages::types::EntityId id);
+
+        virtual ~CubeOfShit() = default;
     };
 
     /**
@@ -337,6 +350,7 @@ namespace gameModel{
         std::shared_ptr<Quaffle> quaffle;
         std::shared_ptr<Snitch> snitch;
         std::array<std::shared_ptr<Bludger>, 2> bludgers;
+        std::deque<std::shared_ptr<CubeOfShit>> cubesOfShit;
 
         /**
          * Constructs an Environment from server config types
@@ -403,10 +417,23 @@ namespace gameModel{
          */
         static auto getSurroundingPositions(const Position &position) -> std::vector<Position>;
 
+        /**
+         * Gets all goal cells in left half of the game field.
+         * @return
+         */
         static auto getGoalsLeft() -> std::array<Position, 3>;
 
+        /**
+         * Gets all goal cells in right half of the game field.
+         * @return
+         */
         static auto getGoalsRight() -> std::array<Position, 3>;
 
+        /**
+         * Checks if a given cell is a goal cell.
+         * @param pos
+         * @return
+         */
         static auto isGoalCell(const Position &pos) -> bool;
 
 
@@ -492,6 +519,15 @@ namespace gameModel{
          * @return the corresponding ball object.
          */
         auto getBallByID(const communication::messages::types::EntityId &id) const -> std::shared_ptr<Ball>;
+
+        /**
+         * Removes all the cubes of shit which were corrently on the game field.
+         */
+        void removeAllShit();
+
+        void removeShitOnCell(const Position &position);
+
+        auto isShitOnCell(const Position &position) const -> bool;
     };
 }
 

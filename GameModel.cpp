@@ -187,8 +187,6 @@ namespace gameModel{
         return true;
     }
 
-
-
     auto Environment::getAllPlayerFreeCellsAround(const Position &position) const -> std::vector<Position> {
         std::vector<Position> resultVect;
         resultVect.reserve(8);
@@ -532,7 +530,7 @@ namespace gameModel{
                  config.getProbFoulStooging(), config.getProbFoulBlatching(), config.getProbFoulSnitchnip(), config.getProbFoulElf(),
                  config.getProbFoulGoblin(), config.getProbFoulTroll(), config.getProbFoulSnitch()},
                  gameDynamicsProbs{config.getProbThrowSuccess(), config.getProbKnockOut(), config.getProbFoolAway(), config.getProbCatchSnitch(),
-                 config.getProbCatchQuaffle(), config.getProbWrestQuaffle(), config.getProbBLockCell()}{
+                 config.getProbCatchQuaffle(), config.getProbWrestQuaffle()}{
         using Broom = communication::messages::types::Broom;
         extraTurnProbs.emplace(Broom::CLEANSWEEP11, config.getProbExtraCleansweep());
         extraTurnProbs.emplace(Broom::COMET260, config.getProbExtraComet());
@@ -602,6 +600,4 @@ namespace gameModel{
     }
 
     Object::Object(const Position &position, communication::messages::types::EntityId id) : position(position), id(id){}
-
-    PeaceOfShit::PeaceOfShit(Position &position, communication::messages::types::EntityId id) : Object(position, id) {}
 }

@@ -100,6 +100,36 @@ namespace gameController {
     void moveToAdjacent(const std::shared_ptr<gameModel::Object> &object, const std::shared_ptr<gameModel::Environment> &env) {
         auto positions = env->getAllPlayerFreeCellsAround(object->position);
         object->position = positions[rng(0, static_cast<int>(positions.size()) - 1)];
+        if (INSTANCE_OF(object, gameModel::Player) && env->isShitOnCell(object->position)) {
+            env->removeShitOnCell(object->position);
+        }
+    }
+
+    void moveQuaffelAfterGoal(const std::shared_ptr<gameModel::Environment> &env) {
+        if (gameModel::Environment::getCell(env->quaffle->position) == gameModel::Cell::GoalRight) {
+            if (env->isPlayerInOwnRestrictedZone(env->team2->keeper)) {
+                env->quaffle->position = env->team2->keeper->position;
+            }
+            else if (env->cellIsFree({8, 6})) {
+                env->quaffle->position = {8, 6};
+            }
+            else {
+                env->quaffle->position = {8, 6};
+                gameController::moveToAdjacent(env->quaffle, env);
+            }
+        }
+        else if (gameModel::Environment::getCell(env->quaffle->position) == gameModel::Cell::GoalLeft) {
+            if (env->isPlayerInOwnRestrictedZone(env->team1->keeper)) {
+                env->quaffle->position = env->team1->keeper->position;
+            }
+            else if (env->cellIsFree({8, 6})) {
+                env->quaffle->position = {8, 6};
+            }
+            else {
+                env->quaffle->position = {8, 6};
+                gameController::moveToAdjacent(env->quaffle, env);
+            }
+        }
     }
 
     auto getAllPossibleMoves(std::shared_ptr<gameModel::Player>, const gameModel::Environment&) -> std::vector<Move> {
