@@ -179,7 +179,7 @@ namespace gameModel{
 
     bool Environment::cellIsFree(const Position &position) const {
         for(const auto &p : getAllPlayers()){
-            if(position == p->position){
+            if(position == p->position && !p->isFined){
                 return false;
             }
         }
@@ -202,8 +202,15 @@ namespace gameModel{
                     if (xPos == position.x && yPos == position.y) {
                         continue;
                     }
-                    else if (Environment::getCell(xPos, yPos) != Cell::OutOfBounds && !this->getPlayer({xPos, yPos}).has_value()) {
-                        resultVect.emplace_back(Position(xPos, yPos));
+                    else if (Environment::getCell(xPos, yPos) != Cell::OutOfBounds) {
+
+                        auto const player = this->getPlayer({xPos, yPos});
+                        if (player.has_value() && !player.value()->isFined) {
+                            continue;
+                        }
+                        else {
+                            resultVect.emplace_back(Position(xPos, yPos));
+                        }
                     }
                 }
             }
