@@ -49,6 +49,8 @@ namespace gameController{
          */
         auto execute() const -> gameController::ActionCheckResult override;
 
+        bool isPossible() const override;
+
     private:
         std::shared_ptr<gameModel::Player> target;
     };

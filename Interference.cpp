@@ -37,6 +37,10 @@ namespace gameController{
         }
     }
 
+    bool Teleport::isPossible() const {
+        return Interference::isPossible() && !(env->getCell(target->position) == gameModel::Cell::OutOfBounds);
+    }
+
     RangedAttack::RangedAttack(std::shared_ptr<gameModel::Environment> env, std::shared_ptr<gameModel::Team> team,
                                std::shared_ptr<gameModel::Player> target) : Interference(std::move(env), std::move(team),
                                        gameModel::InterferenceType::RangedAttack), target(std::move(target)){}
@@ -62,7 +66,7 @@ namespace gameController{
     }
 
     bool RangedAttack::isPossible() const {
-        return Interference::isPossible() && !team->hasMember(target);
+        return Interference::isPossible() && !team->hasMember(target) && !(env->getCell(target->position) == gameModel::Cell::OutOfBounds);
     }
 
     Impulse::Impulse(std::shared_ptr<gameModel::Environment> env, std::shared_ptr<gameModel::Team> team) :
@@ -111,9 +115,9 @@ namespace gameController{
             return gameController::ActionCheckResult::Success;
         }
     }
-
+    //TODO Umstellen von SnitchPush auf BlockCell
     BlockCell::BlockCell(std::shared_ptr<gameModel::Environment> env, const std::shared_ptr<gameModel::Team>& team, gameModel::Position position) :
-            Interference(std::move(env), team, gameModel::InterferenceType::BlockCell), position(position) {}
+            Interference(std::move(env), team, gameModel::InterferenceType::SnitchPush), position(position) {}
 
     auto BlockCell::execute() const -> gameController::ActionCheckResult {
         if(!isPossible()){
@@ -121,7 +125,8 @@ namespace gameController{
         }
         //TODO EntityID fehlt
         //env->cubesOfShit.emplace_back(gameModel::CubeOfShit(position, communication::messages::types::EntityId ))
-        if (gameController::actionTriggered(env->config.foulDetectionProbs.blockCell)) {
+        //TODO Umstellen von BlockGoal auf BlockCell
+        if (gameController::actionTriggered(env->config.foulDetectionProbs.blockGoal)) {
             team->fanblock.banFan(this->getType());
             return gameController::ActionCheckResult::Foul;
         }

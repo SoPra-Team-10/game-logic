@@ -21,8 +21,7 @@ namespace gameModel{
         double blockGoal,
                 chargeGoal, multipleOffence,
                 ramming, blockSnitch, teleport,
-                rangedAttack, impulse, snitchPush,
-                blockCell;
+                rangedAttack, impulse, snitchPush;
     };
 
     /**
@@ -121,8 +120,7 @@ namespace gameModel{
         RangedAttack,
         Teleport,
         Impulse,
-        SnitchPush,
-        BlockCell
+        SnitchPush
     };
 
     /**
@@ -200,7 +198,8 @@ namespace gameModel{
      */
     class CubeOfShit : public Object {
     public:
-        CubeOfShit(const Position &position, communication::messages::types::EntityId id);
+        int round;
+        CubeOfShit(const Position &position, communication::messages::types::EntityId id, int round);
 
         virtual ~CubeOfShit() = default;
     };
@@ -523,7 +522,7 @@ namespace gameModel{
         /**
          * Removes all the cubes of shit which were corrently on the game field.
          */
-        void removeAllShit();
+        void removeDeprecatedShit(int currentRound);
 
         void removeShitOnCell(const Position &position);
 

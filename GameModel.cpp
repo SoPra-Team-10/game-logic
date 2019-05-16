@@ -404,8 +404,12 @@ namespace gameModel{
         return !isShitOnCell(position);
     }
 
-    void Environment::removeAllShit() {
-        this->cubesOfShit.clear();
+    void Environment::removeDeprecatedShit(int currentRound) {
+        for(auto &shit : cubesOfShit){
+            if(shit->round == currentRound - 1) {
+                removeShitOnCell(shit->position);
+            }
+        }
     }
 
     void Environment::removeShitOnCell(const Position &position) {
@@ -629,4 +633,6 @@ namespace gameModel{
     }
 
     Object::Object(const Position &position, communication::messages::types::EntityId id) : position(position), id(id){}
+
+    CubeOfShit::CubeOfShit(const Position &position, communication::messages::types::EntityId id, int round) : Object(position, id), round(round){}
 }
