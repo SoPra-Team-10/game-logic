@@ -230,7 +230,7 @@ namespace gameController {
         // check if player can wrest quaffel
         auto playerHoldingQuaffle = env->getPlayer(env->quaffle->position);
         if(INSTANCE_OF(player, const gameModel::Chaser) && getDistance(player->position, env->quaffle->position) == 1 &&
-            playerHoldingQuaffle.has_value() && (INSTANCE_OF(playerHoldingQuaffle.value(), gameModel::Chaser) ||
+            playerHoldingQuaffle.has_value() && !playerHoldingQuaffle.value()->isFined && (INSTANCE_OF(playerHoldingQuaffle.value(), gameModel::Chaser) ||
                 (INSTANCE_OF(playerHoldingQuaffle.value(), gameModel::Keeper) && !env->isPlayerInOwnRestrictedZone(playerHoldingQuaffle.value())))){
             return true;
         }
@@ -295,7 +295,7 @@ namespace gameController {
                 }
 
                 auto playerOnSnitch = env->getPlayer(snitch->position);
-                if(playerOnSnitch.has_value()){
+                if(playerOnSnitch.has_value() && !playerOnSnitch.value()->isFined){
                     if(INSTANCE_OF(playerOnSnitch.value(), gameModel::Seeker)){
                         env->getTeam(playerOnSnitch.value())->score += 30;
                         return true;

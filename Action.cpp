@@ -23,7 +23,7 @@ namespace gameController{
         if(QUAFFLETHROW){
             bool intercept = false;
             auto positionToCheck = getInterceptionPositions();
-            if (env->getPlayer(target).has_value()) {
+            if (env->getPlayer(target).has_value() && !env->getPlayer(target).value()->isFined) {
                 positionToCheck.emplace_back(target);
             }
             for(const auto &pos : positionToCheck) {
@@ -44,29 +44,31 @@ namespace gameController{
                     if(!interceptPlayer.has_value()){
                         throw std::runtime_error("No Player at intercept position");
                     }
+                    else if (!interceptPlayer.value()->isFined) {
 
-                    auto goalCheckRes = goalCheck(pos);
-                    if (!goalCheckRes.empty()) {
-                        for(const auto &res : goalCheckRes){
-                            if(res == ActionResult::ScoreLeft){
-                                env->team1->score += 10;
-                            } else if(res == ActionResult::ScoreRight){
-                                env->team2->score += 10;
-                            } else {
-                                throw std::runtime_error("Fatal error. goalcheck returned unexpected result");
+                        auto goalCheckRes = goalCheck(pos);
+                        if (!goalCheckRes.empty()) {
+                            for (const auto &res : goalCheckRes) {
+                                if (res == ActionResult::ScoreLeft) {
+                                    env->team1->score += 10;
+                                } else if (res == ActionResult::ScoreRight) {
+                                    env->team2->score += 10;
+                                } else {
+                                    throw std::runtime_error("Fatal error. goalcheck returned unexpected result");
+                                }
+                                shotRes.push_back(res);
                             }
-                            shotRes.push_back(res);
                         }
-                    }
 
-                    auto &p = interceptPlayer.value();
-                    if(INSTANCE_OF(p, gameModel::Chaser) || INSTANCE_OF(p, gameModel::Keeper)){
-                        //Quaffle is catched
-                        ball->position = pos;
-                    } else {
-                        //Quaffle bounces off
-                        ball->position = pos;
-                        moveToAdjacent(ball, env);
+                        auto &p = interceptPlayer.value();
+                        if (INSTANCE_OF(p, gameModel::Chaser) || INSTANCE_OF(p, gameModel::Keeper)) {
+                            //Quaffle is catched
+                            ball->position = pos;
+                        } else {
+                            //Quaffle bounces off
+                            ball->position = pos;
+                            moveToAdjacent(ball, env);
+                        }
                     }
 
                     break;
@@ -106,7 +108,7 @@ namespace gameController{
 
         } else if(BLUDGERSHOT){
             auto playerOnTarget = env->getPlayer(target);
-            if(playerOnTarget.has_value()){
+            if(playerOnTarget.has_value() && !playerOnTarget.value()->isFined){
                 //Knock player out an place bludger on random free cell
                 if(!INSTANCE_OF(playerOnTarget.value(), gameModel::Beater) &&
                     actionTriggered(env->config.gameDynamicsProbs.knockOut)){
@@ -375,7 +377,7 @@ namespace gameController{
         }
 
         // move other player out of the way if necessary
-        if (targetPlayer.has_value()) {
+        if (targetPlayer.has_value() && !targetPlayer.value()->isFined) {
             gameController::moveToAdjacent(targetPlayer.value(), env);
         }
 
@@ -396,7 +398,7 @@ namespace gameController{
         std::vector<gameModel::Foul> resVect;
         // Ramming
         auto player = env->getPlayer(target);
-        if (player.has_value() && !env->arePlayerInSameTeam(player.value(), this->actor)) {
+        if (player.has_value() && !player.value()->isFined && !env->arePlayerInSameTeam(player.value(), this->actor)) {
             resVect.emplace_back(gameModel::Foul::Ramming);
         }
 
@@ -487,7 +489,7 @@ namespace gameController{
         if (gameModel::Environment::getCell(this->target) == gameModel::Cell::OutOfBounds ||
             gameController::getDistance(this->actor->position, this->target) > 1 ||
             this->actor->isFined || this->actor->knockedOut ||
-            env->quaffle->position != target || !player.has_value()) {
+            env->quaffle->position != target || !player.has_value() || player.value()->isFined) {
             return ActionCheckResult::Impossible;
         }
 
