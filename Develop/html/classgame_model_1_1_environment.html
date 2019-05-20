@@ -127,8 +127,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a4d07c3194e35ffc1295a81c43c616540"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a393a4957114c2361f17bc84d00cec55f"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgame_model_1_1_environment.html#a393a4957114c2361f17bc84d00cec55f">getTeam</a> (const std::shared_ptr&lt; <a class="el" href="classgame_model_1_1_player.html">Player</a> &gt; &amp;player) const -&gt; std::shared_ptr&lt; <a class="el" href="classgame_model_1_1_team.html">Team</a> &gt;</td></tr>
 <tr class="separator:a393a4957114c2361f17bc84d00cec55f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6dc6b12234cb9d31841b5d23153cb22d"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgame_model_1_1_environment.html#a6dc6b12234cb9d31841b5d23153cb22d">getAllFreeCells</a> () -&gt; std::array&lt; <a class="el" href="structgame_model_1_1_position.html">Position</a>, 179 &gt;</td></tr>
-<tr class="separator:a6dc6b12234cb9d31841b5d23153cb22d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae5dd94a5c24d5883e3f63c52a7e8e69f"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgame_model_1_1_environment.html#ae5dd94a5c24d5883e3f63c52a7e8e69f">getAllFreeCells</a> () -&gt; std::vector&lt; <a class="el" href="structgame_model_1_1_position.html">Position</a> &gt;</td></tr>
+<tr class="separator:ae5dd94a5c24d5883e3f63c52a7e8e69f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a585e52dc36311ec40c350cb2a7fae9c3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgame_model_1_1_environment.html#a585e52dc36311ec40c350cb2a7fae9c3">placePlayerOnRandomFreeCell</a> (const std::shared_ptr&lt; <a class="el" href="classgame_model_1_1_player.html">Player</a> &gt; &amp;player)</td></tr>
 <tr class="separator:a585e52dc36311ec40c350cb2a7fae9c3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a67ac4b2693c8dc1e049fa1fb24357604"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgame_model_1_1_environment.html#a67ac4b2693c8dc1e049fa1fb24357604">getBallByID</a> (const communication::messages::types::EntityId &amp;id) const -&gt; std::shared_ptr&lt; <a class="el" href="classgame_model_1_1_ball.html">Ball</a> &gt;</td></tr>
@@ -330,7 +330,7 @@ std::array&lt; std::shared_ptr<br class="typebreak"/>
 
 </div>
 </div>
-<a class="anchor" id="a6dc6b12234cb9d31841b5d23153cb22d"></a>
+<a class="anchor" id="ae5dd94a5c24d5883e3f63c52a7e8e69f"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -338,7 +338,7 @@ std::array&lt; std::shared_ptr<br class="typebreak"/>
           <td class="memname">auto gameModel::Environment::getAllFreeCells </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
-          <td> -&gt; std::array&lt;<a class="el" href="structgame_model_1_1_position.html">Position</a>, 179&gt;</td>
+          <td> -&gt; std::vector&lt;<a class="el" href="structgame_model_1_1_position.html">Position</a>&gt;</td>
         </tr>
       </table>
 </div><div class="memdoc">

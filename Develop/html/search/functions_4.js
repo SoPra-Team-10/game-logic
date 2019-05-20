@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['getallfreecells',['getAllFreeCells',['../classgame_model_1_1_environment.html#a6dc6b12234cb9d31841b5d23153cb22d',1,'gameModel::Environment']]],
+  ['getallfreecells',['getAllFreeCells',['../classgame_model_1_1_environment.html#ae5dd94a5c24d5883e3f63c52a7e8e69f',1,'gameModel::Environment']]],
   ['getallplayerfreecellsaround',['getAllPlayerFreeCellsAround',['../classgame_model_1_1_environment.html#a9ce8f0bc1d424b585bdc030205d48903',1,'gameModel::Environment']]],
   ['getallplayers',['getAllPlayers',['../classgame_model_1_1_team.html#a3add38a878f50ed9a847b01d996be4ca',1,'gameModel::Team::getAllPlayers()'],['../classgame_model_1_1_environment.html#a33e0d834f58e41ad5551a06ee220076a',1,'gameModel::Environment::getAllPlayers()']]],
   ['getallvalidcells',['getAllValidCells',['../classgame_model_1_1_environment.html#a13fbde88faea456678ae3471f20b11c2',1,'gameModel::Environment']]],
