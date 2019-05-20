@@ -68,7 +68,7 @@ TEST(env_test, cellIsFree1) {
     int y = gameController::rng(0, 12);
 
     auto player = env->getPlayer({x, y});
-    if (player.has_value()) {
+    if (player.has_value() && !player.value()->isFined) {
         gameController::moveToAdjacent(player.value(), env);
     }
 
