@@ -548,7 +548,7 @@ namespace gameModel{
                  config.getBallPhaseTime()}, foulDetectionProbs{config.getProbFoulFlacking(), config.getProbFoulHaversacking(),
                  config.getProbFoulStooging(), config.getProbFoulBlatching(), config.getProbFoulSnitchnip(), config.getProbFoulElf(),
                  config.getProbFoulGoblin(), config.getProbFoulTroll(), config.getProbFoulSnitch()},
-                 gameDynamicsProbs{config.getProbThrowSuccess(), config.getProbKnockOut(), config.getProbFoolAway(), config.getProbCatchSnitch(),
+                 gameDynamicsProbs{config.getProbThrowSuccess(), config.getProbKnockOut(), config.getProbCatchSnitch(),
                  config.getProbCatchQuaffle(), config.getProbWrestQuaffle()}{
         using Broom = communication::messages::types::Broom;
         extraTurnProbs.emplace(Broom::CLEANSWEEP11, config.getProbExtraCleansweep());
