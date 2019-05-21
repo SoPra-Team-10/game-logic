@@ -241,18 +241,25 @@ namespace gameController {
         }
 
         std::deque<gameModel::Position> possiblePositions;
-        int minDistanceSeeker = getDistance(snitch->position, env->team1->seeker->position);
+        int minDistanceSeeker = 30;
+        if(!env->team1->seeker->isFined){
+            minDistanceSeeker = getDistance(snitch->position, env->team1->seeker->position);
+        }
         auto closestSeeker = env->team1->seeker;
         bool equalDistance = false;
-        if(minDistanceSeeker == getDistance(snitch->position, env->team2->seeker->position)){
+        bool seeker2IsFined = env->team2->seeker->isFined;
+        if(minDistanceSeeker == getDistance(snitch->position, env->team2->seeker->position) && !seeker2IsFined){
             equalDistance = true;
-        } else if(minDistanceSeeker > getDistance(snitch->position, env->team2->seeker->position)){
+        } else if(minDistanceSeeker > getDistance(snitch->position, env->team2->seeker->position) && !seeker2IsFined){
             minDistanceSeeker = getDistance(snitch->position, env->team2->seeker->position);
             closestSeeker = env->team2->seeker;
         }
-
         switch (excessLength) {
             case ExcessLength::None : {
+                if(env->team1->seeker->isFined && env->team2->seeker->isFined){
+                    moveToAdjacent(env->snitch, env);
+                    return false;
+                }
                 std::vector<gameModel::Position> freeCells = env->getAllPlayerFreeCellsAround(snitch->position);
                 for(const auto &pos : freeCells){
                     if((!equalDistance && getDistance(pos, closestSeeker->position) > minDistanceSeeker) ||
@@ -283,6 +290,10 @@ namespace gameController {
             case ExcessLength::Stage1:
                 return false;
             case ExcessLength::Stage2: {
+                if(env->team1->seeker->isFined && env->team2->seeker->isFined){
+                    moveToAdjacent(env->snitch, env);
+                    return false;
+                }
                 std::vector<gameModel::Position> newPosition = getAllCrossedCells(snitch->position,
                                                                                   gameModel::Position(8, 6));
                 if (newPosition.empty()) {
@@ -304,6 +315,10 @@ namespace gameController {
                 }
             }
             case ExcessLength::Stage3: {
+                if(env->team1->seeker->isFined && env->team2->seeker->isFined){
+                    moveToAdjacent(env->snitch, env);
+                    return false;
+                }
                 snitch->position = closestSeeker->position;
                 env->getTeam(closestSeeker)->score += 30;
                 return true;
