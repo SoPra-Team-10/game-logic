@@ -397,10 +397,23 @@ namespace gameModel{
          */
         static auto getSurroundingPositions(const Position &position) -> std::vector<Position>;
 
+        /**
+         * Gets all goal cells in left half of the game field.
+         * @return
+         */
         static auto getGoalsLeft() -> std::array<Position, 3>;
 
+        /**
+         * Gets all goal cells in right half of the game field.
+         * @return
+         */
         static auto getGoalsRight() -> std::array<Position, 3>;
 
+        /**
+         * Checks if a given cell is a goal cell.
+         * @param pos
+         * @return
+         */
         static auto isGoalCell(const Position &pos) -> bool;
 
 
@@ -470,7 +483,7 @@ namespace gameModel{
          * Gets all valid cells not occupied by players
          * @return
          */
-        auto getAllFreeCells() -> std::array<Position, 179>;
+        auto getAllFreeCells() -> std::vector<Position>;
 
         /**
          * place a player on random free cell in his half of the game field.

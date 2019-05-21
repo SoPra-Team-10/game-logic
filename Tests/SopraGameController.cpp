@@ -244,7 +244,8 @@ TEST(controller_test, invalid_can_wrest_no_one_holding){
 
     EXPECT_FALSE(gameController::playerCanPerformAction(env->team1->chasers[1], env));
 }
-//-----------------------------------Snitch Move Test------------------------------------------------------------------
+
+//-----------------------------------Snitch Move Test-------------------------------------------------------------------
 
 TEST(controller_test, moveSnitch0) {
     auto env = setup::createEnv();
@@ -268,9 +269,8 @@ TEST(controller_test, moveSnitch1){
     env->team2->seeker->position = {0,8};
 
     gameController::moveSnitch(env->snitch, env, gameController::ExcessLength::None);
-
-    EXPECT_THAT(env->snitch->position, testing::AnyOf(gameModel::Position(10,11), gameModel::Position(11,11), gameModel::Position(12,11),
-                                                        gameModel::Position(12,10), gameModel::Position(12,9) ));
+    EXPECT_THAT(env->snitch->position, testing::AnyOf(gameModel::Position(10,11), gameModel::Position(11,11),
+                                                        gameModel::Position(12,10), gameModel::Position(12,9)));
 }
 
 TEST(controller_test, moveSnitch2){
@@ -335,4 +335,37 @@ TEST(controller_test, moveSnitch8){
     env->team2->seeker->position = gameModel::Position{6,4};
     gameController::moveSnitch(env->snitch, env, gameController::ExcessLength::None);
     EXPECT_THAT(env->snitch->position, testing::AnyOf(gameModel::Position(7,7), gameModel::Position(9,5)));
+}
+
+//-----------------------------------Rest Quaffel after Goal------------------------------------------------------------
+
+TEST(controller_test , moveQuaffelAfterGoal0) {
+    auto env = setup::createEnv();
+
+    env->quaffle->position = gameModel::Position(14, 4);
+    env->team1->chasers[1]->position = gameModel::Position(8, 6);
+
+    gameController::moveQuaffelAfterGoal(env);
+    EXPECT_THAT(env->quaffle->position, testing::AnyOf(gameModel::Position(7,5), gameModel::Position(8,5),
+            gameModel::Position(9,5), gameModel::Position(7,6), gameModel::Position(9,6), gameModel::Position(7,7),
+            gameModel::Position(8,7), gameModel::Position(9,7)));
+}
+
+TEST(controller_test , moveQuaffelAfterGoal1) {
+    auto env = setup::createEnv();
+
+    env->quaffle->position = gameModel::Position(14, 4);
+
+    gameController::moveQuaffelAfterGoal(env);
+    EXPECT_EQ(env->quaffle->position, gameModel::Position(8,6));
+}
+
+TEST(controller_test , moveQuaffelAfterGoal2) {
+    auto env = setup::createEnv();
+
+    env->quaffle->position = gameModel::Position(14, 4);
+    env->team2->keeper->position = gameModel::Position(15, 4);
+
+    gameController::moveQuaffelAfterGoal(env);
+    EXPECT_EQ(env->quaffle->position, gameModel::Position(15,4));
 }

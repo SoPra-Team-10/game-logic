@@ -343,13 +343,13 @@ TEST(move_test, move_foul_ramming) {
     auto env = setup::createEnv();
 
     auto player = env->getPlayer({8, 6});
-    if (player.has_value()) {
+    if (player.has_value() && !player.value()->isFined) {
         gameController::moveToAdjacent(player.value(), env);
     }
     env->team1->keeper->position = gameModel::Position(8, 6);
 
     player = env->getPlayer({7, 6});
-    if (player.has_value()) {
+    if (player.has_value() && !player.value()->isFined) {
         gameController::moveToAdjacent(player.value(), env);
     }
     env->team2->keeper->position = gameModel::Position(7, 6);
@@ -366,7 +366,7 @@ TEST(move_test, move_foul_none) {
     auto env = setup::createEnv();
 
     auto player = env->getPlayer({8, 6});
-    if (player.has_value()) {
+    if (player.has_value() && !player.value()->isFined) {
         gameController::moveToAdjacent(player.value(), env);
     }
     env->team2->seeker->position = gameModel::Position(8, 6);
@@ -391,13 +391,13 @@ TEST(move_test, move_foul_blocksnitch) {
     env->snitch->exists = true;
 
     auto player = env->getPlayer({8, 6});
-    if (player.has_value()) {
+    if (player.has_value() && !player.value()->isFined) {
         gameController::moveToAdjacent(player.value(), env);
     }
     env->snitch->position = gameModel::Position(8, 6);
 
     player = env->getPlayer({7, 6});
-    if (player.has_value()) {
+    if (player.has_value() && !player.value()->isFined) {
         gameController::moveToAdjacent(player.value(), env);
     }
     env->team2->keeper->position = gameModel::Position(7, 6);
@@ -417,7 +417,7 @@ TEST(move_test, move_foul_multipleoffence) {
     env->team1->chasers[1]->position = gameModel::Position(11, 7);
 
     auto player = env->getPlayer({12, 7});
-    if (player.has_value()) {
+    if (player.has_value() && !player.value()->isFined) {
         gameController::moveToAdjacent(player.value(), env);
     }
 
@@ -435,7 +435,7 @@ TEST(move_test, move_foul_blockgoal) {
     env->team1->chasers[0]->position = gameModel::Position(1, 6);
 
     auto player = env->getPlayer({2, 6});
-    if (player.has_value()) {
+    if (player.has_value() && !player.value()->isFined) {
         gameController::moveToAdjacent(player.value(), env);
     }
 
@@ -451,7 +451,7 @@ TEST(move_test, move_foul_chargeGoal) {
     auto env = setup::createEnv();
 
     auto player = env->getPlayer({1, 6});
-    if (player.has_value()) {
+    if (player.has_value() && !player.value()->isFined) {
         gameController::moveToAdjacent(player.value(), env);
     }
 
@@ -460,7 +460,7 @@ TEST(move_test, move_foul_chargeGoal) {
     env->snitch->position = gameModel::Position(5,5);
 
     player = env->getPlayer({2, 6});
-    if (player.has_value()) {
+    if (player.has_value() && !player.value()->isFined) {
         gameController::moveToAdjacent(player.value(), env);
     }
 
@@ -503,7 +503,7 @@ TEST(move_test, move_check_success) {
     env->snitch->position = gameModel::Position(5,5);
 
     auto player = env->getPlayer({7, 2});
-    if (player.has_value()) {
+    if (player.has_value() && !player.value()->isFined) {
         gameController::moveToAdjacent(player.value(), env);
     }
 

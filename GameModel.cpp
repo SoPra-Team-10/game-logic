@@ -179,7 +179,7 @@ namespace gameModel{
 
     bool Environment::cellIsFree(const Position &position) const {
         for(const auto &p : getAllPlayers()){
-            if(position == p->position){
+            if(position == p->position && !p->isFined){
                 return false;
             }
         }
@@ -202,8 +202,15 @@ namespace gameModel{
                     if (xPos == position.x && yPos == position.y) {
                         continue;
                     }
-                    else if (Environment::getCell(xPos, yPos) != Cell::OutOfBounds && !this->getPlayer({xPos, yPos}).has_value()) {
-                        resultVect.emplace_back(Position(xPos, yPos));
+                    else if (Environment::getCell(xPos, yPos) != Cell::OutOfBounds) {
+
+                        auto const player = this->getPlayer({xPos, yPos});
+                        if (player.has_value() && !player.value()->isFined) {
+                            continue;
+                        }
+                        else {
+                            resultVect.emplace_back(Position(xPos, yPos));
+                        }
                     }
                 }
             }
@@ -266,19 +273,13 @@ namespace gameModel{
         return ret;
     }
 
-    auto Environment::getAllFreeCells() -> std::array<Position, 179> {
+    auto Environment::getAllFreeCells() -> std::vector<Position> {
         //@TODO optimization!!!
-        std::array<Position, 179> ret{};
-        auto it = ret.begin();
-        for(const auto &cell : getAllValidCells()){
-            if(cellIsFree(cell)){
-                *it = cell;
-                if (it < ret.end() ) {
-                    it++;
-                }
-                else {
-                    throw std::runtime_error("There are less than 14 players on the field!");
-                }
+        std::vector<Position> ret;
+        ret.reserve(193);
+        for (const auto &cell : getAllValidCells()) {
+            if (cellIsFree(cell)) {
+                ret.emplace_back(cell);
             }
         }
 

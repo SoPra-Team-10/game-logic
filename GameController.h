@@ -80,6 +80,8 @@ namespace gameController {
      */
     void moveToAdjacent(const std::shared_ptr<gameModel::Object> &object, const std::shared_ptr<gameModel::Environment> &env);
 
+    void moveQuaffelAfterGoal(const std::shared_ptr<gameModel::Environment> &env);
+
 
     template <>
     double rng(double min, double max);
@@ -116,8 +118,9 @@ namespace gameController {
 
     /**
      * make the move for the Snitch as in the Rules given
+     * @return true if the snitch was caught after its move, false otherwise
      */
-    void moveSnitch(std::shared_ptr<gameModel::Snitch> &snitch, std::shared_ptr<gameModel::Environment> &env, ExcessLength excessLength);
+    bool moveSnitch(std::shared_ptr<gameModel::Snitch> &snitch, std::shared_ptr<gameModel::Environment> &env, ExcessLength excessLength);
 }
 
 
