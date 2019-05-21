@@ -189,10 +189,6 @@ namespace gameModel{
         virtual ~Ball() = default;
     };
 
-    class PeaceOfShit : public Object{
-        PeaceOfShit(Position &position, communication::messages::types::EntityId id);
-    };
-
     /**
      * Represents the cube of shit that can be placed on a cell by a wombat.
      */

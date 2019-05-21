@@ -213,7 +213,15 @@ TEST(snitch_push_test, execute1){
     EXPECT_THAT(env->snitch->position, testing::AnyOf(P(11, 7), P(9, 7), P(9, 8), P(10, 9), P(11, 9)));
 }
 
-//----------------------------------------------FanToInterfernce/ InterferenceToFan--------------------------------------------------------------
+//----------------------------------------------BlockCell---------------------------------------------------------------
+/*
+TEST(block_cell_test, isPossible0){
+    auto env = setup::createEnv({0, {}, {1, 1, 1, 1, 1, 1, 1, 1, 1}, {1, 1, 1, 1, 1, 1}, {}});
+    gameModel::CubeOfShit cubeOfShit(gameModel::Position(8,6),communication::messages::types::EntityId::LEFT_ELF,3);
+    env->cubesOfShit.emplace_back(cubeOfShit);
+}
+*/
+//----------------------------------------------FanToInterfernce/ InterferenceToFan-------------------------------------
 TEST(fan_test, fan_to_interference){
     EXPECT_EQ(gameModel::Fanblock::fanToInterference(communication::messages::types::FanType::GOBLIN), gameModel::InterferenceType::RangedAttack);
     EXPECT_EQ(gameModel::Fanblock::fanToInterference(communication::messages::types::FanType::TROLL), gameModel::InterferenceType::Impulse);
