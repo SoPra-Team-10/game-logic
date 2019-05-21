@@ -38,7 +38,7 @@ namespace gameModel{
      */
     struct GameDynamicsProbs{
         double throwSuccess,
-                knockOut, foolAway,
+                knockOut,
                 catchSnitch, catchQuaffle,
                 wrestQuaffle;
     };
@@ -500,7 +500,7 @@ namespace gameModel{
          * Gets all valid cells not occupied by players
          * @return
          */
-        auto getAllFreeCells() -> std::array<Position, 179>;
+        auto getAllFreeCells() -> std::vector<Position>;
 
         /**
          * place a player on random free cell in his half of the game field.
