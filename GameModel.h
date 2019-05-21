@@ -37,7 +37,7 @@ namespace gameModel{
      */
     struct GameDynamicsProbs{
         double throwSuccess,
-                knockOut, foolAway,
+                knockOut,
                 catchSnitch, catchQuaffle,
                 wrestQuaffle;
     };
