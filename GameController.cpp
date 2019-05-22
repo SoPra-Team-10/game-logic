@@ -164,20 +164,26 @@ namespace gameController {
 
         // find nearest player
         int minDistance = std::numeric_limits<int>::max();
-        std::shared_ptr<gameModel::Player> minDistancePlayer;
+        std::vector<std::shared_ptr<gameModel::Player>> minDistancePlayers;
         for (const auto &player: players) {
 
             if (!INSTANCE_OF(player, gameModel::Beater) && !player->isFined) {
                 if (getDistance(bludger->position, player->position) < minDistance) {
                     minDistance = getDistance(bludger->position, player->position);
-                    minDistancePlayer = player;
+                    minDistancePlayers.clear();
+                    minDistancePlayers.emplace_back(player);
+                }
+                else if (getDistance(bludger->position, player->position) == minDistance) {
+                    minDistancePlayers.emplace_back(player);
                 }
             }
         }
 
-        if (!minDistancePlayer) {
+        if (minDistancePlayers.empty()) {
             throw std::runtime_error("There are't enough player on the field!");
         }
+
+        auto minDistancePlayer = minDistancePlayers[rng(0, static_cast<int>(minDistancePlayers.size() - 1))];
 
         // move towards nearest player
         auto crossedCells = getAllCrossedCells(bludger->position, minDistancePlayer->position);
@@ -227,8 +233,11 @@ namespace gameController {
         // check if player can wrest quaffel
         auto playerHoldingQuaffle = env->getPlayer(env->quaffle->position);
         if(INSTANCE_OF(player, const gameModel::Chaser) && getDistance(player->position, env->quaffle->position) == 1 &&
-            playerHoldingQuaffle.has_value() && !playerHoldingQuaffle.value()->isFined && (INSTANCE_OF(playerHoldingQuaffle.value(), gameModel::Chaser) ||
-                (INSTANCE_OF(playerHoldingQuaffle.value(), gameModel::Keeper) && !env->isPlayerInOwnRestrictedZone(playerHoldingQuaffle.value())))){
+            playerHoldingQuaffle.has_value() && !playerHoldingQuaffle.value()->isFined &&
+            !env->arePlayerInSameTeam(player, playerHoldingQuaffle.value()) &&
+            (INSTANCE_OF(playerHoldingQuaffle.value(), gameModel::Chaser) ||
+            (INSTANCE_OF(playerHoldingQuaffle.value(), gameModel::Keeper) &&
+            !env->isPlayerInOwnRestrictedZone(playerHoldingQuaffle.value())))){
             return true;
         }
 
