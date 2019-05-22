@@ -64,6 +64,7 @@ TEST(env_test, cellIsFree0){
     EXPECT_TRUE(env->cellIsFree({10, 2}));
 }
 
+
 TEST(env_test, cellIsFree1) {
     auto env = setup::createEnv();
 
@@ -81,6 +82,13 @@ TEST(env_test, cellIsFree1) {
 
     EXPECT_FALSE(env->cellIsFree(gameModel::Position(x,y)));
 
+}
+
+TEST(env_test, cellIsFree2){
+    auto env = setup::createEnv();
+    env->team1->seeker->isFined = true;
+    env->team1->keeper->position = env->team1->seeker->position;
+    EXPECT_FALSE(env->cellIsFree(env->team1->seeker->position));
 }
 
 TEST(env_test, arePlayerInSameTeam) {
