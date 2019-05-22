@@ -24,7 +24,7 @@ namespace gameModel{
     // Fanblock
 
     Fanblock::Fanblock(int teleportation, int rangedAttack, int impulse, int snitchPush, int blockCell) : currFans(), initialFans() {
-        if(teleportation + rangedAttack + impulse + snitchPush != 7){
+        if(teleportation + rangedAttack + impulse + snitchPush + blockCell != 7){
             throw std::invalid_argument("Fanblock has to contain exactly 7 fans!");
         }
 
@@ -498,7 +498,7 @@ namespace gameModel{
             std::make_shared<Chaser>(Position{tForm.getChaser3X(), tForm.getChaser3Y()}, tConf.getChaser3().getName(), tConf.getChaser3().getSex(), tConf.getChaser3().getBroom(), leftTeam ?
             communication::messages::types::EntityId::LEFT_CHASER3 : communication::messages::types::EntityId::RIGHT_CHASER3)},
    name(tConf.getTeamName()), colorMain(tConf.getColorPrimary()), colorSecondary(tConf.getColorSecondary()),
-   fanblock(tConf.getElfs(), tConf.getGoblins(), tConf.getTrolls(), tConf.getNifflers(), tConf.getWombats){}
+   fanblock(tConf.getElfs(), tConf.getGoblins(), tConf.getTrolls(), tConf.getNifflers(), tConf.getWombats()){}
 
 
     auto Team::getAllPlayers() const -> std::array<std::shared_ptr<Player>, 7> {

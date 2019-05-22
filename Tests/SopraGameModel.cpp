@@ -180,5 +180,5 @@ TEST(fanblock_test, banFan_and_getUses_and_getBannedCount) {
     env->team1->fanblock.banFan(gameModel::InterferenceType::Impulse);
 
     EXPECT_EQ(env->team1->fanblock.getBannedCount(gameModel::InterferenceType::Impulse), 1);
-    EXPECT_EQ(env->team1->fanblock.getUses(gameModel::InterferenceType::Impulse), 2);
+    EXPECT_EQ(env->team1->fanblock.getUses(gameModel::InterferenceType::Impulse), 1);
 }
