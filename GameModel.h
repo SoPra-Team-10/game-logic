@@ -321,7 +321,7 @@ namespace gameModel{
          * @param player
          * @return true if player is a member of the team. false otherwise
          */
-        bool hasMember(const std::shared_ptr<Player>& player) const;
+        bool hasMember(const std::shared_ptr<const Player>& player) const;
 
         /**
          * gets the number of banned players in the team
@@ -375,7 +375,7 @@ namespace gameModel{
          * @param p2 player 2.
          * @return if the players are in the same team true, else false.
          */
-        auto arePlayerInSameTeam(const std::shared_ptr<Player>& p1, const std::shared_ptr<Player>& p2) const -> bool;
+        auto arePlayerInSameTeam(const std::shared_ptr<const Player>& p1, const std::shared_ptr<const Player>& p2) const -> bool;
 
         /**
          * checks if a player is in the own restricted zone.
@@ -471,7 +471,7 @@ namespace gameModel{
         auto getAllPlayerFreeCellsAround(const Position &position) const -> std::vector<Position>;
 
         /**
-         * Returns player object at the specified position if one exists
+         * Returns player object (if not banned) at the specified position if one exists
          * @return
          */
         auto getPlayer(const Position &position) const -> std::optional<std::shared_ptr<Player>>;
