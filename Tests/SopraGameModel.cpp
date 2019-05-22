@@ -4,6 +4,7 @@
 
 #include <gtest/gtest.h>
 #include <gmock/gmock-matchers.h>
+#include <Interference.h>
 #include "GameModel.h"
 #include "GameController.h"
 #include "setup.h"
@@ -170,6 +171,40 @@ TEST(env_test, getAllPlayerFreeCellsAround) {
     EXPECT_EQ(freeCells[5], gameModel::Position(11, 11));
     EXPECT_EQ(freeCells[6], gameModel::Position(11, 12));
 }
+
+TEST(env_test, isSHitOnCell){
+    auto env = setup::createEnv();
+    gameController::BlockCell testShit(env, env->team1, gameModel::Position(8,7));
+    testShit.execute();
+    EXPECT_TRUE(env->isShitOnCell(gameModel::Position(8,7)));
+}
+
+TEST(env_test, removeSHitOnCell0){
+    auto env = setup::createEnv();
+    gameController::BlockCell testShit(env, env->team1, gameModel::Position(8,7));
+    testShit.execute();
+    env->removeShitOnCell(gameModel::Position(8,7));
+    EXPECT_TRUE(env->cubesOfShit.empty());
+}
+
+TEST(env_test, removeSHitOnCell1){
+    auto env = setup::createEnv();
+    gameController::BlockCell testShit(env, env->team1, gameModel::Position(8,7));
+    testShit.execute();
+    env->removeShitOnCell(gameModel::Position(8,6));
+    EXPECT_FALSE(env->cubesOfShit.empty());
+}
+
+TEST(env_test, removeDeprecatedSHit){
+    auto env = setup::createEnv();
+    gameController::BlockCell testShit(env, env->team1, gameModel::Position(8,7));
+    testShit.execute();
+    env->removeDeprecatedShit();
+    EXPECT_FALSE(env->cubesOfShit.empty());
+    env->removeDeprecatedShit();
+    EXPECT_TRUE(env->cubesOfShit.empty());
+}
+
 
 //-----------------------------------------Fanblock Test----------------------------------------------------------------
 

@@ -218,8 +218,32 @@ TEST(snitch_push_test, execute1){
 TEST(block_cell_test, isPossible0){
     auto env = setup::createEnv({0, {}, {1, 1, 1, 1, 1, 1, 1, 1, 1, 1}, {1, 1, 1, 1, 1}, {}});
     gameController::BlockCell testShit(env, env->team1, gameModel::Position(8,7));
-    testShit.isPossible();
+    EXPECT_TRUE(testShit.isPossible());
+}
 
+TEST(block_cell_test, isPossible1){
+    auto env = setup::createEnv({0, {}, {1, 1, 1, 1, 1, 1, 1, 1, 1, 1}, {1, 1, 1, 1, 1}, {}});
+    gameController::BlockCell testShit(env, env->team1, gameModel::Position(8,5));
+    EXPECT_FALSE(testShit.isPossible());
+}
+
+TEST(block_cell_test, isPossible3){
+    auto env = setup::createEnv({0, {}, {1, 1, 1, 1, 1, 1, 1, 1, 1, 1}, {1, 1, 1, 1, 1}, {}});
+    env->snitch->position = gameModel::Position(8,7);
+    gameController::BlockCell testShit(env, env->team1, gameModel::Position(8,7));
+    EXPECT_FALSE(testShit.isPossible());
+}
+
+TEST(block_cell_test, execute0){
+    auto env = setup::createEnv({0, {}, {1, 1, 1, 1, 1, 1, 1, 1, 1, 1}, {1, 1, 1, 1, 1}, {}});
+    gameController::BlockCell testShit(env, env->team1, gameModel::Position(8,7));
+    EXPECT_EQ(testShit.execute(), gameController::ActionCheckResult::Foul);
+}
+
+TEST(block_cell_test, execute1){
+    auto env = setup::createEnv();
+    gameController::BlockCell testShit(env, env->team1, gameModel::Position(8,7));
+    EXPECT_EQ(testShit.execute(), gameController::ActionCheckResult::Success);
 }
 
 //----------------------------------------------FanToInterfernce/ InterferenceToFan-------------------------------------
