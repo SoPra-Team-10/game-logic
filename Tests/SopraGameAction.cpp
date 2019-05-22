@@ -140,7 +140,7 @@ TEST(shot_test, throw_execute_fail_and_disperse){
 }
 
 TEST(shot_test, throw_disperse_and_succed){
-    auto env = setup::createEnv({0, {}, {1, 1, 1, 1, 1, 1, 1, 1, 1}, {0, 1, 1, 0, 1}, {}});
+    auto env = setup::createEnv({0, {}, {1, 1, 1, 1, 1, 1, 1, 1, 1, 1}, {0, 1, 1, 0, 1}, {}});
     env->team1->chasers[0]->position = {6,6};
     env->quaffle->position = env->team1->chasers[0]->position;
     env->team1->chasers[1]->position = {7,7};
@@ -527,7 +527,7 @@ TEST(move_test, move_check_foul) {
 
 // multiple offence
 TEST(move_test, move_execute0) {
-    auto env = setup::createEnv({0, {}, {1, 1, 1, 1, 1, 1, 1, 1, 1}, {1, 1, 1, 1, 1}, {}});
+    auto env = setup::createEnv({0, {}, {1, 1, 1, 1, 1, 1, 1, 1, 1, 1}, {1, 1, 1, 1, 1}, {}});
 
     env->team1->chasers[0]->position = gameModel::Position(12, 6);
     env->team1->chasers[1]->position = gameModel::Position(11, 5);
@@ -544,7 +544,7 @@ TEST(move_test, move_execute0) {
 
 // charge goal
 TEST(move_test, move_execute1) {
-    auto env = setup::createEnv({0, {}, {1, 1, 1, 1, 1, 1, 1, 1, 1}, {1, 1, 1, 1, 1}, {}});
+    auto env = setup::createEnv({0, {}, {1, 1, 1, 1, 1, 1, 1, 1, 1, 1}, {1, 1, 1, 1, 1}, {}});
 
     env->team1->chasers[0]->position = gameModel::Position(13, 6);
     env->quaffle->position = gameModel::Position(13, 6);
@@ -562,7 +562,7 @@ TEST(move_test, move_execute1) {
 
 // illegal move
 TEST(move_test, move_execute2) {
-    auto env = setup::createEnv({0, {}, {1, 1, 1, 1, 1, 1, 1, 1, 1}, {1, 1, 1, 1, 1}, {}});
+    auto env = setup::createEnv({0, {}, {1, 1, 1, 1, 1, 1, 1, 1, 1, 1}, {1, 1, 1, 1, 1}, {}});
 
     gameController::Move mv(env, env->team1->chasers[0], gameModel::Position(14, 6));
 
@@ -576,7 +576,7 @@ TEST(move_test, move_execute2) {
 
 // illegal move
 TEST(move_test, move_execute3) {
-    auto env = setup::createEnv({0, {}, {1, 1, 1, 1, 1, 1, 1, 1, 1}, {1, 1, 1, 1, 1}, {}});
+    auto env = setup::createEnv({0, {}, {1, 1, 1, 1, 1, 1, 1, 1, 1, 1}, {1, 1, 1, 1, 1}, {}});
 
     gameController::Move mv(env, env->team1->chasers[0], gameModel::Position(0, 0));
 
@@ -590,7 +590,7 @@ TEST(move_test, move_execute3) {
 
 // ramming
 TEST(move_test, move_execute4) {
-    auto env = setup::createEnv({0, {}, {1, 1, 1, 1, 1, 1, 1, 1, 1}, {1, 1, 1, 1, 1}, {}});
+    auto env = setup::createEnv({0, {}, {1, 1, 1, 1, 1, 1, 1, 1, 1, 1}, {1, 1, 1, 1, 1}, {}});
 
     auto oldPos = env->team2->keeper->position;
 
@@ -610,7 +610,7 @@ TEST(move_test, move_execute4) {
 
 // block goal
 TEST(move_test, move_execute5) {
-    auto env = setup::createEnv({0, {}, {1, 1, 1, 1, 1, 1, 1, 1, 1}, {1, 1, 1, 1, 1}, {}});
+    auto env = setup::createEnv({0, {}, {1, 1, 1, 1, 1, 1, 1, 1, 1, 1}, {1, 1, 1, 1, 1}, {}});
 
     gameController::Move mv(env, env->team1->beaters[0], gameModel::Position(2, 4));
 
@@ -624,7 +624,7 @@ TEST(move_test, move_execute5) {
 
 // block snitch
 TEST(move_test, move_execute6) {
-    auto env = setup::createEnv({0, {}, {1, 1, 1, 1, 1, 1, 1, 1, 1}, {1, 1, 1, 1, 1}, {}});
+    auto env = setup::createEnv({0, {}, {1, 1, 1, 1, 1, 1, 1, 1, 1, 1}, {1, 1, 1, 1, 1}, {}});
 
     env->snitch->exists = true;
     env->snitch->position = gameModel::Position(2, 3);
@@ -641,7 +641,7 @@ TEST(move_test, move_execute6) {
 
 //Catch Snitch
 TEST(move_test, move_execute7){
-    auto env = setup::createEnv({0, {}, {1, 1, 1, 1, 1, 1, 1, 1, 1}, {1, 1, 1, 1, 1}, {}});
+    auto env = setup::createEnv({0, {}, {1, 1, 1, 1, 1, 1, 1, 1, 1, 1}, {1, 1, 1, 1, 1}, {}});
     env->snitch->exists = true;
     env->snitch->position = {3, 4};
     env->team1->seeker->position = {3, 4};
@@ -654,7 +654,7 @@ TEST(move_test, move_execute7){
 
 //Fail to catch the Snitch because Snitch doesn't exist
 TEST(move_test, move_execute8){
-    auto env = setup::createEnv({0, {}, {1, 1, 1, 1, 1, 1, 1, 1, 1}, {1, 1, 1, 1, 1}, {}});
+    auto env = setup::createEnv({0, {}, {1, 1, 1, 1, 1, 1, 1, 1, 1, 1}, {1, 1, 1, 1, 1}, {}});
     env->snitch->exists = false;
     env->snitch->position = {3, 4};
     env->team1->seeker->position = {3, 4};
@@ -667,7 +667,7 @@ TEST(move_test, move_execute8){
 
 //Fail to catch the Snitch because Snitch hasn't the same Position like the Seeker
 TEST(move_test, move_execute9){
-    auto env = setup::createEnv({0, {}, {1, 1, 1, 1, 1, 1, 1, 1, 1}, {1, 1, 1, 1, 1}, {}});
+    auto env = setup::createEnv({0, {}, {1, 1, 1, 1, 1, 1, 1, 1, 1, 1}, {1, 1, 1, 1, 1}, {}});
     env->snitch->exists = true;
     env->snitch->position = {3, 4};
     env->team1->seeker->position = {3, 4};
@@ -680,7 +680,7 @@ TEST(move_test, move_execute9){
 
 //Fail to catch the Snitch because there is no Seeker on the same field
 TEST(move_test, move_execute10){
-    auto env = setup::createEnv({0, {}, {1, 1, 1, 1, 1, 1, 1, 1, 1}, {1, 1, 1, 1, 1}, {}});
+    auto env = setup::createEnv({0, {}, {1, 1, 1, 1, 1, 1, 1, 1, 1, 1}, {1, 1, 1, 1, 1}, {}});
     env->snitch->exists = false;
     env->snitch->position = {3, 4};
     env->team1->keeper->position = {3, 4};
@@ -707,7 +707,7 @@ TEST(wrest_quaffel_test, wrest_execute0) {
 }
 
 TEST(wrest_quaffel_test, wrest_execute1) {
-    auto env = setup::createEnv({0, {}, {1, 1, 1, 1, 1, 1, 1, 1, 1}, {1, 1, 1, 1, 1}, {}});
+    auto env = setup::createEnv({0, {}, {1, 1, 1, 1, 1, 1, 1, 1, 1, 1}, {1, 1, 1, 1, 1}, {}});
 
     env->quaffle->position = env->team2->chasers[0]->position;
     env->team1->chasers[0]->position = gameModel::Position(6,0);
@@ -722,7 +722,7 @@ TEST(wrest_quaffel_test, wrest_execute1) {
 }
 
 TEST(wrest_quaffel_test, wrest_execute2) {
-    auto env = setup::createEnv({0, {}, {1, 1, 1, 1, 1, 1, 1, 1, 1}, {1, 1, 1, 1, 1}, {}});
+    auto env = setup::createEnv({0, {}, {1, 1, 1, 1, 1, 1, 1, 1, 1, 1}, {1, 1, 1, 1, 1}, {}});
 
     env->team1->keeper->position = gameModel::Position(0, 4);
     env->quaffle->position = env->team1->keeper->position;
@@ -734,7 +734,7 @@ TEST(wrest_quaffel_test, wrest_execute2) {
 }
 
 TEST(wrest_quaffel_test, wrest_execute3) {
-    auto env = setup::createEnv({0, {}, {1, 1, 1, 1, 1, 1, 1, 1, 1}, {1, 1, 1, 1, 1}, {}});
+    auto env = setup::createEnv({0, {}, {1, 1, 1, 1, 1, 1, 1, 1, 1, 1}, {1, 1, 1, 1, 1}, {}});
 
     env->team1->keeper->position = gameModel::Position(16, 4);
     env->quaffle->position = env->team1->keeper->position;

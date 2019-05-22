@@ -49,6 +49,8 @@ namespace gameController{
          */
         auto execute() const -> gameController::ActionCheckResult override;
 
+        bool isPossible() const override;
+
     private:
         std::shared_ptr<gameModel::Player> target;
     };
@@ -92,6 +94,23 @@ namespace gameController{
          * Snitch is moved to random free adjacent position
          */
         auto execute() const -> gameController::ActionCheckResult override;
+    };
+
+    class BlockCell : public Interference{
+    public:
+        BlockCell(std::shared_ptr<gameModel::Environment> env, std::shared_ptr<gameModel::Team> team, gameModel::Position target);
+
+        /**
+         * @return true if this Interference is available and possible to place the this Interference to this Cell
+         */
+        bool isPossible() const override ;
+
+        /**
+         * BLockCell is moved to the Cell
+         */
+        auto execute() const -> gameController::ActionCheckResult override;
+    private:
+        gameModel::Position target;
     };
 }
 
