@@ -184,7 +184,7 @@ TEST(env_test, removeSHitOnCell0){
     gameController::BlockCell testShit(env, env->team1, gameModel::Position(8,7));
     testShit.execute();
     env->removeShitOnCell(gameModel::Position(8,7));
-    EXPECT_TRUE(env->cubesOfShit.empty());
+    EXPECT_TRUE(env->pileOfShit.empty());
 }
 
 TEST(env_test, removeSHitOnCell1){
@@ -192,7 +192,7 @@ TEST(env_test, removeSHitOnCell1){
     gameController::BlockCell testShit(env, env->team1, gameModel::Position(8,7));
     testShit.execute();
     env->removeShitOnCell(gameModel::Position(8,6));
-    EXPECT_FALSE(env->cubesOfShit.empty());
+    EXPECT_FALSE(env->pileOfShit.empty());
 }
 
 TEST(env_test, removeDeprecatedSHit){
@@ -200,9 +200,9 @@ TEST(env_test, removeDeprecatedSHit){
     gameController::BlockCell testShit(env, env->team1, gameModel::Position(8,7));
     testShit.execute();
     env->removeDeprecatedShit();
-    EXPECT_FALSE(env->cubesOfShit.empty());
+    EXPECT_FALSE(env->pileOfShit.empty());
     env->removeDeprecatedShit();
-    EXPECT_TRUE(env->cubesOfShit.empty());
+    EXPECT_TRUE(env->pileOfShit.empty());
 }
 
 

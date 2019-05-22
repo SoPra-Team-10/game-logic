@@ -116,14 +116,14 @@ namespace gameController{
         }
     }
 
-    BlockCell::BlockCell(std::shared_ptr<gameModel::Environment> env, const std::shared_ptr<gameModel::Team>& team, gameModel::Position position) :
-            Interference(std::move(env), team, gameModel::InterferenceType::BlockCell), position(position) {}
+    BlockCell::BlockCell(std::shared_ptr<gameModel::Environment> env, std::shared_ptr<gameModel::Team> team, gameModel::Position target) :
+            Interference(std::move(env), std::move(team), gameModel::InterferenceType::BlockCell), target(target) {}
 
     auto BlockCell::execute() const -> gameController::ActionCheckResult {
         if(!isPossible()){
             throw std::runtime_error("Interfernce not possible");
         }
-        env->cubesOfShit.emplace_back(std::make_shared<gameModel::CubeOfShit>(position, communication::messages::types::EntityId::LEFT_WOMBAT, true));
+        env->pileOfShit.emplace_back(std::make_shared<gameModel::CubeOfShit>(target, communication::messages::types::EntityId::LEFT_WOMBAT, true));
         if (gameController::actionTriggered(env->config.foulDetectionProbs.blockCell)) {
             team->fanblock.banFan(this->getType());
             return gameController::ActionCheckResult::Foul;
@@ -134,6 +134,6 @@ namespace gameController{
     }
 
     bool BlockCell::isPossible() const {
-        return Interference::isPossible() && Interference::env->cellIsFreeFromObject(position);
+        return Interference::isPossible() && Interference::env->cellIsFreeFromObject(target) && !(env->getCell(target) == gameModel::Cell::OutOfBounds);;
     }
 }

@@ -195,10 +195,8 @@ namespace gameModel{
      */
     class CubeOfShit : public Object {
     public:
-        bool spawned;
-        CubeOfShit(const Position &position, communication::messages::types::EntityId id, bool spawned);
-
-        virtual ~CubeOfShit() = default;
+        bool spawnedThisRound = true;
+        explicit CubeOfShit(const Position &target);
     };
 
     /**
@@ -346,7 +344,7 @@ namespace gameModel{
         std::shared_ptr<Quaffle> quaffle;
         std::shared_ptr<Snitch> snitch;
         std::array<std::shared_ptr<Bludger>, 2> bludgers;
-        std::deque<std::shared_ptr<CubeOfShit>> cubesOfShit;
+        std::deque<std::shared_ptr<CubeOfShit>> pileOfShit;
 
         /**
          * Constructs an Environment from server config types
@@ -517,12 +515,21 @@ namespace gameModel{
         auto getBallByID(const communication::messages::types::EntityId &id) const -> std::shared_ptr<Ball>;
 
         /**
-         * Removes all the cubes of shit which were corrently on the game field.
+         * Removes all the cubes of shit which were from the last round
          */
         void removeDeprecatedShit();
 
+        /**
+         * removes Shit on a given Position
+         * @param position is the Position of the COubeOfShit which should be romoved
+         */
         void removeShitOnCell(const Position &position);
 
+        /**
+         * proofes, if Shit is on a given Position
+         * @param position is the Position to test, if SHit is on this Cell
+         * @return returns true, if Shit is still on the Position, otherwise false
+         */
         auto isShitOnCell(const Position &position) const -> bool;
     };
 }

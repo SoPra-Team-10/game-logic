@@ -408,9 +408,9 @@ namespace gameModel{
     }
 
     void Environment::removeDeprecatedShit() {
-        for(auto &shit : cubesOfShit){
-            if(shit->spawned) {
-                shit->spawned = false;
+        for(auto &shit : pileOfShit){
+            if(shit->spawnedThisRound) {
+                shit->spawnedThisRound = false;
             }else {
                 removeShitOnCell(shit->position);
             }
@@ -419,9 +419,9 @@ namespace gameModel{
 
     void Environment::removeShitOnCell(const Position &position) {
 
-        for (auto it = this->cubesOfShit.begin(); it < this->cubesOfShit.end();) {
+        for (auto it = this->pileOfShit.begin(); it < this->pileOfShit.end();) {
             if ((*it)->position == position) {
-                it = this->cubesOfShit.erase(it);
+                it = this->pileOfShit.erase(it);
             }
             else {
                 it++;
@@ -430,12 +430,11 @@ namespace gameModel{
     }
 
     auto Environment::isShitOnCell(const Position &position) const -> bool {
-        for (const auto &shit : this->cubesOfShit) {
+        for (const auto &shit : this->pileOfShit) {
             if (shit->position == position) {
                 return true;
             }
         }
-
         return false;
     }
 
@@ -639,5 +638,5 @@ namespace gameModel{
 
     Object::Object(const Position &position, communication::messages::types::EntityId id) : position(position), id(id){}
 
-    CubeOfShit::CubeOfShit(const Position &position, communication::messages::types::EntityId id, bool spawned) : Object(position, id), spawned(spawned){}
+    CubeOfShit::CubeOfShit(const Position &target) : Object(target, communication::messages::types::EntityId::LEFT_WOMBAT){}
 }
