@@ -170,6 +170,10 @@ namespace gameController {
             if (!INSTANCE_OF(player, gameModel::Beater)) {
                 if (getDistance(bludger->position, player->position) < minDistance) {
                     minDistance = getDistance(bludger->position, player->position);
+                    minDistancePlayers.clear();
+                    minDistancePlayers.emplace_back(player);
+                }
+                else if (getDistance(bludger->position, player->position) == minDistance) {
                     minDistancePlayers.emplace_back(player);
                 }
             }
@@ -179,7 +183,7 @@ namespace gameController {
             throw std::runtime_error("There are't enough player on the field!");
         }
 
-        auto minDistancePlayer = minDistancePlayers[rng(0, (int) minDistancePlayers.size() - 1)];
+        auto minDistancePlayer = minDistancePlayers[rng(0, static_cast<int>(minDistancePlayers.size() - 1))];
 
         // move towards nearest player
         auto crossedCells = getAllCrossedCells(bludger->position, minDistancePlayer->position);
