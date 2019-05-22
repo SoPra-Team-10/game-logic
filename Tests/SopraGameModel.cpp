@@ -56,7 +56,6 @@ TEST(env_test, cellIsFree0){
     EXPECT_FALSE(env->cellIsFree(env->team1->seeker->position));
     EXPECT_FALSE(env->cellIsFree(env->team2->seeker->position));
 
-    EXPECT_TRUE(env->cellIsFree({8, 6}));
     EXPECT_TRUE(env->cellIsFree({2, 6}));
     EXPECT_TRUE(env->cellIsFree({2, 9}));
     EXPECT_TRUE(env->cellIsFree({11, 7}));
@@ -77,6 +76,22 @@ TEST(env_test, cellIsFree1) {
         gameController::moveToAdjacent(player.value(), env);
     }
 
+    if(env->snitch->exists && env->snitch->position == gameModel::Position{x, y}){
+        gameController::moveToAdjacent(env->snitch, env);
+    }
+
+    if(env->bludgers[0]->position == gameModel::Position{x, y}){
+        gameController::moveToAdjacent(env->bludgers[0], env);
+    }
+
+    if(env->bludgers[1]->position == gameModel::Position{x, y}){
+        gameController::moveToAdjacent(env->bludgers[1], env);
+    }
+
+    if(env->quaffle->position == gameModel::Position{x, y}){
+        gameController::moveToAdjacent(env->quaffle, env);
+    }
+
     EXPECT_TRUE(env->cellIsFree(gameModel::Position(x,y)));
 
     env->team1->keeper->position = gameModel::Position(x,y);
@@ -90,6 +105,20 @@ TEST(env_test, cellIsFree2){
     env->team1->seeker->isFined = true;
     env->team1->keeper->position = env->team1->seeker->position;
     EXPECT_FALSE(env->cellIsFree(env->team1->seeker->position));
+}
+
+
+TEST(env_test, cellIsFreeBall){
+    auto env = setup::createEnv();
+    env->snitch->position = {11, 2};
+    env->snitch->exists = true;
+    env->bludgers[0]-> position = {6, 9};
+    env->bludgers[1]-> position = {2, 7};
+    EXPECT_FALSE(env->cellIsFree({11, 2}));
+    EXPECT_FALSE(env->cellIsFree({6, 9}));
+    EXPECT_FALSE(env->cellIsFree({2, 7}));
+    env->snitch->exists = false;
+    EXPECT_TRUE(env->cellIsFree({11, 2}));
 }
 
 TEST(env_test, arePlayerInSameTeam) {

@@ -452,9 +452,9 @@ namespace gameModel{
         auto getOpponents(const std::shared_ptr<Player>& player) const -> std::array<std::shared_ptr<Player>, 7>;
 
         /**
-         * Determines whether the given Position is occupied by a Player
+         * Determines whether the given Position is occupied by a Player or Ball
          * @param position the position to be checked
-         * @return true if occupied, false otherwise
+         * @return true if not occupied by any ball or player, false otherwise
          */
         bool cellIsFree(const Position &position) const;
 
