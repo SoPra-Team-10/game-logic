@@ -133,6 +133,14 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a585e52dc36311ec40c350cb2a7fae9c3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a67ac4b2693c8dc1e049fa1fb24357604"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgame_model_1_1_environment.html#a67ac4b2693c8dc1e049fa1fb24357604">getBallByID</a> (const communication::messages::types::EntityId &amp;id) const -&gt; std::shared_ptr&lt; <a class="el" href="classgame_model_1_1_ball.html">Ball</a> &gt;</td></tr>
 <tr class="separator:a67ac4b2693c8dc1e049fa1fb24357604"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a446aaf81f38e180efb6e0d1c520817c4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgame_model_1_1_environment.html#a446aaf81f38e180efb6e0d1c520817c4">removeAllShit</a> ()</td></tr>
+<tr class="separator:a446aaf81f38e180efb6e0d1c520817c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a288e944482867251f3ddd97e7510efb9"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a288e944482867251f3ddd97e7510efb9"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>removeShitOnCell</b> (const <a class="el" href="structgame_model_1_1_position.html">Position</a> &amp;position)</td></tr>
+<tr class="separator:a288e944482867251f3ddd97e7510efb9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afd15a893dc5475c20488c46084a65a1a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="afd15a893dc5475c20488c46084a65a1a"></a>
+auto&#160;</td><td class="memItemRight" valign="bottom"><b>isShitOnCell</b> (const <a class="el" href="structgame_model_1_1_position.html">Position</a> &amp;position) const -&gt; bool</td></tr>
+<tr class="separator:afd15a893dc5475c20488c46084a65a1a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
@@ -172,6 +180,10 @@ std::shared_ptr&lt; <a class="el" href="classgame_model_1_1_snitch.html">Snitch<
 std::array&lt; std::shared_ptr<br class="typebreak"/>
 &lt; <a class="el" href="classgame_model_1_1_bludger.html">Bludger</a> &gt;, 2 &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>bludgers</b></td></tr>
 <tr class="separator:afe22e5667c13829e787ef4df6a9e9ee8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5974969dab241c19d33d174ad2aef342"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5974969dab241c19d33d174ad2aef342"></a>
+std::deque&lt; std::shared_ptr<br class="typebreak"/>
+&lt; <a class="el" href="classgame_model_1_1_cube_of_shit.html">CubeOfShit</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>cubesOfShit</b></td></tr>
+<tr class="separator:a5974969dab241c19d33d174ad2aef342"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Represents a game state </p>
@@ -814,6 +826,22 @@ std::array&lt; std::shared_ptr<br class="typebreak"/>
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a class="anchor" id="a446aaf81f38e180efb6e0d1c520817c4"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void gameModel::Environment::removeAllShit </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Removes all the cubes of shit which were corrently on the game field. </p>
 
 </div>
 </div>
