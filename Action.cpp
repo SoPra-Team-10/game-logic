@@ -374,6 +374,8 @@ namespace gameController{
             //rammed player looses quaffel
             moveToAdjacent(env->quaffle, env);
             actions.push_back(ActionResult::FoolAway);
+        } else if(this->env->quaffle->position == target && !INSTANCE_OF(this->actor, gameModel::Chaser) && !INSTANCE_OF(this->actor, gameModel::Keeper)){
+            moveToAdjacent(env->quaffle, env);
         }
 
         // move other player out of the way if necessary
