@@ -123,7 +123,7 @@ namespace gameController{
         if(!isPossible()){
             throw std::runtime_error("Interfernce not possible");
         }
-        env->pileOfShit.emplace_back(std::make_shared<gameModel::CubeOfShit>(target, communication::messages::types::EntityId::LEFT_WOMBAT, true));
+        env->pileOfShit.emplace_back(std::make_shared<gameModel::CubeOfShit>(target));
         if (gameController::actionTriggered(env->config.foulDetectionProbs.blockCell)) {
             team->fanblock.banFan(this->getType());
             return gameController::ActionCheckResult::Foul;
