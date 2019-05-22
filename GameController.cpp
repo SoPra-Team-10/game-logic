@@ -241,16 +241,15 @@ namespace gameController {
         }
 
         std::deque<gameModel::Position> possiblePositions;
-        int minDistanceSeeker = 30;
+        int minDistanceSeeker = std::numeric_limits<int>::max();
         if(!env->team1->seeker->isFined){
             minDistanceSeeker = getDistance(snitch->position, env->team1->seeker->position);
         }
         auto closestSeeker = env->team1->seeker;
         bool equalDistance = false;
-        bool seeker2IsFined = env->team2->seeker->isFined;
-        if(minDistanceSeeker == getDistance(snitch->position, env->team2->seeker->position) && !seeker2IsFined){
+        if(minDistanceSeeker == getDistance(snitch->position, env->team2->seeker->position) && !env->team2->seeker->isFined){
             equalDistance = true;
-        } else if(minDistanceSeeker > getDistance(snitch->position, env->team2->seeker->position) && !seeker2IsFined){
+        } else if(minDistanceSeeker > getDistance(snitch->position, env->team2->seeker->position) && !env->team2->seeker->isFined){
             minDistanceSeeker = getDistance(snitch->position, env->team2->seeker->position);
             closestSeeker = env->team2->seeker;
         }
