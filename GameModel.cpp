@@ -178,7 +178,7 @@ namespace gameModel{
     }
 
     bool Environment::cellIsFree(const Position &position) const {
-        return !getPlayer(position).has_value()
+        return !getPlayer(position).has_value();
     }
 
     auto Environment::getAllPlayerFreeCellsAround(const Position &position) const -> std::vector<Position> {
