@@ -33,6 +33,9 @@ TEST(env_test, getCell){
     EXPECT_EQ(gameModel::Environment::getCell(15, 4), gameModel::Cell::RestrictedRight);
     EXPECT_EQ(gameModel::Environment::getCell(13, 9), gameModel::Cell::RestrictedRight);
     EXPECT_EQ(gameModel::Environment::getCell(14, 11), gameModel::Cell::RestrictedRight);
+
+    EXPECT_EQ(gameModel::Environment::getCell(8, -1), gameModel::Cell::OutOfBounds);
+    EXPECT_EQ(gameModel::Environment::getCell(-1, 4), gameModel::Cell::OutOfBounds);
 }
 
 TEST(env_test, cellIsFree0){
@@ -62,6 +65,7 @@ TEST(env_test, cellIsFree0){
     EXPECT_TRUE(env->cellIsFree({10, 2}));
 }
 
+
 TEST(env_test, cellIsFree1) {
     auto env = setup::createEnv();
 
@@ -79,6 +83,13 @@ TEST(env_test, cellIsFree1) {
 
     EXPECT_FALSE(env->cellIsFree(gameModel::Position(x,y)));
 
+}
+
+TEST(env_test, cellIsFree2){
+    auto env = setup::createEnv();
+    env->team1->seeker->isFined = true;
+    env->team1->keeper->position = env->team1->seeker->position;
+    EXPECT_FALSE(env->cellIsFree(env->team1->seeker->position));
 }
 
 TEST(env_test, arePlayerInSameTeam) {

@@ -205,7 +205,7 @@ namespace gameController{
          * execute the move in a given environment (implementation of virtual function).
          * @param envi the environment in which the shot should be performed.
          */
-        auto execute() const -> std::pair<std::vector<ActionResult>, std::vector<gameModel::Foul>>;
+        auto execute() const -> std::pair<std::vector<ActionResult>, std::vector<gameModel::Foul>> override;
         /**
          * get the success probability of the move (implementation of virtual function). (implementation of virtual function).
          * @return the success probability of the move as double.

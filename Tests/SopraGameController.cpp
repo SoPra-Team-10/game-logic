@@ -337,6 +337,33 @@ TEST(controller_test, moveSnitch8){
     EXPECT_THAT(env->snitch->position, testing::AnyOf(gameModel::Position(7,7), gameModel::Position(9,5)));
 }
 
+TEST(controller_test, moveSnitch9){
+    auto env = setup::createEnv();
+    env->snitch->exists = true;
+    env->snitch->position = gameModel::Position{8,6};
+    env->team1->seeker->position = gameModel::Position{10,8};
+    env->team2->seeker->position = gameModel::Position{6,4};
+    env->team1->seeker->isFined = true;
+    gameController::moveSnitch(env->snitch, env, gameController::ExcessLength::None);
+    EXPECT_THAT(env->snitch->position, testing::AnyOf(gameModel::Position(7,5), gameModel::Position(7,6), gameModel::Position(7,7),
+                                                        gameModel::Position(8,5), gameModel::Position(8,7),
+                                                        gameModel::Position(9,5), gameModel::Position(9,6), gameModel::Position(9,7)));
+}
+
+TEST(controller_test, moveSnitch10){
+    auto env = setup::createEnv();
+    env->snitch->exists = true;
+    env->snitch->position = gameModel::Position{8,6};
+    env->team1->seeker->position = gameModel::Position{10,8};
+    env->team2->seeker->position = gameModel::Position{6,4};
+    env->team1->seeker->isFined = true;
+    env->team2->seeker->isFined = true;
+    gameController::moveSnitch(env->snitch, env, gameController::ExcessLength::None);
+    EXPECT_THAT(env->snitch->position, testing::AnyOf(gameModel::Position(7,5), gameModel::Position(7,6), gameModel::Position(7,7),
+                                                      gameModel::Position(8,5), gameModel::Position(8,6), gameModel::Position(8,7),
+                                                      gameModel::Position(9,5), gameModel::Position(9,6), gameModel::Position(9,7)));
+}
+
 //-----------------------------------Rest Quaffel after Goal------------------------------------------------------------
 
 TEST(controller_test , moveQuaffelAfterGoal0) {
