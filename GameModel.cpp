@@ -23,7 +23,7 @@ namespace gameModel{
 
     // Fanblock
 
-    Fanblock::Fanblock(int teleportation, int rangedAttack, int impulse, int snitchPush) : currFans(), initialFans() {
+    Fanblock::Fanblock(int teleportation, int rangedAttack, int impulse, int snitchPush, int blockCell) : currFans(), initialFans() {
         if(teleportation + rangedAttack + impulse + snitchPush != 7){
             throw std::invalid_argument("Fanblock has to contain exactly 7 fans!");
         }
@@ -33,10 +33,12 @@ namespace gameModel{
         initialFans.emplace(fan::Teleport, teleportation);
         initialFans.emplace(fan::Impulse, impulse);
         initialFans.emplace(fan::SnitchPush, snitchPush);
+        initialFans.emplace(fan::BlockCell, blockCell);
         currFans.emplace(fan::RangedAttack, rangedAttack);
         currFans.emplace(fan::Teleport, teleportation);
         currFans.emplace(fan::Impulse, impulse);
         currFans.emplace(fan::SnitchPush, snitchPush);
+        currFans.emplace(fan::BlockCell, blockCell);
     }
 
     int Fanblock::getUses(InterferenceType fan) const {
@@ -405,9 +407,11 @@ namespace gameModel{
         return !isShitOnCell(position);
     }
 
-    void Environment::removeDeprecatedShit(int currentRound) {
+    void Environment::removeDeprecatedShit() {
         for(auto &shit : cubesOfShit){
-            if(shit->round == currentRound - 1) {
+            if(shit->spawned) {
+                shit->spawned = false;
+            }else {
                 removeShitOnCell(shit->position);
             }
         }
@@ -494,7 +498,7 @@ namespace gameModel{
             std::make_shared<Chaser>(Position{tForm.getChaser3X(), tForm.getChaser3Y()}, tConf.getChaser3().getName(), tConf.getChaser3().getSex(), tConf.getChaser3().getBroom(), leftTeam ?
             communication::messages::types::EntityId::LEFT_CHASER3 : communication::messages::types::EntityId::RIGHT_CHASER3)},
    name(tConf.getTeamName()), colorMain(tConf.getColorPrimary()), colorSecondary(tConf.getColorSecondary()),
-   fanblock(tConf.getElfs(), tConf.getGoblins(), tConf.getTrolls(), tConf.getNifflers()){}
+   fanblock(tConf.getElfs(), tConf.getGoblins(), tConf.getTrolls(), tConf.getNifflers(), tConf.getWombats){}
 
 
     auto Team::getAllPlayers() const -> std::array<std::shared_ptr<Player>, 7> {
@@ -562,7 +566,7 @@ namespace gameModel{
         timeouts{config.getPlayerTurnTimeout(), config.getFanTurnTimeout(), config.getPlayerPhaseTime(), config.getFanPhaseTime(),
                  config.getBallPhaseTime()}, foulDetectionProbs{config.getProbFoulFlacking(), config.getProbFoulHaversacking(),
                  config.getProbFoulStooging(), config.getProbFoulBlatching(), config.getProbFoulSnitchnip(), config.getProbFoulElf(),
-                 config.getProbFoulGoblin(), config.getProbFoulTroll(), config.getProbFoulSnitch()},
+                 config.getProbFoulGoblin(), config.getProbFoulTroll(), config.getProbFoulSnitch(), config.getProbWombatPoo()},
                  gameDynamicsProbs{config.getProbThrowSuccess(), config.getProbKnockOut(), config.getProbCatchSnitch(),
                  config.getProbCatchQuaffle(), config.getProbWrestQuaffle()}{
         using Broom = communication::messages::types::Broom;
@@ -635,5 +639,5 @@ namespace gameModel{
 
     Object::Object(const Position &position, communication::messages::types::EntityId id) : position(position), id(id){}
 
-    CubeOfShit::CubeOfShit(const Position &position, communication::messages::types::EntityId id, int round) : Object(position, id), round(round){}
+    CubeOfShit::CubeOfShit(const Position &position, communication::messages::types::EntityId id, bool spawned) : Object(position, id), spawned(spawned){}
 }

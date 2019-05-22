@@ -101,9 +101,9 @@ namespace gameController{
         BlockCell(std::shared_ptr<gameModel::Environment> env, const std::shared_ptr<gameModel::Team>& team, gameModel::Position position);
 
         bool isPossible() const override ;
+        auto execute() const -> gameController::ActionCheckResult override;
     private:
         gameModel::Position position;
-        auto execute() const -> gameController::ActionCheckResult override;
     };
 }
 

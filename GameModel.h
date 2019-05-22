@@ -21,7 +21,7 @@ namespace gameModel{
         double blockGoal,
                 chargeGoal, multipleOffence,
                 ramming, blockSnitch, teleport,
-                rangedAttack, impulse, snitchPush/*, blockCell*/;
+                rangedAttack, impulse, snitchPush, blockCell;
     };
 
     /**
@@ -120,8 +120,8 @@ namespace gameModel{
         RangedAttack,
         Teleport,
         Impulse,
-        SnitchPush/*,
-        BlockCell*/
+        SnitchPush,
+        BlockCell
     };
 
     /**
@@ -195,8 +195,8 @@ namespace gameModel{
      */
     class CubeOfShit : public Object {
     public:
-        int round;
-        CubeOfShit(const Position &position, communication::messages::types::EntityId id, int round);
+        bool spawned;
+        CubeOfShit(const Position &position, communication::messages::types::EntityId id, bool spawned);
 
         virtual ~CubeOfShit() = default;
     };
@@ -206,7 +206,7 @@ namespace gameModel{
      */
     class Fanblock{
     public:
-        Fanblock(int teleportation, int rangedAttack, int impulse, int snitchPush);
+        Fanblock(int teleportation, int rangedAttack, int impulse, int snitchPush, int blockCell);
 
         /**
          * gets the number of times the given fan might be used
@@ -519,7 +519,7 @@ namespace gameModel{
         /**
          * Removes all the cubes of shit which were corrently on the game field.
          */
-        void removeDeprecatedShit(int currentRound);
+        void removeDeprecatedShit();
 
         void removeShitOnCell(const Position &position);
 
