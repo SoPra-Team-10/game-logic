@@ -115,18 +115,18 @@ namespace gameController{
             return gameController::ActionCheckResult::Success;
         }
     }
-    //TODO Umstellen von SnitchPush auf BlockCell
+    /*//TODO Umstellen von SnitchPush auf BlockCell
     BlockCell::BlockCell(std::shared_ptr<gameModel::Environment> env, const std::shared_ptr<gameModel::Team>& team, gameModel::Position position) :
-            Interference(std::move(env), team, gameModel::InterferenceType::SnitchPush), position(position) {}
+            Interference(std::move(env), team, gameModel::InterferenceType::BlockCell), position(position) {}
 
     auto BlockCell::execute() const -> gameController::ActionCheckResult {
         if(!isPossible()){
             throw std::runtime_error("Interfernce not possible");
         }
         //TODO EntityID fehlt
-        //env->cubesOfShit.emplace_back(gameModel::CubeOfShit(position, communication::messages::types::EntityId ))
+        //env->cubesOfShit.emplace_back(gameModel::CubeOfShit(position, communication::messages::types::EntityId::LEFT_WOMBAT ))
         //TODO Umstellen von BlockGoal auf BlockCell
-        if (gameController::actionTriggered(env->config.foulDetectionProbs.blockGoal)) {
+        if (gameController::actionTriggered(env->config.foulDetectionProbs.blockCell)) {
             team->fanblock.banFan(this->getType());
             return gameController::ActionCheckResult::Foul;
         }
@@ -137,5 +137,5 @@ namespace gameController{
 
     bool BlockCell::isPossible() const {
         return Interference::isPossible() && Interference::env->cellIsFreeFromObject(position);
-    }
+    }*/
 }

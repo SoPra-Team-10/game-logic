@@ -21,7 +21,7 @@ namespace gameModel{
         double blockGoal,
                 chargeGoal, multipleOffence,
                 ramming, blockSnitch, teleport,
-                rangedAttack, impulse, snitchPush;
+                rangedAttack, impulse, snitchPush/*, blockCell*/;
     };
 
     /**
@@ -120,7 +120,8 @@ namespace gameModel{
         RangedAttack,
         Teleport,
         Impulse,
-        SnitchPush
+        SnitchPush/*,
+        BlockCell*/
     };
 
     /**
