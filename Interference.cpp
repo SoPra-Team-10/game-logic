@@ -38,7 +38,7 @@ namespace gameController{
     }
 
     bool Teleport::isPossible() const {
-        return Interference::isPossible() && !(env->getCell(target->position) == gameModel::Cell::OutOfBounds);
+        return Interference::isPossible() && env->getCell(target->position) != gameModel::Cell::OutOfBounds;
     }
 
     RangedAttack::RangedAttack(std::shared_ptr<gameModel::Environment> env, std::shared_ptr<gameModel::Team> team,
@@ -66,7 +66,7 @@ namespace gameController{
     }
 
     bool RangedAttack::isPossible() const {
-        return Interference::isPossible() && !team->hasMember(target) && !(env->getCell(target->position) == gameModel::Cell::OutOfBounds);
+        return Interference::isPossible() && !team->hasMember(target) && env->getCell(target->position) != gameModel::Cell::OutOfBounds;
     }
 
     Impulse::Impulse(std::shared_ptr<gameModel::Environment> env, std::shared_ptr<gameModel::Team> team) :
@@ -121,7 +121,7 @@ namespace gameController{
 
     auto BlockCell::execute() const -> gameController::ActionCheckResult {
         if(!isPossible()){
-            throw std::runtime_error("Interfernce not possible");
+            throw std::runtime_error("Interference not possible");
         }
         env->pileOfShit.emplace_back(std::make_shared<gameModel::CubeOfShit>(target));
         if (gameController::actionTriggered(env->config.foulDetectionProbs.blockCell)) {
@@ -134,6 +134,6 @@ namespace gameController{
     }
 
     bool BlockCell::isPossible() const {
-        return Interference::isPossible() && Interference::env->cellIsFreeFromObject(target) && !(env->getCell(target) == gameModel::Cell::OutOfBounds);;
+        return Interference::isPossible() && Interference::env->cellIsFreeFromObject(target) && env->getCell(target) != gameModel::Cell::OutOfBounds;
     }
 }
