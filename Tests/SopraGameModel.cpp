@@ -75,6 +75,22 @@ TEST(env_test, cellIsFree1) {
         gameController::moveToAdjacent(player.value(), env);
     }
 
+    if(env->snitch->exists && env->snitch->position == gameModel::Position{x, y}){
+        gameController::moveToAdjacent(env->snitch, env);
+    }
+
+    if(env->bludgers[0]->position == gameModel::Position{x, y}){
+        gameController::moveToAdjacent(env->bludgers[0], env);
+    }
+
+    if(env->bludgers[1]->position == gameModel::Position{x, y}){
+        gameController::moveToAdjacent(env->bludgers[1], env);
+    }
+
+    if(env->quaffle->position == gameModel::Position{x, y}){
+        gameController::moveToAdjacent(env->quaffle, env);
+    }
+
     EXPECT_TRUE(env->cellIsFree(gameModel::Position(x,y)));
 
     env->team1->keeper->position = gameModel::Position(x,y);
