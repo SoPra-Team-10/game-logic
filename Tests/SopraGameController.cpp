@@ -104,7 +104,7 @@ TEST(controller_test, moveBludger_towards_player) {
 }
 
 TEST(controller_test, moveBludger_knock_out) {
-    auto env = setup::createEnv({0, {}, {1, 1, 1, 1, 1, 1, 1, 1, 1}, {1, 1, 1, 1, 1}, {}});
+    auto env = setup::createEnv({0, {}, {1, 1, 1, 1, 1, 1, 1, 1, 1, 1}, {1, 1, 1, 1, 1}, {}});
 
     env->bludgers[0]->position = gameModel::Position(3, 10);
     env->quaffle->position = gameModel::Position(2, 10);
@@ -382,6 +382,8 @@ TEST(controller_test , moveQuaffelAfterGoal1) {
     auto env = setup::createEnv();
 
     env->quaffle->position = gameModel::Position(14, 4);
+    env->bludgers[0]->position = {9, 6};
+    env->bludgers[1]->position = {7, 6};
 
     gameController::moveQuaffelAfterGoal(env);
     EXPECT_EQ(env->quaffle->position, gameModel::Position(8,6));

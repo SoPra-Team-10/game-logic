@@ -46,7 +46,7 @@ TEST(teleport_test, execute0){
 }
 
 TEST(teleport_test, execute1){
-    auto env = setup::createEnv(gameModel::Config{0, {}, {1, 1, 1, 1, 1, 1, 1, 1, 1}, {1, 1, 1, 1, 1}, {}});
+    auto env = setup::createEnv(gameModel::Config{0, {}, {1, 1, 1, 1, 1, 1, 1, 1, 1, 1}, {1, 1, 1, 1, 1}, {}});
     gameController::Teleport testTeleport(env, env->team1, env->team1->seeker);
     auto possibleCells = env->getAllFreeCells();
 
@@ -99,7 +99,7 @@ TEST(ranged_attack_test, execute_no_ball0){
 
 TEST(ranged_attack_test, execute_no_ball1){
     using P = gameModel::Position;
-    auto env = setup::createEnv({0, {}, {1, 1, 1, 1, 1, 1, 1, 1, 1}, {1, 1, 1, 1, 1}, {}});
+    auto env = setup::createEnv(gameModel::Config{0, {}, {1, 1, 1, 1, 1, 1, 1, 1, 1, 1}, {1, 1, 1, 1, 1}, {}});
     gameController::RangedAttack testAttack(env, env->team1, env->team2->seeker);
 
     EXPECT_EQ(testAttack.execute(), gameController::ActionCheckResult::Foul);
@@ -121,7 +121,7 @@ TEST(ranged_attack_test, execute_target_with_quaffle0){
 
 TEST(ranged_attack_test, execute_target_with_quaffle1){
     using P = gameModel::Position;
-    auto env = setup::createEnv({0, {}, {1, 1, 1, 1, 1, 1, 1, 1, 1}, {1, 1, 1, 1, 1}, {}});
+    auto env = setup::createEnv(gameModel::Config{0, {}, {1, 1, 1, 1, 1, 1, 1, 1, 1, 1}, {1, 1, 1, 1, 1}, {}});
     env->quaffle->position = env->team2->keeper->position;
     gameController::RangedAttack testAttack(env, env->team1, env->team2->keeper);
 
@@ -162,7 +162,7 @@ TEST(impulse_test, execute0){
 
 TEST(impulse_test, execute1){
     using P = gameModel::Position;
-    auto env = setup::createEnv({0, {}, {1, 1, 1, 1, 1, 1, 1, 1, 1}, {1, 1, 1, 1, 1}, {}});
+    auto env = setup::createEnv({0, {}, {1, 1, 1, 1, 1, 1, 1, 1, 1, 1}, {1, 1, 1, 1, 1}, {}});
     env->quaffle->position = env->team1->chasers[0]->position;
     gameController::Impulse testImpulse(env, env->team1);
 
@@ -203,7 +203,7 @@ TEST(snitch_push_test, execute0){
 
 TEST(snitch_push_test, execute1){
     using P = gameModel::Position;
-    auto env = setup::createEnv({0, {}, {1, 1, 1, 1, 1, 1, 1, 1, 1}, {1, 1, 1, 1, 1}, {}});
+    auto env = setup::createEnv({0, {}, {1, 1, 1, 1, 1, 1, 1, 1, 1, 1}, {1, 1, 1, 1, 1}, {}});
     env->snitch->exists = true;
     env->snitch->position = {10, 8};
     gameController::SnitchPush testSnitchPush(env, env->team1);
@@ -213,7 +213,40 @@ TEST(snitch_push_test, execute1){
     EXPECT_THAT(env->snitch->position, testing::AnyOf(P(11, 7), P(9, 7), P(9, 8), P(10, 9), P(11, 9)));
 }
 
-//----------------------------------------------FanToInterfernce/ InterferenceToFan--------------------------------------------------------------
+//----------------------------------------------BlockCell---------------------------------------------------------------
+
+TEST(block_cell_test, isPossible0){
+    auto env = setup::createEnv({0, {}, {1, 1, 1, 1, 1, 1, 1, 1, 1, 1}, {1, 1, 1, 1, 1}, {}});
+    gameController::BlockCell testShit(env, env->team1, gameModel::Position(8,7));
+    EXPECT_TRUE(testShit.isPossible());
+}
+
+TEST(block_cell_test, isPossible1){
+    auto env = setup::createEnv({0, {}, {1, 1, 1, 1, 1, 1, 1, 1, 1, 1}, {1, 1, 1, 1, 1}, {}});
+    gameController::BlockCell testShit(env, env->team1, gameModel::Position(8,5));
+    EXPECT_FALSE(testShit.isPossible());
+}
+
+TEST(block_cell_test, isPossible3){
+    auto env = setup::createEnv({0, {}, {1, 1, 1, 1, 1, 1, 1, 1, 1, 1}, {1, 1, 1, 1, 1}, {}});
+    env->snitch->position = gameModel::Position(8,7);
+    gameController::BlockCell testShit(env, env->team1, gameModel::Position(8,7));
+    EXPECT_FALSE(testShit.isPossible());
+}
+
+TEST(block_cell_test, execute0){
+    auto env = setup::createEnv({0, {}, {1, 1, 1, 1, 1, 1, 1, 1, 1, 1}, {1, 1, 1, 1, 1}, {}});
+    gameController::BlockCell testShit(env, env->team1, gameModel::Position(8,7));
+    EXPECT_EQ(testShit.execute(), gameController::ActionCheckResult::Foul);
+}
+
+TEST(block_cell_test, execute1){
+    auto env = setup::createEnv();
+    gameController::BlockCell testShit(env, env->team1, gameModel::Position(8,7));
+    EXPECT_EQ(testShit.execute(), gameController::ActionCheckResult::Success);
+}
+
+//----------------------------------------------FanToInterfernce/ InterferenceToFan-------------------------------------
 TEST(fan_test, fan_to_interference){
     EXPECT_EQ(gameModel::Fanblock::fanToInterference(communication::messages::types::FanType::GOBLIN), gameModel::InterferenceType::RangedAttack);
     EXPECT_EQ(gameModel::Fanblock::fanToInterference(communication::messages::types::FanType::TROLL), gameModel::InterferenceType::Impulse);

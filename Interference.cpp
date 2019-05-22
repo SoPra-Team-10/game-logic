@@ -37,6 +37,10 @@ namespace gameController{
         }
     }
 
+    bool Teleport::isPossible() const {
+        return Interference::isPossible() && env->getCell(target->position) != gameModel::Cell::OutOfBounds;
+    }
+
     RangedAttack::RangedAttack(std::shared_ptr<gameModel::Environment> env, std::shared_ptr<gameModel::Team> team,
                                std::shared_ptr<gameModel::Player> target) : Interference(std::move(env), std::move(team),
                                        gameModel::InterferenceType::RangedAttack), target(std::move(target)){}
@@ -62,7 +66,7 @@ namespace gameController{
     }
 
     bool RangedAttack::isPossible() const {
-        return Interference::isPossible() && !team->hasMember(target);
+        return Interference::isPossible() && !team->hasMember(target) && env->getCell(target->position) != gameModel::Cell::OutOfBounds;
     }
 
     Impulse::Impulse(std::shared_ptr<gameModel::Environment> env, std::shared_ptr<gameModel::Team> team) :
@@ -110,5 +114,26 @@ namespace gameController{
         else {
             return gameController::ActionCheckResult::Success;
         }
+    }
+
+    BlockCell::BlockCell(std::shared_ptr<gameModel::Environment> env, std::shared_ptr<gameModel::Team> team, gameModel::Position target) :
+            Interference(std::move(env), std::move(team), gameModel::InterferenceType::BlockCell), target(target) {}
+
+    auto BlockCell::execute() const -> gameController::ActionCheckResult {
+        if(!isPossible()){
+            throw std::runtime_error("Interference not possible");
+        }
+        env->pileOfShit.emplace_back(std::make_shared<gameModel::CubeOfShit>(target));
+        if (gameController::actionTriggered(env->config.foulDetectionProbs.blockCell)) {
+            team->fanblock.banFan(this->getType());
+            return gameController::ActionCheckResult::Foul;
+        }
+        else {
+            return gameController::ActionCheckResult::Success;
+        }
+    }
+
+    bool BlockCell::isPossible() const {
+        return Interference::isPossible() && Interference::env->cellIsFreeFromObject(target) && env->getCell(target) != gameModel::Cell::OutOfBounds;
     }
 }

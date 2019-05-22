@@ -21,7 +21,7 @@ namespace gameModel{
         double blockGoal,
                 chargeGoal, multipleOffence,
                 ramming, blockSnitch, teleport,
-                rangedAttack, impulse, snitchPush;
+                rangedAttack, impulse, snitchPush, blockCell;
     };
 
     /**
@@ -120,7 +120,8 @@ namespace gameModel{
         RangedAttack,
         Teleport,
         Impulse,
-        SnitchPush
+        SnitchPush,
+        BlockCell
     };
 
     /**
@@ -194,9 +195,8 @@ namespace gameModel{
      */
     class CubeOfShit : public Object {
     public:
-        CubeOfShit(const Position &position, communication::messages::types::EntityId id);
-
-        virtual ~CubeOfShit() = default;
+        bool spawnedThisRound = true;
+        explicit CubeOfShit(const Position &target);
     };
 
     /**
@@ -204,7 +204,7 @@ namespace gameModel{
      */
     class Fanblock{
     public:
-        Fanblock(int teleportation, int rangedAttack, int impulse, int snitchPush);
+        Fanblock(int teleportation, int rangedAttack, int impulse, int snitchPush, int blockCell);
 
         /**
          * gets the number of times the given fan might be used
@@ -344,7 +344,7 @@ namespace gameModel{
         std::shared_ptr<Quaffle> quaffle;
         std::shared_ptr<Snitch> snitch;
         std::array<std::shared_ptr<Bludger>, 2> bludgers;
-        std::deque<std::shared_ptr<CubeOfShit>> cubesOfShit;
+        std::deque<std::shared_ptr<CubeOfShit>> pileOfShit;
 
         /**
          * Constructs an Environment from server config types
@@ -452,11 +452,13 @@ namespace gameModel{
         auto getOpponents(const std::shared_ptr<Player>& player) const -> std::array<std::shared_ptr<Player>, 7>;
 
         /**
-         * Determines whether the given Position is occupied by a Player
+         * Determines whether the given Position is occupied by a Player or Ball
          * @param position the position to be checked
-         * @return true if occupied, false otherwise
+         * @return true if not occupied by any ball or player, false otherwise
          */
         bool cellIsFree(const Position &position) const;
+
+        bool cellIsFreeFromObject(const Position &position) const;
 
         /**
          * get all Positions around a given position where no other player is on. If all surrounding
@@ -467,7 +469,7 @@ namespace gameModel{
         auto getAllPlayerFreeCellsAround(const Position &position) const -> std::vector<Position>;
 
         /**
-         * Returns player object at the specified position if one exists
+         * Returns player object (if not banned) at the specified position if one exists
          * @return
          */
         auto getPlayer(const Position &position) const -> std::optional<std::shared_ptr<Player>>;
@@ -513,12 +515,21 @@ namespace gameModel{
         auto getBallByID(const communication::messages::types::EntityId &id) const -> std::shared_ptr<Ball>;
 
         /**
-         * Removes all the cubes of shit which were corrently on the game field.
+         * Removes all the cubes of shit which were from the last round
          */
-        void removeAllShit();
+        void removeDeprecatedShit();
 
+        /**
+         * removes Shit on a given Position
+         * @param position is the Position of the COubeOfShit which should be romoved
+         */
         void removeShitOnCell(const Position &position);
 
+        /**
+         * proofes, if Shit is on a given Position
+         * @param position is the Position to test, if SHit is on this Cell
+         * @return returns true, if Shit is still on the Position, otherwise false
+         */
         auto isShitOnCell(const Position &position) const -> bool;
     };
 }

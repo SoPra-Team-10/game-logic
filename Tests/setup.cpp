@@ -28,7 +28,7 @@ auto setup::createEnv(const gameModel::Config &config) -> std::shared_ptr<gameMo
     gameModel::Keeper k1({12, 11}, "", {}, {}, ID::LEFT_KEEPER);
     gameModel::Keeper k2({13, 12}, "", {}, {}, ID::RIGHT_KEEPER);
 
-    gameModel::Fanblock f(1, 2, 3, 1);
+    gameModel::Fanblock f(1, 2, 2, 1, 1);
 
     auto t1 = std::make_shared<gameModel::Team>(s1, k1, std::array<gameModel::Beater, 2>{b1, b2}, std::array<gameModel::Chaser, 3>{c1, c2, c3}, "", "", "", f);
     auto t2 = std::make_shared<gameModel::Team>(s2, k2, std::array<gameModel::Beater, 2>{b3, b4}, std::array<gameModel::Chaser, 3>{c4, c5, c6}, "", "", "", f);
