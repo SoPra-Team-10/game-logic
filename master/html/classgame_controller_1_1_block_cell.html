@@ -103,9 +103,9 @@ Inheritance diagram for gameController::BlockCell:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:afbd38373ffcace92519c48631005acba"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="afbd38373ffcace92519c48631005acba"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>BlockCell</b> (std::shared_ptr&lt; <a class="el" href="classgame_model_1_1_environment.html">gameModel::Environment</a> &gt; env, const std::shared_ptr&lt; <a class="el" href="classgame_model_1_1_team.html">gameModel::Team</a> &gt; &amp;team, <a class="el" href="structgame_model_1_1_position.html">gameModel::Position</a> position)</td></tr>
-<tr class="separator:afbd38373ffcace92519c48631005acba"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeb7ee2eec1eded566e79d03d0cd3ea9a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aeb7ee2eec1eded566e79d03d0cd3ea9a"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>BlockCell</b> (std::shared_ptr&lt; <a class="el" href="classgame_model_1_1_environment.html">gameModel::Environment</a> &gt; env, std::shared_ptr&lt; <a class="el" href="classgame_model_1_1_team.html">gameModel::Team</a> &gt; team, <a class="el" href="structgame_model_1_1_position.html">gameModel::Position</a> target)</td></tr>
+<tr class="separator:aeb7ee2eec1eded566e79d03d0cd3ea9a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7abe0ba5b2352755cc3a08df8f1668a6"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgame_controller_1_1_block_cell.html#a7abe0ba5b2352755cc3a08df8f1668a6">isPossible</a> () const override</td></tr>
 <tr class="separator:a7abe0ba5b2352755cc3a08df8f1668a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab7120abd9f32ae3e96cf3b07c48b7903"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgame_controller_1_1_block_cell.html#ab7120abd9f32ae3e96cf3b07c48b7903">execute</a> () const -&gt; gameController::ActionCheckResult override</td></tr>
@@ -143,7 +143,7 @@ gameModel::InterferenceType&#160;</td><td class="memItemRight" valign="bottom"><
           <td class="memname">auto gameController::BlockCell::execute </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
-          <td> const -&gt;  gameController::ActionCheckResult</td>
+          <td> const -&gt; gameController::ActionCheckResult</td>
         </tr>
       </table>
   </td>
@@ -152,7 +152,7 @@ gameModel::InterferenceType&#160;</td><td class="memItemRight" valign="bottom"><
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Executes the interference </p>
+<p>BLockCell is moved to the Cell </p>
 
 <p>Implements <a class="el" href="classgame_controller_1_1_interference.html#aee66a8480fccc6286b5bef04777a8a6a">gameController::Interference</a>.</p>
 
@@ -178,8 +178,7 @@ gameModel::InterferenceType&#160;</td><td class="memItemRight" valign="bottom"><
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Checks if the interference is possible </p>
-<dl class="section return"><dt>Returns</dt><dd></dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>true if this <a class="el" href="classgame_controller_1_1_interference.html">Interference</a> is available and possible to place the this <a class="el" href="classgame_controller_1_1_interference.html">Interference</a> to this Cell </dd></dl>
 
 <p>Reimplemented from <a class="el" href="classgame_controller_1_1_interference.html#a06b9adc5df035e184e7ed0cf5d4a8814">gameController::Interference</a>.</p>
 

@@ -154,17 +154,18 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;</div>
 <div class="line"><a name="l00099"></a><span class="lineno"><a class="line" href="classgame_controller_1_1_block_cell.html">   99</a></span>&#160;    <span class="keyword">class </span><a class="code" href="classgame_controller_1_1_block_cell.html">BlockCell</a> : <span class="keyword">public</span> <a class="code" href="classgame_controller_1_1_interference.html">Interference</a>{</div>
 <div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;    <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;        <a class="code" href="classgame_controller_1_1_block_cell.html">BlockCell</a>(std::shared_ptr&lt;gameModel::Environment&gt; env, <span class="keyword">const</span> std::shared_ptr&lt;gameModel::Team&gt;&amp; team, <a class="code" href="structgame_model_1_1_position.html">gameModel::Position</a> position);</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;        <a class="code" href="classgame_controller_1_1_block_cell.html">BlockCell</a>(std::shared_ptr&lt;gameModel::Environment&gt; env, std::shared_ptr&lt;gameModel::Team&gt; team, <a class="code" href="structgame_model_1_1_position.html">gameModel::Position</a> target);</div>
 <div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;        <span class="keywordtype">bool</span> <a class="code" href="classgame_controller_1_1_block_cell.html#a7abe0ba5b2352755cc3a08df8f1668a6">isPossible</a>() <span class="keyword">const override</span> ;</div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;        <span class="keyword">auto</span> <a class="code" href="classgame_controller_1_1_block_cell.html#ab7120abd9f32ae3e96cf3b07c48b7903">execute</a>() <span class="keyword">const</span> -&gt; gameController::ActionCheckResult <span class="keyword">override</span>;</div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;    <span class="keyword">private</span>:</div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;        <a class="code" href="structgame_model_1_1_position.html">gameModel::Position</a> position;</div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;    };</div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;}</div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;</div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;</div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;<span class="preprocessor">#endif //SOPRAGAMELOGIC_INTERFERENCE_H</span></div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;        <span class="keywordtype">bool</span> <a class="code" href="classgame_controller_1_1_block_cell.html#a7abe0ba5b2352755cc3a08df8f1668a6">isPossible</a>() <span class="keyword">const override</span> ;</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;</div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;        <span class="keyword">auto</span> <a class="code" href="classgame_controller_1_1_block_cell.html#ab7120abd9f32ae3e96cf3b07c48b7903">execute</a>() <span class="keyword">const</span> -&gt; gameController::ActionCheckResult <span class="keyword">override</span>;</div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;    <span class="keyword">private</span>:</div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;        <a class="code" href="structgame_model_1_1_position.html">gameModel::Position</a> target;</div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;    };</div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;}</div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;</div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;</div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;<span class="preprocessor">#endif //SOPRAGAMELOGIC_INTERFERENCE_H</span></div>
 <div class="ttc" id="classgame_controller_1_1_teleport_html_a6d6f4050f84929e7e0df46ca4ea40374"><div class="ttname"><a href="classgame_controller_1_1_teleport.html#a6d6f4050f84929e7e0df46ca4ea40374">gameController::Teleport::isPossible</a></div><div class="ttdeci">bool isPossible() const override</div><div class="ttdef"><b>Definition:</b> Interference.cpp:40</div></div>
 <div class="ttc" id="structgame_model_1_1_position_html"><div class="ttname"><a href="structgame_model_1_1_position.html">gameModel::Position</a></div><div class="ttdef"><b>Definition:</b> GameModel.h:49</div></div>
 <div class="ttc" id="classgame_controller_1_1_interference_html_aee66a8480fccc6286b5bef04777a8a6a"><div class="ttname"><a href="classgame_controller_1_1_interference.html#aee66a8480fccc6286b5bef04777a8a6a">gameController::Interference::execute</a></div><div class="ttdeci">virtual auto execute() const -&gt; gameController::ActionCheckResult=0</div></div>
