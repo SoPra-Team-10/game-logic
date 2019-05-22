@@ -102,7 +102,7 @@ namespace gameModel{
     // Environment
 
     Cell Environment::getCell(int x, int y) {
-        if(x >= 17 || y >= 13) {
+        if(x >= 17 || y >= 13 || x < 0 || y < 0) {
             return Cell::OutOfBounds;
         }else if((x == 2 || x == 14) && (y == 4 || y == 6 || y == 8)){
             return x < 8 ? Cell::GoalLeft : Cell::GoalRight;
@@ -253,7 +253,7 @@ namespace gameModel{
         return {};
     }
 
-    auto Environment::arePlayerInSameTeam(const std::shared_ptr<Player>& p1, const std::shared_ptr<Player>& p2) const -> bool {
+    auto Environment::arePlayerInSameTeam(const std::shared_ptr<const Player>& p1, const std::shared_ptr<const Player>& p2) const -> bool {
         return (this->team1->hasMember(p1) && this->team1->hasMember(p2)) ||
                (this->team2->hasMember(p1) && this->team2->hasMember(p2));
     }
@@ -500,7 +500,7 @@ namespace gameModel{
         return ret;
     }
 
-    bool Team::hasMember(const std::shared_ptr<Player>& player) const {
+    bool Team::hasMember(const std::shared_ptr<const Player>& player) const {
         for(const auto &p : getAllPlayers()){
             if(player == p){
                 return true;

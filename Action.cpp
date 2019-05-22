@@ -328,20 +328,21 @@ namespace gameController{
             throw std::runtime_error("The selected move is impossible!");
         }
         else if (actionResult == ActionCheckResult::Foul) {
-            fouls = this->checkForFoul();
-            for (const auto &foul :  fouls) {
+            for (const auto &foul :  this->checkForFoul()) {
                 if (foul == gameModel::Foul::Ramming) {
                     rammingFoulFlag = true;
                 }
+
                 if (gameController::refereeDecision(foul, this->env->config)) {
+                    fouls.emplace_back(foul);
                     this->actor->isFined = true;
                 }
+
                 if (foul == gameModel::Foul::ChargeGoal) {
                     if (gameModel::Environment::getCell(this->target) == gameModel::Cell::GoalRight) {
                         actions.push_back(ActionResult::ScoreLeft);
                         env->team1->score += 10;
-                    }
-                    else if (gameModel::Environment::getCell(this->target) == gameModel::Cell::GoalLeft) {
+                    } else if (gameModel::Environment::getCell(this->target) == gameModel::Cell::GoalLeft) {
                         actions.push_back(ActionResult::ScoreRight);
                         env->team2->score += 10;
                     }
@@ -374,6 +375,8 @@ namespace gameController{
             //rammed player looses quaffel
             moveToAdjacent(env->quaffle, env);
             actions.push_back(ActionResult::FoolAway);
+        } else if(this->env->quaffle->position == target && !INSTANCE_OF(this->actor, gameModel::Chaser) && !INSTANCE_OF(this->actor, gameModel::Keeper)){
+            moveToAdjacent(env->quaffle, env);
         }
 
         // move other player out of the way if necessary
