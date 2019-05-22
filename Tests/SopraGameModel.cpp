@@ -32,6 +32,9 @@ TEST(env_test, getCell){
     EXPECT_EQ(gameModel::Environment::getCell(15, 4), gameModel::Cell::RestrictedRight);
     EXPECT_EQ(gameModel::Environment::getCell(13, 9), gameModel::Cell::RestrictedRight);
     EXPECT_EQ(gameModel::Environment::getCell(14, 11), gameModel::Cell::RestrictedRight);
+
+    EXPECT_EQ(gameModel::Environment::getCell(8, -1), gameModel::Cell::OutOfBounds);
+    EXPECT_EQ(gameModel::Environment::getCell(-1, 4), gameModel::Cell::OutOfBounds);
 }
 
 TEST(env_test, cellIsFree0){

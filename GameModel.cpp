@@ -102,7 +102,7 @@ namespace gameModel{
     // Environment
 
     Cell Environment::getCell(int x, int y) {
-        if(x >= 17 || y >= 13) {
+        if(x >= 17 || y >= 13 || x < 0 || y < 0) {
             return Cell::OutOfBounds;
         }else if((x == 2 || x == 14) && (y == 4 || y == 6 || y == 8)){
             return x < 8 ? Cell::GoalLeft : Cell::GoalRight;
