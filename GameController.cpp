@@ -227,8 +227,11 @@ namespace gameController {
         // check if player can wrest quaffel
         auto playerHoldingQuaffle = env->getPlayer(env->quaffle->position);
         if(INSTANCE_OF(player, const gameModel::Chaser) && getDistance(player->position, env->quaffle->position) == 1 &&
-            playerHoldingQuaffle.has_value() && !playerHoldingQuaffle.value()->isFined && (INSTANCE_OF(playerHoldingQuaffle.value(), gameModel::Chaser) ||
-                (INSTANCE_OF(playerHoldingQuaffle.value(), gameModel::Keeper) && !env->isPlayerInOwnRestrictedZone(playerHoldingQuaffle.value())))){
+            playerHoldingQuaffle.has_value() && !playerHoldingQuaffle.value()->isFined &&
+            !env->arePlayerInSameTeam(player, playerHoldingQuaffle.value()) &&
+            (INSTANCE_OF(playerHoldingQuaffle.value(), gameModel::Chaser) ||
+            (INSTANCE_OF(playerHoldingQuaffle.value(), gameModel::Keeper) &&
+            !env->isPlayerInOwnRestrictedZone(playerHoldingQuaffle.value())))){
             return true;
         }
 
