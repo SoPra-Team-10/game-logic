@@ -167,7 +167,7 @@ namespace gameController {
         std::vector<std::shared_ptr<gameModel::Player>> minDistancePlayers;
         for (const auto &player: players) {
 
-            if (!INSTANCE_OF(player, gameModel::Beater)) {
+            if (!INSTANCE_OF(player, gameModel::Beater) && !player->isFined) {
                 if (getDistance(bludger->position, player->position) < minDistance) {
                     minDistance = getDistance(bludger->position, player->position);
                     minDistancePlayers.clear();
