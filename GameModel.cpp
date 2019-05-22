@@ -178,13 +178,8 @@ namespace gameModel{
     }
 
     bool Environment::cellIsFree(const Position &position) const {
-        for(const auto &p : getAllPlayers()){
-            if(position == p->position && !p->isFined){
-                return false;
-            }
-        }
-
-        return true;
+        auto possiblePlayer = getPlayer(position);
+        return !possiblePlayer.has_value();
     }
 
     auto Environment::getAllPlayerFreeCellsAround(const Position &position) const -> std::vector<Position> {
@@ -245,7 +240,7 @@ namespace gameModel{
 
     auto Environment::getPlayer(const Position &position) const -> std::optional<std::shared_ptr<Player>> {
         for(const auto &p : getAllPlayers()){
-            if(p->position == position){
+            if(!p->isFined && p->position == position){
                 return p;
             }
         }

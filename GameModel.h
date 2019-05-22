@@ -453,7 +453,7 @@ namespace gameModel{
         auto getAllPlayerFreeCellsAround(const Position &position) const -> std::vector<Position>;
 
         /**
-         * Returns player object at the specified position if one exists
+         * Returns player object (if not banned) at the specified position if one exists
          * @return
          */
         auto getPlayer(const Position &position) const -> std::optional<std::shared_ptr<Player>>;
