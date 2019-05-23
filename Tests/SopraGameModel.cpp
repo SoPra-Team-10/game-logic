@@ -212,7 +212,7 @@ TEST(env_test, getAllPlayerFreeCellsAround) {
     EXPECT_EQ(freeCells[6], gameModel::Position(11, 12));
 }
 
-TEST(env_test, isSHitOnCell){
+TEST(env_test, isShitOnCell){
     auto env = setup::createEnv();
     gameController::BlockCell testShit(env, env->team1, gameModel::Position(8,7));
     testShit.execute();

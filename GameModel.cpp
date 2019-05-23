@@ -392,15 +392,13 @@ namespace gameModel{
     }
 
     void Environment::removeDeprecatedShit() {
-       if(!pileOfShit.empty()) {
-           for (auto &shit : pileOfShit) {
-               if (shit->spawnedThisRound) {
-                   shit->spawnedThisRound = false;
-               } else {
-                   removeShitOnCell(shit->position);
-               }
-           }
-       }
+        for (auto &shit : pileOfShit) {
+            if (shit->spawnedThisRound) {
+                shit->spawnedThisRound = false;
+            } else {
+                removeShitOnCell(shit->position);
+            }
+        }
     }
 
     void Environment::removeShitOnCell(const Position &position) {
