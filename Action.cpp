@@ -371,6 +371,17 @@ namespace gameController{
         // move the quaffel if necessary
         if (this->env->quaffle->position == oldActorPos) {
             this->env->quaffle->position = this->target;
+            if (gameModel::Environment::isGoalCell(this->env->quaffle->position)) {
+                if (env->team1->hasMember(actor) &&
+                    gameModel::Environment::getCell(this->env->quaffle->position) == gameModel::Cell::GoalLeft) {
+                    actions.push_back(ActionResult::ScoreRight);
+                    env->team2->score += 10;
+                } else if (env->team1->hasMember(actor) &&
+                           gameModel::Environment::getCell(this->env->quaffle->position) == gameModel::Cell::GoalLeft) {
+                    actions.push_back(ActionResult::ScoreLeft);
+                    env->team1->score += 10;
+                }
+            }
         } else if(rammingFoulFlag && env->quaffle->position == target) {
             //rammed player looses quaffel
             moveToAdjacent(env->quaffle, env);
