@@ -108,12 +108,12 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:ad427f67456586b006eb15142a96435df"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8afb230cf709b514e549ebe73f1fc68e"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgame_controller_1_1_teleport.html#a8afb230cf709b514e549ebe73f1fc68e">execute</a> () const -&gt; gameController::ActionCheckResult override</td></tr>
 <tr class="separator:a8afb230cf709b514e549ebe73f1fc68e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6d6f4050f84929e7e0df46ca4ea40374"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgame_controller_1_1_teleport.html#a6d6f4050f84929e7e0df46ca4ea40374">isPossible</a> () const override</td></tr>
+<tr class="separator:a6d6f4050f84929e7e0df46ca4ea40374"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classgame_controller_1_1_interference"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classgame_controller_1_1_interference')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classgame_controller_1_1_interference.html">gameController::Interference</a></td></tr>
 <tr class="memitem:a1e664266c768fafd6fc4339e08741d5a inherit pub_methods_classgame_controller_1_1_interference"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1e664266c768fafd6fc4339e08741d5a"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>Interference</b> (std::shared_ptr&lt; <a class="el" href="classgame_model_1_1_environment.html">gameModel::Environment</a> &gt; env, std::shared_ptr&lt; <a class="el" href="classgame_model_1_1_team.html">gameModel::Team</a> &gt; team, gameModel::InterferenceType type)</td></tr>
 <tr class="separator:a1e664266c768fafd6fc4339e08741d5a inherit pub_methods_classgame_controller_1_1_interference"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a06b9adc5df035e184e7ed0cf5d4a8814 inherit pub_methods_classgame_controller_1_1_interference"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgame_controller_1_1_interference.html#a06b9adc5df035e184e7ed0cf5d4a8814">isPossible</a> () const </td></tr>
-<tr class="separator:a06b9adc5df035e184e7ed0cf5d4a8814 inherit pub_methods_classgame_controller_1_1_interference"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a694aa2cd65bbb35c02f1ca4ed7701ebe inherit pub_methods_classgame_controller_1_1_interference"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgame_controller_1_1_interference.html#a694aa2cd65bbb35c02f1ca4ed7701ebe">getType</a> () const -&gt; gameModel::InterferenceType</td></tr>
 <tr class="separator:a694aa2cd65bbb35c02f1ca4ed7701ebe inherit pub_methods_classgame_controller_1_1_interference"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -155,6 +155,33 @@ gameModel::InterferenceType&#160;</td><td class="memItemRight" valign="bottom"><
 <p>Teleports target player to random free location on the field </p>
 
 <p>Implements <a class="el" href="classgame_controller_1_1_interference.html#aee66a8480fccc6286b5bef04777a8a6a">gameController::Interference</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a6d6f4050f84929e7e0df46ca4ea40374"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool gameController::Teleport::isPossible </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Checks if the interference is possible </p>
+<dl class="section return"><dt>Returns</dt><dd></dd></dl>
+
+<p>Reimplemented from <a class="el" href="classgame_controller_1_1_interference.html#a06b9adc5df035e184e7ed0cf5d4a8814">gameController::Interference</a>.</p>
 
 </div>
 </div>
