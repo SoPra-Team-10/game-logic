@@ -227,8 +227,9 @@ TEST(block_cell_test, isPossible1){
     EXPECT_FALSE(testShit.isPossible());
 }
 
-TEST(block_cell_test, isPossible3){
+TEST(block_cell_test, isPossible2){
     auto env = setup::createEnv({0, {}, {1, 1, 1, 1, 1, 1, 1, 1, 1, 1}, {1, 1, 1, 1, 1}, {}});
+    env->snitch->exists = true;
     env->snitch->position = gameModel::Position(8,7);
     gameController::BlockCell testShit(env, env->team1, gameModel::Position(8,7));
     EXPECT_FALSE(testShit.isPossible());
