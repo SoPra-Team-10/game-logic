@@ -214,9 +214,9 @@ TEST(env_test, getAllPlayerFreeCellsAround) {
 
 TEST(env_test, isShitOnCell){
     auto env = setup::createEnv();
-    gameController::BlockCell testShit(env, env->team1, gameModel::Position(8,7));
+    gameController::BlockCell testShit(env, env->team1, gameModel::Position(5,6));
     testShit.execute();
-    EXPECT_TRUE(env->isShitOnCell(gameModel::Position(8,7)));
+    EXPECT_TRUE(env->isShitOnCell(gameModel::Position(5,6)));
 }
 
 TEST(env_test, removeShitOnCell0){
