@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.6"/>
-<title>GameLogic: gameController::Interference Class Reference</title>
+<title>GameLogic: gameController::BlockCell Class Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -81,58 +81,58 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><b>gameController</b></li><li class="navelem"><a class="el" href="classgame_controller_1_1_interference.html">Interference</a></li>  </ul>
+<li class="navelem"><b>gameController</b></li><li class="navelem"><a class="el" href="classgame_controller_1_1_block_cell.html">BlockCell</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
   <div class="summary">
-<a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="#pro-attribs">Protected Attributes</a>  </div>
+<a href="#pub-methods">Public Member Functions</a>  </div>
   <div class="headertitle">
-<div class="title">gameController::Interference Class Reference<span class="mlabels"><span class="mlabel">abstract</span></span></div>  </div>
+<div class="title">gameController::BlockCell Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 <div class="dynheader">
-Inheritance diagram for gameController::Interference:</div>
+Inheritance diagram for gameController::BlockCell:</div>
 <div class="dyncontent">
  <div class="center">
-  <img src="classgame_controller_1_1_interference.png" usemap="#gameController::Interference_map" alt=""/>
-  <map id="gameController::Interference_map" name="gameController::Interference_map">
-<area href="classgame_controller_1_1_block_cell.html" alt="gameController::BlockCell" shape="rect" coords="0,56,182,80"/>
-<area href="classgame_controller_1_1_impulse.html" alt="gameController::Impulse" shape="rect" coords="192,56,374,80"/>
-<area href="classgame_controller_1_1_ranged_attack.html" alt="gameController::RangedAttack" shape="rect" coords="384,56,566,80"/>
-<area href="classgame_controller_1_1_snitch_push.html" alt="gameController::SnitchPush" shape="rect" coords="576,56,758,80"/>
-<area href="classgame_controller_1_1_teleport.html" alt="gameController::Teleport" shape="rect" coords="768,56,950,80"/>
+  <img src="classgame_controller_1_1_block_cell.png" usemap="#gameController::BlockCell_map" alt=""/>
+  <map id="gameController::BlockCell_map" name="gameController::BlockCell_map">
+<area href="classgame_controller_1_1_interference.html" alt="gameController::Interference" shape="rect" coords="0,0,173,24"/>
 </map>
  </div></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a1e664266c768fafd6fc4339e08741d5a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1e664266c768fafd6fc4339e08741d5a"></a>
+<tr class="memitem:aeb7ee2eec1eded566e79d03d0cd3ea9a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aeb7ee2eec1eded566e79d03d0cd3ea9a"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>BlockCell</b> (std::shared_ptr&lt; <a class="el" href="classgame_model_1_1_environment.html">gameModel::Environment</a> &gt; env, std::shared_ptr&lt; <a class="el" href="classgame_model_1_1_team.html">gameModel::Team</a> &gt; team, <a class="el" href="structgame_model_1_1_position.html">gameModel::Position</a> target)</td></tr>
+<tr class="separator:aeb7ee2eec1eded566e79d03d0cd3ea9a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7abe0ba5b2352755cc3a08df8f1668a6"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgame_controller_1_1_block_cell.html#a7abe0ba5b2352755cc3a08df8f1668a6">isPossible</a> () const override</td></tr>
+<tr class="separator:a7abe0ba5b2352755cc3a08df8f1668a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab7120abd9f32ae3e96cf3b07c48b7903"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgame_controller_1_1_block_cell.html#ab7120abd9f32ae3e96cf3b07c48b7903">execute</a> () const -&gt; gameController::ActionCheckResult override</td></tr>
+<tr class="separator:ab7120abd9f32ae3e96cf3b07c48b7903"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_methods_classgame_controller_1_1_interference"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classgame_controller_1_1_interference')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classgame_controller_1_1_interference.html">gameController::Interference</a></td></tr>
+<tr class="memitem:a1e664266c768fafd6fc4339e08741d5a inherit pub_methods_classgame_controller_1_1_interference"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1e664266c768fafd6fc4339e08741d5a"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>Interference</b> (std::shared_ptr&lt; <a class="el" href="classgame_model_1_1_environment.html">gameModel::Environment</a> &gt; env, std::shared_ptr&lt; <a class="el" href="classgame_model_1_1_team.html">gameModel::Team</a> &gt; team, gameModel::InterferenceType type)</td></tr>
-<tr class="separator:a1e664266c768fafd6fc4339e08741d5a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aee66a8480fccc6286b5bef04777a8a6a"><td class="memItemLeft" align="right" valign="top">virtual auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgame_controller_1_1_interference.html#aee66a8480fccc6286b5bef04777a8a6a">execute</a> () const -&gt; gameController::ActionCheckResult=0</td></tr>
-<tr class="separator:aee66a8480fccc6286b5bef04777a8a6a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a06b9adc5df035e184e7ed0cf5d4a8814"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgame_controller_1_1_interference.html#a06b9adc5df035e184e7ed0cf5d4a8814">isPossible</a> () const </td></tr>
-<tr class="separator:a06b9adc5df035e184e7ed0cf5d4a8814"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a694aa2cd65bbb35c02f1ca4ed7701ebe"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgame_controller_1_1_interference.html#a694aa2cd65bbb35c02f1ca4ed7701ebe">getType</a> () const -&gt; gameModel::InterferenceType</td></tr>
-<tr class="separator:a694aa2cd65bbb35c02f1ca4ed7701ebe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="separator:a1e664266c768fafd6fc4339e08741d5a inherit pub_methods_classgame_controller_1_1_interference"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a694aa2cd65bbb35c02f1ca4ed7701ebe inherit pub_methods_classgame_controller_1_1_interference"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgame_controller_1_1_interference.html#a694aa2cd65bbb35c02f1ca4ed7701ebe">getType</a> () const -&gt; gameModel::InterferenceType</td></tr>
+<tr class="separator:a694aa2cd65bbb35c02f1ca4ed7701ebe inherit pub_methods_classgame_controller_1_1_interference"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
-Protected Attributes</h2></td></tr>
-<tr class="memitem:a599512f23ad5bca74521b15309ea4b88"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a599512f23ad5bca74521b15309ea4b88"></a>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
+Additional Inherited Members</h2></td></tr>
+<tr class="inherit_header pro_attribs_classgame_controller_1_1_interference"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_classgame_controller_1_1_interference')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="classgame_controller_1_1_interference.html">gameController::Interference</a></td></tr>
+<tr class="memitem:a599512f23ad5bca74521b15309ea4b88 inherit pro_attribs_classgame_controller_1_1_interference"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a599512f23ad5bca74521b15309ea4b88"></a>
 std::shared_ptr<br class="typebreak"/>
 &lt; <a class="el" href="classgame_model_1_1_environment.html">gameModel::Environment</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>env</b></td></tr>
-<tr class="separator:a599512f23ad5bca74521b15309ea4b88"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aed7a76226c2b0b99e896bcd45d9adc74"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aed7a76226c2b0b99e896bcd45d9adc74"></a>
+<tr class="separator:a599512f23ad5bca74521b15309ea4b88 inherit pro_attribs_classgame_controller_1_1_interference"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aed7a76226c2b0b99e896bcd45d9adc74 inherit pro_attribs_classgame_controller_1_1_interference"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aed7a76226c2b0b99e896bcd45d9adc74"></a>
 std::shared_ptr&lt; <a class="el" href="classgame_model_1_1_team.html">gameModel::Team</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>team</b></td></tr>
-<tr class="separator:aed7a76226c2b0b99e896bcd45d9adc74"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af7bd9e6bb2f92cb4f547ca4f52e5f16c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af7bd9e6bb2f92cb4f547ca4f52e5f16c"></a>
+<tr class="separator:aed7a76226c2b0b99e896bcd45d9adc74 inherit pro_attribs_classgame_controller_1_1_interference"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af7bd9e6bb2f92cb4f547ca4f52e5f16c inherit pro_attribs_classgame_controller_1_1_interference"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af7bd9e6bb2f92cb4f547ca4f52e5f16c"></a>
 gameModel::InterferenceType&#160;</td><td class="memItemRight" valign="bottom"><b>type</b></td></tr>
-<tr class="separator:af7bd9e6bb2f92cb4f547ca4f52e5f16c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="separator:af7bd9e6bb2f92cb4f547ca4f52e5f16c inherit pro_attribs_classgame_controller_1_1_interference"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a class="anchor" id="aee66a8480fccc6286b5bef04777a8a6a"></a>
+<a class="anchor" id="ab7120abd9f32ae3e96cf3b07c48b7903"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -140,42 +140,25 @@ gameModel::InterferenceType&#160;</td><td class="memItemRight" valign="bottom"><
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual auto gameController::Interference::execute </td>
+          <td class="memname">auto gameController::BlockCell::execute </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
-          <td> const -&gt;  gameController::ActionCheckResult</td>
+          <td> const -&gt; gameController::ActionCheckResult</td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Executes the interference </p>
+<p>BLockCell is moved to the Cell </p>
 
-<p>Implemented in <a class="el" href="classgame_controller_1_1_block_cell.html#ab7120abd9f32ae3e96cf3b07c48b7903">gameController::BlockCell</a>, <a class="el" href="classgame_controller_1_1_snitch_push.html#a8a2f83c287bbe0c619cc99fa012515b3">gameController::SnitchPush</a>, <a class="el" href="classgame_controller_1_1_impulse.html#acd4697c3567adfacf7b657ffefe72d1d">gameController::Impulse</a>, <a class="el" href="classgame_controller_1_1_ranged_attack.html#a7c5cb7567f7f6bc8fb844837240d7c09">gameController::RangedAttack</a>, and <a class="el" href="classgame_controller_1_1_teleport.html#a8afb230cf709b514e549ebe73f1fc68e">gameController::Teleport</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a694aa2cd65bbb35c02f1ca4ed7701ebe"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">auto gameController::Interference::getType </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const -&gt; gameModel::InterferenceType</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Gets the type of interference </p>
-<dl class="section return"><dt>Returns</dt><dd></dd></dl>
+<p>Implements <a class="el" href="classgame_controller_1_1_interference.html#aee66a8480fccc6286b5bef04777a8a6a">gameController::Interference</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a06b9adc5df035e184e7ed0cf5d4a8814"></a>
+<a class="anchor" id="a7abe0ba5b2352755cc3a08df8f1668a6"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -183,7 +166,7 @@ gameModel::InterferenceType&#160;</td><td class="memItemRight" valign="bottom"><
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">bool gameController::Interference::isPossible </td>
+          <td class="memname">bool gameController::BlockCell::isPossible </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -191,14 +174,13 @@ gameModel::InterferenceType&#160;</td><td class="memItemRight" valign="bottom"><
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Checks if the interference is possible </p>
-<dl class="section return"><dt>Returns</dt><dd></dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>true if this <a class="el" href="classgame_controller_1_1_interference.html">Interference</a> is available and possible to place the this <a class="el" href="classgame_controller_1_1_interference.html">Interference</a> to this Cell </dd></dl>
 
-<p>Reimplemented in <a class="el" href="classgame_controller_1_1_block_cell.html#a7abe0ba5b2352755cc3a08df8f1668a6">gameController::BlockCell</a>, <a class="el" href="classgame_controller_1_1_ranged_attack.html#a95776ac1efedefee37dd42acd5308e6b">gameController::RangedAttack</a>, and <a class="el" href="classgame_controller_1_1_teleport.html#a6d6f4050f84929e7e0df46ca4ea40374">gameController::Teleport</a>.</p>
+<p>Reimplemented from <a class="el" href="classgame_controller_1_1_interference.html#a06b9adc5df035e184e7ed0cf5d4a8814">gameController::Interference</a>.</p>
 
 </div>
 </div>
