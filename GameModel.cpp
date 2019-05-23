@@ -391,17 +391,6 @@ namespace gameModel{
         return false;
     }
 
-   /* bool Environment::cellIsFreeFromObject(const Position &position) const {
-        if(!cellIsFree(position)){
-            return false;
-        }
-        if(bludgers[0]->position == position || bludgers[1]->position == position ||
-                 snitch->position == position || quaffle->position == position){
-            return false;
-        }
-        return !isShitOnCell(position);
-    }*/
-
     void Environment::removeDeprecatedShit() {
        if(!pileOfShit.empty()) {
            for (auto &shit : pileOfShit) {
