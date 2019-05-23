@@ -391,7 +391,7 @@ namespace gameModel{
         return false;
     }
 
-    bool Environment::cellIsFreeFromObject(const Position &position) const {
+   /* bool Environment::cellIsFreeFromObject(const Position &position) const {
         if(!cellIsFree(position)){
             return false;
         }
@@ -400,16 +400,18 @@ namespace gameModel{
             return false;
         }
         return !isShitOnCell(position);
-    }
+    }*/
 
     void Environment::removeDeprecatedShit() {
-        for(auto &shit : pileOfShit){
-            if(shit->spawnedThisRound) {
-                shit->spawnedThisRound = false;
-            }else {
-                removeShitOnCell(shit->position);
-            }
-        }
+       if(!pileOfShit.empty()) {
+           for (auto &shit : pileOfShit) {
+               if (shit->spawnedThisRound) {
+                   shit->spawnedThisRound = false;
+               } else {
+                   removeShitOnCell(shit->position);
+               }
+           }
+       }
     }
 
     void Environment::removeShitOnCell(const Position &position) {

@@ -219,7 +219,7 @@ TEST(env_test, isSHitOnCell){
     EXPECT_TRUE(env->isShitOnCell(gameModel::Position(8,7)));
 }
 
-TEST(env_test, removeSHitOnCell0){
+TEST(env_test, removeShitOnCell0){
     auto env = setup::createEnv();
     gameController::BlockCell testShit(env, env->team1, gameModel::Position(8,7));
     testShit.execute();
@@ -227,7 +227,7 @@ TEST(env_test, removeSHitOnCell0){
     EXPECT_TRUE(env->pileOfShit.empty());
 }
 
-TEST(env_test, removeSHitOnCell1){
+TEST(env_test, removeShitOnCell1){
     auto env = setup::createEnv();
     gameController::BlockCell testShit(env, env->team1, gameModel::Position(8,7));
     testShit.execute();
@@ -235,8 +235,12 @@ TEST(env_test, removeSHitOnCell1){
     EXPECT_FALSE(env->pileOfShit.empty());
 }
 
-TEST(env_test, removeDeprecatedSHit){
+TEST(env_test, removeDeprecatedShit){
     auto env = setup::createEnv();
+    env->snitch->position  = gameModel::Position(5,5);
+    env->quaffle->position  = gameModel::Position(5,6);
+    env->bludgers[0]->position  = gameModel::Position(5,7);
+    env->bludgers[1]->position  = gameModel::Position(5,8);
     gameController::BlockCell testShit(env, env->team1, gameModel::Position(8,7));
     testShit.execute();
     env->removeDeprecatedShit();
