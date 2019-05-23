@@ -183,8 +183,7 @@ namespace gameController {
         }
 
         if (minDistancePlayers.empty()) {
-            const auto freeCells = env->getAllPlayerFreeCellsAround(bludger->position);
-            bludger->position = freeCells[rng(0, static_cast<int>(freeCells.size() - 1))];
+            gameController::moveToAdjacent(bludger, env);
         }
         else {
             auto minDistancePlayer = minDistancePlayers[rng(0, static_cast<int>(minDistancePlayers.size() - 1))];
