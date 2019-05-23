@@ -365,7 +365,7 @@ namespace gameController{
                 if (gameModel::Environment::getCell(this->env->quaffle->position) == gameModel::Cell::GoalLeft) {
                     actions.push_back(ActionResult::ScoreRight);
                     env->team2->score += 10;
-                } else if (gameModel::Environment::getCell(this->env->quaffle->position) == gameModel::Cell::GoalLeft) {
+                } else if (gameModel::Environment::getCell(this->env->quaffle->position) == gameModel::Cell::GoalRight) {
                     actions.push_back(ActionResult::ScoreLeft);
                     env->team1->score += 10;
                 }
