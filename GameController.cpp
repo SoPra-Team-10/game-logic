@@ -183,38 +183,39 @@ namespace gameController {
         }
 
         if (minDistancePlayers.empty()) {
-            throw std::runtime_error("There are't enough player on the field!");
-        }
-
-        auto minDistancePlayer = minDistancePlayers[rng(0, static_cast<int>(minDistancePlayers.size() - 1))];
-
-        // move towards nearest player
-        auto crossedCells = getAllCrossedCells(bludger->position, minDistancePlayer->position);
-        if (crossedCells.empty()) {
-            // bludger will move on the players position
-            bludger->position = minDistancePlayer->position;
-
-            // roll the dices
-            if (actionTriggered(env->config.gameDynamicsProbs.knockOut)) {
-                // quaffel test
-                if (env->quaffle->position == minDistancePlayer->position) {
-                    moveToAdjacent(env->quaffle, env);
-                }
-                // knockout player
-                minDistancePlayer->knockedOut = true;
-
-                //Set Bludger to new random position
-                auto possiblePositions = env->getAllFreeCells();
-                bludger->position = possiblePositions[rng(0, static_cast<int>(possiblePositions.size() - 1))];
-            }
-
-            return minDistancePlayer;
+            const auto freeCells = env->getAllPlayerFreeCellsAround(bludger->position);
+            bludger->position = freeCells[rng(0, static_cast<int>(freeCells.size() - 1))];
         }
         else {
-            // move in the direction of the nearest player
-            bludger->position = crossedCells[0];
-        }
+            auto minDistancePlayer = minDistancePlayers[rng(0, static_cast<int>(minDistancePlayers.size() - 1))];
 
+            // move towards nearest player
+            auto crossedCells = getAllCrossedCells(bludger->position, minDistancePlayer->position);
+            if (crossedCells.empty()) {
+                // bludger will move on the players position
+                bludger->position = minDistancePlayer->position;
+
+                // roll the dices
+                if (actionTriggered(env->config.gameDynamicsProbs.knockOut)) {
+                    // quaffel test
+                    if (env->quaffle->position == minDistancePlayer->position) {
+                        moveToAdjacent(env->quaffle, env);
+                    }
+                    // knockout player
+                    minDistancePlayer->knockedOut = true;
+
+                    //Set Bludger to new random position
+                    auto possiblePositions = env->getAllFreeCells();
+                    bludger->position = possiblePositions[rng(0, static_cast<int>(possiblePositions.size() - 1))];
+                }
+
+                return minDistancePlayer;
+            }
+            else {
+                // move in the direction of the nearest player
+                bludger->position = crossedCells[0];
+            }
+        }
         return {};
     }
 
