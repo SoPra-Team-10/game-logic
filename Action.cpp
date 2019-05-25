@@ -337,16 +337,6 @@ namespace gameController{
                     fouls.emplace_back(foul);
                     this->actor->isFined = true;
                 }
-
-                if (foul == gameModel::Foul::ChargeGoal) {
-                    if (gameModel::Environment::getCell(this->target) == gameModel::Cell::GoalRight) {
-                        actions.push_back(ActionResult::ScoreLeft);
-                        env->team1->score += 10;
-                    } else if (gameModel::Environment::getCell(this->target) == gameModel::Cell::GoalLeft) {
-                        actions.push_back(ActionResult::ScoreRight);
-                        env->team2->score += 10;
-                    }
-                }
             }
         }
 
@@ -371,6 +361,15 @@ namespace gameController{
         // move the quaffel if necessary
         if (this->env->quaffle->position == oldActorPos) {
             this->env->quaffle->position = this->target;
+            if (gameModel::Environment::isGoalCell(this->env->quaffle->position)) {
+                if (gameModel::Environment::getCell(this->env->quaffle->position) == gameModel::Cell::GoalLeft) {
+                    actions.push_back(ActionResult::ScoreRight);
+                    env->team2->score += 10;
+                } else if (gameModel::Environment::getCell(this->env->quaffle->position) == gameModel::Cell::GoalRight) {
+                    actions.push_back(ActionResult::ScoreLeft);
+                    env->team1->score += 10;
+                }
+            }
         } else if(rammingFoulFlag && env->quaffle->position == target) {
             //rammed player looses quaffel
             moveToAdjacent(env->quaffle, env);
