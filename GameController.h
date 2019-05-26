@@ -122,6 +122,9 @@ namespace gameController {
      */
     bool moveSnitch(std::shared_ptr<gameModel::Snitch> &snitch, std::shared_ptr<gameModel::Environment> &env, ExcessLength excessLength);
 
+    /**
+     * This Method places the Snitch belong to the Rules. The Method shuld be called in the 13th Round of the Game
+     */
     void spawnSnitch(std::shared_ptr<gameModel::Environment>& env);
 }
 
