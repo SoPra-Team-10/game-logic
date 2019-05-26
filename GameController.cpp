@@ -335,4 +335,32 @@ namespace gameController {
                 throw std::runtime_error("Fatal error! Enum out of bounds");
         }
     }
+
+    void spawnSnitch(std::shared_ptr<gameModel::Environment>& env){
+        gameModel::Vector vector = {env->team1->seeker->position, env->team2->seeker->position};
+        vector = vector * 0.5;
+        gameModel::Vector dirVect = vector.orthogonal();
+        std::vector<gameModel::Position> resultVect1;
+        std::vector<gameModel::Position> resultVect2;
+        gameModel::Position startPoint1 = {static_cast<int>(env->team1->seeker->position.x + vector.x), static_cast<int>(env->team1->seeker->position.y + vector.y)};
+        gameModel::Position startPoint2 = {static_cast<int>(env->team1->seeker->position.x + vector.x), static_cast<int>(env->team1->seeker->position.y + vector.y)};
+        bool notOutOfBounds1;
+        bool notOutOfBounds2;
+        while((notOutOfBounds1 = env->getCell(gameModel::Position(startPoint1.x + static_cast<int>(round(dirVect.x)), startPoint1.y + static_cast<int>(round(dirVect.y)))) != gameModel::Cell::OutOfBounds) ||
+                (notOutOfBounds2 = env->getCell(gameModel::Position(startPoint2.x - static_cast<int>(round(dirVect.x)), startPoint2.y - static_cast<int>(round(dirVect.y)))) != gameModel::Cell::OutOfBounds)){
+            if(notOutOfBounds1) {
+                startPoint1 = dirVect + startPoint1;
+                resultVect1.emplace_back(startPoint1);
+            }
+            if(notOutOfBounds2) {
+                startPoint2 = dirVect - startPoint2;
+                resultVect2.emplace_back(startPoint2);
+            }
+        }
+        if(resultVect1.size() >= resultVect2.size()) {
+            env->snitch->position = resultVect1[resultVect1.size() - 1];
+        }else {
+            env->snitch->position = resultVect2[resultVect2.size() - 1];
+        }
+    }
 }

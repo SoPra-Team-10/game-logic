@@ -121,6 +121,8 @@ namespace gameController {
      * @return true if the snitch was caught after its move, false otherwise
      */
     bool moveSnitch(std::shared_ptr<gameModel::Snitch> &snitch, std::shared_ptr<gameModel::Environment> &env, ExcessLength excessLength);
+
+    void spawnSnitch(std::shared_ptr<gameModel::Environment>& env);
 }
 
 
