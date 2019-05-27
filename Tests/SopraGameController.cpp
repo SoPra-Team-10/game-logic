@@ -414,7 +414,8 @@ TEST(controller_test, spawnSnitch3){
     env->team2->seeker->position = gameModel::Position{10,10};
     gameController::spawnSnitch(env);
     EXPECT_EQ(env->snitch->position, gameModel::Position(0,8));
-    }
+    std::cout << env->snitch->position.x << env->snitch->position.y << std::endl;
+}
 
 TEST(controller_test, spawnSnitch4){
     auto env = setup::createEnv();

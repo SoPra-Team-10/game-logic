@@ -621,11 +621,7 @@ namespace gameModel{
     }
 
     Vector Vector::orthogonal() const{
-        Vector ret = {this->y, -this->x};
-        if(ret.abs() != 0) {
-            ret.normalize();
-        }
-        return ret;
+        return Vector(this->y, -this->x);
     }
 
     Object::Object(const Position &position, communication::messages::types::EntityId id) : position(position), id(id){}

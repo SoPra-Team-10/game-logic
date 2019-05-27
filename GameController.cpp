@@ -343,6 +343,7 @@ namespace gameController {
         gameModel::Vector dirVec = {env->team1->seeker->position, env->team2->seeker->position};
         dirVec = dirVec * 0.5;
         gameModel::Vector dirVectOrtho = dirVec.orthogonal();
+        dirVectOrtho.normalize();
         std::vector<gameModel::Position> resultVect1;
         std::vector<gameModel::Position> resultVect2;
         gameModel::Position lowerCell = {static_cast<int>(env->team1->seeker->position.x + dirVec.x), static_cast<int>(env->team1->seeker->position.y + dirVec.y)};
