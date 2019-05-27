@@ -350,8 +350,8 @@ namespace gameController {
         gameModel::Position upperCell = lowerCell;
         bool notOutOfBounds1;
         bool notOutOfBounds2;
-        while((notOutOfBounds1 = env->getCell(gameModel::Position(lowerCell.x + static_cast<int>(std::round(dirVectOrtho.x)), lowerCell.y + static_cast<int>(std::round(dirVectOrtho.y)))) != gameModel::Cell::OutOfBounds) ||
-                (notOutOfBounds2 = env->getCell(gameModel::Position(upperCell.x - static_cast<int>(std::round(dirVectOrtho.x)), upperCell.y - static_cast<int>(std::round(dirVectOrtho.y)))) != gameModel::Cell::OutOfBounds)){
+        while((notOutOfBounds1 = env->getCell(lowerCell.x + static_cast<int>(std::round(dirVectOrtho.x)), lowerCell.y + static_cast<int>(std::round(dirVectOrtho.y))) != gameModel::Cell::OutOfBounds) ||
+                (notOutOfBounds2 = env->getCell(upperCell.x - static_cast<int>(std::round(dirVectOrtho.x)), upperCell.y - static_cast<int>(std::round(dirVectOrtho.y))) != gameModel::Cell::OutOfBounds)){
             if(notOutOfBounds1) {
                 lowerCell.x = lowerCell.x + static_cast<int>(std::round(dirVectOrtho.x));
                 lowerCell.y = lowerCell.y + static_cast<int>(std::round(dirVectOrtho.y));
