@@ -84,6 +84,11 @@ namespace gameModel{
          */
         void normalize();
 
+        /**
+         * @return makes the vector orthogonal to his old vector
+         */
+        Vector orthogonal() const;
+
         // operators
         bool operator==(const Vector &v) const;
         Vector operator*(const double &c) const;

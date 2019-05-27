@@ -338,4 +338,43 @@ namespace gameController {
                 throw std::runtime_error("Fatal error! Enum out of bounds");
         }
     }
+
+    void spawnSnitch(std::shared_ptr<gameModel::Environment>& env){
+        gameModel::Vector dirVec = {env->team1->seeker->position, env->team2->seeker->position};
+        dirVec = dirVec * 0.5;
+        gameModel::Vector dirVectOrtho = dirVec.orthogonal();
+        dirVectOrtho.normalize();
+        std::vector<gameModel::Position> resultVect1;
+        std::vector<gameModel::Position> resultVect2;
+        gameModel::Position lowerCell = {static_cast<int>(env->team1->seeker->position.x + dirVec.x), static_cast<int>(env->team1->seeker->position.y + dirVec.y)};
+        gameModel::Position upperCell = lowerCell;
+        bool notOutOfBounds1;
+        bool notOutOfBounds2;
+        while((notOutOfBounds1 = env->getCell(lowerCell.x + static_cast<int>(std::round(dirVectOrtho.x)), lowerCell.y + static_cast<int>(std::round(dirVectOrtho.y))) != gameModel::Cell::OutOfBounds) ||
+                (notOutOfBounds2 = env->getCell(upperCell.x - static_cast<int>(std::round(dirVectOrtho.x)), upperCell.y - static_cast<int>(std::round(dirVectOrtho.y))) != gameModel::Cell::OutOfBounds)){
+            if(notOutOfBounds1) {
+                lowerCell.x = lowerCell.x + static_cast<int>(std::round(dirVectOrtho.x));
+                lowerCell.y = lowerCell.y + static_cast<int>(std::round(dirVectOrtho.y));
+                resultVect1.emplace_back(lowerCell);
+            }
+            if(notOutOfBounds2) {
+                upperCell.x = upperCell.x - static_cast<int>(std::round(dirVectOrtho.x));
+                upperCell.y = upperCell.y - static_cast<int>(std::round(dirVectOrtho.y));
+                resultVect2.emplace_back(upperCell);
+            }
+        }
+        if(resultVect1.size() >= resultVect2.size()) {
+            if(env->cellIsFree(resultVect1.back())) {
+                env->snitch->position = resultVect1.back();
+            }else{
+                moveToAdjacent(env->snitch, env);
+            }
+        }else {
+            if(env->cellIsFree(resultVect2.back())) {
+                env->snitch->position = resultVect2.back();
+            }else{
+                moveToAdjacent(env->snitch, env);
+            }
+        }
+    }
 }

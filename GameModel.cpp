@@ -620,6 +620,10 @@ namespace gameModel{
         return Vector(this->x + v.x, this->y + v.y);
     }
 
+    Vector Vector::orthogonal() const{
+        return Vector(this->y, -this->x);
+    }
+
     Object::Object(const Position &position, communication::messages::types::EntityId id) : position(position), id(id){}
 
     CubeOfShit::CubeOfShit(const Position &target) : Object(target, communication::messages::types::EntityId::LEFT_WOMBAT){}
