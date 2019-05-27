@@ -581,11 +581,6 @@ namespace gameModel{
                         static_cast<int>(p.y + round(this->y)));
     }
 
-    Position Vector::operator-(const gameModel::Position &p) const {
-        return Position(static_cast<int>(p.x - round(this->x)),
-                        static_cast<int>(p.y - round(this->y)));
-    }
-
 
     // Vector
 
@@ -627,12 +622,10 @@ namespace gameModel{
 
     Vector Vector::orthogonal() const{
         Vector ret = {this->y, -this->x};
-        ret.normalize();
+        if(ret.abs() != 0) {
+            ret.normalize();
+        }
         return ret;
-    }
-
-    Vector Vector::operator-(const Vector &c) const {
-        return Vector(this->x - c.x, this->y - c.y);
     }
 
     Object::Object(const Position &position, communication::messages::types::EntityId id) : position(position), id(id){}

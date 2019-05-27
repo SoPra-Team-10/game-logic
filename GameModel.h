@@ -91,8 +91,6 @@ namespace gameModel{
         Vector operator*(const double &c) const;
         Vector operator+(const Vector &v) const;
         Position operator+(const Position &p) const;
-        Vector operator-(const Vector &c) const;
-        Position operator-(const Position &p) const;
     };
 
     /**
