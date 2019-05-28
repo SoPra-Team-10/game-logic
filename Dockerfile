@@ -36,4 +36,4 @@ WORKDIR /src
 #RUN cmake -DCMAKE_BUILD_TYPE=Release -DUSE_INSTALLED_LIB=true .. && make -j$(nproc) Tests
 
 #CMD ["Tests/Tests", "--gtest_repeat=10", "--gtest_shuffle", "--gtest_color=yes"]
-CMD ["bash", "chmod +x run-sonarqube.sh && ./run-sonarqube.sh"]
+CMD ["bash", "-c", "chmod +x run-sonarqube.sh && ./run-sonarqube.sh"]
