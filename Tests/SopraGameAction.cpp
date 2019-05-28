@@ -220,6 +220,19 @@ TEST(shot_test, invalid_shot_on_goal1){
     EXPECT_EQ(env->quaffle->position, gameModel::Position(2, 8));
 }
 
+TEST(shot_test, valid_throw_remove_shit){
+    auto env = setup::createEnv({0, {}, {}, {1, 0, 0, 0, 0}, {}});
+
+    env->quaffle->position = env->team1->keeper->position;
+    env->pileOfShit.emplace_back(std::make_shared<gameModel::CubeOfShit>(gameModel::Position{8, 6}));
+    gameController::Shot testShot(env, env->team1->keeper, env->quaffle, {8, 6});
+    auto res = testShot.execute();
+    EXPECT_EQ(res.first.size(), 1);
+    EXPECT_EQ(res.first[0], gameController::ActionResult::ThrowSuccess);
+    EXPECT_EQ(env->quaffle->position, gameModel::Position(8, 6));
+    EXPECT_TRUE(env->pileOfShit.empty());
+}
+
 //--------------------------Bludger shot check------------------------------------------------------------------------
 
 TEST(shot_test, valid_bludger_shot_check){

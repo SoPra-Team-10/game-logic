@@ -131,6 +131,10 @@ namespace gameController{
             }
         }
 
+        if(env->isShitOnCell(ball->position)){
+            env->removeShitOnCell(ball->position);
+        }
+
         return {shotRes, fouls};
     }
 
