@@ -4,9 +4,9 @@
 
 #include <gtest/gtest.h>
 #include <gmock/gmock-matchers.h>
-#include <Interference.h>
-#include "GameModel.h"
-#include "GameController.h"
+#include <src/Interference.h>
+#include "src/GameModel.h"
+#include "src/GameController.h"
 #include "setup.h"
 
 //-----------------------------------------Environment Test-------------------------------------------------------------

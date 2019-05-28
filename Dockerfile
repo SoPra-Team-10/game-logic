@@ -1,7 +1,7 @@
 FROM ubuntu:18.04
 
 # Install dependencies
-RUN apt-get update -y && apt-get install -y libgtest-dev cmake gcc-8 g++-8 libasan5 google-mock git
+RUN apt-get update -y && apt-get install -y libgtest-dev cmake gcc-8 g++-8 libasan5 google-mock git wget unzip bash
 RUN update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-8 800 --slave /usr/bin/g++ g++ /usr/bin/g++-8
 
 # Compile GTest
@@ -20,14 +20,19 @@ RUN cmake . && make -j$(nproc) SopraMessages && make install
 
 RUN ldconfig
 
+WORKDIR /
 RUN mkdir /src
 COPY . /src/
 RUN rm -rf /src/build
 RUN mkdir -p /src/build
 
-WORKDIR /src/build
+# run sonarqube ci docker bullsh**
+WORKDIR /src
+RUN chmod +x run-sonarqube.sh && ./run-sonarqube.sh
 
-RUN cmake -DCMAKE_BUILD_TYPE=Release .. && make -j$(nproc) SopraGameLogic && make install
-RUN cmake -DCMAKE_BUILD_TYPE=Release -DUSE_INSTALLED_LIB=true .. && make -j$(nproc) Tests
+#WORKDIR /src/build
 
-CMD ["Tests/Tests", "--gtest_repeat=10", "--gtest_shuffle", "--gtest_color=yes"]
+#RUN cmake -DCMAKE_BUILD_TYPE=Release .. && make -j$(nproc) SopraGameLogic && make install
+#RUN cmake -DCMAKE_BUILD_TYPE=Release -DUSE_INSTALLED_LIB=true .. && make -j$(nproc) Tests
+
+#CMD ["Tests/Tests", "--gtest_repeat=10", "--gtest_shuffle", "--gtest_color=yes"]

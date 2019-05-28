@@ -24,7 +24,7 @@ before_install:
   - docker build -t gamelogic .
 
 script:
-  - docker run gamelogic
+  - docker run gamelogic -e SONAR_TOKEN=$SONAR_TOKEN -e TRAVIS_BRANCH=$TRAVIS_BRANCH
   
 after_success:
   - cd $TRAVIS_BUILD_DIR
@@ -32,4 +32,4 @@ after_success:
   - ./generateDocumentationAndDeploy.sh
   
 notifications:
-    slack: soprateam10:wlcgvL7tR63frGyGP4BCuqNj
+    slack: soprateam10:$TRAVIS_TOKEN

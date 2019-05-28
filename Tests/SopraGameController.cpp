@@ -3,8 +3,8 @@
 //
 
 #include <gtest/gtest.h>
-#include "GameController.h"
-#include "GameModel.h"
+#include "src/GameController.h"
+#include "src/GameModel.h"
 #include "setup.h"
 #include <gmock/gmock-matchers.h>
 
