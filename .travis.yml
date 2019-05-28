@@ -25,7 +25,7 @@ before_install:
 
 script:
   - docker run gamelogic Tests/Tests --gtest_repeat=10 --gtest_shuffle --gtest_color=yes
-  - docker run -e SONAR_TOKEN=${SONAR_TOKEN} -e TRAVIS_BRANCH=${TRAVIS_BRANCH} gamelogic bash -c cd /src && ./run-sonarqube.sh
+  - docker run -e SONAR_TOKEN=${SONAR_TOKEN} -e TRAVIS_BRANCH=${TRAVIS_BRANCH} gamelogic bash -c cd /src && chmod +x run-sonarqube.sh && ./run-sonarqube.sh
 
 after_success:
   - cd $TRAVIS_BUILD_DIR
