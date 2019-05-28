@@ -263,6 +263,14 @@ TEST(shot_test, invalid_bludger_shot_check_path_blocked){
     EXPECT_EQ(testShot.check(), gameController::ActionCheckResult::Impossible);
 }
 
+TEST(shot_test, valid_bludger_shot_over_ball){
+    auto env = setup::createEnv();
+    env->bludgers[0]->position = env->team2->beaters[1]->position;
+    env->quaffle->position = {6, 2};
+    auto testShot = gameController::Shot(env, env->team2->beaters[1], env->bludgers[0], {7, 2});
+    EXPECT_EQ(testShot.check(), gameController::ActionCheckResult::Success);
+}
+
 //---------------------------Bludger shot execute-----------------------------------------------------------------------
 
 TEST(shot_test, bludger_shot_on_empty_cell){

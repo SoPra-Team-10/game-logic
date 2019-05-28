@@ -156,7 +156,7 @@ namespace gameController{
                 if(getDistance(actor->position, target) <= 3){
                     bool blocked = false;
                     for(const auto &cell : getAllCrossedCells(actor->position, target)){
-                        if(!env->cellIsFree(cell)){
+                        if(env->getPlayer(cell).has_value()){
                             blocked = true;
                             break;
                         }
