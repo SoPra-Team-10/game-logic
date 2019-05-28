@@ -376,5 +376,7 @@ namespace gameController {
                 moveToAdjacent(env->snitch, env);
             }
         }
+
+        env->snitch->exists = true;
     }
 }
