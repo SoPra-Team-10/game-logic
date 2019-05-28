@@ -26,10 +26,9 @@ COPY . /src/
 RUN rm -rf /src/build
 RUN mkdir -p /src/build
 
-# run sonarqube ci docker bullsh**
+# sonarqube stuff
 WORKDIR /src
 RUN chmod +x run-sonarqube.sh
-#RUN ./run-sonarqube.sh
 
 WORKDIR /src/build
 RUN cmake -DCMAKE_BUILD_TYPE=Release .. && make -j$(nproc) SopraGameLogic && make install
