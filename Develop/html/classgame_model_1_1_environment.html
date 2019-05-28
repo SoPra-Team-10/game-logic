@@ -119,8 +119,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:ab3bc9e490d18df58fbbe4f5f3dfd1b05"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1e3c326a8a358e9de0e5144ac5a42af2"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgame_model_1_1_environment.html#a1e3c326a8a358e9de0e5144ac5a42af2">cellIsFree</a> (const <a class="el" href="structgame_model_1_1_position.html">Position</a> &amp;position) const </td></tr>
 <tr class="separator:a1e3c326a8a358e9de0e5144ac5a42af2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9ce8f0bc1d424b585bdc030205d48903"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgame_model_1_1_environment.html#a9ce8f0bc1d424b585bdc030205d48903">getAllPlayerFreeCellsAround</a> (const <a class="el" href="structgame_model_1_1_position.html">Position</a> &amp;position) const -&gt; std::vector&lt; <a class="el" href="structgame_model_1_1_position.html">Position</a> &gt;</td></tr>
-<tr class="separator:a9ce8f0bc1d424b585bdc030205d48903"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6b885f2c9e14b1c8d8b5fbf14de4de2d"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgame_model_1_1_environment.html#a6b885f2c9e14b1c8d8b5fbf14de4de2d">getAllFreeCellsAround</a> (const <a class="el" href="structgame_model_1_1_position.html">Position</a> &amp;position) const -&gt; std::vector&lt; <a class="el" href="structgame_model_1_1_position.html">Position</a> &gt;</td></tr>
+<tr class="separator:a6b885f2c9e14b1c8d8b5fbf14de4de2d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad50b8cb84c76a6dbbfa9f8210918a4c2"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgame_model_1_1_environment.html#ad50b8cb84c76a6dbbfa9f8210918a4c2">getPlayer</a> (const <a class="el" href="structgame_model_1_1_position.html">Position</a> &amp;position) const -&gt; std::optional&lt; std::shared_ptr&lt; <a class="el" href="classgame_model_1_1_player.html">Player</a> &gt;&gt;</td></tr>
 <tr class="separator:ad50b8cb84c76a6dbbfa9f8210918a4c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4d07c3194e35ffc1295a81c43c616540"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgame_model_1_1_environment.html#a4d07c3194e35ffc1295a81c43c616540">getPlayerById</a> (communication::messages::types::EntityId id) const -&gt; std::shared_ptr&lt; <a class="el" href="classgame_model_1_1_player.html">Player</a> &gt;</td></tr>
@@ -357,12 +357,12 @@ std::deque&lt; std::shared_ptr<br class="typebreak"/>
 
 </div>
 </div>
-<a class="anchor" id="a9ce8f0bc1d424b585bdc030205d48903"></a>
+<a class="anchor" id="a6b885f2c9e14b1c8d8b5fbf14de4de2d"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">auto gameModel::Environment::getAllPlayerFreeCellsAround </td>
+          <td class="memname">auto gameModel::Environment::getAllFreeCellsAround </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="structgame_model_1_1_position.html">Position</a> &amp;&#160;</td>
           <td class="paramname"><em>position</em></td><td>)</td>
@@ -370,7 +370,7 @@ std::deque&lt; std::shared_ptr<br class="typebreak"/>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>get all Positions around a given position where no other player is on. If all surrounding cells are blocked the search window is enlarged until a free cell is found </p>
+<p>get all Positions around a given position where no other player or ball is on. If all surrounding cells are blocked the search window is enlarged until a free cell is found </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">position</td><td>the position to be checked </td></tr>
