@@ -24,7 +24,7 @@ before_install:
   - docker build -t gamelogic .
 
 script:
-  - docker run -e SONAR_TOKEN='${SONAR_TOKEN}' -e TRAVIS_BRANCH='${TRAVIS_BRANCH}' gamelogic
+  - docker run -e SONAR_TOKEN=${SONAR_TOKEN} -e TRAVIS_BRANCH=${TRAVIS_BRANCH} gamelogic
 
 after_success:
   - cd $TRAVIS_BUILD_DIR
