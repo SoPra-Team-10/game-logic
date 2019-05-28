@@ -25,13 +25,9 @@ if [ "$TRAVIS_BRANCH" == "master" ] || [ "$TRAVIS_BRANCH" == "Develop" ] || [ "$
     cd /src
 
     echo "RUNNING SONARCLOUD BUILD WRAPPER"
+
     chmod +x sonar-build.sh
     /sonar/build-wrapper-linux-x86/build-wrapper-linux-x86-64 --out-dir bw-outputs ./sonar-build.sh
-    ls ./bw-outputs
-    echo "#####################"
-    cat ./bw-outputs/build-wrapper-dump.json
-    echo "#####################"
-    cat ./bw-outputs/build-wrapper.log
 
     echo "RUNNING SONARCLOUD SCANNER"
     /sonar/sonar-scanner-3.3.0.1492-linux/bin/sonar-scanner \
