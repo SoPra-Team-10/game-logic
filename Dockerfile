@@ -28,12 +28,12 @@ RUN mkdir -p /src/build
 
 # run sonarqube ci docker bullsh**
 WORKDIR /src
-#RUN chmod +x run-sonarqube.sh && ./run-sonarqube.sh
+RUN chmod +x run-sonarqube.sh
+#RUN ./run-sonarqube.sh
 
-#WORKDIR /src/build
+WORKDIR /src/build
+RUN cmake -DCMAKE_BUILD_TYPE=Release .. && make -j$(nproc) SopraGameLogic && make install
+RUN cmake -DCMAKE_BUILD_TYPE=Release -DUSE_INSTALLED_LIB=true .. && make -j$(nproc) Tests
 
-#RUN cmake -DCMAKE_BUILD_TYPE=Release .. && make -j$(nproc) SopraGameLogic && make install
-#RUN cmake -DCMAKE_BUILD_TYPE=Release -DUSE_INSTALLED_LIB=true .. && make -j$(nproc) Tests
-
-#CMD ["Tests/Tests", "--gtest_repeat=10", "--gtest_shuffle", "--gtest_color=yes"]
-CMD ["bash", "-c", "chmod +x run-sonarqube.sh && ./run-sonarqube.sh"]
+CMD ["Tests/Tests", "--gtest_repeat=10", "--gtest_shuffle", "--gtest_color=yes"]
+#CMD ["bash", "-c", "cd /src && chmod +x run-sonarqube.sh && ./run-sonarqube.sh"]
