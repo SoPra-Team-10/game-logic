@@ -1,5 +1,7 @@
 #!/bin/bash
 
+echo "Current Branch: $TRAVIS_BRANCH"
+
 if [ "$TRAVIS_BRANCH" == "master" ] || [ "$TRAVIS_BRANCH" == "Develop" ] || [ "$TRAVIS_BRANCH" == "sonarcloud" ]; then
 
     echo "INSTALLING SONAR CUBE SANNER & WRAPPER"
