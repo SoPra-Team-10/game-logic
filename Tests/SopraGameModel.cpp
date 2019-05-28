@@ -4,6 +4,7 @@
 
 #include <gtest/gtest.h>
 #include <gmock/gmock-matchers.h>
+#include <Interference.h>
 #include "GameModel.h"
 #include "GameController.h"
 #include "setup.h"
@@ -55,7 +56,6 @@ TEST(env_test, cellIsFree0){
     EXPECT_FALSE(env->cellIsFree(env->team1->seeker->position));
     EXPECT_FALSE(env->cellIsFree(env->team2->seeker->position));
 
-    EXPECT_TRUE(env->cellIsFree({8, 6}));
     EXPECT_TRUE(env->cellIsFree({2, 6}));
     EXPECT_TRUE(env->cellIsFree({2, 9}));
     EXPECT_TRUE(env->cellIsFree({11, 7}));
@@ -76,6 +76,22 @@ TEST(env_test, cellIsFree1) {
         gameController::moveToAdjacent(player.value(), env);
     }
 
+    if(env->snitch->exists && env->snitch->position == gameModel::Position{x, y}){
+        gameController::moveToAdjacent(env->snitch, env);
+    }
+
+    if(env->bludgers[0]->position == gameModel::Position{x, y}){
+        gameController::moveToAdjacent(env->bludgers[0], env);
+    }
+
+    if(env->bludgers[1]->position == gameModel::Position{x, y}){
+        gameController::moveToAdjacent(env->bludgers[1], env);
+    }
+
+    if(env->quaffle->position == gameModel::Position{x, y}){
+        gameController::moveToAdjacent(env->quaffle, env);
+    }
+
     EXPECT_TRUE(env->cellIsFree(gameModel::Position(x,y)));
 
     env->team1->keeper->position = gameModel::Position(x,y);
@@ -89,6 +105,20 @@ TEST(env_test, cellIsFree2){
     env->team1->seeker->isFined = true;
     env->team1->keeper->position = env->team1->seeker->position;
     EXPECT_FALSE(env->cellIsFree(env->team1->seeker->position));
+}
+
+
+TEST(env_test, cellIsFreeBall){
+    auto env = setup::createEnv();
+    env->snitch->position = {11, 2};
+    env->snitch->exists = true;
+    env->bludgers[0]-> position = {6, 9};
+    env->bludgers[1]-> position = {2, 7};
+    EXPECT_FALSE(env->cellIsFree({11, 2}));
+    EXPECT_FALSE(env->cellIsFree({6, 9}));
+    EXPECT_FALSE(env->cellIsFree({2, 7}));
+    env->snitch->exists = false;
+    EXPECT_TRUE(env->cellIsFree({11, 2}));
 }
 
 TEST(env_test, arePlayerInSameTeam) {
@@ -182,6 +212,44 @@ TEST(env_test, getAllPlayerFreeCellsAround) {
     EXPECT_EQ(freeCells[6], gameModel::Position(11, 12));
 }
 
+TEST(env_test, isShitOnCell){
+    auto env = setup::createEnv();
+    gameController::BlockCell testShit(env, env->team1, gameModel::Position(5,6));
+    testShit.execute();
+    EXPECT_TRUE(env->isShitOnCell(gameModel::Position(5,6)));
+}
+
+TEST(env_test, removeShitOnCell0){
+    auto env = setup::createEnv();
+    gameController::BlockCell testShit(env, env->team1, gameModel::Position(8,7));
+    testShit.execute();
+    env->removeShitOnCell(gameModel::Position(8,7));
+    EXPECT_TRUE(env->pileOfShit.empty());
+}
+
+TEST(env_test, removeShitOnCell1){
+    auto env = setup::createEnv();
+    gameController::BlockCell testShit(env, env->team1, gameModel::Position(8,7));
+    testShit.execute();
+    env->removeShitOnCell(gameModel::Position(8,6));
+    EXPECT_FALSE(env->pileOfShit.empty());
+}
+
+TEST(env_test, removeDeprecatedShit){
+    auto env = setup::createEnv();
+    env->snitch->position  = gameModel::Position(5,5);
+    env->quaffle->position  = gameModel::Position(5,6);
+    env->bludgers[0]->position  = gameModel::Position(5,7);
+    env->bludgers[1]->position  = gameModel::Position(5,8);
+    gameController::BlockCell testShit(env, env->team1, gameModel::Position(8,7));
+    testShit.execute();
+    env->removeDeprecatedShit();
+    EXPECT_FALSE(env->pileOfShit.empty());
+    env->removeDeprecatedShit();
+    EXPECT_TRUE(env->pileOfShit.empty());
+}
+
+
 //-----------------------------------------Fanblock Test----------------------------------------------------------------
 
 TEST(fanblock_test, banFan_and_getUses_and_getBannedCount) {
@@ -191,5 +259,5 @@ TEST(fanblock_test, banFan_and_getUses_and_getBannedCount) {
     env->team1->fanblock.banFan(gameModel::InterferenceType::Impulse);
 
     EXPECT_EQ(env->team1->fanblock.getBannedCount(gameModel::InterferenceType::Impulse), 1);
-    EXPECT_EQ(env->team1->fanblock.getUses(gameModel::InterferenceType::Impulse), 2);
+    EXPECT_EQ(env->team1->fanblock.getUses(gameModel::InterferenceType::Impulse), 1);
 }

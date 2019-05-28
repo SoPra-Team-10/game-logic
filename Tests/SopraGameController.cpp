@@ -103,8 +103,26 @@ TEST(controller_test, moveBludger_towards_player) {
     EXPECT_EQ(env->bludgers[0]->position, gameModel::Position(3, 11));
 }
 
+TEST(controller_test, moveBludger_random_no_player) {
+    auto env = setup::createEnv();
+
+    env->bludgers[0]->position = gameModel::Position(10, 0);
+    env->team1->beaters[0]->isFined = true;
+    env->team1->beaters[1]->isFined = true;
+    env->team2->beaters[0]->isFined = true;
+    env->team2->beaters[1]->isFined = true;
+
+
+    auto res = gameController::moveBludger(env->bludgers[0], env);
+    EXPECT_FALSE(res.has_value());
+    EXPECT_THAT(env->bludgers[0]->position, testing::AnyOf(gameModel::Position(9, 0), gameModel::Position(11,0),
+                                                           gameModel::Position(9, 1), gameModel::Position(11,1),
+                                                           gameModel::Position(10,1)));
+
+}
+
 TEST(controller_test, moveBludger_knock_out) {
-    auto env = setup::createEnv({0, {}, {1, 1, 1, 1, 1, 1, 1, 1, 1}, {1, 1, 1, 1, 1}, {}});
+    auto env = setup::createEnv({0, {}, {1, 1, 1, 1, 1, 1, 1, 1, 1, 1}, {1, 1, 1, 1, 1}, {}});
 
     env->bludgers[0]->position = gameModel::Position(3, 10);
     env->quaffle->position = gameModel::Position(2, 10);
@@ -364,6 +382,56 @@ TEST(controller_test, moveSnitch10){
                                                       gameModel::Position(9,5), gameModel::Position(9,6), gameModel::Position(9,7)));
 }
 
+//-----------------------------------Snitch Spawn ----------------------------------------------------------------------
+
+TEST(controller_test, spawnSnitch0){
+    auto env = setup::createEnv();
+    env->team1->seeker->position = gameModel::Position{6,8};
+    env->team2->seeker->position = gameModel::Position{10,8};
+    gameController::spawnSnitch(env);
+    EXPECT_EQ(env->snitch->position, gameModel::Position(8,0));
+}
+
+TEST(controller_test, spawnSnitch1){
+    auto env = setup::createEnv();
+    env->team1->seeker->position = gameModel::Position{8,6};
+    env->team2->seeker->position = gameModel::Position{8,10};
+    gameController::spawnSnitch(env);
+    EXPECT_EQ(env->snitch->position, gameModel::Position(16,8));
+}
+
+TEST(controller_test, spawnSnitch2){
+    auto env = setup::createEnv();
+    env->team1->seeker->position = gameModel::Position{4,6};
+    env->team2->seeker->position = gameModel::Position{4,10};
+    gameController::spawnSnitch(env);
+    EXPECT_EQ(env->snitch->position, gameModel::Position(16,8));
+}
+
+TEST(controller_test, spawnSnitch3){
+    auto env = setup::createEnv();
+    env->team1->seeker->position = gameModel::Position{10,6};
+    env->team2->seeker->position = gameModel::Position{10,10};
+    gameController::spawnSnitch(env);
+    EXPECT_EQ(env->snitch->position, gameModel::Position(0,8));
+}
+
+TEST(controller_test, spawnSnitch4){
+    auto env = setup::createEnv();
+    env->team1->seeker->position = gameModel::Position{8,8};
+    env->team2->seeker->position = gameModel::Position{10,10};
+    gameController::spawnSnitch(env);
+    EXPECT_EQ(env->snitch->position, gameModel::Position(15,3));
+    }
+
+TEST(controller_test, spawnSnitch5){
+    auto env = setup::createEnv();
+    env->team1->seeker->position = gameModel::Position{4,2};
+    env->team2->seeker->position = gameModel::Position{11,6};
+    gameController::spawnSnitch(env);
+    EXPECT_EQ(env->snitch->position, gameModel::Position(7,12));
+}
+
 //-----------------------------------Rest Quaffel after Goal------------------------------------------------------------
 
 TEST(controller_test , moveQuaffelAfterGoal0) {
@@ -382,6 +450,8 @@ TEST(controller_test , moveQuaffelAfterGoal1) {
     auto env = setup::createEnv();
 
     env->quaffle->position = gameModel::Position(14, 4);
+    env->bludgers[0]->position = {9, 6};
+    env->bludgers[1]->position = {7, 6};
 
     gameController::moveQuaffelAfterGoal(env);
     EXPECT_EQ(env->quaffle->position, gameModel::Position(8,6));

@@ -7,6 +7,9 @@
 #include "GameModel.h"
 #include "Action.h"
 
+#define GOAL_POINTS 10
+#define SNITCH_POINTS 30
+
 namespace gameController {
     class Shot;
     class Move;
@@ -121,6 +124,11 @@ namespace gameController {
      * @return true if the snitch was caught after its move, false otherwise
      */
     bool moveSnitch(std::shared_ptr<gameModel::Snitch> &snitch, std::shared_ptr<gameModel::Environment> &env, ExcessLength excessLength);
+
+    /**
+     * This Method places the Snitch belong to the Rules. The Method shuld be called in the 13th Round of the Game
+     */
+    void spawnSnitch(std::shared_ptr<gameModel::Environment>& env);
 }
 
 
