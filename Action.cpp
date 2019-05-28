@@ -131,6 +131,10 @@ namespace gameController{
             }
         }
 
+        if(env->isShitOnCell(ball->position)){
+            env->removeShitOnCell(ball->position);
+        }
+
         return {shotRes, fouls};
     }
 
@@ -156,7 +160,7 @@ namespace gameController{
                 if(getDistance(actor->position, target) <= 3){
                     bool blocked = false;
                     for(const auto &cell : getAllCrossedCells(actor->position, target)){
-                        if(!env->cellIsFree(cell)){
+                        if(env->getPlayer(cell).has_value()){
                             blocked = true;
                             break;
                         }
@@ -432,7 +436,7 @@ namespace gameController{
             if(env->isPlayerInOpponentRestrictedZone(actor)){
                 auto mates = env->getTeamMates(actor);
                 for(const auto &p : mates){
-                    if(INSTANCE_OF(p, gameModel::Chaser) && env->isPlayerInOpponentRestrictedZone(p)){
+                    if(!p->isFined && INSTANCE_OF(p, gameModel::Chaser) && env->isPlayerInOpponentRestrictedZone(p)){
                         resVect.emplace_back(gameModel::Foul::MultipleOffence);
                     }
                 }
