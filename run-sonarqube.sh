@@ -4,6 +4,9 @@ echo "Current Branch: $TRAVIS_BRANCH"
 
 if [ "$TRAVIS_BRANCH" == "master" ] || [ "$TRAVIS_BRANCH" == "Develop" ] || [ "$TRAVIS_BRANCH" == "sonarcloud" ]; then
 
+    echo "INSTALLING SOME TOOLS"
+    apt-get install -y  wget unzip bash
+
     echo "INSTALLING SONAR CUBE SANNER & WRAPPER"
 
     mkdir /sonar
