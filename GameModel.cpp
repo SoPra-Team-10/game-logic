@@ -79,6 +79,8 @@ namespace gameModel{
                 return InterferenceType::Teleport;
             case FanType::NIFFLER:
                 return InterferenceType::SnitchPush;
+            case FanType::WOMBAT:
+                return InterferenceType::BlockCell;
             default:
                 throw std::runtime_error("Fatal error! Enum out of range");
         }
@@ -96,6 +98,8 @@ namespace gameModel{
                 return FanType::TROLL;
             case InterferenceType::SnitchPush:
                 return FanType::NIFFLER;
+            case InterferenceType::BlockCell:
+                return FanType::WOMBAT;
             default:
                 throw std::runtime_error("Fatal error! Enum out of range");
         }
