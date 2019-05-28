@@ -520,20 +520,20 @@ namespace gameModel{
         auto getBallByID(const communication::messages::types::EntityId &id) const -> std::shared_ptr<Ball>;
 
         /**
-         * Removes all the cubes of shit which were from the last round
+         * Removes all the cubes of shit spawned during the last round
          */
         void removeDeprecatedShit();
 
         /**
          * removes Shit on a given Position
-         * @param position is the Position of the COubeOfShit which should be romoved
+         * @param position is the Position of the CubeOfShit which should be removed
          */
         void removeShitOnCell(const Position &position);
 
         /**
-         * proofes, if Shit is on a given Position
-         * @param position is the Position to test, if SHit is on this Cell
-         * @return returns true, if Shit is still on the Position, otherwise false
+         *
+         * @param position is the Position to test
+         * @return returns true, if Shit is on the Position, false otherwise
          */
         auto isShitOnCell(const Position &position) const -> bool;
     };

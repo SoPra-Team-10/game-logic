@@ -96,7 +96,7 @@ namespace gameController{
         auto execute() const -> gameController::ActionCheckResult override;
     };
 
-    class BlockCell : public Interference{
+    class BlockCell : public Interference {
     public:
         BlockCell(std::shared_ptr<gameModel::Environment> env, std::shared_ptr<gameModel::Team> team, gameModel::Position target);
 

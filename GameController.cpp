@@ -339,7 +339,7 @@ namespace gameController {
         }
     }
 
-    void spawnSnitch(std::shared_ptr<gameModel::Environment>& env){
+    void spawnSnitch(std::shared_ptr<gameModel::Environment> &env){
         gameModel::Vector dirVec = {env->team1->seeker->position, env->team2->seeker->position};
         dirVec = dirVec * 0.5;
         gameModel::Vector dirVectOrtho = dirVec.orthogonal();

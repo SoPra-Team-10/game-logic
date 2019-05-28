@@ -50,9 +50,9 @@ namespace gameController{
                         if (!goalCheckRes.empty()) {
                             for (const auto &res : goalCheckRes) {
                                 if (res == ActionResult::ScoreLeft) {
-                                    env->team1->score += 10;
+                                    env->team1->score += GOAL_POINTS;
                                 } else if (res == ActionResult::ScoreRight) {
-                                    env->team2->score += 10;
+                                    env->team2->score += GOAL_POINTS;
                                 } else {
                                     throw std::runtime_error("Fatal error. goalcheck returned unexpected result");
                                 }
@@ -96,9 +96,9 @@ namespace gameController{
 
                 for(const auto &res : goalCheck(env->quaffle->position)){
                     if(res == ActionResult::ScoreLeft){
-                        env->team1->score += 10;
+                        env->team1->score += GOAL_POINTS;
                     } else if(res == ActionResult::ScoreRight){
-                        env->team2->score += 10;
+                        env->team2->score += GOAL_POINTS;
                     } else {
                         throw std::runtime_error("Fatal error. goalcheck returned unexpected result");
                     }
@@ -345,7 +345,7 @@ namespace gameController{
                 if (INSTANCE_OF(this->actor, gameModel::Seeker)) {
                     if (actionTriggered(env->config.gameDynamicsProbs.catchSnitch)) {
                         actions.push_back(ActionResult::SnitchCatch);
-                        env->getTeam(actor)->score += 30;
+                        env->getTeam(actor)->score += SNITCH_POINTS;
                     }
                 }
             }
@@ -364,10 +364,10 @@ namespace gameController{
             if (gameModel::Environment::isGoalCell(this->env->quaffle->position)) {
                 if (gameModel::Environment::getCell(this->env->quaffle->position) == gameModel::Cell::GoalLeft) {
                     actions.push_back(ActionResult::ScoreRight);
-                    env->team2->score += 10;
+                    env->team2->score += GOAL_POINTS;
                 } else if (gameModel::Environment::getCell(this->env->quaffle->position) == gameModel::Cell::GoalRight) {
                     actions.push_back(ActionResult::ScoreLeft);
-                    env->team1->score += 10;
+                    env->team1->score += GOAL_POINTS;
                 }
             }
         } else if(rammingFoulFlag && env->quaffle->position == target) {

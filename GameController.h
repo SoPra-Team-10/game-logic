@@ -7,6 +7,9 @@
 #include "GameModel.h"
 #include "Action.h"
 
+#define GOAL_POINTS 10
+#define SNITCH_POINTS 30
+
 namespace gameController {
     class Shot;
     class Move;
