@@ -463,8 +463,6 @@ namespace gameModel{
          */
         bool cellIsFree(const Position &position) const;
 
-        bool cellIsFreeFromObject(const Position &position) const;
-
         /**
          * get all Positions around a given position where no other player is on. If all surrounding
          * cells are blocked the search window is enlarged until a free cell is found
