@@ -436,7 +436,7 @@ namespace gameController{
             if(env->isPlayerInOpponentRestrictedZone(actor)){
                 auto mates = env->getTeamMates(actor);
                 for(const auto &p : mates){
-                    if(INSTANCE_OF(p, gameModel::Chaser) && env->isPlayerInOpponentRestrictedZone(p)){
+                    if(!p->isFined && INSTANCE_OF(p, gameModel::Chaser) && env->isPlayerInOpponentRestrictedZone(p)){
                         resVect.emplace_back(gameModel::Foul::MultipleOffence);
                     }
                 }

@@ -450,6 +450,23 @@ TEST(move_test, move_foul_multipleoffence) {
     EXPECT_EQ(fouls[0], gameModel::Foul::MultipleOffence);
 }
 
+TEST(move_test, move_foul_multipleoffence_banned){
+    auto env = setup::createEnv();
+
+    env->team1->chasers[0]->position = gameModel::Position(16, 7);
+    env->team1->chasers[0]->isFined = true;
+    env->team1->chasers[1]->position = gameModel::Position(11, 7);
+
+    auto player = env->getPlayer({12, 7});
+    if (player.has_value() && !player.value()->isFined) {
+        gameController::moveToAdjacent(player.value(), env);
+    }
+
+    gameController::Move mv(env, env->team1->chasers[1], gameModel::Position(12, 7));
+    std::vector<gameModel::Foul> fouls = mv.checkForFoul();
+    EXPECT_TRUE(fouls.empty());
+}
+
 TEST(move_test, move_foul_blockgoal) {
     auto env = setup::createEnv();
 
