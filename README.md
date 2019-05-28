@@ -25,3 +25,6 @@ and linked using
 ## Doxygen-Dokumentation
 - [Master Branch Dokumentation](https://sopra-team-10.github.io/GameLogic/master/html/index.html)
 - [Develop Branch Dokumentation](https://sopra-team-10.github.io/GameLogic/Develop/html/index.html)
+
+## SonarQube Analyse
+Das Analyseergebniss von SonarQube ist [hier auf SonarCloud](https://sonarcloud.io/dashboard?id=SoPra-Team-10_GameLogic) zu finden.
