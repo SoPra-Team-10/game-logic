@@ -10,6 +10,7 @@
 #include <vector>
 #include "GameController.h"
 #include "GameModel.h"
+
 namespace gameController{
     class Interference {
     public:

@@ -13,10 +13,15 @@ endif ()
 
 project(SopraGameLogic VERSION 0.0.1 DESCRIPTION "GameLogic for SoPra")
 
-set(SOURCES ${CMAKE_SOURCE_DIR}/GameModel.cpp ${CMAKE_SOURCE_DIR}/Action.cpp ${CMAKE_SOURCE_DIR}/GameController.cpp ${CMAKE_SOURCE_DIR}/Interference.cpp)
+set(SOURCES
+        ${CMAKE_SOURCE_DIR}/src/GameModel.cpp
+        ${CMAKE_SOURCE_DIR}/src/Action.cpp
+        ${CMAKE_SOURCE_DIR}/src/GameController.cpp
+        ${CMAKE_SOURCE_DIR}/src/Interference.cpp)
 set(LIBS SopraMessages)
 
-include_directories(${CMAKE_SOURCE_DIR})
+include_directories(${CMAKE_SOURCE_DIR}/src)
+
 add_library(${PROJECT_NAME} SHARED ${SOURCES})
 target_link_libraries(${PROJECT_NAME} ${LIBS})
 
@@ -26,7 +31,7 @@ set_target_properties(${PROJECT_NAME} PROPERTIES
         VERSION ${PROJECT_VERSION}
         SOVERSION 1
         PUBLIC_HEADER
-        "GameModel.h;Action.h;GameController.h;Interference.h")
+        "src/GameModel.h;src/Action.h;src/GameController.h;src/Interference.h")
 install(TARGETS ${PROJECT_NAME}
         LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
         PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/SopraGameLogic)
