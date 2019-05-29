@@ -228,12 +228,12 @@ namespace gameController{
     auto Shot::goalCheck(const gameModel::Position &pos) const -> std::optional<ActionResult> {
         // senkrechter wurf
         if(actor->position.x == pos.x){
-            return {};
+            return std::nullopt;
         }
 
         //Tor nicht getroffen
         if(!gameModel::Environment::isGoalCell(pos)){
-            return {};
+            return std::nullopt;
         }
 
         double m = (pos.y - actor->position.y) / static_cast<double>((pos.x - actor->position.x));
@@ -253,7 +253,7 @@ namespace gameController{
             return gameModel::Environment::getCell(pos) == gameModel::Cell::GoalLeft ?
                 ActionResult::ScoreRight : ActionResult::ScoreLeft;
         } else {
-            return {};
+            return std::nullopt;
         }
     }
 
