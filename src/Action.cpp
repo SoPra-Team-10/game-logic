@@ -431,18 +431,20 @@ namespace gameController{
             }
 
             // MultipleOffence
-            auto origPos = actor->position;
-            actor->position = target;
-            if(env->isPlayerInOpponentRestrictedZone(actor)){
-                auto mates = env->getTeamMates(actor);
-                for(const auto &p : mates){
-                    if(!p->isFined && INSTANCE_OF(p, gameModel::Chaser) && env->isPlayerInOpponentRestrictedZone(p)){
-                        resVect.emplace_back(gameModel::Foul::MultipleOffence);
+            if(gameModel::Environment::getCell(actor->position) == gameModel::Cell::Standard){
+                auto origPos = actor->position;
+                actor->position = target;
+                if(env->isPlayerInOpponentRestrictedZone(actor)){
+                    auto mates = env->getTeamMates(actor);
+                    for(const auto &p : mates){
+                        if(!p->isFined && INSTANCE_OF(p, gameModel::Chaser) && env->isPlayerInOpponentRestrictedZone(p)){
+                            resVect.emplace_back(gameModel::Foul::MultipleOffence);
+                        }
                     }
                 }
-            }
 
-            actor->position = origPos;
+                actor->position = origPos;
+            }
         }
 
         return resVect;
