@@ -90,6 +90,13 @@ namespace gameController{
             auto goalCheckResult = goalCheck(ball->position);
             if(goalCheckResult.has_value()){
                 shotRes.push_back(goalCheckResult.value());
+                if(goalCheckResult.value() == ActionResult::ScoreLeft){
+                    env->team1->score += GOAL_POINTS;
+                } else if(goalCheckResult.value() == ActionResult::ScoreRight){
+                    env->team2->score += GOAL_POINTS;
+                } else {
+                    throw std::runtime_error("Unexpected goal check result");
+                }
             }
 
         } else if(BLUDGERSHOT){
