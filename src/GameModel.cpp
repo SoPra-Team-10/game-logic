@@ -1,9 +1,10 @@
-#include <utility>
 #include "GameModel.h"
 #include "GameController.h"
+
 #include <utility>
 #include <iostream>
 #include <cmath>
+#include <utility>
 
 namespace gameModel{
 

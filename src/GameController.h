@@ -5,7 +5,7 @@
 #include <vector>
 
 #include "GameModel.h"
-#include "src/Action.h"
+#include "Action.h"
 
 #define GOAL_POINTS 10
 #define SNITCH_POINTS 30

@@ -13,10 +13,15 @@ endif ()
 
 project(SopraGameLogic VERSION 0.0.1 DESCRIPTION "GameLogic for SoPra")
 
-set(SOURCES ${CMAKE_SOURCE_DIR}/src/GameModel.cpp ${CMAKE_SOURCE_DIR}/src/Action.cpp ${CMAKE_SOURCE_DIR}/src/GameController.cpp ${CMAKE_SOURCE_DIR}/src/Interference.cpp)
+set(SOURCES
+        ${CMAKE_SOURCE_DIR}/src/GameModel.cpp
+        ${CMAKE_SOURCE_DIR}/src/Action.cpp
+        ${CMAKE_SOURCE_DIR}/src/GameController.cpp
+        ${CMAKE_SOURCE_DIR}/src/Interference.cpp)
 set(LIBS SopraMessages)
 
-include_directories(${CMAKE_SOURCE_DIR})
+include_directories(${CMAKE_SOURCE_DIR}/src)
+
 add_library(${PROJECT_NAME} SHARED ${SOURCES})
 target_link_libraries(${PROJECT_NAME} ${LIBS})
 

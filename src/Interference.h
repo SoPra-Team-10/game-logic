@@ -8,8 +8,9 @@
 #include <memory>
 #include <cmath>
 #include <vector>
-#include "src/GameController.h"
-#include "src/GameModel.h"
+#include "GameController.h"
+#include "GameModel.h"
+
 namespace gameController{
     class Interference {
     public:
