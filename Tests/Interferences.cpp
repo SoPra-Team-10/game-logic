@@ -4,10 +4,10 @@
 
 #include <gtest/gtest.h>
 #include <gmock/gmock-matchers.h>
-#include "src/GameModel.h"
-#include "src/GameController.h"
+#include "GameModel.h"
+#include "GameController.h"
 #include "setup.h"
-#include "src/Interference.h"
+#include "Interference.h"
 
 //----------------------------Teleport----------------------------------------------------------------------------------
 

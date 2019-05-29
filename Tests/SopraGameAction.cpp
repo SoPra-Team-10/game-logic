@@ -4,7 +4,7 @@
 
 #include <gtest/gtest.h>
 #include <gmock/gmock-matchers.h>
-#include "src/Action.h"
+#include "Action.h"
 #include "setup.h"
 //-----------------------------------Throw checks-----------------------------------------------------------------------
 
