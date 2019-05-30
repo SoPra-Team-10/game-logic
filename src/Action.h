@@ -126,10 +126,11 @@ namespace gameController{
         auto getAllLandingCells() const -> std::vector<gameModel::Position>;
 
         /**
-         * Checks if a goal was scored depending on the quaffles and actors current position
+         * Checks if a goal was scored depending on the actors current position
+         * @param pos the position where the quaffle was thrown
          * @return
          */
-        auto goalCheck(const gameModel::Position &pos) const -> std::vector<ActionResult>;
+        auto goalCheck(const gameModel::Position &pos) const -> std::optional<ActionResult>;
     };
 
     /**
@@ -227,7 +228,6 @@ namespace gameController{
 
         /**
          * checks if the move is a foul.
-         * @param envi the selected environment.
          * @return the type of foul.
          */
         auto checkForFoul() const -> std::vector<gameModel::Foul>;
