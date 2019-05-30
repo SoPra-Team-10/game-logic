@@ -190,16 +190,6 @@ namespace gameController{
         return res::Impossible;
     }
 
-    auto Shot::executeAll() const ->
-    std::vector<std::pair<gameModel::Environment, double>> {
-
-        std::vector<std::pair<gameModel::Environment, double>> resultVect;
-
-        // @toDo: da fehlt noch alles
-
-        return resultVect;
-    }
-
     auto Shot::getInterceptionPositions() const -> std::vector<gameModel::Position>{
         auto crossedCells = gameController::getAllCrossedCells(this->actor->position, target);
         std::vector<gameModel::Position> ret;
@@ -283,6 +273,12 @@ namespace gameController{
         } else {
             return std::nullopt;
         }
+    }
+
+    auto Shot::executeAll() const ->
+        std::vector<std::pair<const std::shared_ptr<const gameModel::Environment>, double>> {
+        //@TODO
+        return std::vector<std::pair<const std::shared_ptr<const gameModel::Environment>, double>>();
     }
 
     Move::Move(std::shared_ptr<gameModel::Environment> env, std::shared_ptr<gameModel::Player> actor, gameModel::Position target):
@@ -439,13 +435,9 @@ namespace gameController{
     }
 
     auto Move::executeAll() const ->
-    std::vector<std::pair<gameModel::Environment, double>> {
-
-        std::vector<std::pair<gameModel::Environment, double>> resultVect;
-
-        // @toDo: da fehlt noch alles
-
-        return resultVect;
+        std::vector<std::pair<const std::shared_ptr<const gameModel::Environment>, double>> {
+        //@TODO
+        return std::vector<std::pair<const std::shared_ptr<const gameModel::Environment>, double>>();
     }
 
     WrestQuaffle::WrestQuaffle(std::shared_ptr<gameModel::Environment> env, std::shared_ptr<gameModel::Chaser> actor,
@@ -499,12 +491,20 @@ namespace gameController{
             return ActionCheckResult::Impossible;
         }
     }
-    // not now
-    auto WrestQuaffle::executeAll() const -> std::vector<std::pair<gameModel::Environment, double>> {
-        std::vector<std::pair<gameModel::Environment, double>> resultVect;
 
-        // @toDo: da fehlt noch alles
+    auto WrestQuaffle::executeAll() const ->
+        std::vector<std::pair<const std::shared_ptr<const gameModel::Environment>, double>> {
+        if(check() == ActionCheckResult::Impossible){
+            throw std::runtime_error("Action is impossible");
+        }
 
-        return resultVect;
+        std::vector<std::pair<const std::shared_ptr<const gameModel::Environment>, double>> ret;
+        ret.reserve(2);
+        ret.emplace_back(env, 1 - env->config.gameDynamicsProbs.wrestQuaffle);
+        auto successEnv = std::make_shared<gameModel::Environment>(*env);
+        successEnv->quaffle->position = actor->position;
+        ret.emplace_back(successEnv, env->config.gameDynamicsProbs.wrestQuaffle);
+        return ret;
+
     }
 }

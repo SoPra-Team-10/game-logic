@@ -76,7 +76,8 @@ namespace gameController{
          * Produces a List with all possible outomes of the Action
          * @return
          */
-        virtual auto executeAll() const -> std::vector<std::pair<gameModel::Environment, double>> = 0;
+        virtual auto executeAll() const ->
+            std::vector<std::pair<const std::shared_ptr<const gameModel::Environment>, double>> = 0;
 
     protected:
         // objects
@@ -112,7 +113,7 @@ namespace gameController{
         auto successProb() const -> double override;
         auto check() const -> ActionCheckResult override;
         auto executeAll() const ->
-            std::vector<std::pair<gameModel::Environment, double>> override;
+            std::vector<std::pair<const std::shared_ptr<const gameModel::Environment>, double>> override;
     private:
 
         std::shared_ptr<gameModel::Ball> ball;
@@ -170,7 +171,7 @@ namespace gameController{
         auto successProb() const -> double override;
         auto check() const -> ActionCheckResult override;
         auto executeAll() const ->
-            std::vector<std::pair<gameModel::Environment, double>> override;
+            std::vector<std::pair<const std::shared_ptr<const gameModel::Environment>, double>> override;
 
     };
 
@@ -204,7 +205,7 @@ namespace gameController{
         auto successProb() const -> double override;
         auto check() const -> ActionCheckResult override;
         auto executeAll() const ->
-            std::vector<std::pair<gameModel::Environment, double>> override;
+            std::vector<std::pair<const std::shared_ptr<const gameModel::Environment>, double>> override;
 
         /**
          * checks if the move is a foul.
