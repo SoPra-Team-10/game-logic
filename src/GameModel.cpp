@@ -563,6 +563,42 @@ namespace gameModel{
         extraTurnProbs.emplace(Broom::TINDERBLAST, config.getProbExtraTinderblast());
     }
 
+    double Config::getFoulDetectionProb(Foul foul) const {
+        switch (foul) {
+            case Foul::None:
+                return 0;
+            case Foul::BlockGoal:
+                return foulDetectionProbs.blockGoal;
+            case Foul::ChargeGoal:
+                return foulDetectionProbs.chargeGoal;
+            case Foul::MultipleOffence:
+                return foulDetectionProbs.multipleOffence;
+            case Foul::Ramming:
+                return foulDetectionProbs.ramming;
+            case Foul::BlockSnitch:
+                return foulDetectionProbs.blockSnitch;
+            default:
+                throw std::runtime_error("Fatal error, enum out of bounds");
+        }
+    }
+
+    double Config::getFoulDetectionProb(InterferenceType interference) const {
+        switch (interference) {
+            case InterferenceType::RangedAttack:
+                return foulDetectionProbs.rangedAttack;
+            case InterferenceType::Teleport:
+                return foulDetectionProbs.teleport;
+            case InterferenceType::Impulse:
+                return foulDetectionProbs.impulse;
+            case InterferenceType::SnitchPush:
+                return foulDetectionProbs.snitchPush;
+            case InterferenceType::BlockCell:
+                return foulDetectionProbs.blockCell;
+            default:
+                throw std::runtime_error("Fatal error, enum out of bounds");
+        }
+    }
+
 
     // Position
 

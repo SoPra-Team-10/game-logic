@@ -148,6 +148,20 @@ namespace gameModel{
          * @return
          */
         double getExtraTurnProb(communication::messages::types::Broom broom) const;
+
+        /**
+         * Gets the probability that the given foul will be detected
+         * @param foul
+         * @return
+         */
+        double getFoulDetectionProb(Foul foul) const;
+
+        /**
+         * Gets the probability that the given interference will be detected
+         * @param interference
+         * @return
+         */
+        double getFoulDetectionProb(InterferenceType interference) const;
     private:
         std::map<communication::messages::types::Broom, double> extraTurnProbs;
     };
