@@ -5,7 +5,7 @@ branches:
 env:
   global:
     - GH_REPO_NAME: GameLogic
-    - DOXYFILE: $TRAVIS_BUILD_DIR/DOXYFILE
+    - DOXYFILE: ${TRAVIS_BUILD_DIR}/DOXYFILE
     - GH_REPO_REF: github.com/SoPra-Team-10/GameLogic.git
 
 addons:
@@ -21,15 +21,16 @@ services:
   - docker
 
 before_install:
-  - docker build -t gamelogic .
+  - docker build --no-cache -t gamelogic .
 
 script:
-  - docker run gamelogic
-  
+  - docker run -e SONAR_TOKEN=${SONAR_TOKEN} -e TRAVIS_BRANCH=${TRAVIS_BRANCH} gamelogic bash run-sonarqube.sh
+  - docker run gamelogic build/Tests/Tests --gtest_repeat=10 --gtest_shuffle --gtest_color=yes
+
 after_success:
   - cd $TRAVIS_BUILD_DIR
   - chmod +x generateDocumentationAndDeploy.sh
   - ./generateDocumentationAndDeploy.sh
   
 notifications:
-    slack: soprateam10:wlcgvL7tR63frGyGP4BCuqNj
+    slack: soprateam10:${TRAVIS_TOKEN}

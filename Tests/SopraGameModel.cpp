@@ -199,7 +199,7 @@ TEST(env_test, getAllPlayerFreeCellsAround) {
     env->team1->chasers[1]->position = gameModel::Position(13, 11);
     env->team1->chasers[2]->position = gameModel::Position(14, 11);
 
-    auto freeCells = env->getAllPlayerFreeCellsAround(env->team2->keeper->position);
+    auto freeCells = env->getAllFreeCellsAround(env->team2->keeper->position);
 
     EXPECT_EQ(freeCells.size(), 7);
 

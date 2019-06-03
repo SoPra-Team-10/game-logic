@@ -127,9 +127,8 @@ TEST(shot_test, throw_execute_fail_and_disperse){
     env->quaffle->position = env->team1->keeper->position;
     gameController::Shot testShot(env, env->team1->keeper, env->quaffle, {16, 8});
     auto res = testShot.execute();
-    EXPECT_GE(res.first.size(), 2);
+    EXPECT_GE(res.first.size(), 1);
     EXPECT_EQ(res.first[0], gameController::ActionResult::Miss);
-    EXPECT_EQ(res.first[1], gameController::ActionResult::ScoreRight);
     EXPECT_THAT(env->quaffle->position, testing::AnyOf(gameModel::Position(13,11), gameModel::Position(14,11),
                                                       gameModel::Position(13, 10), gameModel::Position(14, 10), gameModel::Position(15 ,10),
                                                       gameModel::Position(13, 9), gameModel::Position(14, 9), gameModel::Position(15, 9),
@@ -220,6 +219,30 @@ TEST(shot_test, invalid_shot_on_goal1){
     EXPECT_EQ(env->quaffle->position, gameModel::Position(2, 8));
 }
 
+TEST(shot_test, valid_throw_remove_shit){
+    auto env = setup::createEnv({0, {}, {}, {1, 0, 0, 0, 0}, {}});
+
+    env->quaffle->position = env->team1->keeper->position;
+    env->pileOfShit.emplace_back(std::make_shared<gameModel::CubeOfShit>(gameModel::Position{8, 6}));
+    gameController::Shot testShot(env, env->team1->keeper, env->quaffle, {8, 6});
+    auto res = testShot.execute();
+    EXPECT_EQ(res.first.size(), 1);
+    EXPECT_EQ(res.first[0], gameController::ActionResult::ThrowSuccess);
+    EXPECT_EQ(env->quaffle->position, gameModel::Position(8, 6));
+    EXPECT_TRUE(env->pileOfShit.empty());
+}
+
+TEST(shot_test, shot_through_goal){
+    auto env = setup::createEnv({0, {}, {}, {1, 0, 0, 0, 0}, {}});
+
+    env->quaffle->position = env->team1->chasers[2]->position;
+    gameController::Shot testShot(env, env->team1->chasers[2], env->quaffle, {15, 3});
+    auto res = testShot.execute();
+    EXPECT_EQ(res.first.size(), 1);
+    EXPECT_EQ(res.first[0], gameController::ActionResult::ThrowSuccess);
+    EXPECT_EQ(env->quaffle->position, gameModel::Position(15, 3));
+}
+
 //--------------------------Bludger shot check------------------------------------------------------------------------
 
 TEST(shot_test, valid_bludger_shot_check){
@@ -261,6 +284,14 @@ TEST(shot_test, invalid_bludger_shot_check_path_blocked){
     env->bludgers[0]->position = env->team2->beaters[1]->position;
     auto testShot = gameController::Shot(env, env->team2->beaters[1], env->bludgers[0], {5, 5});
     EXPECT_EQ(testShot.check(), gameController::ActionCheckResult::Impossible);
+}
+
+TEST(shot_test, valid_bludger_shot_over_ball){
+    auto env = setup::createEnv();
+    env->bludgers[0]->position = env->team2->beaters[1]->position;
+    env->quaffle->position = {6, 2};
+    auto testShot = gameController::Shot(env, env->team2->beaters[1], env->bludgers[0], {7, 2});
+    EXPECT_EQ(testShot.check(), gameController::ActionCheckResult::Success);
 }
 
 //---------------------------Bludger shot execute-----------------------------------------------------------------------
@@ -427,6 +458,44 @@ TEST(move_test, move_foul_multipleoffence) {
 
     EXPECT_EQ(fouls.size(), 1);
     EXPECT_EQ(fouls[0], gameModel::Foul::MultipleOffence);
+}
+
+TEST(move_test, move_foul_multipleoffence_banned){
+    auto env = setup::createEnv();
+
+    env->team1->chasers[0]->position = gameModel::Position(16, 7);
+    env->team1->chasers[0]->isFined = true;
+    env->team1->chasers[1]->position = gameModel::Position(11, 7);
+
+    auto player = env->getPlayer({12, 7});
+    if (player.has_value() && !player.value()->isFined) {
+        gameController::moveToAdjacent(player.value(), env);
+    }
+
+    gameController::Move mv(env, env->team1->chasers[1], gameModel::Position(12, 7));
+    std::vector<gameModel::Foul> fouls = mv.checkForFoul();
+    EXPECT_TRUE(fouls.empty());
+}
+
+TEST(move_test, move_foul_multipleoffence_check_only_once){
+    auto env = setup::createEnv();
+
+    env->team1->chasers[0]->position = gameModel::Position(16, 7);
+    env->team1->chasers[1]->position = gameModel::Position(11, 7);
+
+    auto player = env->getPlayer({12, 7});
+    if (player.has_value() && !player.value()->isFined) {
+        gameController::moveToAdjacent(player.value(), env);
+    }
+
+    gameController::Move mv(env, env->team1->chasers[1], gameModel::Position(12, 7));
+    std::vector<gameModel::Foul> fouls = mv.checkForFoul();
+    mv.execute();
+    EXPECT_EQ(fouls.size(), 1);
+    EXPECT_EQ(fouls[0], gameModel::Foul::MultipleOffence);
+    mv = gameController::Move(env, env->team1->chasers[1], gameModel::Position(13, 7));
+    fouls = mv.checkForFoul();
+    EXPECT_TRUE(fouls.empty());
 }
 
 TEST(move_test, move_foul_blockgoal) {

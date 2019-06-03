@@ -1,9 +1,10 @@
-#include <utility>
 #include "GameModel.h"
 #include "GameController.h"
+
 #include <utility>
 #include <iostream>
 #include <cmath>
+#include <utility>
 
 namespace gameModel{
 
@@ -188,7 +189,7 @@ namespace gameModel{
                 quaffle->position != position && bludgers[0]->position != position && bludgers[1]->position != position;
     }
 
-    auto Environment::getAllPlayerFreeCellsAround(const Position &position) const -> std::vector<Position> {
+    auto Environment::getAllFreeCellsAround(const Position &position) const -> std::vector<Position> {
         std::vector<Position> resultVect;
         resultVect.reserve(8);
 
@@ -204,9 +205,7 @@ namespace gameModel{
                         continue;
                     }
                     else if (Environment::getCell(xPos, yPos) != Cell::OutOfBounds) {
-
-                        auto const player = this->getPlayer({xPos, yPos});
-                        if (player.has_value() && !player.value()->isFined) {
+                        if (!cellIsFree({xPos, yPos})) {
                             continue;
                         }
                         else {

@@ -98,9 +98,9 @@ namespace gameController {
     }
 
     void moveToAdjacent(const std::shared_ptr<gameModel::Object> &object, const std::shared_ptr<gameModel::Environment> &env) {
-        auto positions = env->getAllPlayerFreeCellsAround(object->position);
+        auto positions = env->getAllFreeCellsAround(object->position);
         object->position = positions[rng(0, static_cast<int>(positions.size()) - 1)];
-        if (INSTANCE_OF(object, gameModel::Player) && env->isShitOnCell(object->position)) {
+        if (env->isShitOnCell(object->position)) {
             env->removeShitOnCell(object->position);
         }
     }
@@ -271,7 +271,7 @@ namespace gameController {
                     moveToAdjacent(env->snitch, env);
                     return false;
                 }
-                std::vector<gameModel::Position> freeCells = env->getAllPlayerFreeCellsAround(snitch->position);
+                std::vector<gameModel::Position> freeCells = env->getAllFreeCellsAround(snitch->position);
                 for(const auto &pos : freeCells){
                     if((!equalDistance && getDistance(pos, closestSeeker->position) > minDistanceSeeker) ||
                     (equalDistance && getDistance(pos, env->team1->seeker->position) > minDistanceSeeker &&

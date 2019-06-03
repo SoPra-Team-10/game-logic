@@ -463,15 +463,13 @@ namespace gameModel{
          */
         bool cellIsFree(const Position &position) const;
 
-        bool cellIsFreeFromObject(const Position &position) const;
-
         /**
-         * get all Positions around a given position where no other player is on. If all surrounding
+         * get all Positions around a given position where no other player or ball is on. If all surrounding
          * cells are blocked the search window is enlarged until a free cell is found
          * @param position the position to be checked
          * @return
          */
-        auto getAllPlayerFreeCellsAround(const Position &position) const -> std::vector<Position>;
+        auto getAllFreeCellsAround(const Position &position) const -> std::vector<Position>;
 
         /**
          * Returns player object (if not banned) at the specified position if one exists
