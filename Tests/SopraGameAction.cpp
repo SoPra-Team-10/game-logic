@@ -107,6 +107,22 @@ TEST(shot_test, throw_execute_intercept){
     EXPECT_EQ(env->quaffle->position, gameModel::Position(9, 7));
 }
 
+//Keeper throw_checks ball to centre, not intercepted since banned or fined
+TEST(shot_test, throw_execute_no_intercept){
+    auto env = setup::createEnv({0, {}, {}, {1, 0, 0,  1, 0}, {}});
+
+    env->quaffle->position = env->team1->keeper->position;
+    env->team2->chasers[1]->position = {9, 7};
+    env->team2->chasers[2]->position = {10, 8};
+    env->team2->chasers[1]->isFined = true;
+    env->team2->chasers[2]->knockedOut = true;
+    gameController::Shot testShot(env, env->team1->keeper, env->quaffle, {8, 6});
+    auto res = testShot.execute();
+    EXPECT_EQ(res.first.size(), 1);
+    EXPECT_EQ(res.first[0], gameController::ActionResult::ThrowSuccess);
+    EXPECT_EQ(env->quaffle->position, gameModel::Position(8, 6));
+}
+
 TEST(shot_test, throw_execute_intercept_bounce_off){
     auto env = setup::createEnv({0, {}, {}, {1, 0, 0, 1, 0}, {}});
 
