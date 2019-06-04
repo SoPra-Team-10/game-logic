@@ -478,9 +478,10 @@ namespace gameModel{
     Team::Team(Seeker seeker, Keeper keeper, std::array<Beater, 2> beaters, std::array<Chaser, 3> chasers,
                std::string  name, std::string  colorMain, std::string  colorSecondary, int score,
                Fanblock fanblock) :
-               seeker(std::make_shared<Seeker>(seeker)), keeper(std::make_shared<Keeper>(keeper)), beaters{std::make_shared<Beater>(beaters[0]), std::make_shared<Beater>(beaters[1])},
-               chasers{std::make_shared<Chaser>(chasers[0]), std::make_shared<Chaser>(chasers[1]), std::make_shared<Chaser>(chasers[2])},name(std::move(name)),
-               colorMain(std::move(colorMain)), colorSecondary(std::move(colorSecondary)), score(score), fanblock(std::move(fanblock)) {}
+               seeker(std::make_shared<Seeker>(std::move(seeker))), keeper(std::make_shared<Keeper>(std::move(keeper))), beaters{std::make_shared<Beater>(std::move(beaters[0])),
+                       std::make_shared<Beater>(std::move(beaters[1]))}, chasers{std::make_shared<Chaser>(std::move(chasers[0])), std::make_shared<Chaser>(std::move(chasers[1])),
+                               std::make_shared<Chaser>(std::move(chasers[2]))}, name(std::move(name)), colorMain(std::move(colorMain)), colorSecondary(std::move(colorSecondary)),
+                               score(score), fanblock(std::move(fanblock)) {}
 
    Team::Team(const communication::messages::request::TeamConfig& tConf, communication::messages::request::TeamFormation tForm, bool leftTeam) :
    seeker(std::make_shared<Seeker>(Position{tForm.getSeekerX(), tForm.getSeekerY()}, tConf.getSeeker().getName(), tConf.getSeeker().getSex(), tConf.getSeeker().getBroom(), leftTeam ?
