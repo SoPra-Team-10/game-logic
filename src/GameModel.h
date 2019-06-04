@@ -208,9 +208,25 @@ namespace gameModel{
          */
         int getUses(InterferenceType fan) const ;
 
+        /**
+         * gets the number of times the given fan might be used
+         * @param fan the fan to check
+         * @return number of left uses
+         */
         int getUses(communication::messages::types::FanType fan) const;
 
+        /**
+         * gets the number of banned fans of the given type
+         * @param fan
+         * @return
+         */
         int getBannedCount(InterferenceType fan) const;
+
+        /**
+         * gets the number of banned fans of the given type
+         * @param fan
+         * @return
+         */
         int getBannedCount(communication::messages::types::FanType fan) const;
 
         /**
@@ -219,9 +235,26 @@ namespace gameModel{
          * @throws std::invalid_argument if there are no more fans left to ban of the given type
          */
         void banFan(InterferenceType fan);
+
+        /**
+         * Bans a fan by decreasing the number of allowed uses by one
+         * @param fan the fan to be banned
+         * @throws std::invalid_argument if there are no more fans left to ban of the given type
+         */
         void banFan(communication::messages::types::FanType fan);
 
+        /**
+         * Converts FanType to InterferenceType
+         * @param fanType
+         * @return
+         */
         static auto fanToInterference(communication::messages::types::FanType fanType) -> InterferenceType;
+
+        /**
+         * Converts InterferenceType to FanType
+         * @param type
+         * @return
+         */
         static auto interferenceToFan(InterferenceType type) -> communication::messages::types::FanType;
     private:
         std::map<InterferenceType, int> currFans;

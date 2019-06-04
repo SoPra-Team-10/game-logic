@@ -25,10 +25,6 @@ namespace gameModel{
     // Fanblock
 
     Fanblock::Fanblock(int teleportation, int rangedAttack, int impulse, int snitchPush, int blockCell) : currFans(), initialFans() {
-        if(teleportation + rangedAttack + impulse + snitchPush + blockCell != 7){
-            throw std::invalid_argument("Fanblock has to contain exactly 7 fans!");
-        }
-
         using fan = InterferenceType ;
         initialFans.emplace(fan::RangedAttack, rangedAttack);
         initialFans.emplace(fan::Teleport, teleportation);
