@@ -2,6 +2,7 @@ var searchData=
 [
   ['impulse',['Impulse',['../classgame_controller_1_1_impulse.html',1,'gameController']]],
   ['interference',['Interference',['../classgame_controller_1_1_interference.html',1,'gameController']]],
+  ['interferencetofan',['interferenceToFan',['../classgame_model_1_1_fanblock.html#a2ef924170c8311a0807e560e8b2b1422',1,'gameModel::Fanblock']]],
   ['isgoalcell',['isGoalCell',['../classgame_model_1_1_environment.html#a4614d0fd75a7775e58f4a1e2d18b31eb',1,'gameModel::Environment']]],
   ['isplayerinopponentrestrictedzone',['isPlayerInOpponentRestrictedZone',['../classgame_model_1_1_environment.html#a92637ac80e4dae2392a296bae5606b89',1,'gameModel::Environment']]],
   ['isplayerinownrestrictedzone',['isPlayerInOwnRestrictedZone',['../classgame_model_1_1_environment.html#a846741d971c9b1d21ad1ba2bd88532f1',1,'gameModel::Environment']]],
