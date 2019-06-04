@@ -500,8 +500,8 @@ namespace gameController{
 
         std::vector<std::pair<const std::shared_ptr<const gameModel::Environment>, double>> ret;
         ret.reserve(2);
-        ret.emplace_back(env, 1 - env->config.gameDynamicsProbs.wrestQuaffle);
-        auto successEnv = std::make_shared<gameModel::Environment>(*env);
+        ret.emplace_back(env->clone(), 1 - env->config.gameDynamicsProbs.wrestQuaffle);
+        auto successEnv = env->clone();
         successEnv->quaffle->position = actor->position;
         ret.emplace_back(successEnv, env->config.gameDynamicsProbs.wrestQuaffle);
         return ret;
