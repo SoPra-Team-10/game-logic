@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['removedeprecatedshit',['removeDeprecatedShit',['../classgame_model_1_1_environment.html#af59e5a2ac9638700188a2e925487ec41',1,'gameModel::Environment']]],
-  ['removeshitoncell',['removeShitOnCell',['../classgame_model_1_1_environment.html#a288e944482867251f3ddd97e7510efb9',1,'gameModel::Environment']]]
+  ['quaffle',['Quaffle',['../classgame_model_1_1_quaffle.html#af7edb1afbd12237b3c86ab21d0f830f1',1,'gameModel::Quaffle']]]
 ];
