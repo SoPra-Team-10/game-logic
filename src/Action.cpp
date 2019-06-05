@@ -150,7 +150,7 @@ namespace gameController{
             }
 
             //Prob for !interception * prob for !miss
-            return std::pow(env->config.gameDynamicsProbs.catchQuaffle, getInterceptionPositions().size()) *
+            return std::pow(1 - env->config.gameDynamicsProbs.catchQuaffle, getInterceptionPositions().size()) *
                 std::pow(env->config.gameDynamicsProbs.throwSuccess, getDistance(actor->position, target));
         } else if(BLUDGERSHOT) {
             if(playerOnTarget.has_value() && !INSTANCE_OF(playerOnTarget.value(), gameModel::Beater)) {
