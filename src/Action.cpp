@@ -74,7 +74,8 @@ namespace gameController{
 
             auto playerOnLandingCell = env->getPlayer(ball->position);
             //Ball landet on a goal blocked by any player
-            if(gameModel::Environment::isGoalCell(ball->position) && playerOnLandingCell.has_value()){
+            if(gameModel::Environment::isGoalCell(ball->position) && playerOnLandingCell.has_value() &&
+                !playerOnLandingCell.value()->knockedOut){
                 moveToAdjacent(ball, env);
                 intercepted = true;
             }
