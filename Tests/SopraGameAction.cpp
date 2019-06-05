@@ -776,6 +776,10 @@ TEST(move_test, move_execute10){
     EXPECT_TRUE(mvRes.first.empty());
 }
 
+TEST(move_test, move_execute_all){
+    auto env = setup::createEnv();
+    //@TODO
+}
 //---------------------------WrestQuaffle Execute Move------------------------------------------------------------------
 TEST(wrest_quaffel_test, wrest_execute0) {
     auto env = setup::createEnv();

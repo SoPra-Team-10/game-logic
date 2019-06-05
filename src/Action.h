@@ -35,6 +35,12 @@ namespace gameController{
         FoolAway
     };
 
+    enum class ActionState {
+        HandleFouls,
+        MovePlayers,
+        HandleBalls
+    };
+
     class Action {
     public:
 
@@ -77,7 +83,7 @@ namespace gameController{
          * @return
          */
         virtual auto executeAll() const ->
-            std::vector<std::pair<const std::shared_ptr<const gameModel::Environment>, double>> = 0;
+            std::vector<std::pair<std::shared_ptr<gameModel::Environment>, double>> = 0;
 
     protected:
         // objects
@@ -113,7 +119,7 @@ namespace gameController{
         auto successProb() const -> double override;
         auto check() const -> ActionCheckResult override;
         auto executeAll() const ->
-            std::vector<std::pair<const std::shared_ptr<const gameModel::Environment>, double>> override;
+            std::vector<std::pair<std::shared_ptr<gameModel::Environment>, double>> override;
     private:
 
         std::shared_ptr<gameModel::Ball> ball;
@@ -171,7 +177,7 @@ namespace gameController{
         auto successProb() const -> double override;
         auto check() const -> ActionCheckResult override;
         auto executeAll() const ->
-            std::vector<std::pair<const std::shared_ptr<const gameModel::Environment>, double>> override;
+            std::vector<std::pair<std::shared_ptr<gameModel::Environment>, double>> override;
 
     };
 
@@ -205,13 +211,17 @@ namespace gameController{
         auto successProb() const -> double override;
         auto check() const -> ActionCheckResult override;
         auto executeAll() const ->
-            std::vector<std::pair<const std::shared_ptr<const gameModel::Environment>, double>> override;
+            std::vector<std::pair<std::shared_ptr<gameModel::Environment>, double>> override;
 
         /**
          * checks if the move is a foul.
          * @return List with possible fouls resulting from the move
          */
         auto checkForFoul() const -> std::vector<gameModel::Foul>;
+
+    private:
+        void executePartially(std::vector<std::pair<std::shared_ptr<gameModel::Environment>, double>> &resList,
+                ActionState state) const;
     };
 
 }

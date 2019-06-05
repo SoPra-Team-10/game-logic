@@ -276,9 +276,9 @@ namespace gameController{
     }
 
     auto Shot::executeAll() const ->
-        std::vector<std::pair<const std::shared_ptr<const gameModel::Environment>, double>> {
+        std::vector<std::pair<std::shared_ptr<gameModel::Environment>, double>> {
         //@TODO
-        return std::vector<std::pair<const std::shared_ptr<const gameModel::Environment>, double>>();
+        return std::vector<std::pair<std::shared_ptr<gameModel::Environment>, double>>();
     }
 
     Move::Move(std::shared_ptr<gameModel::Environment> env, std::shared_ptr<gameModel::Player> actor, gameModel::Position target):
@@ -435,9 +435,127 @@ namespace gameController{
     }
 
     auto Move::executeAll() const ->
-        std::vector<std::pair<const std::shared_ptr<const gameModel::Environment>, double>> {
-        //@TODO
-        return std::vector<std::pair<const std::shared_ptr<const gameModel::Environment>, double>>();
+        std::vector<std::pair<std::shared_ptr<gameModel::Environment>, double>> {
+        if (check() == ActionCheckResult::Impossible){
+            throw std::runtime_error("Action is impossible");
+        }
+
+        std::vector<std::pair<std::shared_ptr<gameModel::Environment>, double>> ret;
+        executePartially(ret, ActionState::HandleFouls);
+        return ret;
+    }
+
+    void Move::executePartially(std::vector<std::pair<std::shared_ptr<gameModel::Environment>, double>> &resList,
+            ActionState state) const {
+        switch(state) {
+            case ActionState::HandleFouls: {
+                double success = successProb();
+                auto failEnv = env->clone();
+                auto successEnv = env->clone();
+                failEnv->getPlayerById(actor->id)->isFined = true;
+                resList.emplace_back(failEnv, 1 - success);
+                resList.emplace_back(successEnv, success);
+                executePartially(resList, ActionState::MovePlayers);
+            }
+                break;
+            case ActionState::MovePlayers: {
+                std::vector<std::pair<std::shared_ptr<gameModel::Environment>, double>> newOutcomes;
+                for(auto &outcome : resList) {
+                    auto tempActor = outcome.first->getPlayerById(actor->id);
+                    auto playerOnTarget = outcome.first->getPlayer(target);
+                    if(playerOnTarget.has_value()) {
+                        auto freeCells = env->getAllFreeCellsAround(target);
+                        double prob = 1.0 / freeCells.size();
+                        for(auto pos = freeCells.begin(); pos != freeCells.end(); pos++) {
+                            if(pos == freeCells.begin()) {
+                                //fist possibility -> alter in place
+                                //move target player on adjacent cell
+                                playerOnTarget.value()->position = *pos;
+                                //move actor on target
+                                tempActor->position = target;
+                                outcome.second *= prob;
+                            } else {
+                                //further possible outcomes -> create new envs
+                                auto newEnv = outcome.first->clone();
+                                //move target player on adjacent cell
+                                newEnv->getPlayer(target).value()->position = *pos;
+                                //move actor on target
+                                newEnv->getPlayerById(actor->id)->position = target;
+                                //Probability identical to outcome.second since already altered above
+                                newOutcomes.emplace_back(newEnv, outcome.second);
+                            }
+                        }
+                    } else {
+                        //No player in the way -> simply place actor on target, no further branches
+                        //Value is never used ???!!!
+                        tempActor->position = target;
+                    }
+                }
+
+                if(!newOutcomes.empty()) {
+                    resList.insert(resList.end(), newOutcomes.begin(), newOutcomes.end());
+                }
+
+                executePartially(resList, ActionState::HandleBalls);
+            }
+                break;
+            case ActionState::HandleBalls: {
+                std::optional<std::shared_ptr<const gameModel::Player>> playerOnTarget = env->getPlayer(target);
+                //Handle quaffle
+                if(env->quaffle->position == actor->position &&
+                   (INSTANCE_OF(actor, gameModel::Chaser) || INSTANCE_OF(actor, gameModel::Keeper))) {
+                    //Take Quaffle with actor
+                    for(auto &outcome : resList) {
+                        outcome.first->quaffle->position = target;
+                        if(gameModel::Environment::getCell(target) == gameModel::Cell::GoalLeft) {
+                            outcome.first->team2->score += GOAL_POINTS;
+                        } else if(gameModel::Environment::getCell(target) == gameModel::Cell::GoalRight) {
+                            outcome.first->team1->score += GOAL_POINTS;
+                        }
+                    }
+                } else if(env->quaffle->position == target && (INSTANCE_OF(actor, gameModel::Beater) || INSTANCE_OF(actor, gameModel::Seeker) ||
+                    (playerOnTarget.has_value() && !env->arePlayerInSameTeam(actor, playerOnTarget.value())))) {
+                    std::vector<std::pair<std::shared_ptr<gameModel::Environment>, double>> newOutcomes;
+                    //Move Quaffle away from target
+                    for(auto &outcome : resList) {
+                        auto freeCells = env->getAllFreeCellsAround(target);
+                        double prob = 1.0 / freeCells.size();
+                        for(auto pos = freeCells.begin(); pos != freeCells.end(); pos++) {
+                            if(pos == freeCells.begin()) {
+                                //Alter in place
+                                outcome.first->quaffle->position = *pos;
+                                outcome.second *= prob;
+                            } else {
+                                //Create new envs
+                                auto newEnv = outcome.first->clone();
+                                newEnv->quaffle->position = *pos;
+                                newOutcomes.emplace_back(newEnv, outcome.second);
+                            }
+                        }
+                    }
+
+                    resList.insert(resList.end(), newOutcomes.begin(), newOutcomes.end());
+                }
+
+                //Handle snitch
+                if(env->snitch->exists && env->snitch->position == target &&
+                    INSTANCE_OF(actor, gameModel::Seeker)) {
+                    std::vector<std::pair<std::shared_ptr<gameModel::Environment>, double>> newOutcomes;
+                    newOutcomes.reserve(resList.size());
+                    for(auto &outcome : resList) {
+                        auto catchFailEnv = outcome.first->clone();
+                        auto catchFailBaseProb = outcome.second;
+                        auto tempActorSucc = outcome.first->getPlayerById(actor->id);
+                        outcome.first->getTeam(tempActorSucc)->score += SNITCH_POINTS;
+                        outcome.second *= env->config.gameDynamicsProbs.catchSnitch;
+                        newOutcomes.emplace_back(catchFailEnv, catchFailBaseProb * (1 - env->config.gameDynamicsProbs.catchSnitch));
+                    }
+
+                    resList.insert(resList.end(), newOutcomes.begin(), newOutcomes.end());
+                }
+            }
+                break;
+        }
     }
 
     WrestQuaffle::WrestQuaffle(std::shared_ptr<gameModel::Environment> env, std::shared_ptr<gameModel::Chaser> actor,
@@ -493,12 +611,12 @@ namespace gameController{
     }
 
     auto WrestQuaffle::executeAll() const ->
-        std::vector<std::pair<const std::shared_ptr<const gameModel::Environment>, double>> {
+        std::vector<std::pair<std::shared_ptr<gameModel::Environment>, double>> {
         if(check() == ActionCheckResult::Impossible){
             throw std::runtime_error("Action is impossible");
         }
 
-        std::vector<std::pair<const std::shared_ptr<const gameModel::Environment>, double>> ret;
+        std::vector<std::pair<std::shared_ptr<gameModel::Environment>, double>> ret;
         ret.reserve(2);
         ret.emplace_back(env->clone(), 1 - env->config.gameDynamicsProbs.wrestQuaffle);
         auto successEnv = env->clone();
