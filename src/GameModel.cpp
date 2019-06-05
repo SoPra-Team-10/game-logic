@@ -25,10 +25,6 @@ namespace gameModel{
     // Fanblock
 
     Fanblock::Fanblock(int teleportation, int rangedAttack, int impulse, int snitchPush, int blockCell) : currFans(), initialFans() {
-        if(teleportation + rangedAttack + impulse + snitchPush + blockCell != 7){
-            throw std::invalid_argument("Fanblock has to contain exactly 7 fans!");
-        }
-
         using fan = InterferenceType ;
         initialFans.emplace(fan::RangedAttack, rangedAttack);
         initialFans.emplace(fan::Teleport, teleportation);
@@ -157,9 +153,9 @@ namespace gameModel{
             std::make_shared<Bludger>(communication::messages::types::EntityId::BLUDGER2)} {}
 
     Environment::Environment(Config config, std::shared_ptr<Team> team1, std::shared_ptr<Team> team2, std::shared_ptr<Quaffle> quaffle, std::shared_ptr<Snitch> snitch,
-                             std::array<std::shared_ptr<Bludger>, 2> bludgers) : config(std::move(config)), team1(std::move(team1)),
-                             team2(std::move(team2)), quaffle(std::move(quaffle)), snitch(std::move(snitch)),
-                             bludgers(std::move(bludgers)){}
+                             std::array<std::shared_ptr<Bludger>, 2> bludgers, std::deque<std::shared_ptr<CubeOfShit>> pileOfShit) : config(std::move(config)),
+                             team1(std::move(team1)), team2(std::move(team2)), quaffle(std::move(quaffle)), snitch(std::move(snitch)),
+                             bludgers(std::move(bludgers)), pileOfShit(std::move(pileOfShit)){}
 
 
     Environment::Environment(communication::messages::broadcast::MatchConfig matchConfig, const communication::messages::request::TeamConfig& teamConfig1,
@@ -425,6 +421,20 @@ namespace gameModel{
         return false;
     }
 
+    auto Environment::clone() const -> std::shared_ptr<Environment> {
+        auto newQuaf = std::make_shared<Quaffle>(*this->quaffle);
+        auto newSnitch = std::make_shared<Snitch>(*this->snitch);
+        auto newBludgers = std::array<std::shared_ptr<Bludger>, 2>{std::make_shared<Bludger>(*this->bludgers[0]),
+                std::make_shared<Bludger>(*this->bludgers[0])};
+        std::deque<std::shared_ptr<CubeOfShit>> newShit;
+        for(const auto &shit : pileOfShit){
+            newShit.emplace_back(std::make_shared<CubeOfShit>(*shit));
+        }
+
+        return std::make_shared<Environment>(this->config, this->team1->clone(), this->team2->clone(),
+                newQuaf, newSnitch, newBludgers, newShit);
+    }
+
 
     // Ball Types
 
@@ -462,11 +472,12 @@ namespace gameModel{
     // Team
 
     Team::Team(Seeker seeker, Keeper keeper, std::array<Beater, 2> beaters, std::array<Chaser, 3> chasers,
-               std::string  name, std::string  colorMain, std::string  colorSecondary,
+               std::string  name, std::string  colorMain, std::string  colorSecondary, int score,
                Fanblock fanblock) :
-               seeker(std::make_shared<Seeker>(seeker)), keeper(std::make_shared<Keeper>(keeper)), beaters{std::make_shared<Beater>(beaters[0]), std::make_shared<Beater>(beaters[1])},
-                chasers{std::make_shared<Chaser>(chasers[0]), std::make_shared<Chaser>(chasers[1]), std::make_shared<Chaser>(chasers[2])},name(std::move(name)),
-                colorMain(std::move(colorMain)), colorSecondary(std::move(colorSecondary)), fanblock(std::move(fanblock)) {}
+               seeker(std::make_shared<Seeker>(std::move(seeker))), keeper(std::make_shared<Keeper>(std::move(keeper))), beaters{std::make_shared<Beater>(std::move(beaters[0])),
+                       std::make_shared<Beater>(std::move(beaters[1]))}, chasers{std::make_shared<Chaser>(std::move(chasers[0])), std::make_shared<Chaser>(std::move(chasers[1])),
+                               std::make_shared<Chaser>(std::move(chasers[2]))}, name(std::move(name)), colorMain(std::move(colorMain)), colorSecondary(std::move(colorSecondary)),
+                               score(score), fanblock(std::move(fanblock)) {}
 
    Team::Team(const communication::messages::request::TeamConfig& tConf, communication::messages::request::TeamFormation tForm, bool leftTeam) :
    seeker(std::make_shared<Seeker>(Position{tForm.getSeekerX(), tForm.getSeekerY()}, tConf.getSeeker().getName(), tConf.getSeeker().getSex(), tConf.getSeeker().getBroom(), leftTeam ?
@@ -536,6 +547,12 @@ namespace gameModel{
         return {};
     }
 
+    auto Team::clone() const -> std::shared_ptr<Team> {
+        return std::make_shared<Team>(*this->seeker, *this->keeper, std::array<Beater, 2>{*this->beaters[0], *this->beaters[1]},
+                std::array<Chaser, 3>{*this->chasers[0], *this->chasers[1], *this->chasers[2]},
+                this->name, this->colorMain, this->colorSecondary, this->score, this->fanblock);
+    }
+
     // Config
 
     Config::Config(unsigned int maxRounds, const FoulDetectionProbs &foulDetectionProbs,
@@ -560,6 +577,42 @@ namespace gameModel{
         extraTurnProbs.emplace(Broom::NIMBUS2001, config.getProbExtraNimbus());
         extraTurnProbs.emplace(Broom::FIREBOLT, config.getProbExtraFirebolt());
         extraTurnProbs.emplace(Broom::TINDERBLAST, config.getProbExtraTinderblast());
+    }
+
+    double Config::getFoulDetectionProb(Foul foul) const {
+        switch (foul) {
+            case Foul::None:
+                return 0;
+            case Foul::BlockGoal:
+                return foulDetectionProbs.blockGoal;
+            case Foul::ChargeGoal:
+                return foulDetectionProbs.chargeGoal;
+            case Foul::MultipleOffence:
+                return foulDetectionProbs.multipleOffence;
+            case Foul::Ramming:
+                return foulDetectionProbs.ramming;
+            case Foul::BlockSnitch:
+                return foulDetectionProbs.blockSnitch;
+            default:
+                throw std::runtime_error("Fatal error, enum out of bounds");
+        }
+    }
+
+    double Config::getFoulDetectionProb(InterferenceType interference) const {
+        switch (interference) {
+            case InterferenceType::RangedAttack:
+                return foulDetectionProbs.rangedAttack;
+            case InterferenceType::Teleport:
+                return foulDetectionProbs.teleport;
+            case InterferenceType::Impulse:
+                return foulDetectionProbs.impulse;
+            case InterferenceType::SnitchPush:
+                return foulDetectionProbs.snitchPush;
+            case InterferenceType::BlockCell:
+                return foulDetectionProbs.blockCell;
+            default:
+                throw std::runtime_error("Fatal error, enum out of bounds");
+        }
     }
 
 
