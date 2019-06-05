@@ -559,9 +559,9 @@ namespace gameModel{
 
     // Config
 
-    Config::Config(unsigned int maxRounds, const Timeouts &timeouts, const FoulDetectionProbs &foulDetectionProbs,
+    Config::Config(unsigned int maxRounds, const FoulDetectionProbs &foulDetectionProbs,
                    const GameDynamicsProbs &gameDynamicsProbs, std::map<communication::messages::types::Broom, double> extraTurnProbs) :
-            maxRounds(maxRounds), timeouts(timeouts), foulDetectionProbs(foulDetectionProbs), gameDynamicsProbs(gameDynamicsProbs),
+            maxRounds(maxRounds), foulDetectionProbs(foulDetectionProbs), gameDynamicsProbs(gameDynamicsProbs),
             extraTurnProbs(std::move(extraTurnProbs)) {}
 
     double Config::getExtraTurnProb(communication::messages::types::Broom broom) const{
@@ -570,12 +570,11 @@ namespace gameModel{
 
     //Willste mal nen richtig großen ... KONSTRUKTOR sehen? ;)
     Config::Config(const communication::messages::broadcast::MatchConfig &config) : maxRounds(config.getMaxRounds()),
-        timeouts{config.getPlayerTurnTimeout(), config.getFanTurnTimeout(), config.getPlayerPhaseTime(), config.getFanPhaseTime(),
-                 config.getBallPhaseTime()}, foulDetectionProbs{config.getProbFoulFlacking(), config.getProbFoulHaversacking(),
-                 config.getProbFoulStooging(), config.getProbFoulBlatching(), config.getProbFoulSnitchnip(), config.getProbFoulElf(),
-                 config.getProbFoulGoblin(), config.getProbFoulTroll(), config.getProbFoulSnitch(), config.getProbWombatPoo()},
-                 gameDynamicsProbs{config.getProbThrowSuccess(), config.getProbKnockOut(), config.getProbCatchSnitch(),
-                 config.getProbCatchQuaffle(), config.getProbWrestQuaffle()}{
+        foulDetectionProbs{config.getProbFoulFlacking(), config.getProbFoulHaversacking(),
+                            config.getProbFoulStooging(), config.getProbFoulBlatching(), config.getProbFoulSnitchnip(), config.getProbFoulElf(),
+                            config.getProbFoulGoblin(), config.getProbFoulTroll(), config.getProbFoulSnitch(), config.getProbWombatPoo()},
+        gameDynamicsProbs{config.getProbThrowSuccess(), config.getProbKnockOut(), config.getProbCatchSnitch(),
+                          config.getProbCatchQuaffle(), config.getProbWrestQuaffle()}{
         using Broom = communication::messages::types::Broom;
         extraTurnProbs.emplace(Broom::CLEANSWEEP11, config.getProbExtraCleansweep());
         extraTurnProbs.emplace(Broom::COMET260, config.getProbExtraComet());

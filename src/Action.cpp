@@ -195,7 +195,7 @@ namespace gameController{
         std::vector<gameModel::Position> ret;
         for(const auto &player : env->getOpponents(actor)){
             for(const auto &cell : crossedCells){
-                if(player->position == cell){
+                if(player->position == cell && !player->isFined && !player->knockedOut){
                     ret.emplace_back(cell);
                 }
             }

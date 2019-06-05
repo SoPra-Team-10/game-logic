@@ -25,15 +25,6 @@ namespace gameModel{
     };
 
     /**
-     * All different kinds of time limits and timeouts
-     */
-    struct Timeouts{
-        int playerTurn,
-                fanTurn, playerPhase,
-                fanPhase, ballPhase;
-    };
-
-    /**
      * Probabilities for standard gameplay
      */
     struct GameDynamicsProbs{
@@ -135,12 +126,11 @@ namespace gameModel{
     class Config{
     public:
         const unsigned int maxRounds;
-        const Timeouts timeouts;
         const FoulDetectionProbs foulDetectionProbs;
         const GameDynamicsProbs gameDynamicsProbs;
 
         Config(const communication::messages::broadcast::MatchConfig &config);
-        Config(unsigned int maxRounds, const Timeouts &timeouts, const FoulDetectionProbs &foulDetectionProbs,
+        Config(unsigned int maxRounds, const FoulDetectionProbs &foulDetectionProbs,
                const GameDynamicsProbs &gameDynamicsProbs, std::map<communication::messages::types::Broom, double> extraTurnProbs);
         /**
          * Gets the probability of an extra turn with the specified Broom type

@@ -5,7 +5,7 @@
 #include "setup.h"
 
 auto setup::createEnv() -> std::shared_ptr<gameModel::Environment> {
-    return createEnv({0, {}, {}, {}, {}});
+    return createEnv({0, {}, {}, {}});
 }
 
 auto setup::createEnv(const gameModel::Config &config) -> std::shared_ptr<gameModel::Environment> {
