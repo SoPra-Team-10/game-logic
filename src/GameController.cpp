@@ -144,20 +144,7 @@ namespace gameController {
     }
 
     auto refereeDecision(const gameModel::Foul &foul, const gameModel::Config &gameConf) -> bool {
-        switch (foul) {
-            case gameModel::Foul::MultipleOffence :
-                return actionTriggered(gameConf.foulDetectionProbs.multipleOffence);
-            case gameModel::Foul::ChargeGoal :
-                return actionTriggered(gameConf.foulDetectionProbs.chargeGoal);
-            case gameModel::Foul::BlockGoal :
-                return actionTriggered(gameConf.foulDetectionProbs.blockGoal);
-            case gameModel::Foul::Ramming :
-                return actionTriggered(gameConf.foulDetectionProbs.ramming);
-            case gameModel::Foul::BlockSnitch :
-                return actionTriggered(gameConf.foulDetectionProbs.blockSnitch);
-            default :
-                return  false;
-        }
+        return actionTriggered(gameConf.getFoulDetectionProb(foul));
     }
 
     // ToDo: TESTS!!!

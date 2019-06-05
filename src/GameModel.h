@@ -138,6 +138,20 @@ namespace gameModel{
          * @return
          */
         double getExtraTurnProb(communication::messages::types::Broom broom) const;
+
+        /**
+         * Gets the probability that the given foul will be detected
+         * @param foul
+         * @return
+         */
+        double getFoulDetectionProb(Foul foul) const;
+
+        /**
+         * Gets the probability that the given interference will be detected
+         * @param interference
+         * @return
+         */
+        double getFoulDetectionProb(InterferenceType interference) const;
     private:
         std::map<communication::messages::types::Broom, double> extraTurnProbs;
     };
@@ -327,13 +341,13 @@ namespace gameModel{
         Fanblock fanblock;
 
         /**
-         * Constructs a Team from server config types
+         * Constructs a Team from server config types with initial score of 0
          * @param leftTeam select if team si on left or right side
          */
         Team(const communication::messages::request::TeamConfig& tConf, communication::messages::request::TeamFormation tForm, bool leftTeam);
 
         Team(Seeker seeker, Keeper keeper, std::array<Beater, 2> beaters, std::array<Chaser, 3> chasers,
-             std::string  name, std::string  colorMain, std::string  colorSecondary,
+             std::string  name, std::string  colorMain, std::string  colorSecondary, int score,
              Fanblock fanblock);
 
         /**
@@ -360,6 +374,12 @@ namespace gameModel{
          * @return
          */
         auto getPlayerByID(communication::messages::types::EntityId id) const -> std::optional<std::shared_ptr<Player>>;
+
+        /**
+         * returns a deep copy of the current Team
+         * @return
+         */
+        auto clone() const -> std::shared_ptr<Team>;
     };
 
     /**
@@ -393,7 +413,7 @@ namespace gameModel{
         Environment(Config config, std::shared_ptr<Team> team1, std::shared_ptr<Team> team2);
 
         Environment(Config config, std::shared_ptr<Team> team1, std::shared_ptr<Team> team2, std::shared_ptr<Quaffle> quaffle,
-                std::shared_ptr<Snitch> snitch, std::array<std::shared_ptr<Bludger>, 2> bludgers);
+                std::shared_ptr<Snitch> snitch, std::array<std::shared_ptr<Bludger>, 2> bludgers, std::deque<std::shared_ptr<CubeOfShit>> pileOfShit);
 
         /**
          * tests if two players are in the same team.
@@ -557,6 +577,12 @@ namespace gameModel{
          * @return returns true, if Shit is on the Position, false otherwise
          */
         auto isShitOnCell(const Position &position) const -> bool;
+
+        /**
+         * returns a deep copy of the current Environment
+         * @return
+         */
+        auto clone() const -> std::shared_ptr<Environment>;
     };
 }
 
