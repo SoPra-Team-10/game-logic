@@ -105,6 +105,10 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a281a24de23b5dda240b65b025b920bd7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7e2134a72f3b75c43610d337abf8e9c0"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgame_model_1_1_config.html#a7e2134a72f3b75c43610d337abf8e9c0">getExtraTurnProb</a> (communication::messages::types::Broom broom) const </td></tr>
 <tr class="separator:a7e2134a72f3b75c43610d337abf8e9c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9a74968656799c833fb5c30bd2346b75"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgame_model_1_1_config.html#a9a74968656799c833fb5c30bd2346b75">getFoulDetectionProb</a> (Foul foul) const </td></tr>
+<tr class="separator:a9a74968656799c833fb5c30bd2346b75"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5ad695f57c6e3ebfb5c07492e9a7fa32"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgame_model_1_1_config.html#a5ad695f57c6e3ebfb5c07492e9a7fa32">getFoulDetectionProb</a> (InterferenceType interference) const </td></tr>
+<tr class="separator:a5ad695f57c6e3ebfb5c07492e9a7fa32"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Data Fields</h2></td></tr>
@@ -138,6 +142,54 @@ const <a class="el" href="structgame_model_1_1_game_dynamics_probs.html">GameDyn
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">broom</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd></dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a9a74968656799c833fb5c30bd2346b75"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">double gameModel::Config::getFoulDetectionProb </td>
+          <td>(</td>
+          <td class="paramtype">Foul&#160;</td>
+          <td class="paramname"><em>foul</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Gets the probability that the given foul will be detected </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">foul</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd></dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a5ad695f57c6e3ebfb5c07492e9a7fa32"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">double gameModel::Config::getFoulDetectionProb </td>
+          <td>(</td>
+          <td class="paramtype">InterferenceType&#160;</td>
+          <td class="paramname"><em>interference</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Gets the probability that the given interference will be detected </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">interference</td><td></td></tr>
   </table>
   </dd>
 </dl>

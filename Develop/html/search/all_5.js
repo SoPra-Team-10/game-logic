@@ -8,6 +8,7 @@ var searchData=
   ['getballbyid',['getBallByID',['../classgame_model_1_1_environment.html#a67ac4b2693c8dc1e049fa1fb24357604',1,'gameModel::Environment']]],
   ['getcell',['getCell',['../classgame_model_1_1_environment.html#a7c095b6202f82cc67d89aa3ec66f387d',1,'gameModel::Environment::getCell(int x, int y)'],['../classgame_model_1_1_environment.html#a71dc1b8596a609a49215beb0d0870489',1,'gameModel::Environment::getCell(const Position &amp;position)']]],
   ['getextraturnprob',['getExtraTurnProb',['../classgame_model_1_1_config.html#a7e2134a72f3b75c43610d337abf8e9c0',1,'gameModel::Config']]],
+  ['getfouldetectionprob',['getFoulDetectionProb',['../classgame_model_1_1_config.html#a9a74968656799c833fb5c30bd2346b75',1,'gameModel::Config::getFoulDetectionProb(Foul foul) const '],['../classgame_model_1_1_config.html#a5ad695f57c6e3ebfb5c07492e9a7fa32',1,'gameModel::Config::getFoulDetectionProb(InterferenceType interference) const ']]],
   ['getgoalsleft',['getGoalsLeft',['../classgame_model_1_1_environment.html#a9718a31bd8e763a69a89028977d3dc5a',1,'gameModel::Environment']]],
   ['getgoalsright',['getGoalsRight',['../classgame_model_1_1_environment.html#a2614e33c697e1f433338a555b907186b',1,'gameModel::Environment']]],
   ['getopponents',['getOpponents',['../classgame_model_1_1_environment.html#ab3bc9e490d18df58fbbe4f5f3dfd1b05',1,'gameModel::Environment']]],

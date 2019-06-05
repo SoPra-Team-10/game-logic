@@ -110,18 +110,14 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a2bd3423680c850dcb88aa860a84cddee"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a74a9ef91e17f72be6d8f521931f24437"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgame_controller_1_1_action.html#a74a9ef91e17f72be6d8f521931f24437">Action</a> (std::shared_ptr&lt; <a class="el" href="classgame_model_1_1_environment.html">gameModel::Environment</a> &gt; env, std::shared_ptr&lt; <a class="el" href="classgame_model_1_1_player.html">gameModel::Player</a> &gt; actor, <a class="el" href="structgame_model_1_1_position.html">gameModel::Position</a> target)</td></tr>
 <tr class="separator:a74a9ef91e17f72be6d8f521931f24437"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab98b4e5389f6b24ff0aa22d01a353507"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab98b4e5389f6b24ff0aa22d01a353507"></a>
-virtual auto&#160;</td><td class="memItemRight" valign="bottom"><b>execute</b> () const -&gt; std::pair&lt; std::vector&lt; ActionResult &gt;, std::vector&lt; gameModel::Foul &gt;&gt;=0</td></tr>
+<tr class="memitem:ab98b4e5389f6b24ff0aa22d01a353507"><td class="memItemLeft" align="right" valign="top">virtual auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgame_controller_1_1_action.html#ab98b4e5389f6b24ff0aa22d01a353507">execute</a> () const -&gt; std::pair&lt; std::vector&lt; ActionResult &gt;, std::vector&lt; gameModel::Foul &gt;&gt;=0</td></tr>
 <tr class="separator:ab98b4e5389f6b24ff0aa22d01a353507"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9d9a301180bd5cd54a12ec912daf35c1"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9d9a301180bd5cd54a12ec912daf35c1"></a>
-virtual auto&#160;</td><td class="memItemRight" valign="bottom"><b>successProb</b> () const -&gt; double=0</td></tr>
+<tr class="memitem:a9d9a301180bd5cd54a12ec912daf35c1"><td class="memItemLeft" align="right" valign="top">virtual auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgame_controller_1_1_action.html#a9d9a301180bd5cd54a12ec912daf35c1">successProb</a> () const -&gt; double=0</td></tr>
 <tr class="separator:a9d9a301180bd5cd54a12ec912daf35c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abd249c0f371aac9d98a4fa60c4fd94c1"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="abd249c0f371aac9d98a4fa60c4fd94c1"></a>
-virtual auto&#160;</td><td class="memItemRight" valign="bottom"><b>check</b> () const -&gt; ActionCheckResult=0</td></tr>
+<tr class="memitem:abd249c0f371aac9d98a4fa60c4fd94c1"><td class="memItemLeft" align="right" valign="top">virtual auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgame_controller_1_1_action.html#abd249c0f371aac9d98a4fa60c4fd94c1">check</a> () const -&gt; ActionCheckResult=0</td></tr>
 <tr class="separator:abd249c0f371aac9d98a4fa60c4fd94c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acb7adedb0d67ce14e3d825567dbc8585"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="acb7adedb0d67ce14e3d825567dbc8585"></a>
-virtual auto&#160;</td><td class="memItemRight" valign="bottom"><b>executeAll</b> () const -&gt; std::vector&lt; std::pair&lt; <a class="el" href="classgame_model_1_1_environment.html">gameModel::Environment</a>, double &gt;&gt;=0</td></tr>
-<tr class="separator:acb7adedb0d67ce14e3d825567dbc8585"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad98e825d061978af397daa0b03028afa"><td class="memItemLeft" align="right" valign="top">virtual auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgame_controller_1_1_action.html#ad98e825d061978af397daa0b03028afa">executeAll</a> () const -&gt; std::vector&lt; std::pair&lt; const std::shared_ptr&lt; const <a class="el" href="classgame_model_1_1_environment.html">gameModel::Environment</a> &gt;, double &gt;&gt;=0</td></tr>
+<tr class="separator:ad98e825d061978af397daa0b03028afa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
 Protected Attributes</h2></td></tr>
@@ -200,6 +196,120 @@ std::shared_ptr<br class="typebreak"/>
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a class="anchor" id="abd249c0f371aac9d98a4fa60c4fd94c1"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual auto gameController::Action::check </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const -&gt;  ActionCheckResult</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Checks if the <a class="el" href="classgame_controller_1_1_action.html">Action</a> is possible an if it may result in a foul </p>
+<dl class="section return"><dt>Returns</dt><dd>See ActionCheckResult </dd></dl>
+
+<p>Implemented in <a class="el" href="classgame_controller_1_1_move.html#a5ff9c2a76dbfdc59a0dd206b74279be0">gameController::Move</a>, <a class="el" href="classgame_controller_1_1_wrest_quaffle.html#a0a9616652ddd535a090149387a560370">gameController::WrestQuaffle</a>, and <a class="el" href="classgame_controller_1_1_shot.html#abb3656ea14d64a07d2aef45e6410dfd8">gameController::Shot</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ab98b4e5389f6b24ff0aa22d01a353507"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual auto gameController::Action::execute </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const -&gt;  std::pair&lt; std::vector&lt; ActionResult &gt;, std::vector&lt; gameModel::Foul &gt;&gt;</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>executes the <a class="el" href="classgame_controller_1_1_action.html">Action</a> </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::runtime_exception</td><td>if <a class="el" href="classgame_controller_1_1_action.html">Action</a> is impossible </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>List of ramifications from the action axecution, List of Fouls during the execution </dd></dl>
+
+<p>Implemented in <a class="el" href="classgame_controller_1_1_move.html#a87a2d3fcd083bfef8905515ebbe89ded">gameController::Move</a>, <a class="el" href="classgame_controller_1_1_wrest_quaffle.html#a357a491029cbe341a185292462d95ecf">gameController::WrestQuaffle</a>, and <a class="el" href="classgame_controller_1_1_shot.html#a12a5c371ff14fc6df6afeedc2f6287af">gameController::Shot</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ad98e825d061978af397daa0b03028afa"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual auto gameController::Action::executeAll </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const -&gt;  std::vector&lt; std::pair&lt; const std::shared_ptr&lt; const <a class="el" href="classgame_model_1_1_environment.html">gameModel::Environment</a> &gt;, double &gt;&gt;</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Produces a List with all possible outomes of the <a class="el" href="classgame_controller_1_1_action.html">Action</a> </p>
+<dl class="section return"><dt>Returns</dt><dd></dd></dl>
+
+<p>Implemented in <a class="el" href="classgame_controller_1_1_move.html#a274ed8b5b195810acdebecc5efda5ebb">gameController::Move</a>, <a class="el" href="classgame_controller_1_1_wrest_quaffle.html#a462b5fec247ee9a26cd4186cd904a29c">gameController::WrestQuaffle</a>, and <a class="el" href="classgame_controller_1_1_shot.html#ac9bb23256817b5de836dd48dd01d9362">gameController::Shot</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a9d9a301180bd5cd54a12ec912daf35c1"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual auto gameController::Action::successProb </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const -&gt;  double</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Calculates the probability of a successful execution </p>
+
+<p>Implemented in <a class="el" href="classgame_controller_1_1_move.html#ae36dc4d09881c114cc8c9192e6f85988">gameController::Move</a>, <a class="el" href="classgame_controller_1_1_wrest_quaffle.html#a53bff156e03c3fc5fbe235b07005c674">gameController::WrestQuaffle</a>, and <a class="el" href="classgame_controller_1_1_shot.html#a97b77844c8035c36d6dabfaadcdc0aa7">gameController::Shot</a>.</p>
 
 </div>
 </div>

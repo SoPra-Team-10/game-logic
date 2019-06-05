@@ -115,8 +115,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a53bff156e03c3fc5fbe235b07005c674"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0a9616652ddd535a090149387a560370"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgame_controller_1_1_wrest_quaffle.html#a0a9616652ddd535a090149387a560370">check</a> () const -&gt; ActionCheckResult override</td></tr>
 <tr class="separator:a0a9616652ddd535a090149387a560370"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae001cec5b4bd9a40d5bb082bde578583"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgame_controller_1_1_wrest_quaffle.html#ae001cec5b4bd9a40d5bb082bde578583">executeAll</a> () const -&gt; std::vector&lt; std::pair&lt; <a class="el" href="classgame_model_1_1_environment.html">gameModel::Environment</a>, double &gt;&gt; override</td></tr>
-<tr class="separator:ae001cec5b4bd9a40d5bb082bde578583"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a462b5fec247ee9a26cd4186cd904a29c"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgame_controller_1_1_wrest_quaffle.html#a462b5fec247ee9a26cd4186cd904a29c">executeAll</a> () const -&gt; std::vector&lt; std::pair&lt; const std::shared_ptr&lt; const <a class="el" href="classgame_model_1_1_environment.html">gameModel::Environment</a> &gt;, double &gt;&gt; override</td></tr>
+<tr class="separator:a462b5fec247ee9a26cd4186cd904a29c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classgame_controller_1_1_action"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classgame_controller_1_1_action')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classgame_controller_1_1_action.html">gameController::Action</a></td></tr>
 <tr class="memitem:a2bd3423680c850dcb88aa860a84cddee inherit pub_methods_classgame_controller_1_1_action"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgame_controller_1_1_action.html#a2bd3423680c850dcb88aa860a84cddee">Action</a> ()=default</td></tr>
 <tr class="separator:a2bd3423680c850dcb88aa860a84cddee inherit pub_methods_classgame_controller_1_1_action"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -218,7 +218,7 @@ std::shared_ptr<br class="typebreak"/>
           <td class="memname">auto gameController::WrestQuaffle::check </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
-          <td> const -&gt; ActionCheckResult</td>
+          <td> const -&gt;  ActionCheckResult</td>
         </tr>
       </table>
   </td>
@@ -227,16 +227,10 @@ std::shared_ptr<br class="typebreak"/>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>check if the wresting the quaffel is possible (implementation of virtual function). </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">envi</td><td>the selected environment. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>the result of the check as ActionResult. </dd></dl>
+<p>Checks if the <a class="el" href="classgame_controller_1_1_action.html">Action</a> is possible an if it may result in a foul </p>
+<dl class="section return"><dt>Returns</dt><dd>See ActionCheckResult </dd></dl>
 
-<p>Implements <a class="el" href="classgame_controller_1_1_action.html">gameController::Action</a>.</p>
+<p>Implements <a class="el" href="classgame_controller_1_1_action.html#abd249c0f371aac9d98a4fa60c4fd94c1">gameController::Action</a>.</p>
 
 </div>
 </div>
@@ -251,7 +245,7 @@ std::shared_ptr<br class="typebreak"/>
           <td class="memname">auto gameController::WrestQuaffle::execute </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
-          <td> const -&gt; std::pair&lt;std::vector&lt;ActionResult&gt;, std::vector&lt;gameModel::Foul&gt;&gt;</td>
+          <td> const -&gt;  std::pair&lt; std::vector&lt; ActionResult &gt;, std::vector&lt; gameModel::Foul &gt;&gt;</td>
         </tr>
       </table>
   </td>
@@ -260,19 +254,20 @@ std::shared_ptr<br class="typebreak"/>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>execute the shot in a given environment (implementation of virtual function). </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">envi</td><td>the environment in which wresting of the quaffel should be performed. </td></tr>
+<p>executes the <a class="el" href="classgame_controller_1_1_action.html">Action</a> </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::runtime_exception</td><td>if <a class="el" href="classgame_controller_1_1_action.html">Action</a> is impossible </td></tr>
   </table>
   </dd>
 </dl>
+<dl class="section return"><dt>Returns</dt><dd>List of ramifications from the action axecution, List of Fouls during the execution </dd></dl>
 
-<p>Implements <a class="el" href="classgame_controller_1_1_action.html">gameController::Action</a>.</p>
+<p>Implements <a class="el" href="classgame_controller_1_1_action.html#ab98b4e5389f6b24ff0aa22d01a353507">gameController::Action</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="ae001cec5b4bd9a40d5bb082bde578583"></a>
+<a class="anchor" id="a462b5fec247ee9a26cd4186cd904a29c"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -283,7 +278,7 @@ std::shared_ptr<br class="typebreak"/>
           <td class="memname">auto gameController::WrestQuaffle::executeAll </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
-          <td> const -&gt; std::vector&lt;std::pair&lt;<a class="el" href="classgame_model_1_1_environment.html">gameModel::Environment</a>, double&gt;&gt;</td>
+          <td> const -&gt;  std::vector&lt; std::pair&lt; const std::shared_ptr&lt; const <a class="el" href="classgame_model_1_1_environment.html">gameModel::Environment</a> &gt;, double &gt;&gt;</td>
         </tr>
       </table>
   </td>
@@ -292,16 +287,10 @@ std::shared_ptr<br class="typebreak"/>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>execute all wresting the quaffel actions in a given environment (implementation of virtual function). </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">envi</td><td>the selected environment. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>the resulting environments an there probabilities as a pair. </dd></dl>
+<p>Produces a List with all possible outomes of the <a class="el" href="classgame_controller_1_1_action.html">Action</a> </p>
+<dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
-<p>Implements <a class="el" href="classgame_controller_1_1_action.html">gameController::Action</a>.</p>
+<p>Implements <a class="el" href="classgame_controller_1_1_action.html#ad98e825d061978af397daa0b03028afa">gameController::Action</a>.</p>
 
 </div>
 </div>
@@ -325,10 +314,10 @@ std::shared_ptr<br class="typebreak"/>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>get the success probability of the shot (implementation of virtual function). </p>
+<p>Probability that the quaffle is wrested </p>
 <dl class="section return"><dt>Returns</dt><dd>the success probability of wresting the quaffel as double. </dd></dl>
 
-<p>Implements <a class="el" href="classgame_controller_1_1_action.html">gameController::Action</a>.</p>
+<p>Implements <a class="el" href="classgame_controller_1_1_action.html#a9d9a301180bd5cd54a12ec912daf35c1">gameController::Action</a>.</p>
 
 </div>
 </div>

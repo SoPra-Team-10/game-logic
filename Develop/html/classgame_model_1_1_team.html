@@ -99,9 +99,9 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a6254ef77ea2fd282421d1508457ba53f"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgame_model_1_1_team.html#a6254ef77ea2fd282421d1508457ba53f">Team</a> (const communication::messages::request::TeamConfig &amp;tConf, communication::messages::request::TeamFormation tForm, bool leftTeam)</td></tr>
 <tr class="separator:a6254ef77ea2fd282421d1508457ba53f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a52a305b144f89973b3500335502c0cef"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a52a305b144f89973b3500335502c0cef"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>Team</b> (<a class="el" href="classgame_model_1_1_seeker.html">Seeker</a> seeker, <a class="el" href="classgame_model_1_1_keeper.html">Keeper</a> keeper, std::array&lt; <a class="el" href="classgame_model_1_1_beater.html">Beater</a>, 2 &gt; beaters, std::array&lt; <a class="el" href="classgame_model_1_1_chaser.html">Chaser</a>, 3 &gt; chasers, std::string name, std::string colorMain, std::string colorSecondary, <a class="el" href="classgame_model_1_1_fanblock.html">Fanblock</a> fanblock)</td></tr>
-<tr class="separator:a52a305b144f89973b3500335502c0cef"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4a355433c8f8776aacda8bd2afd713b6"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a4a355433c8f8776aacda8bd2afd713b6"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>Team</b> (<a class="el" href="classgame_model_1_1_seeker.html">Seeker</a> seeker, <a class="el" href="classgame_model_1_1_keeper.html">Keeper</a> keeper, std::array&lt; <a class="el" href="classgame_model_1_1_beater.html">Beater</a>, 2 &gt; beaters, std::array&lt; <a class="el" href="classgame_model_1_1_chaser.html">Chaser</a>, 3 &gt; chasers, std::string name, std::string colorMain, std::string colorSecondary, int score, <a class="el" href="classgame_model_1_1_fanblock.html">Fanblock</a> fanblock)</td></tr>
+<tr class="separator:a4a355433c8f8776aacda8bd2afd713b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3add38a878f50ed9a847b01d996be4ca"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgame_model_1_1_team.html#a3add38a878f50ed9a847b01d996be4ca">getAllPlayers</a> () const -&gt; std::array&lt; std::shared_ptr&lt; <a class="el" href="classgame_model_1_1_player.html">Player</a> &gt;, 7 &gt;</td></tr>
 <tr class="separator:a3add38a878f50ed9a847b01d996be4ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afb698cd2705eaae4d51eb0139c4f73bb"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgame_model_1_1_team.html#afb698cd2705eaae4d51eb0139c4f73bb">hasMember</a> (const std::shared_ptr&lt; const <a class="el" href="classgame_model_1_1_player.html">Player</a> &gt; &amp;player) const </td></tr>
@@ -110,6 +110,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:aa8c1000d942a20cf9a8de559338ff869"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1e22097a639d37333176354a83ab3038"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgame_model_1_1_team.html#a1e22097a639d37333176354a83ab3038">getPlayerByID</a> (communication::messages::types::EntityId id) const -&gt; std::optional&lt; std::shared_ptr&lt; <a class="el" href="classgame_model_1_1_player.html">Player</a> &gt;&gt;</td></tr>
 <tr class="separator:a1e22097a639d37333176354a83ab3038"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8a5a918670b644da716fc70c3a47d033"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgame_model_1_1_team.html#a8a5a918670b644da716fc70c3a47d033">clone</a> () const -&gt; std::shared_ptr&lt; <a class="el" href="classgame_model_1_1_team.html">Team</a> &gt;</td></tr>
+<tr class="separator:a8a5a918670b644da716fc70c3a47d033"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Data Fields</h2></td></tr>
@@ -175,7 +177,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>score</b> {}</td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Constructs a <a class="el" href="classgame_model_1_1_team.html">Team</a> from server config types </p>
+<p>Constructs a <a class="el" href="classgame_model_1_1_team.html">Team</a> from server config types with initial score of 0 </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">leftTeam</td><td>select if team si on left or right side </td></tr>
@@ -186,6 +188,23 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>score</b> {}</td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a class="anchor" id="a8a5a918670b644da716fc70c3a47d033"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">auto gameModel::Team::clone </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const -&gt; std::shared_ptr&lt;<a class="el" href="classgame_model_1_1_team.html">Team</a>&gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>returns a deep copy of the current <a class="el" href="classgame_model_1_1_team.html">Team</a> </p>
+<dl class="section return"><dt>Returns</dt><dd></dd></dl>
+
+</div>
+</div>
 <a class="anchor" id="a3add38a878f50ed9a847b01d996be4ca"></a>
 <div class="memitem">
 <div class="memproto">
