@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['placeplayeronrandomfreecell',['placePlayerOnRandomFreeCell',['../classgame_model_1_1_environment.html#a585e52dc36311ec40c350cb2a7fae9c3',1,'gameModel::Environment']]]
+  ['orthogonal',['orthogonal',['../classgame_model_1_1_vector.html#a61ac2ba97be71f2cebc1ec1c80bf444d',1,'gameModel::Vector']]]
 ];
