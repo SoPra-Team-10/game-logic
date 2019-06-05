@@ -1,21 +1,4 @@
 var searchData=
 [
-  ['getallfreecells',['getAllFreeCells',['../classgame_model_1_1_environment.html#ae5dd94a5c24d5883e3f63c52a7e8e69f',1,'gameModel::Environment']]],
-  ['getallfreecellsaround',['getAllFreeCellsAround',['../classgame_model_1_1_environment.html#a6b885f2c9e14b1c8d8b5fbf14de4de2d',1,'gameModel::Environment']]],
-  ['getallplayers',['getAllPlayers',['../classgame_model_1_1_team.html#a3add38a878f50ed9a847b01d996be4ca',1,'gameModel::Team::getAllPlayers()'],['../classgame_model_1_1_environment.html#a33e0d834f58e41ad5551a06ee220076a',1,'gameModel::Environment::getAllPlayers()']]],
-  ['getallvalidcells',['getAllValidCells',['../classgame_model_1_1_environment.html#a13fbde88faea456678ae3471f20b11c2',1,'gameModel::Environment']]],
-  ['getballbyid',['getBallByID',['../classgame_model_1_1_environment.html#a67ac4b2693c8dc1e049fa1fb24357604',1,'gameModel::Environment']]],
-  ['getbannedcount',['getBannedCount',['../classgame_model_1_1_fanblock.html#ae1421bec1414edcc461e017d7b878ab5',1,'gameModel::Fanblock::getBannedCount(InterferenceType fan) const '],['../classgame_model_1_1_fanblock.html#a5f93296fd97a80e1e288ae3f39bcf2e1',1,'gameModel::Fanblock::getBannedCount(communication::messages::types::FanType fan) const ']]],
-  ['getcell',['getCell',['../classgame_model_1_1_environment.html#a7c095b6202f82cc67d89aa3ec66f387d',1,'gameModel::Environment::getCell(int x, int y)'],['../classgame_model_1_1_environment.html#a71dc1b8596a609a49215beb0d0870489',1,'gameModel::Environment::getCell(const Position &amp;position)']]],
-  ['getextraturnprob',['getExtraTurnProb',['../classgame_model_1_1_config.html#a7e2134a72f3b75c43610d337abf8e9c0',1,'gameModel::Config']]],
-  ['getgoalsleft',['getGoalsLeft',['../classgame_model_1_1_environment.html#a9718a31bd8e763a69a89028977d3dc5a',1,'gameModel::Environment']]],
-  ['getgoalsright',['getGoalsRight',['../classgame_model_1_1_environment.html#a2614e33c697e1f433338a555b907186b',1,'gameModel::Environment']]],
-  ['getopponents',['getOpponents',['../classgame_model_1_1_environment.html#ab3bc9e490d18df58fbbe4f5f3dfd1b05',1,'gameModel::Environment']]],
-  ['getplayer',['getPlayer',['../classgame_model_1_1_environment.html#ad50b8cb84c76a6dbbfa9f8210918a4c2',1,'gameModel::Environment']]],
-  ['getplayerbyid',['getPlayerByID',['../classgame_model_1_1_team.html#a1e22097a639d37333176354a83ab3038',1,'gameModel::Team::getPlayerByID()'],['../classgame_model_1_1_environment.html#a4d07c3194e35ffc1295a81c43c616540',1,'gameModel::Environment::getPlayerById()']]],
-  ['getsurroundingpositions',['getSurroundingPositions',['../classgame_model_1_1_environment.html#a3eae4f5c6ac23d48c10a6688340b0ba9',1,'gameModel::Environment']]],
-  ['getteam',['getTeam',['../classgame_model_1_1_environment.html#a393a4957114c2361f17bc84d00cec55f',1,'gameModel::Environment']]],
-  ['getteammates',['getTeamMates',['../classgame_model_1_1_environment.html#a3122c0963d935543e2a7da1303772124',1,'gameModel::Environment']]],
-  ['gettype',['getType',['../classgame_controller_1_1_interference.html#a694aa2cd65bbb35c02f1ca4ed7701ebe',1,'gameController::Interference']]],
-  ['getuses',['getUses',['../classgame_model_1_1_fanblock.html#a65c17009e532bcda8316a30d9e9433cd',1,'gameModel::Fanblock::getUses(InterferenceType fan) const '],['../classgame_model_1_1_fanblock.html#a2a72db2243fdb205c4b2f37949f17707',1,'gameModel::Fanblock::getUses(communication::messages::types::FanType fan) const ']]]
+  ['hasmember',['hasMember',['../classgame_model_1_1_team.html#afb698cd2705eaae4d51eb0139c4f73bb',1,'gameModel::Team']]]
 ];

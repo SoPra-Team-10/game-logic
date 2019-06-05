@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['move',['Move',['../classgame_controller_1_1_move.html#a7336aaeac611eaa78bfeb93d978f9e7c',1,'gameController::Move::Move()=default'],['../classgame_controller_1_1_move.html#a6b27870ecb6182853feb7607c78bd5bb',1,'gameController::Move::Move(std::shared_ptr&lt; gameModel::Environment &gt; env, std::shared_ptr&lt; gameModel::Player &gt; actor, gameModel::Position target)']]]
+  ['normalize',['normalize',['../classgame_model_1_1_vector.html#ade91c1e7810dad34c4cbda5d87ad275f',1,'gameModel::Vector']]],
+  ['numberofbannedmembers',['numberOfBannedMembers',['../classgame_model_1_1_team.html#aa8c1000d942a20cf9a8de559338ff869',1,'gameModel::Team']]]
 ];

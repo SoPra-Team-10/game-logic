@@ -78,7 +78,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="#index_b"><span>b</span></a></li>
       <li><a href="#index_c"><span>c</span></a></li>
       <li><a href="#index_e"><span>e</span></a></li>
-      <li><a href="#index_f"><span>f</span></a></li>
       <li><a href="#index_g"><span>g</span></a></li>
       <li><a href="#index_h"><span>h</span></a></li>
       <li><a href="#index_i"><span>i</span></a></li>
@@ -140,12 +139,17 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 : <a class="el" href="classgame_model_1_1_environment.html#a1e3c326a8a358e9de0e5144ac5a42af2">gameModel::Environment</a>
 </li>
 <li>check()
-: <a class="el" href="classgame_controller_1_1_move.html#a5ff9c2a76dbfdc59a0dd206b74279be0">gameController::Move</a>
+: <a class="el" href="classgame_controller_1_1_action.html#abd249c0f371aac9d98a4fa60c4fd94c1">gameController::Action</a>
+, <a class="el" href="classgame_controller_1_1_move.html#a5ff9c2a76dbfdc59a0dd206b74279be0">gameController::Move</a>
 , <a class="el" href="classgame_controller_1_1_shot.html#abb3656ea14d64a07d2aef45e6410dfd8">gameController::Shot</a>
 , <a class="el" href="classgame_controller_1_1_wrest_quaffle.html#a0a9616652ddd535a090149387a560370">gameController::WrestQuaffle</a>
 </li>
 <li>checkForFoul()
 : <a class="el" href="classgame_controller_1_1_move.html#acf276f2198a6229660727956a5f156ad">gameController::Move</a>
+</li>
+<li>clone()
+: <a class="el" href="classgame_model_1_1_environment.html#a1d2cf539bec96b11fb0a47b4e0d33bae">gameModel::Environment</a>
+, <a class="el" href="classgame_model_1_1_team.html#a8a5a918670b644da716fc70c3a47d033">gameModel::Team</a>
 </li>
 </ul>
 
@@ -155,7 +159,8 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 : <a class="el" href="classgame_model_1_1_environment.html#adbd10b9cd7a613334d51a4fa8536bdc0">gameModel::Environment</a>
 </li>
 <li>execute()
-: <a class="el" href="classgame_controller_1_1_block_cell.html#ab7120abd9f32ae3e96cf3b07c48b7903">gameController::BlockCell</a>
+: <a class="el" href="classgame_controller_1_1_action.html#ab98b4e5389f6b24ff0aa22d01a353507">gameController::Action</a>
+, <a class="el" href="classgame_controller_1_1_block_cell.html#ab7120abd9f32ae3e96cf3b07c48b7903">gameController::BlockCell</a>
 , <a class="el" href="classgame_controller_1_1_impulse.html#acd4697c3567adfacf7b657ffefe72d1d">gameController::Impulse</a>
 , <a class="el" href="classgame_controller_1_1_interference.html#aee66a8480fccc6286b5bef04777a8a6a">gameController::Interference</a>
 , <a class="el" href="classgame_controller_1_1_move.html#a87a2d3fcd083bfef8905515ebbe89ded">gameController::Move</a>
@@ -166,16 +171,10 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 , <a class="el" href="classgame_controller_1_1_wrest_quaffle.html#a357a491029cbe341a185292462d95ecf">gameController::WrestQuaffle</a>
 </li>
 <li>executeAll()
-: <a class="el" href="classgame_controller_1_1_move.html#a3b9266d42dfc66fe16c228a08927cb8a">gameController::Move</a>
-, <a class="el" href="classgame_controller_1_1_shot.html#ae595cfcdfc6bb637860e98812df3db67">gameController::Shot</a>
-, <a class="el" href="classgame_controller_1_1_wrest_quaffle.html#ae001cec5b4bd9a40d5bb082bde578583">gameController::WrestQuaffle</a>
-</li>
-</ul>
-
-
-<h3><a class="anchor" id="index_f"></a>- f -</h3><ul>
-<li>fanToInterference()
-: <a class="el" href="classgame_model_1_1_fanblock.html#a3c86e19ed428958ef678dea496a7d4c0">gameModel::Fanblock</a>
+: <a class="el" href="classgame_controller_1_1_action.html#ad98e825d061978af397daa0b03028afa">gameController::Action</a>
+, <a class="el" href="classgame_controller_1_1_move.html#a274ed8b5b195810acdebecc5efda5ebb">gameController::Move</a>
+, <a class="el" href="classgame_controller_1_1_shot.html#ac9bb23256817b5de836dd48dd01d9362">gameController::Shot</a>
+, <a class="el" href="classgame_controller_1_1_wrest_quaffle.html#a462b5fec247ee9a26cd4186cd904a29c">gameController::WrestQuaffle</a>
 </li>
 </ul>
 
@@ -197,14 +196,14 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <li>getBallByID()
 : <a class="el" href="classgame_model_1_1_environment.html#a67ac4b2693c8dc1e049fa1fb24357604">gameModel::Environment</a>
 </li>
-<li>getBannedCount()
-: <a class="el" href="classgame_model_1_1_fanblock.html#ae1421bec1414edcc461e017d7b878ab5">gameModel::Fanblock</a>
-</li>
 <li>getCell()
-: <a class="el" href="classgame_model_1_1_environment.html#a7c095b6202f82cc67d89aa3ec66f387d">gameModel::Environment</a>
+: <a class="el" href="classgame_model_1_1_environment.html#a71dc1b8596a609a49215beb0d0870489">gameModel::Environment</a>
 </li>
 <li>getExtraTurnProb()
 : <a class="el" href="classgame_model_1_1_config.html#a7e2134a72f3b75c43610d337abf8e9c0">gameModel::Config</a>
+</li>
+<li>getFoulDetectionProb()
+: <a class="el" href="classgame_model_1_1_config.html#a9a74968656799c833fb5c30bd2346b75">gameModel::Config</a>
 </li>
 <li>getGoalsLeft()
 : <a class="el" href="classgame_model_1_1_environment.html#a9718a31bd8e763a69a89028977d3dc5a">gameModel::Environment</a>
@@ -237,7 +236,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 : <a class="el" href="classgame_controller_1_1_interference.html#a694aa2cd65bbb35c02f1ca4ed7701ebe">gameController::Interference</a>
 </li>
 <li>getUses()
-: <a class="el" href="classgame_model_1_1_fanblock.html#a2a72db2243fdb205c4b2f37949f17707">gameModel::Fanblock</a>
+: <a class="el" href="classgame_model_1_1_fanblock.html#a65c17009e532bcda8316a30d9e9433cd">gameModel::Fanblock</a>
 </li>
 </ul>
 
@@ -250,9 +249,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 
 
 <h3><a class="anchor" id="index_i"></a>- i -</h3><ul>
-<li>interferenceToFan()
-: <a class="el" href="classgame_model_1_1_fanblock.html#a2ef924170c8311a0807e560e8b2b1422">gameModel::Fanblock</a>
-</li>
 <li>isGoalCell()
 : <a class="el" href="classgame_model_1_1_environment.html#a4614d0fd75a7775e58f4a1e2d18b31eb">gameModel::Environment</a>
 </li>
@@ -330,7 +326,8 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 : <a class="el" href="classgame_model_1_1_snitch.html#ae0cb09809ffc99eac10821718b6de864">gameModel::Snitch</a>
 </li>
 <li>successProb()
-: <a class="el" href="classgame_controller_1_1_move.html#ae36dc4d09881c114cc8c9192e6f85988">gameController::Move</a>
+: <a class="el" href="classgame_controller_1_1_action.html#a9d9a301180bd5cd54a12ec912daf35c1">gameController::Action</a>
+, <a class="el" href="classgame_controller_1_1_move.html#ae36dc4d09881c114cc8c9192e6f85988">gameController::Move</a>
 , <a class="el" href="classgame_controller_1_1_shot.html#a97b77844c8035c36d6dabfaadcdc0aa7">gameController::Shot</a>
 , <a class="el" href="classgame_controller_1_1_wrest_quaffle.html#a53bff156e03c3fc5fbe235b07005c674">gameController::WrestQuaffle</a>
 </li>
