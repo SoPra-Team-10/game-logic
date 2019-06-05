@@ -250,6 +250,24 @@ TEST(env_test, removeDeprecatedShit){
 }
 
 
+TEST(env_test, clone){
+    auto originalEnv = setup::createEnv();
+    auto newEnv = originalEnv->clone();
+    newEnv->team1->score = 30;
+    newEnv->team2->seeker->isFined = true;
+    newEnv->team2->keeper->position = {10, 0};
+    newEnv->team1->chasers[0]->knockedOut = true;
+    newEnv->team1->fanblock.banFan(gameModel::InterferenceType::BlockCell);
+    newEnv->pileOfShit.emplace_back(std::make_shared<gameModel::CubeOfShit>(gameModel::Position(10, 2)));
+
+    EXPECT_EQ(originalEnv->team1->score, 0);
+    EXPECT_FALSE(originalEnv->team2->seeker->isFined);
+    EXPECT_EQ(originalEnv->team2->keeper->position, gameModel::Position(13, 12));
+    EXPECT_FALSE(originalEnv->team1->chasers[0]->knockedOut);
+    EXPECT_EQ(originalEnv->team1->fanblock.getBannedCount(gameModel::InterferenceType::BlockCell), 0);
+    EXPECT_TRUE(originalEnv->pileOfShit.empty());
+}
+
 //-----------------------------------------Fanblock Test----------------------------------------------------------------
 
 TEST(fanblock_test, banFan_and_getUses_and_getBannedCount) {

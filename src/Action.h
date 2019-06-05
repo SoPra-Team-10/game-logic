@@ -54,10 +54,30 @@ namespace gameController{
 
 
         // functions
+        /**
+         * executes the Action
+         * @throws std::runtime_exception if Action is impossible
+         * @return List of ramifications from the action axecution, List of Fouls during the execution
+         */
         virtual auto execute() const -> std::pair<std::vector<ActionResult>, std::vector<gameModel::Foul>> = 0;
+
+        /**
+         * Calculates the probability of a successful execution
+         */
         virtual auto successProb() const -> double = 0;
+
+        /**
+         * Checks if the Action is possible an if it may result in a foul
+         * @return See ActionCheckResult
+         */
         virtual auto check() const -> ActionCheckResult = 0;
-        virtual auto executeAll() const -> std::vector<std::pair<gameModel::Environment, double>> = 0;
+
+        /**
+         * Produces a List with all possible outomes of the Action
+         * @return
+         */
+        virtual auto executeAll() const ->
+            std::vector<std::pair<const std::shared_ptr<const gameModel::Environment>, double>> = 0;
 
     protected:
         // objects
@@ -84,29 +104,16 @@ namespace gameController{
                 std::shared_ptr<gameModel::Ball> ball, gameModel::Position target);
 
         // functions
-        /**
-        * execute the shot in a given environment (implementation of virtual function).
-        * @param envi the environment in which the shot should be performed.
-        */
         auto execute() const -> std::pair<std::vector<ActionResult>, std::vector<gameModel::Foul>>;
         /**
-         * get the success probability of the shot (implementation of virtual function).
-         * @return the success probability of the shot as double.
+         * When throwing Quaffle, returns probability that ball lands on target.
+         * When shooting Bludger, returns probability of knocking out player on target.
+         * @return probability for the shot to succeed
          */
         auto successProb() const -> double override;
-        /**
-         * check if the selected shot is possible (implementation of virtual function).
-         * @param envi the selected environment.
-         * @return the result of the check as ActionResult.
-         */
         auto check() const -> ActionCheckResult override;
-        /**
-         * execute all given shots in a given environment (implementation of virtual function).
-         * @param envi the selected environment.
-         * @return the resulting environments an there probabilities as a pair.
-         */
         auto executeAll() const ->
-            std::vector<std::pair<gameModel::Environment, double>> override;
+            std::vector<std::pair<const std::shared_ptr<const gameModel::Environment>, double>> override;
     private:
 
         std::shared_ptr<gameModel::Ball> ball;
@@ -155,29 +162,16 @@ namespace gameController{
                      gameModel::Position target);
 
         // functions
-        /**
-        * execute the shot in a given environment (implementation of virtual function).
-        * @param envi the environment in which wresting of the quaffel should be performed.
-        */
         auto execute() const -> std::pair<std::vector<ActionResult>, std::vector<gameModel::Foul>>;
+
         /**
-         * get the success probability of the shot (implementation of virtual function).
+         * Probability that the quaffle is wrested
          * @return the success probability of wresting the quaffel as double.
          */
         auto successProb() const -> double override;
-        /**
-         * check if the wresting the quaffel is possible (implementation of virtual function).
-         * @param envi the selected environment.
-         * @return the result of the check as ActionResult.
-         */
         auto check() const -> ActionCheckResult override;
-        /**
-         * execute all wresting the quaffel actions in a given environment (implementation of virtual function).
-         * @param envi the selected environment.
-         * @return the resulting environments an there probabilities as a pair.
-         */
         auto executeAll() const ->
-        std::vector<std::pair<gameModel::Environment, double>> override;
+            std::vector<std::pair<const std::shared_ptr<const gameModel::Environment>, double>> override;
 
     };
 
@@ -202,33 +196,20 @@ namespace gameController{
                 gameModel::Position target);
 
         // functions
-        /**
-         * execute the move in a given environment (implementation of virtual function).
-         * @param envi the environment in which the shot should be performed.
-         */
         auto execute() const -> std::pair<std::vector<ActionResult>, std::vector<gameModel::Foul>> override;
+
         /**
-         * get the success probability of the move (implementation of virtual function). (implementation of virtual function).
+         * Probability that the actor will land on target cell and is not banned for commiting a foul
          * @return the success probability of the move as double.
          */
         auto successProb() const -> double override;
-        /**
-        * check if the selected move is possible  (implementation of virtual function)
-        * @param envi the selected environment.
-        * @return the result of the check as ActionResult.
-        */
         auto check() const -> ActionCheckResult override;
-        /**
-         * execute all given move in a given environment (implementation of virtual function).
-         * @param envi the selected environment.
-         * @return the resulting environments an there probabilities as a pair.
-         */
         auto executeAll() const ->
-            std::vector<std::pair<gameModel::Environment, double>> override;
+            std::vector<std::pair<const std::shared_ptr<const gameModel::Environment>, double>> override;
 
         /**
          * checks if the move is a foul.
-         * @return the type of foul.
+         * @return List with possible fouls resulting from the move
          */
         auto checkForFoul() const -> std::vector<gameModel::Foul>;
     };
