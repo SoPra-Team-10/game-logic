@@ -464,10 +464,14 @@ namespace gameController{
                     auto tempActor = outcome.first->getPlayerById(actor->id);
                     auto playerOnTarget = outcome.first->getPlayer(target);
                     if(playerOnTarget.has_value()) {
-                        auto freeCells = env->getAllFreeCellsAround(target);
+                        //make actor "invisible"
+                        tempActor->isFined = true;
+                        auto freeCells = outcome.first->getAllFreeCellsAround(target);
+                        //make visible again
+                        tempActor->isFined = false;
                         double prob = 1.0 / freeCells.size();
                         for(auto pos = freeCells.begin(); pos != freeCells.end(); pos++) {
-                            if(pos == freeCells.begin()) {
+                            if(pos == freeCells.end() - 1) {
                                 //fist possibility -> alter in place
                                 //move target player on adjacent cell
                                 playerOnTarget.value()->position = *pos;
@@ -481,8 +485,7 @@ namespace gameController{
                                 newEnv->getPlayer(target).value()->position = *pos;
                                 //move actor on target
                                 newEnv->getPlayerById(actor->id)->position = target;
-                                //Probability identical to outcome.second since already altered above
-                                newOutcomes.emplace_back(newEnv, outcome.second);
+                                newOutcomes.emplace_back(newEnv, outcome.second * prob);
                             }
                         }
                     } else {

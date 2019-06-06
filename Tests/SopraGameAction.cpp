@@ -4,6 +4,7 @@
 
 #include <gtest/gtest.h>
 #include <gmock/gmock-matchers.h>
+#include <Interference.h>
 #include "Action.h"
 #include "setup.h"
 //-----------------------------------Throw checks-----------------------------------------------------------------------
@@ -778,7 +779,34 @@ TEST(move_test, move_execute10){
 
 TEST(move_test, move_execute_all){
     auto env = setup::createEnv();
-    //@TODO
+    auto target = env->team1->chasers[2]->position;
+    gameController::Move move(env, env->team2->seeker, target);
+    auto resList = move.executeAll();
+    EXPECT_EQ(resList.size(), 16);
+
+    double sum = 0;
+    std::deque<gameModel::Position> poses = {gameModel::Position(9, 6), gameModel::Position(10, 6), gameModel::Position(11, 6),
+                                             gameModel::Position(9, 7), gameModel::Position(11, 7), gameModel::Position(9, 8),
+                                             gameModel::Position(10, 8), gameModel::Position(11, 8),
+
+                                             gameModel::Position(9, 6), gameModel::Position(10, 6), gameModel::Position(11, 6),
+                                             gameModel::Position(9, 7), gameModel::Position(11, 7), gameModel::Position(9, 8),
+                                             gameModel::Position(10, 8), gameModel::Position(11, 8)};
+    for(const auto &res : resList) {
+        sum += res.second;
+        EXPECT_EQ(res.first->team2->seeker->position, target);
+        for(auto p = poses.begin(); p < poses.end();) {
+            if(*p == res.first->team1->chasers[2]->position) {
+                p = poses.erase(p);
+                break;
+            } else {
+                p++;
+            }
+        }
+    }
+
+    EXPECT_TRUE(poses.empty());
+    EXPECT_DOUBLE_EQ(sum, 1);
 }
 //---------------------------WrestQuaffle Execute Move------------------------------------------------------------------
 TEST(wrest_quaffel_test, wrest_execute0) {
