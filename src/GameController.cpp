@@ -4,7 +4,6 @@
 
 namespace gameController {
 
-    template <>
     double rng(double min, double max){
         static std::random_device rd;
         static std::default_random_engine el(rd());
@@ -12,7 +11,6 @@ namespace gameController {
         return dist(el);
     }
 
-    template <>
     int rng(int min, int max){
         static std::random_device rd;
         static std::default_random_engine el(rd());
@@ -337,8 +335,8 @@ namespace gameController {
         gameModel::Position upperCell = lowerCell;
         bool notOutOfBounds1 = false;
         bool notOutOfBounds2 = false;
-        while((notOutOfBounds1 = env->getCell(lowerCell.x + static_cast<int>(std::round(dirVectOrtho.x)), lowerCell.y + static_cast<int>(std::round(dirVectOrtho.y))) != gameModel::Cell::OutOfBounds) ||
-                (notOutOfBounds2 = env->getCell(upperCell.x - static_cast<int>(std::round(dirVectOrtho.x)), upperCell.y - static_cast<int>(std::round(dirVectOrtho.y))) != gameModel::Cell::OutOfBounds)){
+        while((notOutOfBounds1 = gameModel::Environment::getCell(lowerCell.x + static_cast<int>(std::round(dirVectOrtho.x)), lowerCell.y + static_cast<int>(std::round(dirVectOrtho.y))) != gameModel::Cell::OutOfBounds) ||
+                (notOutOfBounds2 = gameModel::Environment::getCell(upperCell.x - static_cast<int>(std::round(dirVectOrtho.x)), upperCell.y - static_cast<int>(std::round(dirVectOrtho.y))) != gameModel::Cell::OutOfBounds)){
             if(notOutOfBounds1) {
                 lowerCell.x = lowerCell.x + static_cast<int>(std::round(dirVectOrtho.x));
                 lowerCell.y = lowerCell.y + static_cast<int>(std::round(dirVectOrtho.y));
