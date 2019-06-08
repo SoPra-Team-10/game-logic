@@ -135,11 +135,16 @@ TEST(env_test, arePlayerInSameTeam) {
 TEST(env_test, isPlayerInOwnRestrictedZone) {
     auto env = setup::createEnv();
 
+
     env->team1->keeper->position = gameModel::Position(3, 6);
     env->team2->keeper->position = gameModel::Position(3, 6);
+    env->team1->seeker->position = gameModel::Position(2, 4);
+    env->team2->seeker->position = gameModel::Position(2, 4);
 
     EXPECT_TRUE(env->isPlayerInOwnRestrictedZone(env->team1->keeper));
     EXPECT_FALSE(env->isPlayerInOwnRestrictedZone(env->team2->keeper));
+    EXPECT_FALSE(env->isPlayerInOpponentRestrictedZone(env->team1->seeker));
+    EXPECT_TRUE(env->isPlayerInOpponentRestrictedZone(env->team2->seeker));
 }
 
 TEST(env_test, isPlayerInOpponentRestrictedZone) {
@@ -147,9 +152,13 @@ TEST(env_test, isPlayerInOpponentRestrictedZone) {
 
     env->team1->keeper->position = gameModel::Position(3, 6);
     env->team2->keeper->position = gameModel::Position(3, 6);
+    env->team1->seeker->position = gameModel::Position(2, 4);
+    env->team2->seeker->position = gameModel::Position(2, 4);
 
     EXPECT_FALSE(env->isPlayerInOpponentRestrictedZone(env->team1->keeper));
     EXPECT_TRUE(env->isPlayerInOpponentRestrictedZone(env->team2->keeper));
+    EXPECT_FALSE(env->isPlayerInOpponentRestrictedZone(env->team1->seeker));
+    EXPECT_TRUE(env->isPlayerInOpponentRestrictedZone(env->team2->seeker));
 }
 
 TEST(env_test, getTeamMates) {
