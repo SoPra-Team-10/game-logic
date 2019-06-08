@@ -335,8 +335,8 @@ namespace gameController {
         std::vector<gameModel::Position> resultVect2;
         gameModel::Position lowerCell = {static_cast<int>(env->team1->seeker->position.x + dirVec.x), static_cast<int>(env->team1->seeker->position.y + dirVec.y)};
         gameModel::Position upperCell = lowerCell;
-        bool notOutOfBounds1;
-        bool notOutOfBounds2;
+        bool notOutOfBounds1 = false;
+        bool notOutOfBounds2 = false;
         while((notOutOfBounds1 = env->getCell(lowerCell.x + static_cast<int>(std::round(dirVectOrtho.x)), lowerCell.y + static_cast<int>(std::round(dirVectOrtho.y))) != gameModel::Cell::OutOfBounds) ||
                 (notOutOfBounds2 = env->getCell(upperCell.x - static_cast<int>(std::round(dirVectOrtho.x)), upperCell.y - static_cast<int>(std::round(dirVectOrtho.y))) != gameModel::Cell::OutOfBounds)){
             if(notOutOfBounds1) {
