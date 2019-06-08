@@ -283,20 +283,22 @@ namespace gameModel{
     }
 
     auto Environment::isPlayerInOwnRestrictedZone(const std::shared_ptr<Player>& player) const -> bool {
-        if (this->team1->hasMember(player) && this->getCell(player->position) == Cell::RestrictedLeft) {
+        const auto cell = Environment::getCell(player->position);
+        if (this->team1->hasMember(player) && (cell == Cell::RestrictedLeft || cell == Cell::GoalLeft)) {
             return true;
         }
-        if (this->team2->hasMember(player) && this->getCell(player->position) == Cell::RestrictedRight) {
+        if (this->team2->hasMember(player) && (cell == Cell::RestrictedRight || cell == Cell::GoalRight)) {
             return true;
         }
 
         return false;
     }
     auto Environment::isPlayerInOpponentRestrictedZone(const std::shared_ptr<Player>& player) const  -> bool {
-        if (this->team1->hasMember(player) && this->getCell(player->position) == Cell::RestrictedRight) {
+        const auto cell = Environment::getCell(player->position);
+        if (this->team1->hasMember(player) && (cell == Cell::RestrictedRight || cell == Cell::GoalRight)) {
             return true;
         }
-        if (this->team2->hasMember(player) && this->getCell(player->position) == Cell::RestrictedLeft) {
+        if (this->team2->hasMember(player) && (cell == Cell::RestrictedLeft || cell == Cell::GoalLeft)) {
             return true;
         }
         return false;
