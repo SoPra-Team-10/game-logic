@@ -175,14 +175,12 @@ namespace gameModel{
      */
     class Player : public Object{
     public:
-        std::string name;
-        communication::messages::types::Sex gender = {};
         communication::messages::types::Broom broom = {};
         bool isFined = false;
         bool knockedOut = false;
 
         Player() = default;
-        Player(Position position, std::string  name, communication::messages::types::Sex gender, communication::messages::types::Broom broom, communication::messages::types::EntityId id);
+        Player(Position position, communication::messages::types::Broom broom, communication::messages::types::EntityId id);
         bool operator==(const Player &other) const;
         bool operator!=(const Player &other) const;
 
@@ -278,22 +276,22 @@ namespace gameModel{
 
     class Chaser : public Player{
     public:
-        Chaser(Position position, std::string name, communication::messages::types::Sex gender, communication::messages::types::Broom broom, communication::messages::types::EntityId id);
+        Chaser(Position position, communication::messages::types::Broom broom, communication::messages::types::EntityId id);
     };
 
     class Keeper : public Player{
     public:
-        Keeper(Position position, std::string name, communication::messages::types::Sex gender, communication::messages::types::Broom broom, communication::messages::types::EntityId id);
+        Keeper(Position position, communication::messages::types::Broom broom, communication::messages::types::EntityId id);
     };
 
     class Seeker : public Player{
     public:
-        Seeker(Position position, std::string name, communication::messages::types::Sex gender, communication::messages::types::Broom broom, communication::messages::types::EntityId id);
+        Seeker(Position position, communication::messages::types::Broom broom, communication::messages::types::EntityId id);
     };
 
     class Beater : public Player{
     public:
-        Beater(Position position, std::string name, communication::messages::types::Sex gender, communication::messages::types::Broom broom, communication::messages::types::EntityId id);
+        Beater(Position position, communication::messages::types::Broom broom, communication::messages::types::EntityId id);
     };
 
     class Quaffle : public Ball{
@@ -334,9 +332,6 @@ namespace gameModel{
         std::shared_ptr<Keeper> keeper;
         std::array<std::shared_ptr<Beater>, 2> beaters;
         std::array<std::shared_ptr<Chaser>, 3> chasers;
-        const std::string name;
-        const std::string colorMain;
-        const std::string colorSecondary;
         int score{};
         Fanblock fanblock;
 
@@ -347,8 +342,7 @@ namespace gameModel{
         Team(const communication::messages::request::TeamConfig& tConf, communication::messages::request::TeamFormation tForm, bool leftTeam);
 
         Team(Seeker seeker, Keeper keeper, std::array<Beater, 2> beaters, std::array<Chaser, 3> chasers,
-             std::string  name, std::string  colorMain, std::string  colorSecondary, int score,
-             Fanblock fanblock);
+                int score, Fanblock fanblock);
 
         /**
          * gets all Players of the team
