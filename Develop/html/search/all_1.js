@@ -5,5 +5,5 @@ var searchData=
   ['beater',['Beater',['../classgame_model_1_1_beater.html',1,'gameModel']]],
   ['blockcell',['BlockCell',['../classgame_controller_1_1_block_cell.html',1,'gameController']]],
   ['bludger',['Bludger',['../classgame_model_1_1_bludger.html',1,'gameModel']]],
-  ['bludger',['Bludger',['../classgame_model_1_1_bludger.html#a390de480fc712d0df7fe55ecc0fcff4d',1,'gameModel::Bludger::Bludger(communication::messages::types::EntityId id)'],['../classgame_model_1_1_bludger.html#a107364eb5e4d7d752483ad132c4a5eaa',1,'gameModel::Bludger::Bludger(Position position, communication::messages::types::EntityId id)']]]
+  ['bludger',['Bludger',['../classgame_model_1_1_bludger.html#a390de480fc712d0df7fe55ecc0fcff4d',1,'gameModel::Bludger']]]
 ];
