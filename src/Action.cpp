@@ -378,7 +378,7 @@ namespace gameController{
 
         double ret = 1;
         for(const auto &foul : checkForFoul()){
-            ret *= env->config.getFoulDetectionProb(foul);
+            ret *= (1 - env->config.getFoulDetectionProb(foul));
         }
 
         return ret;
@@ -441,62 +441,36 @@ namespace gameController{
         }
 
         std::vector<std::pair<std::shared_ptr<gameModel::Environment>, double>> ret;
-        executePartially(ret, ActionState::HandleFouls);
+        executePartially(ret, ActionState::MovePlayers);
         return ret;
     }
 
     void Move::executePartially(std::vector<std::pair<std::shared_ptr<gameModel::Environment>, double>> &resList,
             ActionState state) const {
         switch(state) {
-            case ActionState::HandleFouls: {
-                double success = successProb();
-                auto failEnv = env->clone();
-                auto successEnv = env->clone();
-                failEnv->getPlayerById(actor->id)->isFined = true;
-                resList.emplace_back(failEnv, 1 - success);
-                resList.emplace_back(successEnv, success);
-                executePartially(resList, ActionState::MovePlayers);
-            }
-                break;
             case ActionState::MovePlayers: {
-                std::vector<std::pair<std::shared_ptr<gameModel::Environment>, double>> newOutcomes;
-                for(auto &outcome : resList) {
-                    auto tempActor = outcome.first->getPlayerById(actor->id);
-                    auto playerOnTarget = outcome.first->getPlayer(target);
-                    if(playerOnTarget.has_value()) {
-                        //make actor "invisible"
-                        tempActor->isFined = true;
-                        auto freeCells = outcome.first->getAllFreeCellsAround(target);
-                        //make visible again
-                        tempActor->isFined = false;
-                        double prob = 1.0 / freeCells.size();
-                        for(auto pos = freeCells.begin(); pos != freeCells.end(); pos++) {
-                            if(pos == freeCells.end() - 1) {
-                                //fist possibility -> alter in place
-                                //move target player on adjacent cell
-                                playerOnTarget.value()->position = *pos;
-                                //move actor on target
-                                tempActor->position = target;
-                                outcome.second *= prob;
-                            } else {
-                                //further possible outcomes -> create new envs
-                                auto newEnv = outcome.first->clone();
-                                //move target player on adjacent cell
-                                newEnv->getPlayer(target).value()->position = *pos;
-                                //move actor on target
-                                newEnv->getPlayerById(actor->id)->position = target;
-                                newOutcomes.emplace_back(newEnv, outcome.second * prob);
-                            }
-                        }
-                    } else {
-                        //No player in the way -> simply place actor on target, no further branches
-                        //Value is never used ???!!!
-                        tempActor->position = target;
+                if(env->getPlayer(target).has_value()){
+                    //make actor "invisible"
+                    actor->isFined = true;
+                    auto freeCells = env->getAllFreeCellsAround(target);
+                    if(env->quaffle->position == actor->position) {
+                        freeCells.emplace_back(env->quaffle->position);
                     }
-                }
-
-                if(!newOutcomes.empty()) {
-                    resList.insert(resList.end(), newOutcomes.begin(), newOutcomes.end());
+                    //make visible again
+                    actor->isFined = false;
+                    double prob = 1.0 / freeCells.size();
+                    resList.reserve(freeCells.size());
+                    for(const auto &pos : freeCells){
+                        auto newEnv = env->clone();
+                        //move target player on adjacent cell
+                        newEnv->getPlayer(target).value()->position = pos;
+                        //move actor on target
+                        newEnv->getPlayerById(actor->id)->position = target;
+                        resList.emplace_back(newEnv, prob);
+                    }
+                } else {
+                    resList.emplace_back(env->clone(), 1);
+                    resList.back().first->getPlayerById(actor->id)->position = target;
                 }
 
                 executePartially(resList, ActionState::HandleBalls);
@@ -544,7 +518,7 @@ namespace gameController{
                 if(env->snitch->exists && env->snitch->position == target &&
                     INSTANCE_OF(actor, gameModel::Seeker)) {
                     std::vector<std::pair<std::shared_ptr<gameModel::Environment>, double>> newOutcomes;
-                    newOutcomes.reserve(resList.size());
+                    newOutcomes.reserve(resList.size() * 2);
                     for(auto &outcome : resList) {
                         auto catchFailEnv = outcome.first->clone();
                         auto catchFailBaseProb = outcome.second;
@@ -552,6 +526,24 @@ namespace gameController{
                         outcome.first->getTeam(tempActorSucc)->score += SNITCH_POINTS;
                         outcome.second *= env->config.gameDynamicsProbs.catchSnitch;
                         newOutcomes.emplace_back(catchFailEnv, catchFailBaseProb * (1 - env->config.gameDynamicsProbs.catchSnitch));
+                    }
+
+                    resList.insert(resList.end(), newOutcomes.begin(), newOutcomes.end());
+                }
+
+                executePartially(resList, ActionState::HandleFouls);
+            }
+                break;
+            case ActionState::HandleFouls: {
+                double success = successProb();
+                if(std::abs(1 - success) > std::numeric_limits<double>::epsilon()){
+                    std::vector<std::pair<std::shared_ptr<gameModel::Environment>, double>> newOutcomes;
+                    resList.reserve(resList.size() * 2);
+                    for(auto &outcome : resList){
+                        auto newEnv = outcome.first->clone();
+                        newEnv->getPlayerById(actor->id)->isFined = true;
+                        newOutcomes.emplace_back(newEnv, outcome.second * (1 - success));
+                        outcome.second *= success;
                     }
 
                     resList.insert(resList.end(), newOutcomes.begin(), newOutcomes.end());

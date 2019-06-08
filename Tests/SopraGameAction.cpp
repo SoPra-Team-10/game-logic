@@ -779,6 +779,51 @@ TEST(move_test, move_execute10){
 
 TEST(move_test, move_execute_all){
     auto env = setup::createEnv();
+    gameController::Move move(env, env->team2->seeker, gameModel::Position{12, 9});
+    auto resList = move.executeAll();
+    EXPECT_EQ(resList.size(), 1);
+    EXPECT_DOUBLE_EQ(resList[0].second, 1);
+    EXPECT_EQ(resList[0].first->team2->seeker->position, gameModel::Position(12, 9));
+}
+
+TEST(move_test, move_execute_all_snitch_catch){
+    auto env = setup::createEnv({0, {1, 1, 1, 1, 1, 1, 1, 1, 1, 1}, {1, 1, 0.8, 1, 1}, {}});
+    env->snitch->position = {12, 9};
+    env->snitch->exists = true;
+    gameController::Move move(env, env->team2->seeker, gameModel::Position{12, 9});
+    auto resList = move.executeAll();
+    EXPECT_EQ(resList.size(), 2);
+    auto catchProb = env->config.gameDynamicsProbs.catchSnitch;
+    EXPECT_DOUBLE_EQ(resList[0].second, catchProb);
+    EXPECT_EQ(resList[0].first->team2->score, SNITCH_POINTS);
+    EXPECT_EQ(resList[0].first->team2->seeker->position, gameModel::Position(12, 9));
+    EXPECT_DOUBLE_EQ(resList[1].second, 1 - catchProb);
+    EXPECT_EQ(resList[1].first->team2->score, 0);
+    EXPECT_EQ(resList[1].first->team2->seeker->position, gameModel::Position(12, 9));
+}
+
+TEST(move_test, move_execute_all_charge_goal){
+    auto env = setup::createEnv({0, {1, 0.4, 1, 1, 1, 1, 1, 1, 1, 1}, {1, 1, 0.8, 1, 1}, {}});
+    gameModel::Position target(14, 8);
+    env->team1->chasers[0]->position = {13, 8};
+    env->quaffle->position = env->team1->chasers[0]->position;
+    gameController::Move move(env, env->team1->chasers[0], target);
+    auto resList = move.executeAll();
+    EXPECT_EQ(resList.size(), 2);
+    EXPECT_EQ(resList[0].first->quaffle->position, target);
+    EXPECT_EQ(resList[0].first->team1->chasers[0]->position, target);
+    EXPECT_EQ(resList[0].first->team1->score, GOAL_POINTS);
+    EXPECT_FALSE(resList[0].first->team1->chasers[0]->isFined);
+    EXPECT_DOUBLE_EQ(resList[0].second, 1 - env->config.foulDetectionProbs.chargeGoal);
+    EXPECT_EQ(resList[1].first->quaffle->position, target);
+    EXPECT_EQ(resList[1].first->team1->chasers[0]->position, target);
+    EXPECT_EQ(resList[1].first->team1->score, GOAL_POINTS);
+    EXPECT_DOUBLE_EQ(resList[1].second, env->config.foulDetectionProbs.chargeGoal);
+    EXPECT_TRUE(resList[1].first->team1->chasers[0]->isFined);
+}
+
+TEST(move_test, move_execute_all_ramming){
+    auto env = setup::createEnv({0, {1, 0.4, 1, 0.5, 1, 1, 1, 1, 1, 1}, {1, 1, 0.8, 1, 1}, {}});
     auto target = env->team1->chasers[2]->position;
     gameController::Move move(env, env->team2->seeker, target);
     auto resList = move.executeAll();
@@ -808,6 +853,40 @@ TEST(move_test, move_execute_all){
     EXPECT_TRUE(poses.empty());
     EXPECT_DOUBLE_EQ(sum, 1);
 }
+
+TEST(move_test, move_execute_all_ramming_with_quaffle){
+    auto env = setup::createEnv({0, {1, 0.4, 1, 0.5, 1, 1, 1, 1, 1, 1}, {1, 1, 0.8, 1, 1}, {}});
+    env->quaffle->position = env->team1->chasers[2]->position;
+    gameController::Move move(env, env->team2->seeker, env->team1->chasers[2]->position);
+    auto resList = move.executeAll();
+
+    double sum = 0;
+    EXPECT_EQ(resList.size(), 7 * 8 * 2);
+    for(const auto &res : resList){
+        sum += res.second;
+    }
+
+    EXPECT_GE(sum, 0.999);
+}
+
+TEST(move_test, move_execute_all_charge_goal_with_defender){
+    auto env = setup::createEnv({0, {1, 0.4, 1, 0.5, 1, 1, 1, 1, 1, 1}, {1, 1, 0.8, 1, 1}, {}});
+    gameModel::Position target(14, 8);
+    env->team1->chasers[2]->position = {13, 8};
+    env->team2->keeper->position = target;
+    env->quaffle->position = env->team1->chasers[2]->position;
+    gameController::Move move(env, env->team1->chasers[2], target);
+    auto resList = move.executeAll();
+
+    double sum = 0;
+    EXPECT_EQ(resList.size(), 8 * 2);
+    for(const auto &res : resList){
+        sum += res.second;
+    }
+
+    EXPECT_GE(sum, 0.999);
+}
+
 //---------------------------WrestQuaffle Execute Move------------------------------------------------------------------
 TEST(wrest_quaffel_test, wrest_execute0) {
     auto env = setup::createEnv();
