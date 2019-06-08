@@ -47,6 +47,9 @@ namespace gameModel{
         bool operator!=(const Position &other) const;
     };
 
+    /**
+     * 2D vector
+     */
     class Vector {
     public:
 
@@ -76,7 +79,7 @@ namespace gameModel{
         void normalize();
 
         /**
-         * @return makes the vector orthogonal to his old vector
+         * @return makes the vector orthogonal to its old vector
          */
         Vector orthogonal() const;
 
@@ -112,6 +115,9 @@ namespace gameModel{
         BlockSnitch
     };
 
+    /**
+     * Different types of fan interferences
+     */
     enum class InterferenceType{
         RangedAttack,
         Teleport,
@@ -158,7 +164,7 @@ namespace gameModel{
 
     /**
      * Base class for game objects like a ball or a player.
-     * */
+     */
     class Object{
     public:
         Object() = default;
@@ -274,44 +280,77 @@ namespace gameModel{
 
     };
 
+    /**
+     * Chaser type player
+     */
     class Chaser : public Player{
     public:
         Chaser(Position position, communication::messages::types::Broom broom, communication::messages::types::EntityId id);
     };
 
+    /**
+     * Keeper type player
+     */
     class Keeper : public Player{
     public:
         Keeper(Position position, communication::messages::types::Broom broom, communication::messages::types::EntityId id);
     };
 
+    /**
+     * Seeker type Player
+     */
     class Seeker : public Player{
     public:
         Seeker(Position position, communication::messages::types::Broom broom, communication::messages::types::EntityId id);
     };
 
+    /**
+     * Beater type Player
+     */
     class Beater : public Player{
     public:
         Beater(Position position, communication::messages::types::Broom broom, communication::messages::types::EntityId id);
     };
 
+    /**
+     * Quaffle type Ball
+     */
     class Quaffle : public Ball{
     public:
         /**
          * Places Quaffle in the centre of the field
          */
         Quaffle();
+
+        /**
+         * Playes the Quaffle at the specified location
+         * @param position Position where the Quaffle is constructed
+         */
         explicit Quaffle(Position position);
     };
 
+    /**
+     * Bludger type Ball
+     */
     class Bludger : public Ball{
     public:
         /**
          * Places Bludger in the centre of the field
+         * @param id Id of the Bludger
          */
         explicit Bludger(communication::messages::types::EntityId id);
+
+        /**
+         * Places Bludger at the specified location
+         * @param position Position where the Bludger is constructed
+         * @param id Id of the Bludger
+         */
         Bludger(Position position, communication::messages::types::EntityId id);
     };
 
+    /**
+     * Snitch type Ball
+     */
     class Snitch : public Ball{
     public:
         bool exists = false;
@@ -320,6 +359,11 @@ namespace gameModel{
          * Places Snitch on random position on the field and makes it non existent
          */
         Snitch();
+
+        /**
+         * Places Snitch at the specified location
+         * @param position Position where the Snitch is constructed
+         */
         explicit Snitch(Position position);
     };
 
@@ -341,6 +385,15 @@ namespace gameModel{
          */
         Team(const communication::messages::request::TeamConfig& tConf, communication::messages::request::TeamFormation tForm, bool leftTeam);
 
+        /**
+         * Ctor where all members can be specified
+         * @param seeker Seeker Player
+         * @param keeper Keeper Player
+         * @param beaters Array of two Beater Players
+         * @param chasers Array of three Chaser Players
+         * @param score initial score of the team
+         * @param fanblock fans of the team
+         */
         Team(Seeker seeker, Keeper keeper, std::array<Beater, 2> beaters, std::array<Chaser, 3> chasers,
                 int score, Fanblock fanblock);
 
@@ -406,30 +459,18 @@ namespace gameModel{
          */
         Environment(Config config, std::shared_ptr<Team> team1, std::shared_ptr<Team> team2);
 
+        /**
+         * Ctor where all members can be specified
+         * @param config
+         * @param team1
+         * @param team2
+         * @param quaffle
+         * @param snitch
+         * @param bludgers
+         * @param pileOfShit
+         */
         Environment(Config config, std::shared_ptr<Team> team1, std::shared_ptr<Team> team2, std::shared_ptr<Quaffle> quaffle,
                 std::shared_ptr<Snitch> snitch, std::array<std::shared_ptr<Bludger>, 2> bludgers, std::deque<std::shared_ptr<CubeOfShit>> pileOfShit);
-
-        /**
-         * tests if two players are in the same team.
-         * @param p1 player 1.
-         * @param p2 player 2.
-         * @return if the players are in the same team true, else false.
-         */
-        auto arePlayerInSameTeam(const std::shared_ptr<const Player>& p1, const std::shared_ptr<const Player>& p2) const -> bool;
-
-        /**
-         * checks if a player is in the own restricted zone.
-         * @param player the player.
-         * @return true if player is in own restricted zone, else false;
-         */
-        auto isPlayerInOwnRestrictedZone(const std::shared_ptr<Player>& player) const -> bool;
-
-        /**
-         * checks if a player is in the opponent restricted zone.
-         * @param player the player.
-         * @return true if player is in opponent restricted zone, else false;
-         */
-        auto isPlayerInOpponentRestrictedZone(const std::shared_ptr<Player>& player) const  -> bool;
 
         /**
          * Gets the type of the cell at position (x,y)
@@ -472,6 +513,33 @@ namespace gameModel{
          */
         static auto isGoalCell(const Position &pos) -> bool;
 
+        /**
+         * Gets all Positions which are not out of bounds
+         * @return
+         */
+        static auto getAllValidCells() -> std::array<Position, 193>;
+
+        /**
+         * tests if two players are in the same team.
+         * @param p1 player 1.
+         * @param p2 player 2.
+         * @return if the players are in the same team true, else false.
+         */
+        auto arePlayerInSameTeam(const std::shared_ptr<const Player>& p1, const std::shared_ptr<const Player>& p2) const -> bool;
+
+        /**
+         * checks if a player is in the own restricted zone.
+         * @param player the player.
+         * @return true if player is in own restricted zone, else false;
+         */
+        auto isPlayerInOwnRestrictedZone(const std::shared_ptr<Player>& player) const -> bool;
+
+        /**
+         * checks if a player is in the opponent restricted zone.
+         * @param player the player.
+         * @return true if player is in opponent restricted zone, else false;
+         */
+        auto isPlayerInOpponentRestrictedZone(const std::shared_ptr<Player>& player) const  -> bool;
 
         /**
          * Gets all players on the field
@@ -529,11 +597,6 @@ namespace gameModel{
          */
         auto getTeam(const std::shared_ptr<Player>& player) const -> std::shared_ptr<Team>;
 
-        /**
-         * Gets all Positions which are not out of bounds
-         * @return
-         */
-        static auto getAllValidCells() -> std::array<Position, 193>;
 
         /**
          * Gets all valid cells not occupied by players
