@@ -310,6 +310,60 @@ TEST(shot_test, execute_all_bouce_off){
     EXPECT_DOUBLE_EQ(sum , 1);
 
 }
+
+TEST(shot_test, execute_all_intercept){
+    auto env = setup::createEnv({0, {}, {0.5, 0, 0, 0.4, 0}, {}});
+    env->quaffle->position = env->team1->chasers[2]->position;
+    env->team2->keeper->position = {10, 6};
+    gameController::Shot shot(env, env->team1->chasers[2], env->quaffle, gameModel::Position{10, 5});
+    auto resList = shot.executeAll();
+    EXPECT_EQ(resList.size(), 9);
+
+    double sum = 0;
+    std::deque<gameModel::Position> poses = {{10, 5}, {11, 6}, {11, 5}, {11, 4}, {10, 4},
+                                             {9, 4}, {9, 5}, {9, 6}, {10, 6}};
+    for(const auto &res : resList){
+        sum += res.second;
+        for(auto p = poses.begin(); p < poses.end();){
+            if(res.first->quaffle->position == *p){
+                p = poses.erase(p);
+            } else {
+                p++;
+            }
+        }
+    }
+
+    EXPECT_TRUE(poses.empty());
+    EXPECT_DOUBLE_EQ(sum , 1);
+
+}
+
+TEST(shot_test, execute_all_intercept_with_seeker){
+    auto env = setup::createEnv({0, {}, {0.5, 0, 0, 0.4, 0}, {}});
+    env->quaffle->position = env->team1->chasers[2]->position;
+    env->team2->seeker->position = {10, 6};
+    gameController::Shot shot(env, env->team1->chasers[2], env->quaffle, gameModel::Position{10, 5});
+    auto resList = shot.executeAll();
+    EXPECT_EQ(resList.size(), 10);
+
+    double sum = 0;
+    std::deque<gameModel::Position> poses = {{10, 5}, {11, 6}, {11, 5}, {11, 4}, {10, 4},
+                                             {9, 4}, {9, 5}, {9, 6}, {9, 7}, {11, 7}};
+    for(const auto &res : resList){
+        sum += res.second;
+        for(auto p = poses.begin(); p < poses.end();){
+            if(res.first->quaffle->position == *p){
+                p = poses.erase(p);
+            } else {
+                p++;
+            }
+        }
+    }
+
+    EXPECT_TRUE(poses.empty());
+    EXPECT_DOUBLE_EQ(sum , 1);
+
+}
 //--------------------------Bludger shot check------------------------------------------------------------------------
 
 TEST(shot_test, valid_bludger_shot_check){
