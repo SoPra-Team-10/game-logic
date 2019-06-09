@@ -278,6 +278,10 @@ namespace gameController{
 
     auto Shot::executeAll() const ->
         std::vector<std::pair<std::shared_ptr<gameModel::Environment>, double>> {
+        if (check() == ActionCheckResult::Impossible){
+            throw std::runtime_error("Action is impossible");
+        }
+
         const std::shared_ptr<const gameModel::Environment> &localEnv = env;
         std::vector<std::pair<std::shared_ptr<gameModel::Environment>, double>> ret;
 
