@@ -35,12 +35,6 @@ namespace gameController{
         FoolAway
     };
 
-    enum class ActionState {
-        HandleFouls,
-        MovePlayers,
-        HandleBalls
-    };
-
     class Action {
     public:
 
@@ -121,7 +115,6 @@ namespace gameController{
         auto executeAll() const ->
             std::vector<std::pair<std::shared_ptr<gameModel::Environment>, double>> override;
     private:
-
         std::shared_ptr<gameModel::Ball> ball;
         /**
          * gets all cells along the flightpath which are occupied by opponent players (ordered in flight direction)
@@ -220,6 +213,12 @@ namespace gameController{
         auto checkForFoul() const -> std::vector<gameModel::Foul>;
 
     private:
+        enum class ActionState {
+            HandleFouls,
+            MovePlayers,
+            HandleBalls
+        };
+
         void executePartially(std::vector<std::pair<std::shared_ptr<gameModel::Environment>, double>> &resList,
                 ActionState state) const;
     };
