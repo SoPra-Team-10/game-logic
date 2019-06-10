@@ -353,11 +353,12 @@ namespace gameController{
         }
 
         double noInterceptProb = std::pow(1 - localEnv->config.gameDynamicsProbs.catchQuaffle, interceptPoints.size());
+        double throwSuccess = std::pow(localEnv->config.gameDynamicsProbs.throwSuccess, getDistance(actor->position, target));
         //Handle miss
-        emplaceEnvs(noInterceptProb * (1 - localEnv->config.gameDynamicsProbs.throwSuccess), getAllLandingCells());
-        double success = noInterceptProb * localEnv->config.gameDynamicsProbs.throwSuccess;
+        emplaceEnvs(noInterceptProb * (1 - throwSuccess), getAllLandingCells());
 
         //Handle success
+        double success = noInterceptProb * throwSuccess;
         if(playerOnTarget.has_value() && (INSTANCE_OF(playerOnTarget.value(), const gameModel::Seeker) ||
                 INSTANCE_OF(playerOnTarget.value(), const gameModel::Beater))) {
             emplaceEnvs(success, localEnv->getAllFreeCellsAround(target));

@@ -364,6 +364,73 @@ TEST(shot_test, execute_all_intercept_with_seeker){
     EXPECT_DOUBLE_EQ(sum , 1);
 
 }
+
+TEST(shot_test, execute_all_long_shot){
+    auto env = setup::createEnv({0, {}, {0.5, 0, 0, 0.4, 0}, {}});
+    env->quaffle->position = env->team1->chasers[2]->position;
+    gameController::Shot shot(env, env->team1->chasers[2], env->quaffle, gameModel::Position{2, 7});
+    auto resList = shot.executeAll();
+    EXPECT_EQ(resList.size(), 23);
+
+    double sum = 0;
+    std::deque<gameModel::Position> poses = {{1, 9}, {2, 9}, {3, 9}, {4, 9}, {0, 8}, {1, 8},
+                                             {2, 8}, {3, 8}, {4, 8}, {0, 7}, {1, 7}, {2, 7},
+                                             {3, 7}, {4, 7}, {1, 6}, {2, 6}, {3, 6}, {4, 6},
+                                             {0, 5}, {1, 5}, {2, 5}, {3, 5}, {4, 5}};
+    for(const auto &res : resList){
+        sum += res.second;
+        for(auto p = poses.begin(); p < poses.end();){
+            if(gameModel::Environment::isGoalCell(res.first->quaffle->position)){
+                EXPECT_EQ(res.first->team2->score, GOAL_POINTS);
+            }
+
+            if(res.first->quaffle->position == *p){
+                p = poses.erase(p);
+            } else {
+                p++;
+            }
+        }
+    }
+
+    EXPECT_TRUE(poses.empty());
+    EXPECT_DOUBLE_EQ(sum , 1);
+
+}
+
+TEST(shot_test, execute_all_long_shot_intercept){
+    auto env = setup::createEnv({0, {}, {0.5, 0, 0, 0.4, 0}, {}});
+    env->quaffle->position = env->team1->chasers[2]->position;
+    env->team2->seeker->position = {7, 7};
+    gameController::Shot shot(env, env->team1->chasers[2], env->quaffle, gameModel::Position{2, 7});
+    auto resList = shot.executeAll();
+    EXPECT_EQ(resList.size(), 30);
+
+    double sum = 0;
+    std::deque<gameModel::Position> poses = {{1, 9}, {2, 9}, {3, 9}, {4, 9}, {0, 8}, {1, 8},
+                                             {2, 8}, {3, 8}, {4, 8}, {0, 7}, {1, 7}, {2, 7},
+                                             {3, 7}, {4, 7}, {1, 6}, {2, 6}, {3, 6}, {4, 6},
+                                             {0, 5}, {1, 5}, {2, 5}, {3, 5}, {4, 5}, {6, 8},
+                                             {7, 8}, {8, 8}, {6, 7}, {8, 7}, {6, 6}, {7, 6}};
+    for(const auto &res : resList){
+        sum += res.second;
+        for(auto p = poses.begin(); p < poses.end();){
+            if(gameModel::Environment::isGoalCell(res.first->quaffle->position)){
+                EXPECT_EQ(res.first->team2->score, GOAL_POINTS);
+            }
+
+            if(res.first->quaffle->position == *p){
+                p = poses.erase(p);
+            } else {
+                p++;
+            }
+        }
+    }
+
+    EXPECT_TRUE(poses.empty());
+    EXPECT_GE(sum, 0.9999999);
+    EXPECT_LE(sum, 1.0000001);
+
+}
 //--------------------------Bludger shot check------------------------------------------------------------------------
 
 TEST(shot_test, valid_bludger_shot_check){
