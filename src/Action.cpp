@@ -125,9 +125,7 @@ namespace gameController{
             }
         }
 
-        if(env->isShitOnCell(ball->position)){
-            env->removeShitOnCell(ball->position);
-        }
+        env->removeShitOnCell(ball->position);
 
         return {shotRes, fouls};
     }
@@ -276,12 +274,21 @@ namespace gameController{
         }
     }
 
-    auto Shot::executeAll() const ->
-        std::vector<std::pair<std::shared_ptr<gameModel::Environment>, double>> {
+    auto Shot::executeAll() const -> std::vector<std::pair<std::shared_ptr<gameModel::Environment>, double>> {
         if (check() == ActionCheckResult::Impossible){
             throw std::runtime_error("Action is impossible");
         }
 
+        if(QUAFFLETHROW) {
+            return executeAllQuaffle();
+        } else if(BLUDGERSHOT){
+            return executeAllBludger();
+        } else {
+            throw std::runtime_error("Fatal Error! Illegal Shot!");
+        }
+    }
+
+    auto Shot::executeAllQuaffle() const -> std::vector<std::pair<std::shared_ptr<gameModel::Environment>, double>> {
         const std::shared_ptr<const gameModel::Environment> &localEnv = env;
         std::vector<std::pair<std::shared_ptr<gameModel::Environment>, double>> ret;
 
@@ -292,7 +299,7 @@ namespace gameController{
          * @param newPoses positions for new envs
          */
         auto emplaceEnvs = [this, &ret, &localEnv](double baseProb,
-                const std::vector<gameModel::Position> &newPoses){
+                                                   const std::vector<gameModel::Position> &newPoses){
             double prob = baseProb / newPoses.size();
             for(const auto &cell : newPoses) {
                 bool handled = false;
@@ -310,6 +317,7 @@ namespace gameController{
 
                 auto newEnv = localEnv->clone();
                 newEnv->quaffle->position = cell;
+                newEnv->removeShitOnCell(cell);
                 auto goalRes = goalCheck(cell);
                 if(goalRes.has_value()) {
                     if(goalRes.value() == ActionResult::ScoreLeft) {
@@ -334,10 +342,10 @@ namespace gameController{
             auto &interceptPos = interceptPoints[i];
             //baseProb for interception at i-th player
             double baseProb = std::pow(1 - localEnv->config.gameDynamicsProbs.catchQuaffle, i) *
-                    localEnv->config.gameDynamicsProbs.catchQuaffle;
+                              localEnv->config.gameDynamicsProbs.catchQuaffle;
             const std::shared_ptr<const gameModel::Player> interceptingPlayer = localEnv->getPlayer(interceptPos).value();
             if(INSTANCE_OF(interceptingPlayer, const gameModel::Seeker) ||
-                INSTANCE_OF(interceptingPlayer, const gameModel::Beater)) {
+               INSTANCE_OF(interceptingPlayer, const gameModel::Beater)) {
                 //Bounce off
                 emplaceEnvs(baseProb, localEnv->getAllFreeCellsAround(interceptPos));
             } else {
@@ -360,10 +368,57 @@ namespace gameController{
         //Handle success
         double success = noInterceptProb * throwSuccess;
         if(playerOnTarget.has_value() && (INSTANCE_OF(playerOnTarget.value(), const gameModel::Seeker) ||
-                INSTANCE_OF(playerOnTarget.value(), const gameModel::Beater))) {
+                                          INSTANCE_OF(playerOnTarget.value(), const gameModel::Beater))) {
             emplaceEnvs(success, localEnv->getAllFreeCellsAround(target));
         } else {
             emplaceEnvs(success, {target});
+        }
+
+        return ret;
+    }
+
+    auto Shot::executeAllBludger() const -> std::vector<std::pair<std::shared_ptr<gameModel::Environment>, double>> {
+        const std::shared_ptr<const gameModel::Environment> &localEnv = env;
+        std::vector<std::pair<std::shared_ptr<gameModel::Environment>, double>> ret;
+        std::optional<const std::shared_ptr<const gameModel::Player>> playerOnTarget = localEnv->getPlayer(target);
+        auto emplaceKnockoutEnv = [&ret, &playerOnTarget, &localEnv, this](double baseProb, const std::optional<gameModel::Position> &pos){
+            auto knockoutEnv = localEnv->clone();
+            knockoutEnv->getPlayerById(playerOnTarget.value()->id)->knockedOut = true;
+            auto freeCells = knockoutEnv->getAllFreeCells();
+            //non deterministic since branching factor would be way to high
+            knockoutEnv->getBallByID(ball->id)->position = freeCells[rng(0, static_cast<int>(freeCells.size()) - 1)];
+            if(pos.has_value()) {
+                knockoutEnv->quaffle->position = pos.value();
+                knockoutEnv->removeShitOnCell(pos.value());
+            }
+
+            ret.emplace_back(knockoutEnv, baseProb * localEnv->config.gameDynamicsProbs.knockOut);
+        };
+
+        auto emplaceFailEnv = [&ret, &localEnv, this](){
+            auto failEnv = localEnv->clone();
+            failEnv->getBallByID(ball->id)->position = target;
+            ret.emplace_back(failEnv, 1 - localEnv->config.gameDynamicsProbs.knockOut);
+        };
+
+        if(playerOnTarget.has_value() && !INSTANCE_OF(playerOnTarget.value(), const gameModel::Beater)) {
+            if(localEnv->quaffle->position == target) {
+                auto landingCells = localEnv->getAllFreeCellsAround(target);
+                double prob = 1.0 / landingCells.size();
+                for(const auto &cell : landingCells) {
+                    emplaceKnockoutEnv(prob, cell);
+                }
+
+                emplaceFailEnv();
+            } else {
+                emplaceKnockoutEnv(1, std::nullopt);
+                emplaceFailEnv();
+            }
+        } else {
+            auto newEnv = localEnv->clone();
+            newEnv->getBallByID(ball->id)->position = target;
+            newEnv->removeShitOnCell(target);
+            ret.emplace_back(newEnv, 1);
         }
 
         return ret;
@@ -554,6 +609,8 @@ namespace gameController{
                         newEnv->getPlayer(target).value()->position = pos;
                         //move actor on target
                         newEnv->getPlayerById(actor->id)->position = target;
+                        newEnv->removeShitOnCell(pos);
+
                         resList.emplace_back(newEnv, prob);
                     }
                 } else {
@@ -589,11 +646,15 @@ namespace gameController{
                             if(pos == freeCells.begin()) {
                                 //Alter in place
                                 outcome.first->quaffle->position = *pos;
+                                outcome.first->removeShitOnCell(*pos);
+
                                 outcome.second *= prob;
                             } else {
                                 //Create new envs
                                 auto newEnv = outcome.first->clone();
                                 newEnv->quaffle->position = *pos;
+                                newEnv->removeShitOnCell(*pos);
+
                                 newOutcomes.emplace_back(newEnv, outcome.second);
                             }
                         }

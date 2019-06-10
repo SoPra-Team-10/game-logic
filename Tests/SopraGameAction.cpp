@@ -282,6 +282,7 @@ TEST(shot_test, execute_all_standard_throw){
 
     EXPECT_TRUE(poses.empty());
     EXPECT_DOUBLE_EQ(sum , 1);
+    EXPECT_EQ(env->quaffle->position, env->team1->chasers[2]->position);
 }
 
 TEST(shot_test, execute_all_bouce_off){
@@ -308,7 +309,7 @@ TEST(shot_test, execute_all_bouce_off){
 
     EXPECT_TRUE(poses.empty());
     EXPECT_DOUBLE_EQ(sum , 1);
-
+    EXPECT_EQ(env->quaffle->position, env->team1->chasers[2]->position);
 }
 
 TEST(shot_test, execute_all_intercept){
@@ -335,7 +336,7 @@ TEST(shot_test, execute_all_intercept){
 
     EXPECT_TRUE(poses.empty());
     EXPECT_DOUBLE_EQ(sum , 1);
-
+    EXPECT_EQ(env->quaffle->position, env->team1->chasers[2]->position);
 }
 
 TEST(shot_test, execute_all_intercept_with_seeker){
@@ -362,7 +363,7 @@ TEST(shot_test, execute_all_intercept_with_seeker){
 
     EXPECT_TRUE(poses.empty());
     EXPECT_DOUBLE_EQ(sum , 1);
-
+    EXPECT_EQ(env->quaffle->position, env->team1->chasers[2]->position);
 }
 
 TEST(shot_test, execute_all_long_shot){
@@ -394,7 +395,9 @@ TEST(shot_test, execute_all_long_shot){
 
     EXPECT_TRUE(poses.empty());
     EXPECT_DOUBLE_EQ(sum , 1);
-
+    EXPECT_EQ(env->quaffle->position, env->team1->chasers[2]->position);
+    EXPECT_EQ(env->team1->score, 0);
+    EXPECT_EQ(env->team2->score, 0);
 }
 
 TEST(shot_test, execute_all_long_shot_intercept){
@@ -429,7 +432,9 @@ TEST(shot_test, execute_all_long_shot_intercept){
     EXPECT_TRUE(poses.empty());
     EXPECT_GE(sum, 0.9999999);
     EXPECT_LE(sum, 1.0000001);
-
+    EXPECT_EQ(env->quaffle->position, env->team1->chasers[2]->position);
+    EXPECT_EQ(env->team1->score, 0);
+    EXPECT_EQ(env->team2->score, 0);
 }
 //--------------------------Bludger shot check------------------------------------------------------------------------
 
@@ -527,6 +532,54 @@ TEST(shot_test, bludger_shot_on_Beater){
     EXPECT_EQ(res.first.size(), 0);
     EXPECT_EQ(env->bludgers[0]->position, env->team1->beaters[1]->position);
     EXPECT_FALSE(env->team1->beaters[1]->knockedOut);
+}
+
+TEST(shot_test, bludger_execute_all){
+    auto env = setup::createEnv({0, {}, {0.5, 0.5, 0, 0.4, 0}, {}});
+    env->bludgers[0]->position = env->team2->beaters[1]->position;
+    gameController::Shot shot(env, env->team2->beaters[1], env->bludgers[0], env->team1->seeker->position);
+    auto resList = shot.executeAll();
+    EXPECT_EQ(resList.size(), 2);
+    EXPECT_TRUE(resList[0].first->team1->seeker->knockedOut);
+    EXPECT_FALSE(resList[1].first->team1->seeker->knockedOut);
+    EXPECT_DOUBLE_EQ(resList[0].second, env->config.gameDynamicsProbs.knockOut);
+    EXPECT_DOUBLE_EQ(resList[1].second, 1 - env->config.gameDynamicsProbs.knockOut);
+    EXPECT_NE(resList[0].first->bludgers[0]->position, env->team1->seeker->position);
+    EXPECT_EQ(env->bludgers[0]->position, env->team2->beaters[1]->position);
+    EXPECT_FALSE(env->team1->seeker->knockedOut);
+}
+
+TEST(shot_test, bludger_execute_all_fool_away){
+    auto env = setup::createEnv({0, {}, {0.5, 0.5, 0, 0.4, 0}, {}});
+    env->bludgers[0]->position = env->team2->beaters[1]->position;
+    env->team1->chasers[0]->position = {5, 3};
+    env->quaffle->position = env->team1->chasers[0]->position;
+    gameController::Shot shot(env, env->team2->beaters[1], env->bludgers[0], env->team1->chasers[0]->position);
+    auto resList = shot.executeAll();
+    EXPECT_EQ(resList.size(), 7);
+
+    double sum = 0;
+    std::deque<gameModel::Position> poses = {{4, 4}, {6, 4}, {4, 3}, {6, 3}, {5, 2}, {6, 2}};
+    for(const auto &res : resList){
+        sum += res.second;
+        if(res.first->team1->chasers[0]->knockedOut){
+            for(auto p = poses.begin(); p < poses.end();){
+                if(res.first->quaffle->position == *p){
+                    p = poses.erase(p);
+                } else {
+                    p++;
+                }
+            }
+        } else {
+            EXPECT_EQ(res.first->quaffle->position, res.first->team1->chasers[0]->position);
+        }
+    }
+
+    EXPECT_DOUBLE_EQ(sum, 1);
+    EXPECT_TRUE(poses.empty());
+    EXPECT_EQ(env->bludgers[0]->position, env->team2->beaters[1]->position);
+    EXPECT_EQ(env->quaffle->position, env->team1->chasers[0]->position);
+    EXPECT_FALSE(env->team1->chasers[0]->knockedOut);
 }
 
 //---------------------------getAllLandingCells Check Tests----------------------------------------------------------------------

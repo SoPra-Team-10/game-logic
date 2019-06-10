@@ -137,6 +137,10 @@ namespace gameController{
          * @return
          */
         auto goalCheck(const gameModel::Position &pos) const -> std::optional<ActionResult>;
+
+        auto executeAllQuaffle() const -> std::vector<std::pair<std::shared_ptr<gameModel::Environment>, double>>;
+
+        auto executeAllBludger() const -> std::vector<std::pair<std::shared_ptr<gameModel::Environment>, double>>;
     };
 
     /**
