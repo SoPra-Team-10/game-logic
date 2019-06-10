@@ -1008,6 +1008,7 @@ TEST(move_test, move_execute_all){
     EXPECT_EQ(resList.size(), 1);
     EXPECT_DOUBLE_EQ(resList[0].second, 1);
     EXPECT_EQ(resList[0].first->team2->seeker->position, gameModel::Position(12, 9));
+    EXPECT_EQ(env->team2->seeker->position, gameModel::Position(11, 8));
 }
 
 TEST(move_test, move_execute_all_snitch_catch){
@@ -1024,6 +1025,8 @@ TEST(move_test, move_execute_all_snitch_catch){
     EXPECT_DOUBLE_EQ(resList[1].second, 1 - catchProb);
     EXPECT_EQ(resList[1].first->team2->score, 0);
     EXPECT_EQ(resList[1].first->team2->seeker->position, gameModel::Position(12, 9));
+    EXPECT_EQ(env->team2->seeker->position, gameModel::Position(11, 8));
+    EXPECT_EQ(env->team2->score, 0);
 }
 
 TEST(move_test, move_execute_all_charge_goal){
@@ -1044,6 +1047,8 @@ TEST(move_test, move_execute_all_charge_goal){
     EXPECT_EQ(resList[1].first->team1->score, GOAL_POINTS);
     EXPECT_DOUBLE_EQ(resList[1].second, env->config.foulDetectionProbs.chargeGoal);
     EXPECT_TRUE(resList[1].first->team1->chasers[0]->isFined);
+    EXPECT_EQ(env->team1->chasers[0]->position, gameModel::Position(13, 8));
+    EXPECT_EQ(env->quaffle->position, gameModel::Position(13, 8));
 }
 
 TEST(move_test, move_execute_all_ramming){
@@ -1076,6 +1081,8 @@ TEST(move_test, move_execute_all_ramming){
 
     EXPECT_TRUE(poses.empty());
     EXPECT_DOUBLE_EQ(sum, 1);
+    EXPECT_EQ(env->team2->seeker->position, gameModel::Position(11, 8));
+    EXPECT_EQ(env->team1->chasers[2]->position, target);
 }
 
 TEST(move_test, move_execute_all_ramming_with_quaffle){
@@ -1090,7 +1097,11 @@ TEST(move_test, move_execute_all_ramming_with_quaffle){
         sum += res.second;
     }
 
-    EXPECT_GE(sum, 0.999);
+    EXPECT_GE(sum, 0.999999);
+    EXPECT_LE(sum, 1.000001);
+    EXPECT_EQ(env->team2->seeker->position, gameModel::Position(11, 8));
+    EXPECT_EQ(env->quaffle->position, env->team1->chasers[2]->position);
+    EXPECT_EQ(env->team1->chasers[2]->position, gameModel::Position(10, 7));
 }
 
 TEST(move_test, move_execute_all_charge_goal_with_defender){
@@ -1108,7 +1119,11 @@ TEST(move_test, move_execute_all_charge_goal_with_defender){
         sum += res.second;
     }
 
-    EXPECT_GE(sum, 0.999);
+    EXPECT_GE(sum, 0.999999);
+    EXPECT_LE(sum, 1.000001);
+    EXPECT_EQ(env->team1->chasers[2]->position, gameModel::Position(13, 8));
+    EXPECT_EQ(env->team2->keeper->position, target);
+    EXPECT_EQ(env->quaffle->position, env->team1->chasers[2]->position);
 }
 //---------------------------WrestQuaffle Execute Move------------------------------------------------------------------
 TEST(wrest_quaffel_test, wrest_execute0) {
