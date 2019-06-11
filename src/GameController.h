@@ -7,10 +7,11 @@
 #include "GameModel.h"
 #include "Action.h"
 
-#define GOAL_POINTS 10
-#define SNITCH_POINTS 30
-
 namespace gameController {
+
+    constexpr int GOAL_POINTS = 10;
+    constexpr int SNITCH_POINTS = 30;
+
     class Shot;
     class Move;
     class WrestQuaffle;
@@ -21,16 +22,6 @@ namespace gameController {
         Stage2,
         Stage3
     };
-
-    /**
-     *
-     * @tparam T Type of random number (int or double)
-     * @param min lower boundary (inclusive)
-     * @param max upper boundary (inclusive when integer is used, exclusive else)
-     * @return
-     */
-     template <typename T>
-    T rng(T min, T max);
 
     /**
      * Rolls the dice and determines whether an action takes place
@@ -85,18 +76,21 @@ namespace gameController {
 
     void moveQuaffelAfterGoal(const std::shared_ptr<gameModel::Environment> &env);
 
-
-    template <>
+    /**
+     * generate a random number
+     * @param min lower boundary (inclusive)
+     * @param max upper boundary (exclusive)
+     * @return a random double number between min and max
+     */
     double rng(double min, double max);
 
-    template <>
+    /**
+     * generate a random number
+     * @param min lower boundary (inclusive)
+     * @param max upper boundary (inclusive)
+     * @return a random integer number between min and max
+     */
     int rng(int min, int max);
-
-    template <typename T>
-    T rng(T min, T mx){
-        static_assert("Only double or int are supported");
-        return min;
-    }
 
     /**
      * make the decision if a player will be punished or not after a foul.df
