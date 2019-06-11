@@ -405,7 +405,7 @@ namespace gameController{
             if(localEnv->quaffle->position == target) {
                 auto landingCells = localEnv->getAllFreeCellsAround(target);
 
-                if (landingCells.size() < 1) {
+                if (landingCells.empty()) {
                     throw std::runtime_error("No landing cells for the quaffle found.");
                 }
 
