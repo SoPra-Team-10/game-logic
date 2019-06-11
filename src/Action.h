@@ -52,6 +52,11 @@ namespace gameController{
         Action(std::shared_ptr<gameModel::Environment> env, std::shared_ptr<gameModel::Player> actor,
                 gameModel::Position target);
 
+        // destructors
+        /**
+         * default destructors for the Action class.
+         */
+        ~Action() = default;
 
         // functions
         /**

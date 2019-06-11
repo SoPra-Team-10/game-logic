@@ -1,8 +1,8 @@
 #include <utility>
 #include "Action.h"
 #include "GameModel.h"
-#define QUAFFLETHROW ((INSTANCE_OF(actor, gameModel::Chaser) || INSTANCE_OF(actor, gameModel::Keeper)) && INSTANCE_OF(ball, gameModel::Quaffle))
-#define BLUDGERSHOT (INSTANCE_OF(actor, gameModel::Beater) && INSTANCE_OF(ball, gameModel::Bludger))
+#define QUAFFLETHROW (((INSTANCE_OF(actor, gameModel::Chaser)) || (INSTANCE_OF(actor, gameModel::Keeper))) && (INSTANCE_OF(ball, gameModel::Quaffle)))
+#define BLUDGERSHOT ((INSTANCE_OF(actor, gameModel::Beater)) && (INSTANCE_OF(ball, gameModel::Bludger)))
 
 namespace gameController{
     Action::Action(std::shared_ptr<gameModel::Environment> env, std::shared_ptr<gameModel::Player> actor,
@@ -324,8 +324,10 @@ namespace gameController{
             }
         }
 
-        if(env->snitch->exists && this->env->snitch->position == this->target && INSTANCE_OF(this->actor, gameModel::Seeker)
-            && actionTriggered(env->config.gameDynamicsProbs.catchSnitch)) {
+        const bool positionIsTarget = this->env->snitch->position == this->target;
+        const bool isSeeker = (bool) INSTANCE_OF(this->actor, gameModel::Seeker);
+        const bool actionWasTriggered = actionTriggered(env->config.gameDynamicsProbs.catchSnitch);
+        if(env->snitch->exists && positionIsTarget && isSeeker && actionWasTriggered) {
 
             actions.push_back(ActionResult::SnitchCatch);
             env->getTeam(actor)->score += SNITCH_POINTS;
@@ -402,11 +404,10 @@ namespace gameController{
         if (INSTANCE_OF(actor, gameModel::Chaser)) {
 
             // ChargeGoal
-            if (env->quaffle->position == this->actor->position) {
-                if ((env->team1->hasMember(this->actor) && gameModel::Environment::getCell(this->target) == gameModel::Cell::GoalRight) ||
-                    (env->team2->hasMember(this->actor) && gameModel::Environment::getCell(this->target) == gameModel::Cell::GoalLeft)) {
-                    resVect.emplace_back(gameModel::Foul::ChargeGoal);
-                }
+            if (env->quaffle->position == this->actor->position &&
+                ((env->team1->hasMember(this->actor) && gameModel::Environment::getCell(this->target) == gameModel::Cell::GoalRight) ||
+                (env->team2->hasMember(this->actor) && gameModel::Environment::getCell(this->target) == gameModel::Cell::GoalLeft))) {
+                resVect.emplace_back(gameModel::Foul::ChargeGoal);
             }
 
             // MultipleOffence

@@ -325,6 +325,8 @@ namespace gameController {
     }
 
     void spawnSnitch(std::shared_ptr<gameModel::Environment> &env){
+        using Env = gameModel::Environment;
+        using Cell = gameModel::Cell;
         gameModel::Vector dirVec = {env->team1->seeker->position, env->team2->seeker->position};
         dirVec = dirVec * 0.5;
         gameModel::Vector dirVectOrtho = dirVec.orthogonal();
@@ -333,10 +335,14 @@ namespace gameController {
         std::vector<gameModel::Position> resultVect2;
         gameModel::Position lowerCell = {static_cast<int>(env->team1->seeker->position.x + dirVec.x), static_cast<int>(env->team1->seeker->position.y + dirVec.y)};
         gameModel::Position upperCell = lowerCell;
-        bool notOutOfBounds1 = false;
-        bool notOutOfBounds2 = false;
-        while((notOutOfBounds1 = gameModel::Environment::getCell(lowerCell.x + static_cast<int>(std::round(dirVectOrtho.x)), lowerCell.y + static_cast<int>(std::round(dirVectOrtho.y))) != gameModel::Cell::OutOfBounds) ||
-                (notOutOfBounds2 = gameModel::Environment::getCell(upperCell.x - static_cast<int>(std::round(dirVectOrtho.x)), upperCell.y - static_cast<int>(std::round(dirVectOrtho.y))) != gameModel::Cell::OutOfBounds)){
+        bool notOutOfBounds1;
+        bool notOutOfBounds2;
+        do {
+            notOutOfBounds1 = Env::getCell(lowerCell.x + static_cast<int>(std::round(dirVectOrtho.x)),
+                                                              lowerCell.y + static_cast<int>(std::round(dirVectOrtho.y))) != Cell::OutOfBounds;
+            notOutOfBounds2 = Env::getCell(upperCell.x - static_cast<int>(std::round(dirVectOrtho.x)),
+                                                              upperCell.y - static_cast<int>(std::round(dirVectOrtho.y))) != Cell::OutOfBounds;
+
             if(notOutOfBounds1) {
                 lowerCell.x = lowerCell.x + static_cast<int>(std::round(dirVectOrtho.x));
                 lowerCell.y = lowerCell.y + static_cast<int>(std::round(dirVectOrtho.y));
@@ -347,7 +353,9 @@ namespace gameController {
                 upperCell.y = upperCell.y - static_cast<int>(std::round(dirVectOrtho.y));
                 resultVect2.emplace_back(upperCell);
             }
-        }
+
+        } while (notOutOfBounds1 || notOutOfBounds2);
+
         if(resultVect1.size() >= resultVect2.size()) {
             if(env->cellIsFree(resultVect1.back())) {
                 env->snitch->position = resultVect1.back();

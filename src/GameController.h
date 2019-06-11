@@ -7,10 +7,11 @@
 #include "GameModel.h"
 #include "Action.h"
 
-constexpr int GOAL_POINTS = 10;
-constexpr int SNITCH_POINTS = 30;
-
 namespace gameController {
+
+    constexpr int GOAL_POINTS = 10;
+    constexpr int SNITCH_POINTS = 30;
+
     class Shot;
     class Move;
     class WrestQuaffle;
