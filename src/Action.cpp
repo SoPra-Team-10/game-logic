@@ -403,9 +403,9 @@ namespace gameController{
         }
 
         // BlockSnitch
-        const bool actorIsNOTSeeker = !INSTANCE_OF(actor, gameModel::Seeker);
+        const bool actorIsNotSeeker = !INSTANCE_OF(actor, gameModel::Seeker);
         const bool targetIsSnitchPos = this->target == this->env->snitch->position;
-        if (actorIsNOTSeeker && targetIsSnitchPos && env->snitch->exists) {
+        if (actorIsNotSeeker && targetIsSnitchPos && env->snitch->exists) {
             resVect.emplace_back(gameModel::Foul::BlockSnitch);
         }
 
