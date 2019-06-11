@@ -4,6 +4,7 @@
 
 #include <gtest/gtest.h>
 #include <gmock/gmock-matchers.h>
+#include <Interference.h>
 #include "Action.h"
 #include "setup.h"
 //-----------------------------------Throw checks-----------------------------------------------------------------------
@@ -259,6 +260,181 @@ TEST(shot_test, shot_through_goal){
     EXPECT_EQ(env->quaffle->position, gameModel::Position(15, 3));
 }
 
+TEST(shot_test, execute_all_standard_throw){
+    auto env = setup::createEnv({0, {}, {0.5, 0, 0, 0, 0}, {}});
+    env->quaffle->position = env->team1->chasers[2]->position;
+    gameController::Shot shot(env, env->team1->chasers[2], env->quaffle, gameModel::Position{10, 5});
+    auto resList = shot.executeAll();
+    EXPECT_EQ(resList.size(), 9);
+    double sum = 0;
+    std::deque<gameModel::Position> poses = {{10, 5}, {10, 6}, {11, 6}, {11, 5}, {11, 4}, {10, 4},
+                                             {9, 4}, {9, 5}, {9, 6}};
+    for(const auto &res : resList){
+        sum += res.second;
+        for(auto p = poses.begin(); p < poses.end();){
+            if(res.first->quaffle->position == *p){
+                p = poses.erase(p);
+            } else {
+                p++;
+            }
+        }
+    }
+
+    EXPECT_TRUE(poses.empty());
+    EXPECT_DOUBLE_EQ(sum , 1);
+    EXPECT_EQ(env->quaffle->position, env->team1->chasers[2]->position);
+}
+
+TEST(shot_test, execute_all_bouce_off){
+    auto env = setup::createEnv({0, {}, {0.5, 0, 0, 0, 0}, {}});
+    env->quaffle->position = env->team1->chasers[2]->position;
+    env->team1->seeker->position = {10, 5};
+    gameController::Shot shot(env, env->team1->chasers[2], env->quaffle, gameModel::Position{10, 5});
+    auto resList = shot.executeAll();
+    EXPECT_EQ(resList.size(), 8);
+
+    double sum = 0;
+    std::deque<gameModel::Position> poses = {{10, 6}, {11, 6}, {11, 5}, {11, 4}, {10, 4},
+                                             {9, 4}, {9, 5}, {9, 6}};
+    for(const auto &res : resList){
+        sum += res.second;
+        for(auto p = poses.begin(); p < poses.end();){
+            if(res.first->quaffle->position == *p){
+                p = poses.erase(p);
+            } else {
+                p++;
+            }
+        }
+    }
+
+    EXPECT_TRUE(poses.empty());
+    EXPECT_DOUBLE_EQ(sum , 1);
+    EXPECT_EQ(env->quaffle->position, env->team1->chasers[2]->position);
+}
+
+TEST(shot_test, execute_all_intercept){
+    auto env = setup::createEnv({0, {}, {0.5, 0, 0, 0.4, 0}, {}});
+    env->quaffle->position = env->team1->chasers[2]->position;
+    env->team2->keeper->position = {10, 6};
+    gameController::Shot shot(env, env->team1->chasers[2], env->quaffle, gameModel::Position{10, 5});
+    auto resList = shot.executeAll();
+    EXPECT_EQ(resList.size(), 9);
+
+    double sum = 0;
+    std::deque<gameModel::Position> poses = {{10, 5}, {11, 6}, {11, 5}, {11, 4}, {10, 4},
+                                             {9, 4}, {9, 5}, {9, 6}, {10, 6}};
+    for(const auto &res : resList){
+        sum += res.second;
+        for(auto p = poses.begin(); p < poses.end();){
+            if(res.first->quaffle->position == *p){
+                p = poses.erase(p);
+            } else {
+                p++;
+            }
+        }
+    }
+
+    EXPECT_TRUE(poses.empty());
+    EXPECT_DOUBLE_EQ(sum , 1);
+    EXPECT_EQ(env->quaffle->position, env->team1->chasers[2]->position);
+}
+
+TEST(shot_test, execute_all_intercept_with_seeker){
+    auto env = setup::createEnv({0, {}, {0.5, 0, 0, 0.4, 0}, {}});
+    env->quaffle->position = env->team1->chasers[2]->position;
+    env->team2->seeker->position = {10, 6};
+    gameController::Shot shot(env, env->team1->chasers[2], env->quaffle, gameModel::Position{10, 5});
+    auto resList = shot.executeAll();
+    EXPECT_EQ(resList.size(), 10);
+
+    double sum = 0;
+    std::deque<gameModel::Position> poses = {{10, 5}, {11, 6}, {11, 5}, {11, 4}, {10, 4},
+                                             {9, 4}, {9, 5}, {9, 6}, {9, 7}, {11, 7}};
+    for(const auto &res : resList){
+        sum += res.second;
+        for(auto p = poses.begin(); p < poses.end();){
+            if(res.first->quaffle->position == *p){
+                p = poses.erase(p);
+            } else {
+                p++;
+            }
+        }
+    }
+
+    EXPECT_TRUE(poses.empty());
+    EXPECT_DOUBLE_EQ(sum , 1);
+    EXPECT_EQ(env->quaffle->position, env->team1->chasers[2]->position);
+}
+
+TEST(shot_test, execute_all_long_shot){
+    auto env = setup::createEnv({0, {}, {0.5, 0, 0, 0.4, 0}, {}});
+    env->quaffle->position = env->team1->chasers[2]->position;
+    gameController::Shot shot(env, env->team1->chasers[2], env->quaffle, gameModel::Position{2, 7});
+    auto resList = shot.executeAll();
+    EXPECT_EQ(resList.size(), 23);
+
+    double sum = 0;
+    std::deque<gameModel::Position> poses = {{1, 9}, {2, 9}, {3, 9}, {4, 9}, {0, 8}, {1, 8},
+                                             {2, 8}, {3, 8}, {4, 8}, {0, 7}, {1, 7}, {2, 7},
+                                             {3, 7}, {4, 7}, {1, 6}, {2, 6}, {3, 6}, {4, 6},
+                                             {0, 5}, {1, 5}, {2, 5}, {3, 5}, {4, 5}};
+    for(const auto &res : resList){
+        sum += res.second;
+        for(auto p = poses.begin(); p < poses.end();){
+            if(gameModel::Environment::isGoalCell(res.first->quaffle->position)){
+                EXPECT_EQ(res.first->team2->score, gameController::GOAL_POINTS);
+            }
+
+            if(res.first->quaffle->position == *p){
+                p = poses.erase(p);
+            } else {
+                p++;
+            }
+        }
+    }
+
+    EXPECT_TRUE(poses.empty());
+    EXPECT_DOUBLE_EQ(sum , 1);
+    EXPECT_EQ(env->quaffle->position, env->team1->chasers[2]->position);
+    EXPECT_EQ(env->team1->score, 0);
+    EXPECT_EQ(env->team2->score, 0);
+}
+
+TEST(shot_test, execute_all_long_shot_intercept){
+    auto env = setup::createEnv({0, {}, {0.5, 0, 0, 0.4, 0}, {}});
+    env->quaffle->position = env->team1->chasers[2]->position;
+    env->team2->seeker->position = {7, 7};
+    gameController::Shot shot(env, env->team1->chasers[2], env->quaffle, gameModel::Position{2, 7});
+    auto resList = shot.executeAll();
+    EXPECT_EQ(resList.size(), 30);
+
+    double sum = 0;
+    std::deque<gameModel::Position> poses = {{1, 9}, {2, 9}, {3, 9}, {4, 9}, {0, 8}, {1, 8},
+                                             {2, 8}, {3, 8}, {4, 8}, {0, 7}, {1, 7}, {2, 7},
+                                             {3, 7}, {4, 7}, {1, 6}, {2, 6}, {3, 6}, {4, 6},
+                                             {0, 5}, {1, 5}, {2, 5}, {3, 5}, {4, 5}, {6, 8},
+                                             {7, 8}, {8, 8}, {6, 7}, {8, 7}, {6, 6}, {7, 6}};
+    for(const auto &res : resList){
+        sum += res.second;
+        for(auto p = poses.begin(); p < poses.end();){
+            if(gameModel::Environment::isGoalCell(res.first->quaffle->position)){
+                EXPECT_EQ(res.first->team2->score, gameController::GOAL_POINTS);
+            }
+
+            if(res.first->quaffle->position == *p){
+                p = poses.erase(p);
+            } else {
+                p++;
+            }
+        }
+    }
+
+    EXPECT_TRUE(poses.empty());
+    EXPECT_NEAR(sum, 1, 0.0000001);
+    EXPECT_EQ(env->quaffle->position, env->team1->chasers[2]->position);
+    EXPECT_EQ(env->team1->score, 0);
+    EXPECT_EQ(env->team2->score, 0);
+}
 //--------------------------Bludger shot check------------------------------------------------------------------------
 
 TEST(shot_test, valid_bludger_shot_check){
@@ -355,6 +531,54 @@ TEST(shot_test, bludger_shot_on_Beater){
     EXPECT_EQ(res.first.size(), 0);
     EXPECT_EQ(env->bludgers[0]->position, env->team1->beaters[1]->position);
     EXPECT_FALSE(env->team1->beaters[1]->knockedOut);
+}
+
+TEST(shot_test, bludger_execute_all){
+    auto env = setup::createEnv({0, {}, {0.5, 0.5, 0, 0.4, 0}, {}});
+    env->bludgers[0]->position = env->team2->beaters[1]->position;
+    gameController::Shot shot(env, env->team2->beaters[1], env->bludgers[0], env->team1->seeker->position);
+    auto resList = shot.executeAll();
+    EXPECT_EQ(resList.size(), 2);
+    EXPECT_TRUE(resList[0].first->team1->seeker->knockedOut);
+    EXPECT_FALSE(resList[1].first->team1->seeker->knockedOut);
+    EXPECT_DOUBLE_EQ(resList[0].second, env->config.gameDynamicsProbs.knockOut);
+    EXPECT_DOUBLE_EQ(resList[1].second, 1 - env->config.gameDynamicsProbs.knockOut);
+    EXPECT_NE(resList[0].first->bludgers[0]->position, env->team1->seeker->position);
+    EXPECT_EQ(env->bludgers[0]->position, env->team2->beaters[1]->position);
+    EXPECT_FALSE(env->team1->seeker->knockedOut);
+}
+
+TEST(shot_test, bludger_execute_all_fool_away){
+    auto env = setup::createEnv({0, {}, {0.5, 0.5, 0, 0.4, 0}, {}});
+    env->bludgers[0]->position = env->team2->beaters[1]->position;
+    env->team1->chasers[0]->position = {5, 3};
+    env->quaffle->position = env->team1->chasers[0]->position;
+    gameController::Shot shot(env, env->team2->beaters[1], env->bludgers[0], env->team1->chasers[0]->position);
+    auto resList = shot.executeAll();
+    EXPECT_EQ(resList.size(), 7);
+
+    double sum = 0;
+    std::deque<gameModel::Position> poses = {{4, 4}, {6, 4}, {4, 3}, {6, 3}, {5, 2}, {6, 2}};
+    for(const auto &res : resList){
+        sum += res.second;
+        if(res.first->team1->chasers[0]->knockedOut){
+            for(auto p = poses.begin(); p < poses.end();){
+                if(res.first->quaffle->position == *p){
+                    p = poses.erase(p);
+                } else {
+                    p++;
+                }
+            }
+        } else {
+            EXPECT_EQ(res.first->quaffle->position, res.first->team1->chasers[0]->position);
+        }
+    }
+
+    EXPECT_DOUBLE_EQ(sum, 1);
+    EXPECT_TRUE(poses.empty());
+    EXPECT_EQ(env->bludgers[0]->position, env->team2->beaters[1]->position);
+    EXPECT_EQ(env->quaffle->position, env->team1->chasers[0]->position);
+    EXPECT_FALSE(env->team1->chasers[0]->knockedOut);
 }
 
 //---------------------------getAllLandingCells Check Tests----------------------------------------------------------------------
@@ -776,6 +1000,129 @@ TEST(move_test, move_execute10){
     EXPECT_TRUE(mvRes.first.empty());
 }
 
+TEST(move_test, move_execute_all){
+    auto env = setup::createEnv();
+    gameController::Move move(env, env->team2->seeker, gameModel::Position{12, 9});
+    auto resList = move.executeAll();
+    EXPECT_EQ(resList.size(), 1);
+    EXPECT_DOUBLE_EQ(resList[0].second, 1);
+    EXPECT_EQ(resList[0].first->team2->seeker->position, gameModel::Position(12, 9));
+    EXPECT_EQ(env->team2->seeker->position, gameModel::Position(11, 8));
+}
+
+TEST(move_test, move_execute_all_snitch_catch){
+    auto env = setup::createEnv({0, {1, 1, 1, 1, 1, 1, 1, 1, 1, 1}, {1, 1, 0.8, 1, 1}, {}});
+    env->snitch->position = {12, 9};
+    env->snitch->exists = true;
+    gameController::Move move(env, env->team2->seeker, gameModel::Position{12, 9});
+    auto resList = move.executeAll();
+    EXPECT_EQ(resList.size(), 2);
+    auto catchProb = env->config.gameDynamicsProbs.catchSnitch;
+    EXPECT_DOUBLE_EQ(resList[0].second, catchProb);
+    EXPECT_EQ(resList[0].first->team2->score, gameController::SNITCH_POINTS);
+    EXPECT_EQ(resList[0].first->team2->seeker->position, gameModel::Position(12, 9));
+    EXPECT_DOUBLE_EQ(resList[1].second, 1 - catchProb);
+    EXPECT_EQ(resList[1].first->team2->score, 0);
+    EXPECT_EQ(resList[1].first->team2->seeker->position, gameModel::Position(12, 9));
+    EXPECT_EQ(env->team2->seeker->position, gameModel::Position(11, 8));
+    EXPECT_EQ(env->team2->score, 0);
+}
+
+TEST(move_test, move_execute_all_charge_goal){
+    auto env = setup::createEnv({0, {1, 0.4, 1, 1, 1, 1, 1, 1, 1, 1}, {1, 1, 0.8, 1, 1}, {}});
+    gameModel::Position target(14, 8);
+    env->team1->chasers[0]->position = {13, 8};
+    env->quaffle->position = env->team1->chasers[0]->position;
+    gameController::Move move(env, env->team1->chasers[0], target);
+    auto resList = move.executeAll();
+    EXPECT_EQ(resList.size(), 2);
+    EXPECT_EQ(resList[0].first->quaffle->position, target);
+    EXPECT_EQ(resList[0].first->team1->chasers[0]->position, target);
+    EXPECT_EQ(resList[0].first->team1->score, gameController::GOAL_POINTS);
+    EXPECT_FALSE(resList[0].first->team1->chasers[0]->isFined);
+    EXPECT_DOUBLE_EQ(resList[0].second, 1 - env->config.foulDetectionProbs.chargeGoal);
+    EXPECT_EQ(resList[1].first->quaffle->position, target);
+    EXPECT_EQ(resList[1].first->team1->chasers[0]->position, target);
+    EXPECT_EQ(resList[1].first->team1->score, gameController::GOAL_POINTS);
+    EXPECT_DOUBLE_EQ(resList[1].second, env->config.foulDetectionProbs.chargeGoal);
+    EXPECT_TRUE(resList[1].first->team1->chasers[0]->isFined);
+    EXPECT_EQ(env->team1->chasers[0]->position, gameModel::Position(13, 8));
+    EXPECT_EQ(env->quaffle->position, gameModel::Position(13, 8));
+}
+
+TEST(move_test, move_execute_all_ramming){
+    auto env = setup::createEnv({0, {1, 0.4, 1, 0.5, 1, 1, 1, 1, 1, 1}, {1, 1, 0.8, 1, 1}, {}});
+    auto target = env->team1->chasers[2]->position;
+    gameController::Move move(env, env->team2->seeker, target);
+    auto resList = move.executeAll();
+    EXPECT_EQ(resList.size(), 16);
+
+    double sum = 0;
+    std::deque<gameModel::Position> poses = {gameModel::Position(9, 6), gameModel::Position(10, 6), gameModel::Position(11, 6),
+                                             gameModel::Position(9, 7), gameModel::Position(11, 7), gameModel::Position(9, 8),
+                                             gameModel::Position(10, 8), gameModel::Position(11, 8),
+
+                                             gameModel::Position(9, 6), gameModel::Position(10, 6), gameModel::Position(11, 6),
+                                             gameModel::Position(9, 7), gameModel::Position(11, 7), gameModel::Position(9, 8),
+                                             gameModel::Position(10, 8), gameModel::Position(11, 8)};
+    for(const auto &res : resList) {
+        sum += res.second;
+        EXPECT_EQ(res.first->team2->seeker->position, target);
+        for(auto p = poses.begin(); p < poses.end();) {
+            if(*p == res.first->team1->chasers[2]->position) {
+                p = poses.erase(p);
+                break;
+            } else {
+                p++;
+            }
+        }
+    }
+
+    EXPECT_TRUE(poses.empty());
+    EXPECT_DOUBLE_EQ(sum, 1);
+    EXPECT_EQ(env->team2->seeker->position, gameModel::Position(11, 8));
+    EXPECT_EQ(env->team1->chasers[2]->position, target);
+}
+
+TEST(move_test, move_execute_all_ramming_with_quaffle){
+    auto env = setup::createEnv({0, {1, 0.4, 1, 0.5, 1, 1, 1, 1, 1, 1}, {1, 1, 0.8, 1, 1}, {}});
+    env->quaffle->position = env->team1->chasers[2]->position;
+    gameController::Move move(env, env->team2->seeker, env->team1->chasers[2]->position);
+    auto resList = move.executeAll();
+
+    double sum = 0;
+    EXPECT_EQ(resList.size(), 7 * 8 * 2);
+    for(const auto &res : resList){
+        sum += res.second;
+    }
+
+    EXPECT_NEAR(sum, 1, 0.000001);
+    EXPECT_EQ(env->team2->seeker->position, gameModel::Position(11, 8));
+    EXPECT_EQ(env->quaffle->position, env->team1->chasers[2]->position);
+    EXPECT_EQ(env->team1->chasers[2]->position, gameModel::Position(10, 7));
+}
+
+TEST(move_test, move_execute_all_charge_goal_with_defender){
+    auto env = setup::createEnv({0, {1, 0.4, 1, 0.5, 1, 1, 1, 1, 1, 1}, {1, 1, 0.8, 1, 1}, {}});
+    gameModel::Position target(14, 8);
+    env->team1->chasers[2]->position = {13, 8};
+    env->team2->keeper->position = target;
+    env->quaffle->position = env->team1->chasers[2]->position;
+    gameController::Move move(env, env->team1->chasers[2], target);
+    auto resList = move.executeAll();
+
+    double sum = 0;
+    EXPECT_EQ(resList.size(), 8 * 2);
+    for(const auto &res : resList){
+        sum += res.second;
+    }
+
+    EXPECT_GE(sum, 0.999999);
+    EXPECT_LE(sum, 1.000001);
+    EXPECT_EQ(env->team1->chasers[2]->position, gameModel::Position(13, 8));
+    EXPECT_EQ(env->team2->keeper->position, target);
+    EXPECT_EQ(env->quaffle->position, env->team1->chasers[2]->position);
+}
 //---------------------------WrestQuaffle Execute Move------------------------------------------------------------------
 TEST(wrest_quaffel_test, wrest_execute0) {
     auto env = setup::createEnv();

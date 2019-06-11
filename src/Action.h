@@ -82,7 +82,7 @@ namespace gameController{
          * @return
          */
         virtual auto executeAll() const ->
-            std::vector<std::pair<const std::shared_ptr<const gameModel::Environment>, double>> = 0;
+            std::vector<std::pair<std::shared_ptr<gameModel::Environment>, double>> = 0;
 
     protected:
         // objects
@@ -118,9 +118,8 @@ namespace gameController{
         auto successProb() const -> double override;
         auto check() const -> ActionCheckResult override;
         auto executeAll() const ->
-            std::vector<std::pair<const std::shared_ptr<const gameModel::Environment>, double>> override;
+            std::vector<std::pair<std::shared_ptr<gameModel::Environment>, double>> override;
     private:
-
         std::shared_ptr<gameModel::Ball> ball;
         /**
          * gets all cells along the flightpath which are occupied by opponent players (ordered in flight direction)
@@ -143,6 +142,29 @@ namespace gameController{
          * @return
          */
         auto goalCheck(const gameModel::Position &pos) const -> std::optional<ActionResult>;
+
+        /**
+         * creates all Environments for Quaffle throws
+         * @return
+         */
+        auto executeAllQuaffle() const -> std::vector<std::pair<std::shared_ptr<gameModel::Environment>, double>>;
+
+        /**
+         * creates all Environments for Bludger shots
+         * @return
+         */
+        auto executeAllBludger() const -> std::vector<std::pair<std::shared_ptr<gameModel::Environment>, double>>;
+
+
+        /**
+         * emplaces new Envs in return-list where the Quaffle landed on a cell in newPoses to pos
+         * and makes sure that no duplicate envs are created.
+         * @param baseProb the probability that the Quaffle reached any of the cells in newPoses
+         * @param newPoses positions for new envs
+         * @param envList list where new envs and their corresponding probabilities are constructed
+         */
+        void emplaceEnvs(double baseProb, const std::vector<gameModel::Position> &newPoses,
+                std::vector<std::pair<std::shared_ptr<gameModel::Environment>, double>> &envList) const;
     };
 
     /**
@@ -176,7 +198,7 @@ namespace gameController{
         auto successProb() const -> double override;
         auto check() const -> ActionCheckResult override;
         auto executeAll() const ->
-            std::vector<std::pair<const std::shared_ptr<const gameModel::Environment>, double>> override;
+            std::vector<std::pair<std::shared_ptr<gameModel::Environment>, double>> override;
 
     };
 
@@ -210,13 +232,23 @@ namespace gameController{
         auto successProb() const -> double override;
         auto check() const -> ActionCheckResult override;
         auto executeAll() const ->
-            std::vector<std::pair<const std::shared_ptr<const gameModel::Environment>, double>> override;
+            std::vector<std::pair<std::shared_ptr<gameModel::Environment>, double>> override;
 
         /**
          * checks if the move is a foul.
          * @return List with possible fouls resulting from the move
          */
         auto checkForFoul() const -> std::vector<gameModel::Foul>;
+
+    private:
+        enum class ActionState {
+            HandleFouls,
+            MovePlayers,
+            HandleBalls
+        };
+
+        void executePartially(std::vector<std::pair<std::shared_ptr<gameModel::Environment>, double>> &resList,
+                ActionState state) const;
     };
 
 }
