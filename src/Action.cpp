@@ -1,8 +1,8 @@
 #include <utility>
 #include "Action.h"
 #include "GameModel.h"
-#define QUAFFLETHROW ((INSTANCE_OF(actor, gameModel::Chaser) || INSTANCE_OF(actor, gameModel::Keeper)) && INSTANCE_OF(ball, gameModel::Quaffle))
-#define BLUDGERSHOT (INSTANCE_OF(actor, gameModel::Beater) && INSTANCE_OF(ball, gameModel::Bludger))
+#define QUAFFLETHROW (((INSTANCE_OF(actor, gameModel::Chaser)) || (INSTANCE_OF(actor, gameModel::Keeper))) && (INSTANCE_OF(ball, gameModel::Quaffle)))
+#define BLUDGERSHOT ((INSTANCE_OF(actor, gameModel::Beater)) && (INSTANCE_OF(ball, gameModel::Bludger)))
 
 namespace gameController{
     Action::Action(std::shared_ptr<gameModel::Environment> env, std::shared_ptr<gameModel::Player> actor,
@@ -138,14 +138,18 @@ namespace gameController{
         }
 
         auto playerOnTarget = env->getPlayer(target);
+        const bool playerNotInSameTeam = !env->arePlayerInSameTeam(actor, playerOnTarget.value());
+        const bool targetIsGoal = gameModel::Environment::isGoalCell(target);
+        const bool isAnyPlayerOnTarget = playerOnTarget.has_value();
+
         if(QUAFFLETHROW) {
-            if(env->isGoalCell(target) && playerOnTarget.has_value() && !env->arePlayerInSameTeam(actor, playerOnTarget.value())){
+            if(targetIsGoal && isAnyPlayerOnTarget && playerNotInSameTeam){
                 //100% bounce off on goal
                 return 0;
             }
 
-            if(playerOnTarget.has_value() && !(INSTANCE_OF(playerOnTarget.value(), gameModel::Chaser) ||
-                                               INSTANCE_OF(playerOnTarget.value(), gameModel::Keeper))) {
+            if(isAnyPlayerOnTarget && !(INSTANCE_OF(playerOnTarget.value(), gameModel::Chaser) ||
+                                        INSTANCE_OF(playerOnTarget.value(), gameModel::Keeper))) {
                 //Target player cannot hold ball -> 100% bounce off
                 return 0;
             }
@@ -154,7 +158,7 @@ namespace gameController{
             return std::pow(1 - env->config.gameDynamicsProbs.catchQuaffle, getInterceptionPositions().size()) *
                 std::pow(env->config.gameDynamicsProbs.throwSuccess, getDistance(actor->position, target));
         } else if(BLUDGERSHOT) {
-            if(playerOnTarget.has_value() && !INSTANCE_OF(playerOnTarget.value(), gameModel::Beater)) {
+            if(isAnyPlayerOnTarget && !INSTANCE_OF(playerOnTarget.value(), gameModel::Beater)) {
                 //Prob for knockout
                 return env->config.gameDynamicsProbs.knockOut;
             } else {
@@ -171,19 +175,17 @@ namespace gameController{
             !actor->isFined && !actor->knockedOut){
             if(QUAFFLETHROW){
                 return res::Success;
-            } else if(BLUDGERSHOT){
-                if(getDistance(actor->position, target) <= 3){
-                    bool blocked = false;
-                    for(const auto &cell : getAllCrossedCells(actor->position, target)){
-                        if(env->getPlayer(cell).has_value()){
-                            blocked = true;
-                            break;
-                        }
+            } else if(BLUDGERSHOT && getDistance(actor->position, target) <= 3){
+                bool blocked = false;
+                for(const auto &cell : getAllCrossedCells(actor->position, target)){
+                    if(env->getPlayer(cell).has_value()){
+                        blocked = true;
+                        break;
                     }
+                }
 
-                    if(!blocked){
-                        return res::Success;
-                    }
+                if(!blocked){
+                    return res::Success;
                 }
             }
         }
@@ -326,15 +328,13 @@ namespace gameController{
             }
         }
 
-        if(env->snitch->exists) {
-            if (this->env->snitch->position == this->target) {
-                if (INSTANCE_OF(this->actor, gameModel::Seeker)) {
-                    if (actionTriggered(env->config.gameDynamicsProbs.catchSnitch)) {
-                        actions.push_back(ActionResult::SnitchCatch);
-                        env->getTeam(actor)->score += SNITCH_POINTS;
-                    }
-                }
-            }
+        const bool positionIsTarget = this->env->snitch->position == this->target;
+        const bool isSeeker = (bool) INSTANCE_OF(this->actor, gameModel::Seeker);
+        const bool actionWasTriggered = actionTriggered(env->config.gameDynamicsProbs.catchSnitch);
+        if(env->snitch->exists && positionIsTarget && isSeeker && actionWasTriggered) {
+
+            actions.push_back(ActionResult::SnitchCatch);
+            env->getTeam(actor)->score += SNITCH_POINTS;
         }
 
         // get other player on target cell
@@ -386,6 +386,7 @@ namespace gameController{
     }
 
     auto Move::checkForFoul() const -> std::vector<gameModel::Foul> {
+        using Env = gameModel::Environment;
         std::vector<gameModel::Foul> resVect;
         // Ramming
         auto player = env->getPlayer(target);
@@ -394,29 +395,31 @@ namespace gameController{
         }
 
         // BlockGoal
-        if ((env->team1->hasMember(this->actor) && env->getCell(this->target) == gameModel::Cell::GoalLeft) ||
-            (env->team2->hasMember(this->actor) && env->getCell(this->target) == gameModel::Cell::GoalRight)) {
+        const bool isLeftGoal = Env::getCell(this->target) == gameModel::Cell::GoalLeft;
+        const bool isRightGoal = Env::getCell(this->target) == gameModel::Cell::GoalRight;
+        if ((env->team1->hasMember(this->actor) && isLeftGoal) ||
+            (env->team2->hasMember(this->actor) && isRightGoal)) {
             resVect.emplace_back(gameModel::Foul::BlockGoal);
         }
 
         // BlockSnitch
-        if (!INSTANCE_OF(actor, gameModel::Seeker) && this->target == this->env->snitch->position &&
-                env->snitch->exists) {
+        const bool actorIsNotSeeker = !INSTANCE_OF(actor, gameModel::Seeker);
+        const bool targetIsSnitchPos = this->target == this->env->snitch->position;
+        if (actorIsNotSeeker && targetIsSnitchPos && env->snitch->exists) {
             resVect.emplace_back(gameModel::Foul::BlockSnitch);
         }
 
         if (INSTANCE_OF(actor, gameModel::Chaser)) {
-
+            const bool actorHadQuaffle = env->quaffle->position == this->actor->position;
             // ChargeGoal
-            if (env->quaffle->position == this->actor->position) {
-                if ((env->team1->hasMember(this->actor) && env->getCell(this->target) == gameModel::Cell::GoalRight) ||
-                    (env->team2->hasMember(this->actor) && env->getCell(this->target) == gameModel::Cell::GoalLeft)) {
-                    resVect.emplace_back(gameModel::Foul::ChargeGoal);
-                }
+            if ( actorHadQuaffle &&
+                ((env->team1->hasMember(this->actor) && isRightGoal) ||
+                (env->team2->hasMember(this->actor) && isLeftGoal))) {
+                resVect.emplace_back(gameModel::Foul::ChargeGoal);
             }
 
             // MultipleOffence
-            if(gameModel::Environment::getCell(actor->position) == gameModel::Cell::Standard){
+            if(Env::getCell(actor->position) == gameModel::Cell::Standard){
                 auto origPos = actor->position;
                 actor->position = target;
                 if(env->isPlayerInOpponentRestrictedZone(actor)){
