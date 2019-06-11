@@ -430,8 +430,7 @@ TEST(shot_test, execute_all_long_shot_intercept){
     }
 
     EXPECT_TRUE(poses.empty());
-    EXPECT_GE(sum, 0.9999999);
-    EXPECT_LE(sum, 1.0000001);
+    EXPECT_NEAR(sum, 1, 0.0000001);
     EXPECT_EQ(env->quaffle->position, env->team1->chasers[2]->position);
     EXPECT_EQ(env->team1->score, 0);
     EXPECT_EQ(env->team2->score, 0);
@@ -1097,8 +1096,7 @@ TEST(move_test, move_execute_all_ramming_with_quaffle){
         sum += res.second;
     }
 
-    EXPECT_GE(sum, 0.999999);
-    EXPECT_LE(sum, 1.000001);
+    EXPECT_NEAR(sum, 1, 0.000001);
     EXPECT_EQ(env->team2->seeker->position, gameModel::Position(11, 8));
     EXPECT_EQ(env->quaffle->position, env->team1->chasers[2]->position);
     EXPECT_EQ(env->team1->chasers[2]->position, gameModel::Position(10, 7));

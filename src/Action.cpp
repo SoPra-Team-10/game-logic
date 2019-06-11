@@ -339,7 +339,7 @@ namespace gameController{
         }
 
         for(unsigned long i = 0; i < interceptPoints.size(); i++) {
-            auto &interceptPos = interceptPoints[i];
+            auto const &interceptPos = interceptPoints[i];
             //baseProb for interception at i-th player
             double baseProb = std::pow(1 - localEnv->config.gameDynamicsProbs.catchQuaffle, i) *
                               localEnv->config.gameDynamicsProbs.catchQuaffle;
@@ -404,6 +404,11 @@ namespace gameController{
         if(playerOnTarget.has_value() && !INSTANCE_OF(playerOnTarget.value(), const gameModel::Beater)) {
             if(localEnv->quaffle->position == target) {
                 auto landingCells = localEnv->getAllFreeCellsAround(target);
+
+                if (landingCells.size() < 1) {
+                    throw std::runtime_error("No landing cells for the quaffle found.");
+                }
+
                 double prob = 1.0 / landingCells.size();
                 for(const auto &cell : landingCells) {
                     emplaceKnockoutEnv(prob, cell);
