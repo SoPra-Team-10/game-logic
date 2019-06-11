@@ -56,7 +56,7 @@ namespace gameController{
         /**
          * default destructors for the Action class.
          */
-        ~Action() = default;
+        virtual ~Action() = default;
 
         // functions
         /**
