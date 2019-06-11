@@ -294,44 +294,6 @@ namespace gameController{
         const std::shared_ptr<const gameModel::Environment> &localEnv = env;
         std::vector<std::pair<std::shared_ptr<gameModel::Environment>, double>> ret;
 
-        /**
-         * emplaces new Envs in return-list where the Quaffle landed on a cell in newPoses to pos
-         * and makes sure that no duplicate envs are created.
-         * @param baseProb the probability that the Quaffle reached any of the cells in newPoses
-         * @param newPoses positions for new envs
-         */
-        auto emplaceEnvs = [this, &ret, &localEnv](double baseProb,
-                                                   const std::vector<gameModel::Position> &newPoses){
-            double prob = baseProb / newPoses.size();
-            for(const auto &cell : newPoses) {
-                bool handled = false;
-                for (auto &outcome : ret) {
-                    if (outcome.first->quaffle->position == cell) {
-                        outcome.second += prob;
-                        handled = true;
-                        break;
-                    }
-                }
-
-                if (handled) {
-                    continue;
-                }
-
-                auto newEnv = localEnv->clone();
-                newEnv->quaffle->position = cell;
-                newEnv->removeShitOnCell(cell);
-                auto goalRes = goalCheck(cell);
-                if(goalRes.has_value()) {
-                    if(goalRes.value() == ActionResult::ScoreLeft) {
-                        newEnv->team1->score += GOAL_POINTS;
-                    } else if(goalRes.value() == ActionResult::ScoreRight) {
-                        newEnv->team2->score += GOAL_POINTS;
-                    }
-                }
-
-                ret.emplace_back(newEnv, prob);
-            }
-        };
 
         //Handle intercepting players
         auto interceptPoints = getInterceptionPositions();
@@ -349,11 +311,11 @@ namespace gameController{
             if(INSTANCE_OF(interceptingPlayer, const gameModel::Seeker) ||
                INSTANCE_OF(interceptingPlayer, const gameModel::Beater)) {
                 //Bounce off
-                emplaceEnvs(baseProb, localEnv->getAllFreeCellsAround(interceptPos));
+                emplaceEnvs(baseProb, localEnv->getAllFreeCellsAround(interceptPos), ret);
             } else {
                 //Quaffle catch
                 if(gameModel::Environment::isGoalCell(interceptPos)) {
-                    emplaceEnvs(baseProb, localEnv->getAllFreeCellsAround(interceptPos));
+                    emplaceEnvs(baseProb, localEnv->getAllFreeCellsAround(interceptPos), ret);
                 } else {
                     auto newEnv = localEnv->clone();
                     newEnv->quaffle->position = interceptPos;
@@ -365,15 +327,15 @@ namespace gameController{
         double noInterceptProb = std::pow(1 - localEnv->config.gameDynamicsProbs.catchQuaffle, interceptPoints.size());
         double throwSuccess = std::pow(localEnv->config.gameDynamicsProbs.throwSuccess, getDistance(actor->position, target));
         //Handle miss
-        emplaceEnvs(noInterceptProb * (1 - throwSuccess), getAllLandingCells());
+        emplaceEnvs(noInterceptProb * (1 - throwSuccess), getAllLandingCells(), ret);
 
         //Handle success
         double success = noInterceptProb * throwSuccess;
         if(playerOnTarget.has_value() && (INSTANCE_OF(playerOnTarget.value(), const gameModel::Seeker) ||
                                           INSTANCE_OF(playerOnTarget.value(), const gameModel::Beater))) {
-            emplaceEnvs(success, localEnv->getAllFreeCellsAround(target));
+            emplaceEnvs(success, localEnv->getAllFreeCellsAround(target), ret);
         } else {
-            emplaceEnvs(success, {target});
+            emplaceEnvs(success, {target}, ret);
         }
 
         return ret;
@@ -429,6 +391,39 @@ namespace gameController{
         }
 
         return ret;
+    }
+
+    void Shot::emplaceEnvs(double baseProb, const std::vector<gameModel::Position> &newPoses,
+                           std::vector<std::pair<std::shared_ptr<gameModel::Environment>, double>> &envList) const{
+            double prob = baseProb / newPoses.size();
+            for(const auto &cell : newPoses) {
+                bool handled = false;
+                for (auto &outcome : envList) {
+                    if (outcome.first->quaffle->position == cell) {
+                        outcome.second += prob;
+                        handled = true;
+                        break;
+                    }
+                }
+
+                if (handled) {
+                    continue;
+                }
+
+                auto newEnv = env->clone();
+                newEnv->quaffle->position = cell;
+                newEnv->removeShitOnCell(cell);
+                auto goalRes = goalCheck(cell);
+                if(goalRes.has_value()) {
+                    if(goalRes.value() == ActionResult::ScoreLeft) {
+                        newEnv->team1->score += GOAL_POINTS;
+                    } else if(goalRes.value() == ActionResult::ScoreRight) {
+                        newEnv->team2->score += GOAL_POINTS;
+                    }
+                }
+
+                envList.emplace_back(newEnv, prob);
+            }
     }
 
     Move::Move(std::shared_ptr<gameModel::Environment> env, std::shared_ptr<gameModel::Player> actor, gameModel::Position target):

@@ -143,9 +143,28 @@ namespace gameController{
          */
         auto goalCheck(const gameModel::Position &pos) const -> std::optional<ActionResult>;
 
+        /**
+         * creates all Environments for Quaffle throws
+         * @return
+         */
         auto executeAllQuaffle() const -> std::vector<std::pair<std::shared_ptr<gameModel::Environment>, double>>;
 
+        /**
+         * creates all Environments for Bludger shots
+         * @return
+         */
         auto executeAllBludger() const -> std::vector<std::pair<std::shared_ptr<gameModel::Environment>, double>>;
+
+
+        /**
+         * emplaces new Envs in return-list where the Quaffle landed on a cell in newPoses to pos
+         * and makes sure that no duplicate envs are created.
+         * @param baseProb the probability that the Quaffle reached any of the cells in newPoses
+         * @param newPoses positions for new envs
+         * @param envList list where new envs and their corresponding probabilities are constructed
+         */
+        void emplaceEnvs(double baseProb, const std::vector<gameModel::Position> &newPoses,
+                std::vector<std::pair<std::shared_ptr<gameModel::Environment>, double>> &envList) const;
     };
 
     /**
