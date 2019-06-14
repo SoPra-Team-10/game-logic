@@ -8,13 +8,12 @@
 
 namespace gameModel{
 
-    Player::Player(Position position, std::string name, communication::messages::types::Sex gender, communication::messages::types::Broom broom, communication::messages::types::EntityId id) :
-        Object(position, id), name(std::move(name)), gender(gender), broom(broom), isFined{false} {
+    Player::Player(Position position, communication::messages::types::Broom broom, communication::messages::types::EntityId id) :
+        Object(position, id), broom(broom), isFined{false} {
     }
 
     bool Player::operator==(const Player &other) const {
-        return position == other.position && name == other.name &&
-        gender == other.gender && broom == other.broom && id == other.id;
+        return position == other.position && broom == other.broom && id == other.id;
     }
 
     bool Player::operator!=(const Player &other) const {
@@ -283,20 +282,22 @@ namespace gameModel{
     }
 
     auto Environment::isPlayerInOwnRestrictedZone(const std::shared_ptr<Player>& player) const -> bool {
-        if (this->team1->hasMember(player) && this->getCell(player->position) == Cell::RestrictedLeft) {
+        const auto cell = Environment::getCell(player->position);
+        if (this->team1->hasMember(player) && (cell == Cell::RestrictedLeft || cell == Cell::GoalLeft)) {
             return true;
         }
-        if (this->team2->hasMember(player) && this->getCell(player->position) == Cell::RestrictedRight) {
+        if (this->team2->hasMember(player) && (cell == Cell::RestrictedRight || cell == Cell::GoalRight)) {
             return true;
         }
 
         return false;
     }
     auto Environment::isPlayerInOpponentRestrictedZone(const std::shared_ptr<Player>& player) const  -> bool {
-        if (this->team1->hasMember(player) && this->getCell(player->position) == Cell::RestrictedRight) {
+        const auto cell = Environment::getCell(player->position);
+        if (this->team1->hasMember(player) && (cell == Cell::RestrictedRight || cell == Cell::GoalRight)) {
             return true;
         }
-        if (this->team2->hasMember(player) && this->getCell(player->position) == Cell::RestrictedLeft) {
+        if (this->team2->hasMember(player) && (cell == Cell::RestrictedLeft || cell == Cell::GoalLeft)) {
             return true;
         }
         return false;
@@ -456,45 +457,41 @@ namespace gameModel{
 
     Quaffle::Quaffle() : Ball({8, 6}, communication::messages::types::EntityId::QUAFFLE){}
 
-    Chaser::Chaser(Position position, std::string name, communication::messages::types::Sex gender, communication::messages::types::Broom broom, communication::messages::types::EntityId id) :
-            Player(position, std::move(name), gender, broom, id) {}
+    Chaser::Chaser(Position position, communication::messages::types::Broom broom, communication::messages::types::EntityId id) :
+            Player(position, broom, id) {}
 
-    Keeper::Keeper(Position position, std::string name, communication::messages::types::Sex gender, communication::messages::types::Broom broom, communication::messages::types::EntityId id) :
-            Player(position, std::move(name), gender, broom, id) {}
+    Keeper::Keeper(Position position, communication::messages::types::Broom broom, communication::messages::types::EntityId id) :
+            Player(position, broom, id) {}
 
-    Seeker::Seeker(Position position, std::string name, communication::messages::types::Sex gender, communication::messages::types::Broom broom, communication::messages::types::EntityId id) :
-            Player(position, std::move(name), gender, broom, id) {}
+    Seeker::Seeker(Position position, communication::messages::types::Broom broom, communication::messages::types::EntityId id) :
+            Player(position, broom, id) {}
 
-    Beater::Beater(Position position, std::string name, communication::messages::types::Sex gender, communication::messages::types::Broom broom, communication::messages::types::EntityId id) :
-            Player(position, std::move(name), gender, broom, id) {}
+    Beater::Beater(Position position, communication::messages::types::Broom broom, communication::messages::types::EntityId id) :
+            Player(position, broom, id) {}
 
 
     // Team
 
-    Team::Team(Seeker seeker, Keeper keeper, std::array<Beater, 2> beaters, std::array<Chaser, 3> chasers,
-               std::string  name, std::string  colorMain, std::string  colorSecondary, int score,
-               Fanblock fanblock) :
+    Team::Team(Seeker seeker, Keeper keeper, std::array<Beater, 2> beaters, std::array<Chaser, 3> chasers, int score, Fanblock fanblock) :
                seeker(std::make_shared<Seeker>(std::move(seeker))), keeper(std::make_shared<Keeper>(std::move(keeper))), beaters{std::make_shared<Beater>(std::move(beaters[0])),
                        std::make_shared<Beater>(std::move(beaters[1]))}, chasers{std::make_shared<Chaser>(std::move(chasers[0])), std::make_shared<Chaser>(std::move(chasers[1])),
-                               std::make_shared<Chaser>(std::move(chasers[2]))}, name(std::move(name)), colorMain(std::move(colorMain)), colorSecondary(std::move(colorSecondary)),
-                               score(score), fanblock(std::move(fanblock)) {}
+                               std::make_shared<Chaser>(std::move(chasers[2]))}, score(score), fanblock(std::move(fanblock)) {}
 
    Team::Team(const communication::messages::request::TeamConfig& tConf, communication::messages::request::TeamFormation tForm, bool leftTeam) :
-   seeker(std::make_shared<Seeker>(Position{tForm.getSeekerX(), tForm.getSeekerY()}, tConf.getSeeker().getName(), tConf.getSeeker().getSex(), tConf.getSeeker().getBroom(), leftTeam ?
+   seeker(std::make_shared<Seeker>(Position{tForm.getSeekerX(), tForm.getSeekerY()}, tConf.getSeeker().getBroom(), leftTeam ?
    communication::messages::types::EntityId::LEFT_SEEKER : communication::messages::types::EntityId::RIGHT_SEEKER)),
-   keeper(std::make_shared<Keeper>(Position{tForm.getKeeperX(), tForm.getKeeperY()}, tConf.getKeeper().getName(), tConf.getKeeper().getSex(), tConf.getKeeper().getBroom(), leftTeam ?
+   keeper(std::make_shared<Keeper>(Position{tForm.getKeeperX(), tForm.getKeeperY()}, tConf.getKeeper().getBroom(), leftTeam ?
    communication::messages::types::EntityId::LEFT_KEEPER : communication::messages::types::EntityId::RIGHT_KEEPER)),
-   beaters{std::make_shared<Beater>(Position{tForm.getBeater1X(), tForm.getBeater1Y()}, tConf.getBeater1().getName(), tConf.getBeater1().getSex(), tConf.getBeater1().getBroom(), leftTeam ?
+   beaters{std::make_shared<Beater>(Position{tForm.getBeater1X(), tForm.getBeater1Y()}, tConf.getBeater1().getBroom(), leftTeam ?
             communication::messages::types::EntityId::LEFT_BEATER1 : communication::messages::types::EntityId::RIGHT_BEATER1),
-            std::make_shared<Beater>(Position{tForm.getBeater2X(), tForm.getBeater2Y()}, tConf.getBeater2().getName(), tConf.getBeater2().getSex(), tConf.getBeater2().getBroom(), leftTeam ?
+            std::make_shared<Beater>(Position{tForm.getBeater2X(), tForm.getBeater2Y()}, tConf.getBeater2().getBroom(), leftTeam ?
             communication::messages::types::EntityId ::LEFT_BEATER2 : communication::messages::types::EntityId::RIGHT_BEATER2)},
-   chasers{std::make_shared<Chaser>(Position{tForm.getChaser1X(), tForm.getChaser1Y()}, tConf.getChaser1().getName(), tConf.getChaser1().getSex(), tConf.getChaser1().getBroom(), leftTeam ?
+   chasers{std::make_shared<Chaser>(Position{tForm.getChaser1X(), tForm.getChaser1Y()}, tConf.getChaser1().getBroom(), leftTeam ?
             communication::messages::types::EntityId::LEFT_CHASER1 : communication::messages::types::EntityId::RIGHT_CHASER1),
-            std::make_shared<Chaser>(Position{tForm.getChaser2X(), tForm.getChaser2Y()}, tConf.getChaser2().getName(), tConf.getChaser2().getSex(), tConf.getChaser2().getBroom(), leftTeam ?
+            std::make_shared<Chaser>(Position{tForm.getChaser2X(), tForm.getChaser2Y()}, tConf.getChaser2().getBroom(), leftTeam ?
             communication::messages::types::EntityId::LEFT_CHASER2 : communication::messages::types::EntityId::RIGHT_CHASER2),
-            std::make_shared<Chaser>(Position{tForm.getChaser3X(), tForm.getChaser3Y()}, tConf.getChaser3().getName(), tConf.getChaser3().getSex(), tConf.getChaser3().getBroom(), leftTeam ?
+            std::make_shared<Chaser>(Position{tForm.getChaser3X(), tForm.getChaser3Y()}, tConf.getChaser3().getBroom(), leftTeam ?
             communication::messages::types::EntityId::LEFT_CHASER3 : communication::messages::types::EntityId::RIGHT_CHASER3)},
-   name(tConf.getTeamName()), colorMain(tConf.getColorPrimary()), colorSecondary(tConf.getColorSecondary()),
    fanblock(tConf.getElfs(), tConf.getGoblins(), tConf.getTrolls(), tConf.getNifflers(), tConf.getWombats()){}
 
 
@@ -549,8 +546,7 @@ namespace gameModel{
 
     auto Team::clone() const -> std::shared_ptr<Team> {
         return std::make_shared<Team>(*this->seeker, *this->keeper, std::array<Beater, 2>{*this->beaters[0], *this->beaters[1]},
-                std::array<Chaser, 3>{*this->chasers[0], *this->chasers[1], *this->chasers[2]},
-                this->name, this->colorMain, this->colorSecondary, this->score, this->fanblock);
+                std::array<Chaser, 3>{*this->chasers[0], *this->chasers[1], *this->chasers[2]}, this->score, this->fanblock);
     }
 
     // Config

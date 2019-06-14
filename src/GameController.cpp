@@ -4,7 +4,6 @@
 
 namespace gameController {
 
-    template <>
     double rng(double min, double max){
         static std::random_device rd;
         static std::default_random_engine el(rd());
@@ -12,7 +11,6 @@ namespace gameController {
         return dist(el);
     }
 
-    template <>
     int rng(int min, int max){
         static std::random_device rd;
         static std::default_random_engine el(rd());
