@@ -277,6 +277,19 @@ TEST(env_test, clone){
     EXPECT_TRUE(originalEnv->pileOfShit.empty());
 }
 
+TEST(env_test, getAllEmptyCellsAround){
+    auto env = setup::createEnv();
+    env->pileOfShit.emplace_back(std::make_shared<gameModel::CubeOfShit>(gameModel::Position{9, 8}));
+    auto res = env->getAllEmptyCellsAround(env->team1->chasers[2]->position);
+    EXPECT_EQ(res.size(), 6);
+    EXPECT_EQ(res[0], gameModel::Position(9, 6));
+    EXPECT_EQ(res[1], gameModel::Position(9, 7));
+    EXPECT_EQ(res[2], gameModel::Position(10, 6));
+    EXPECT_EQ(res[3], gameModel::Position(10, 8));
+    EXPECT_EQ(res[4], gameModel::Position(11, 6));
+    EXPECT_EQ(res[5], gameModel::Position(11, 7));
+}
+
 //-----------------------------------------Fanblock Test----------------------------------------------------------------
 
 TEST(fanblock_test, banFan_and_getUses_and_getBannedCount) {
