@@ -325,7 +325,7 @@ namespace gameController {
     }
 
     void spawnSnitch(std::shared_ptr<gameModel::Environment> &env){
-        auto calcMetric = [&](const gameModel::Position &cell){
+        auto calcMetric = [&env](const gameModel::Position &cell){
             int dist1 = getDistance(env->team1->seeker->position, cell);
             int dist2 = getDistance(env->team2->seeker->position, cell);
             return static_cast<double>(std::abs(dist1 - dist2)) / (dist1 + dist2);
