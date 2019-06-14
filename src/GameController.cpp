@@ -80,8 +80,8 @@ namespace gameController {
         int totalDistance = 0;
 
         // calc the differences within the components of the given points
-        int dX = abs(startPoint.x - endPoint.x);
-        int dY = abs(startPoint.y - endPoint.y);
+        int dX = std::abs(startPoint.x - endPoint.x);
+        int dY = std::abs(startPoint.y - endPoint.y);
 
         // calculate the total distance
         if (dX >= dY) {
@@ -335,6 +335,10 @@ namespace gameController {
         double metric = std::numeric_limits<double>::infinity();
         auto freePoses = env->getAllFreeCells();
         for(const auto &cell : freePoses) {
+            if(env->isShitOnCell(cell)) {
+                continue;
+            }
+
             auto tmp = calcMetric(cell);
             if(tmp < metric) {
                 metric = tmp;
@@ -343,7 +347,6 @@ namespace gameController {
                 }
             }
         }
-
 
         for(const auto &cell : freePoses) {
             if(calcMetric(cell) <= metric){
