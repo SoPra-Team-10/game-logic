@@ -117,7 +117,7 @@ namespace gameController {
             }
         }
         else if (gameModel::Environment::getCell(env->quaffle->position) == gameModel::Cell::GoalLeft) {
-            if (env->isPlayerInOwnRestrictedZone(env->team1->keeper) && !env->team2->keeper->isFined) {
+            if (env->isPlayerInOwnRestrictedZone(env->team1->keeper) && !env->team1->keeper->isFined) {
                 env->quaffle->position = env->team1->keeper->position;
             }
             else if (env->cellIsFree({8, 6})) {
