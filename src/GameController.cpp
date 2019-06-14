@@ -80,8 +80,8 @@ namespace gameController {
         int totalDistance = 0;
 
         // calc the differences within the components of the given points
-        int dX = abs(startPoint.x - endPoint.x);
-        int dY = abs(startPoint.y - endPoint.y);
+        int dX = std::abs(startPoint.x - endPoint.x);
+        int dY = std::abs(startPoint.y - endPoint.y);
 
         // calculate the total distance
         if (dX >= dY) {
@@ -325,51 +325,36 @@ namespace gameController {
     }
 
     void spawnSnitch(std::shared_ptr<gameModel::Environment> &env){
-        using Env = gameModel::Environment;
-        using Cell = gameModel::Cell;
-        gameModel::Vector dirVec = {env->team1->seeker->position, env->team2->seeker->position};
-        dirVec = dirVec * 0.5;
-        gameModel::Vector dirVectOrtho = dirVec.orthogonal();
-        dirVectOrtho.normalize();
-        std::vector<gameModel::Position> resultVect1;
-        std::vector<gameModel::Position> resultVect2;
-        gameModel::Position lowerCell = {static_cast<int>(env->team1->seeker->position.x + dirVec.x), static_cast<int>(env->team1->seeker->position.y + dirVec.y)};
-        gameModel::Position upperCell = lowerCell;
-        bool notOutOfBounds1;
-        bool notOutOfBounds2;
-        do {
-            notOutOfBounds1 = Env::getCell(lowerCell.x + static_cast<int>(std::round(dirVectOrtho.x)),
-                                                              lowerCell.y + static_cast<int>(std::round(dirVectOrtho.y))) != Cell::OutOfBounds;
-            notOutOfBounds2 = Env::getCell(upperCell.x - static_cast<int>(std::round(dirVectOrtho.x)),
-                                                              upperCell.y - static_cast<int>(std::round(dirVectOrtho.y))) != Cell::OutOfBounds;
+        auto calcMetric = [&env](const gameModel::Position &cell){
+            int dist1 = getDistance(env->team1->seeker->position, cell);
+            int dist2 = getDistance(env->team2->seeker->position, cell);
+            return static_cast<double>(std::abs(dist1 - dist2)) / (dist1 + dist2);
+        };
 
-            if(notOutOfBounds1) {
-                lowerCell.x = lowerCell.x + static_cast<int>(std::round(dirVectOrtho.x));
-                lowerCell.y = lowerCell.y + static_cast<int>(std::round(dirVectOrtho.y));
-                resultVect1.emplace_back(lowerCell);
-            }
-            if(notOutOfBounds2) {
-                upperCell.x = upperCell.x - static_cast<int>(std::round(dirVectOrtho.x));
-                upperCell.y = upperCell.y - static_cast<int>(std::round(dirVectOrtho.y));
-                resultVect2.emplace_back(upperCell);
+        std::vector<gameModel::Position> bestPoses;
+        double metric = std::numeric_limits<double>::infinity();
+        auto freePoses = env->getAllFreeCells();
+        for(const auto &cell : freePoses) {
+            if(env->isShitOnCell(cell)) {
+                continue;
             }
 
-        } while (notOutOfBounds1 || notOutOfBounds2);
-
-        if(resultVect1.size() >= resultVect2.size()) {
-            if(env->cellIsFree(resultVect1.back())) {
-                env->snitch->position = resultVect1.back();
-            }else{
-                moveToAdjacent(env->snitch, env);
+            auto tmp = calcMetric(cell);
+            if(tmp < metric) {
+                metric = tmp;
+                if(metric == 0){
+                    break;
+                }
             }
-        }else {
-            if(env->cellIsFree(resultVect2.back())) {
-                env->snitch->position = resultVect2.back();
-            }else{
-                moveToAdjacent(env->snitch, env);
+        }
+
+        for(const auto &cell : freePoses) {
+            if(calcMetric(cell) <= metric){
+                bestPoses.emplace_back(cell);
             }
         }
 
         env->snitch->exists = true;
+        env->snitch->position = bestPoses[rng(0, static_cast<int>(bestPoses.size() - 1))];
     }
 }

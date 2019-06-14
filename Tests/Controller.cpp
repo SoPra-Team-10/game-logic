@@ -250,7 +250,6 @@ TEST(controller_test, invalid_can_wrest_wrong_player){
 
 TEST(controller_test, invalid_can_wrest_out_of_range){
     auto env = setup::createEnv();
-
     env->quaffle->position = env->team1->keeper->position;
     env->team2->chasers[2]->position = {10, 10};
 
@@ -384,58 +383,25 @@ TEST(controller_test, moveSnitch10){
 
 //-----------------------------------Snitch Spawn ----------------------------------------------------------------------
 
-TEST(controller_test, spawnSnitch0){
+TEST(controller_tets, spawn_snitch){
     auto env = setup::createEnv();
-    env->team1->seeker->position = gameModel::Position{6,8};
-    env->team2->seeker->position = gameModel::Position{10,8};
+    env->team1->seeker->position = {1, 6};
+    env->team2->seeker->position = {15, 6};
     gameController::spawnSnitch(env);
-    EXPECT_EQ(env->snitch->position, gameModel::Position(8,0));
     EXPECT_TRUE(env->snitch->exists);
+    EXPECT_EQ(env->snitch->position.x, 8);
 }
 
-TEST(controller_test, spawnSnitch1){
+TEST(controller_tets, spawn_snitch1){
     auto env = setup::createEnv();
-    env->team1->seeker->position = gameModel::Position{8,6};
-    env->team2->seeker->position = gameModel::Position{8,10};
+    env->team1->seeker->position = {4, 4};
+    env->team2->seeker->position = {12, 8};
     gameController::spawnSnitch(env);
-    EXPECT_EQ(env->snitch->position, gameModel::Position(16,8));
     EXPECT_TRUE(env->snitch->exists);
-}
-
-TEST(controller_test, spawnSnitch2){
-    auto env = setup::createEnv();
-    env->team1->seeker->position = gameModel::Position{4,6};
-    env->team2->seeker->position = gameModel::Position{4,10};
-    gameController::spawnSnitch(env);
-    EXPECT_EQ(env->snitch->position, gameModel::Position(16,8));
-    EXPECT_TRUE(env->snitch->exists);
-}
-
-TEST(controller_test, spawnSnitch3){
-    auto env = setup::createEnv();
-    env->team1->seeker->position = gameModel::Position{10,6};
-    env->team2->seeker->position = gameModel::Position{10,10};
-    gameController::spawnSnitch(env);
-    EXPECT_EQ(env->snitch->position, gameModel::Position(0,8));
-    EXPECT_TRUE(env->snitch->exists);
-}
-
-TEST(controller_test, spawnSnitch4){
-    auto env = setup::createEnv();
-    env->team1->seeker->position = gameModel::Position{8,8};
-    env->team2->seeker->position = gameModel::Position{10,10};
-    gameController::spawnSnitch(env);
-    EXPECT_EQ(env->snitch->position, gameModel::Position(15,3));
-    EXPECT_TRUE(env->snitch->exists);
-}
-
-TEST(controller_test, spawnSnitch5){
-    auto env = setup::createEnv();
-    env->team1->seeker->position = gameModel::Position{4,2};
-    env->team2->seeker->position = gameModel::Position{11,6};
-    gameController::spawnSnitch(env);
-    EXPECT_EQ(env->snitch->position, gameModel::Position(7,12));
-    EXPECT_TRUE(env->snitch->exists);
+    EXPECT_THAT(env->snitch->position, testing::AnyOf(gameModel::Position(12, 0), gameModel::Position(11, 1),
+            gameModel::Position(10, 2), gameModel::Position(9, 3), gameModel::Position(8, 4), gameModel::Position(8, 5),
+            gameModel::Position(8, 6), gameModel::Position(8, 7), gameModel::Position(8, 8), gameModel::Position(7, 9),
+            gameModel::Position(6, 10), gameModel::Position(5, 11), gameModel::Position(4, 12)));
 }
 
 //-----------------------------------Reset Quaffel after Goal-----------------------------------------------------------
