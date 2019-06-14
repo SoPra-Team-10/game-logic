@@ -105,7 +105,7 @@ namespace gameController {
 
     void moveQuaffelAfterGoal(const std::shared_ptr<gameModel::Environment> &env) {
         if (gameModel::Environment::getCell(env->quaffle->position) == gameModel::Cell::GoalRight) {
-            if (env->isPlayerInOwnRestrictedZone(env->team2->keeper)) {
+            if (env->isPlayerInOwnRestrictedZone(env->team2->keeper) && !env->team2->keeper->isFined) {
                 env->quaffle->position = env->team2->keeper->position;
             }
             else if (env->cellIsFree({8, 6})) {
@@ -117,7 +117,7 @@ namespace gameController {
             }
         }
         else if (gameModel::Environment::getCell(env->quaffle->position) == gameModel::Cell::GoalLeft) {
-            if (env->isPlayerInOwnRestrictedZone(env->team1->keeper)) {
+            if (env->isPlayerInOwnRestrictedZone(env->team1->keeper) && !env->team2->keeper->isFined) {
                 env->quaffle->position = env->team1->keeper->position;
             }
             else if (env->cellIsFree({8, 6})) {
