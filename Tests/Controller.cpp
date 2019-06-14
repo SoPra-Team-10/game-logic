@@ -473,6 +473,17 @@ TEST(controller_test , moveQuaffelAfterGoal2) {
     EXPECT_EQ(env->quaffle->position, gameModel::Position(15,4));
 }
 
+TEST(controller_test , moveQuaffelAfterGoal3) {
+    auto env = setup::createEnv();
+
+    env->quaffle->position = gameModel::Position(14, 4);
+    env->team2->keeper->position = gameModel::Position(15, 4);
+    env->team2->keeper->isFined = true;
+
+    gameController::moveQuaffelAfterGoal(env);
+    EXPECT_NE(env->quaffle->position, gameModel::Position(15,4));
+}
+
 //-----------------------------------MoveToAdjacent---------------------------------------------------------------------
 TEST(controller_test, moveToAdjacentRemoveShit){
     auto env = setup::createEnv();
