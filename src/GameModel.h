@@ -577,6 +577,15 @@ namespace gameModel{
         auto getAllFreeCellsAround(const Position &position) const -> std::vector<Position>;
 
         /**
+         * Gets all Positions around the given Position where a player is allowed to move without risking a foul
+         * @param position the Position to check
+         * @param leftTeam whether to calculate Position for the left Team
+         * @return a list with all found Positions, may be empty
+         */
+        auto getAllLegalCellsAround(const Position &position, bool leftTeam) const ->
+            std::vector<Position>;
+
+        /**
          * Returns player object (if not banned) at the specified position if one exists
          * @return
          */

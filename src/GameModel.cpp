@@ -436,6 +436,25 @@ namespace gameModel{
                 newQuaf, newSnitch, newBludgers, newShit);
     }
 
+    auto Environment::getAllLegalCellsAround(const Position &position, bool leftTeam) const -> std::vector<Position> {
+        std::vector<Position> ret;
+        ret.reserve(8);
+        for(int x = position.x - 1; x <= position.x + 1; x++){
+            for(int y = position.y - 1; y <= position.y + 1; y++){
+                Position curr(x, y);
+                auto playerOnCell = getPlayer(curr);
+                auto opponentTeam = leftTeam ? team2 : team1;
+                bool ownGoalCell = leftTeam ? getCell(curr) == Cell::GoalLeft : getCell(curr) == Cell::GoalRight;
+                if(curr != position && getCell(curr) != Cell::OutOfBounds && !isShitOnCell(curr) && !ownGoalCell &&
+                    (!playerOnCell.has_value() || !opponentTeam->hasMember(playerOnCell.value()))){
+                    ret.emplace_back(curr);
+                }
+            }
+        }
+
+        return ret;
+    }
+
 
     // Ball Types
 
