@@ -296,6 +296,25 @@ TEST(env_test, legalCells){
     EXPECT_TRUE(poses.empty());
 }
 
+TEST(env_test, getAllEmptyCellsAround){
+    auto env = setup::createEnv();
+    env->pileOfShit.emplace_back(std::make_shared<gameModel::CubeOfShit>(gameModel::Position{9, 8}));
+    auto res = env->getAllEmptyCellsAround(env->team1->chasers[2]->position);
+    EXPECT_EQ(res.size(), 6);
+    std::deque<gameModel::Position> poses = {gameModel::Position(9, 6), gameModel::Position(9, 7), gameModel::Position(10, 6),
+                                             gameModel::Position(10, 8), gameModel::Position(11, 6), gameModel::Position(11, 7)};
+    for(const auto &cell : res){
+        for(auto it = poses.begin(); it < poses.end(); it++){
+            if(cell == *it){
+                poses.erase(it);
+                break;
+            }
+        }
+    }
+
+    EXPECT_TRUE(poses.empty());
+}
+
 //-----------------------------------------Fanblock Test----------------------------------------------------------------
 
 TEST(fanblock_test, banFan_and_getUses_and_getBannedCount) {

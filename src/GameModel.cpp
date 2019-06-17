@@ -455,6 +455,22 @@ namespace gameModel{
         return ret;
     }
 
+    auto Environment::getAllEmptyCellsAround(const Position &position) const -> std::vector<Position> {
+        std::vector<Position> ret;
+        ret.reserve(8);
+        for(int x = position.x - 1; x <= position.x + 1; x++){
+            for(int y = position.y - 1; y <= position.y + 1; y++){
+                Position curr(x, y);
+                if(curr != position && getCell(curr) != Cell::OutOfBounds &&
+                    cellIsFree(curr) && !isShitOnCell(curr)){
+                    ret.emplace_back(curr);
+                }
+            }
+        }
+
+        return ret;
+    }
+
 
     // Ball Types
 
