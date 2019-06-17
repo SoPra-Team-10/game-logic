@@ -282,11 +282,18 @@ TEST(env_test, legalCells){
     env->pileOfShit.emplace_back(std::make_shared<gameModel::CubeOfShit>(gameModel::Position{1, 6}));
     auto res = env->getAllLegalCellsAround({1, 7}, true);
     EXPECT_EQ(res.size(), 4);
-    EXPECT_EQ(res[0], gameModel::Position(0, 7));
-    EXPECT_EQ(res[1], gameModel::Position(0, 8));
-    EXPECT_EQ(res[2], gameModel::Position(1, 8));
-    EXPECT_EQ(res[3], gameModel::Position(2, 7));
+    std::deque<gameModel::Position> poses = {gameModel::Position(0, 7), gameModel::Position(0, 8),
+                                             gameModel::Position(1, 8), gameModel::Position(2, 7)};
+    for(const auto &cell : res){
+        for(auto it = poses.begin(); it  < poses.end(); it++){
+            if(cell == *it){
+                poses.erase(it);
+                break;
+            }
+        }
+    }
 
+    EXPECT_TRUE(poses.empty());
 }
 
 //-----------------------------------------Fanblock Test----------------------------------------------------------------
