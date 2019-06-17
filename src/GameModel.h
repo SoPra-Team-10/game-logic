@@ -577,6 +577,14 @@ namespace gameModel{
         auto getAllFreeCellsAround(const Position &position) const -> std::vector<Position>;
 
         /**
+         * Gets all Positions around a given Position where no Object is located. If all surrounding
+         * Positions are occupied, an empty list is returned
+         * @param position the Position to be checked
+         * @return
+         */
+        auto getAllEmptyCellsAround(const Position &position) const -> std::vector<Position>;
+
+        /**
          * Returns player object (if not banned) at the specified position if one exists
          * @return
          */
