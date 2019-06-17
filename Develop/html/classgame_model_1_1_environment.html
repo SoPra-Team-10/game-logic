@@ -120,8 +120,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a1e3c326a8a358e9de0e5144ac5a42af2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6b885f2c9e14b1c8d8b5fbf14de4de2d"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgame_model_1_1_environment.html#a6b885f2c9e14b1c8d8b5fbf14de4de2d">getAllFreeCellsAround</a> (const <a class="el" href="structgame_model_1_1_position.html">Position</a> &amp;position) const -&gt; std::vector&lt; <a class="el" href="structgame_model_1_1_position.html">Position</a> &gt;</td></tr>
 <tr class="separator:a6b885f2c9e14b1c8d8b5fbf14de4de2d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1a1e01adaee92f8e44b8d69fec4b1797"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgame_model_1_1_environment.html#a1a1e01adaee92f8e44b8d69fec4b1797">getAllLegalCellsAround</a> (const <a class="el" href="structgame_model_1_1_position.html">Position</a> &amp;position, bool leftTeam) const -&gt; std::vector&lt; <a class="el" href="structgame_model_1_1_position.html">Position</a> &gt;</td></tr>
-<tr class="separator:a1a1e01adaee92f8e44b8d69fec4b1797"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a75d08bd54c2cc9b8e2251b6fb3c2ab97"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgame_model_1_1_environment.html#a75d08bd54c2cc9b8e2251b6fb3c2ab97">getAllEmptyCellsAround</a> (const <a class="el" href="structgame_model_1_1_position.html">Position</a> &amp;position) const -&gt; std::vector&lt; <a class="el" href="structgame_model_1_1_position.html">Position</a> &gt;</td></tr>
+<tr class="separator:a75d08bd54c2cc9b8e2251b6fb3c2ab97"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad50b8cb84c76a6dbbfa9f8210918a4c2"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgame_model_1_1_environment.html#ad50b8cb84c76a6dbbfa9f8210918a4c2">getPlayer</a> (const <a class="el" href="structgame_model_1_1_position.html">Position</a> &amp;position) const -&gt; std::optional&lt; std::shared_ptr&lt; <a class="el" href="classgame_model_1_1_player.html">Player</a> &gt;&gt;</td></tr>
 <tr class="separator:ad50b8cb84c76a6dbbfa9f8210918a4c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4d07c3194e35ffc1295a81c43c616540"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgame_model_1_1_environment.html#a4d07c3194e35ffc1295a81c43c616540">getPlayerById</a> (communication::messages::types::EntityId id) const -&gt; std::shared_ptr&lt; <a class="el" href="classgame_model_1_1_player.html">Player</a> &gt;</td></tr>
@@ -429,6 +429,30 @@ std::deque&lt; std::shared_ptr<br class="typebreak"/>
 
 </div>
 </div>
+<a class="anchor" id="a75d08bd54c2cc9b8e2251b6fb3c2ab97"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">auto gameModel::Environment::getAllEmptyCellsAround </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structgame_model_1_1_position.html">Position</a> &amp;&#160;</td>
+          <td class="paramname"><em>position</em></td><td>)</td>
+          <td> const -&gt; std::vector&lt;<a class="el" href="structgame_model_1_1_position.html">Position</a>&gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Gets all Positions around a given <a class="el" href="structgame_model_1_1_position.html">Position</a> where no <a class="el" href="classgame_model_1_1_object.html">Object</a> is located. If all surrounding Positions are occupied, an empty list is returned </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">position</td><td>the <a class="el" href="structgame_model_1_1_position.html">Position</a> to be checked </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd></dd></dl>
+
+</div>
+</div>
 <a class="anchor" id="ae5dd94a5c24d5883e3f63c52a7e8e69f"></a>
 <div class="memitem">
 <div class="memproto">
@@ -467,41 +491,6 @@ std::deque&lt; std::shared_ptr<br class="typebreak"/>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
-
-</div>
-</div>
-<a class="anchor" id="a1a1e01adaee92f8e44b8d69fec4b1797"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">auto gameModel::Environment::getAllLegalCellsAround </td>
-          <td>(</td>
-          <td class="paramtype">const <a class="el" href="structgame_model_1_1_position.html">Position</a> &amp;&#160;</td>
-          <td class="paramname"><em>position</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>leftTeam</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td> const -&gt; std::vector&lt;<a class="el" href="structgame_model_1_1_position.html">Position</a>&gt;</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Gets all Positions around the given <a class="el" href="structgame_model_1_1_position.html">Position</a> where a player is allowed to move without risking a foul </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">position</td><td>the <a class="el" href="structgame_model_1_1_position.html">Position</a> to check </td></tr>
-    <tr><td class="paramname">leftTeam</td><td>whether to calculate <a class="el" href="structgame_model_1_1_position.html">Position</a> for the left <a class="el" href="classgame_model_1_1_team.html">Team</a> </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>a list with all found Positions, may be empty </dd></dl>
 
 </div>
 </div>
