@@ -1,5 +1,6 @@
 #include "GameModel.h"
 #include "GameController.h"
+#include "conversions.h"
 
 #include <utility>
 #include <iostream>
@@ -42,7 +43,7 @@ namespace gameModel{
     }
 
     int Fanblock::getUses(communication::messages::types::FanType fan) const {
-        return getUses(fanToInterference(fan));
+        return getUses(gameLogic::conversions::fanToInterference(fan));
     }
 
     int Fanblock::getBannedCount(gameModel::InterferenceType fan) const {
@@ -50,7 +51,7 @@ namespace gameModel{
     }
 
     int Fanblock::getBannedCount(communication::messages::types::FanType fan) const {
-        return getBannedCount(fanToInterference(fan));
+        return getBannedCount(gameLogic::conversions::fanToInterference(fan));
     }
 
     void Fanblock::banFan(InterferenceType fan) {
@@ -60,46 +61,9 @@ namespace gameModel{
     }
 
     void Fanblock::banFan(communication::messages::types::FanType fan) {
-        banFan(fanToInterference(fan));
+        banFan(gameLogic::conversions::fanToInterference(fan));
     }
 
-    auto Fanblock::fanToInterference(communication::messages::types::FanType fanType)
-        -> InterferenceType {
-        using namespace communication::messages::types;
-        switch (fanType){
-            case FanType::GOBLIN:
-                return InterferenceType::RangedAttack;
-            case FanType::TROLL:
-                return InterferenceType::Impulse;
-            case FanType::ELF:
-                return InterferenceType::Teleport;
-            case FanType::NIFFLER:
-                return InterferenceType::SnitchPush;
-            case FanType::WOMBAT:
-                return InterferenceType::BlockCell;
-            default:
-                throw std::runtime_error("Fatal error! Enum out of range");
-        }
-    }
-
-    auto Fanblock::interferenceToFan(gameModel::InterferenceType type)
-        -> communication::messages::types::FanType {
-        using namespace communication::messages::types;
-        switch (type){
-            case InterferenceType::RangedAttack:
-                return FanType::GOBLIN;
-            case InterferenceType::Teleport:
-                return FanType::ELF;
-            case InterferenceType::Impulse:
-                return FanType::TROLL;
-            case InterferenceType::SnitchPush:
-                return FanType::NIFFLER;
-            case InterferenceType::BlockCell:
-                return FanType::WOMBAT;
-            default:
-                throw std::runtime_error("Fatal error! Enum out of range");
-        }
-    }
 
     // Environment
 
@@ -160,8 +124,8 @@ namespace gameModel{
     Environment::Environment(communication::messages::broadcast::MatchConfig matchConfig, const communication::messages::request::TeamConfig& teamConfig1,
                 const communication::messages::request::TeamConfig& teamConfig2, communication::messages::request::TeamFormation teamFormation1,
                 communication::messages::request::TeamFormation teamFormation2) :
-                             Environment({matchConfig}, std::make_shared<Team>(teamConfig1, teamFormation1, true),
-                                     std::make_shared<Team>(teamConfig2, teamFormation2, false)){}
+                             Environment({matchConfig}, std::make_shared<Team>(teamConfig1, teamFormation1, TeamSide::LEFT),
+                                     std::make_shared<Team>(teamConfig2, teamFormation2, TeamSide::RIGHT)){}
 
     auto Environment::getAllPlayers() const -> std::array<std::shared_ptr<Player>, 14> {
         std::array<std::shared_ptr<Player>, 14> ret;
@@ -221,7 +185,7 @@ namespace gameModel{
     }
 
     auto Environment::getTeamMates(const std::shared_ptr<Player>& player) const -> std::array<std::shared_ptr<Player>, 6> {
-        auto players = team1->hasMember(player) ? team1->getAllPlayers() : team2->getAllPlayers();
+        auto players = getTeam(player)->getAllPlayers();
         std::array<std::shared_ptr<Player>, 6> ret;
         auto it = ret.begin();
         for(const auto &p : players){
@@ -283,10 +247,12 @@ namespace gameModel{
 
     auto Environment::isPlayerInOwnRestrictedZone(const std::shared_ptr<Player>& player) const -> bool {
         const auto cell = Environment::getCell(player->position);
-        if (this->team1->hasMember(player) && (cell == Cell::RestrictedLeft || cell == Cell::GoalLeft)) {
+        const auto side = gameLogic::conversions::idToSide(player->id);
+        if (side == TeamSide::LEFT && (cell == Cell::RestrictedLeft || cell == Cell::GoalLeft)) {
             return true;
         }
-        if (this->team2->hasMember(player) && (cell == Cell::RestrictedRight || cell == Cell::GoalRight)) {
+
+        if (side == TeamSide::RIGHT && (cell == Cell::RestrictedRight || cell == Cell::GoalRight)) {
             return true;
         }
 
@@ -294,39 +260,38 @@ namespace gameModel{
     }
     auto Environment::isPlayerInOpponentRestrictedZone(const std::shared_ptr<Player>& player) const  -> bool {
         const auto cell = Environment::getCell(player->position);
-        if (this->team1->hasMember(player) && (cell == Cell::RestrictedRight || cell == Cell::GoalRight)) {
+        const auto side = gameLogic::conversions::idToSide(player->id);
+        if (side == TeamSide::LEFT && (cell == Cell::RestrictedRight || cell == Cell::GoalRight)) {
             return true;
         }
-        if (this->team2->hasMember(player) && (cell == Cell::RestrictedLeft || cell == Cell::GoalLeft)) {
+        if (side == TeamSide::RIGHT && (cell == Cell::RestrictedLeft || cell == Cell::GoalLeft)) {
             return true;
         }
         return false;
     }
 
     auto Environment::getTeam(const std::shared_ptr<Player>& player) const -> std::shared_ptr<Team> {
-        if (this->team1->hasMember(player)) {
-            return this->team1;
-        }
-        else if (this->team2->hasMember(player)) {
-            return this->team2;
-        }
+        return getTeam(gameLogic::conversions::idToSide(player->id));
+    }
 
-        throw std::runtime_error("The Player isn't part of any team.");
+    auto Environment::getTeam(TeamSide side) const -> std::shared_ptr<Team> {
+        return team1->side == side ? team1 : team2;
     }
 
     void Environment::placePlayerOnRandomFreeCell(const std::shared_ptr<Player>& player) {
         std::vector<Position> possibleCells;
         possibleCells.reserve(82);
+        const auto side = gameLogic::conversions::idToSide(player->id);
         for(const auto &cell : getAllValidCells()){
             if(getCell(cell) == Cell::Centre || getCell(cell) == Cell::GoalLeft){
                 continue;
             }
 
-            if(team1->hasMember(player) && cell.x < 8 && cellIsFree(cell)){
+            if(side == TeamSide::LEFT && cell.x < 8 && cellIsFree(cell)){
                 possibleCells.push_back(cell);
             }
 
-            if(team2->hasMember(player) && cell.x > 8 && cellIsFree(cell)){
+            if(side == TeamSide::RIGHT && cell.x > 8 && cellIsFree(cell)){
                 possibleCells.push_back(cell);
             }
         }
@@ -507,27 +472,33 @@ namespace gameModel{
 
     // Team
 
-    Team::Team(Seeker seeker, Keeper keeper, std::array<Beater, 2> beaters, std::array<Chaser, 3> chasers, int score, Fanblock fanblock) :
+    Team::Team(Seeker seeker, Keeper keeper, std::array<Beater, 2> beaters, std::array<Chaser, 3> chasers, int score, Fanblock fanblock, TeamSide side) :
                seeker(std::make_shared<Seeker>(std::move(seeker))), keeper(std::make_shared<Keeper>(std::move(keeper))), beaters{std::make_shared<Beater>(std::move(beaters[0])),
                        std::make_shared<Beater>(std::move(beaters[1]))}, chasers{std::make_shared<Chaser>(std::move(chasers[0])), std::make_shared<Chaser>(std::move(chasers[1])),
-                               std::make_shared<Chaser>(std::move(chasers[2]))}, score(score), fanblock(std::move(fanblock)) {}
+                               std::make_shared<Chaser>(std::move(chasers[2]))}, score(score), fanblock(std::move(fanblock)), side(side) {
+        for(const auto &player : getAllPlayers()){
+            if(gameLogic::conversions::idToSide(player->id) != this->side){
+                throw std::invalid_argument("Player-IDs not matching team side");
+            }
+        }
+    }
 
-   Team::Team(const communication::messages::request::TeamConfig& tConf, communication::messages::request::TeamFormation tForm, bool leftTeam) :
-   seeker(std::make_shared<Seeker>(Position{tForm.getSeekerX(), tForm.getSeekerY()}, tConf.getSeeker().getBroom(), leftTeam ?
+   Team::Team(const communication::messages::request::TeamConfig& tConf, communication::messages::request::TeamFormation tForm, TeamSide side) :
+   seeker(std::make_shared<Seeker>(Position{tForm.getSeekerX(), tForm.getSeekerY()}, tConf.getSeeker().getBroom(), side == TeamSide::LEFT ?
    communication::messages::types::EntityId::LEFT_SEEKER : communication::messages::types::EntityId::RIGHT_SEEKER)),
-   keeper(std::make_shared<Keeper>(Position{tForm.getKeeperX(), tForm.getKeeperY()}, tConf.getKeeper().getBroom(), leftTeam ?
+   keeper(std::make_shared<Keeper>(Position{tForm.getKeeperX(), tForm.getKeeperY()}, tConf.getKeeper().getBroom(), side == TeamSide::LEFT ?
    communication::messages::types::EntityId::LEFT_KEEPER : communication::messages::types::EntityId::RIGHT_KEEPER)),
-   beaters{std::make_shared<Beater>(Position{tForm.getBeater1X(), tForm.getBeater1Y()}, tConf.getBeater1().getBroom(), leftTeam ?
+   beaters{std::make_shared<Beater>(Position{tForm.getBeater1X(), tForm.getBeater1Y()}, tConf.getBeater1().getBroom(), side == TeamSide::LEFT ?
             communication::messages::types::EntityId::LEFT_BEATER1 : communication::messages::types::EntityId::RIGHT_BEATER1),
-            std::make_shared<Beater>(Position{tForm.getBeater2X(), tForm.getBeater2Y()}, tConf.getBeater2().getBroom(), leftTeam ?
+            std::make_shared<Beater>(Position{tForm.getBeater2X(), tForm.getBeater2Y()}, tConf.getBeater2().getBroom(), side == TeamSide::LEFT ?
             communication::messages::types::EntityId ::LEFT_BEATER2 : communication::messages::types::EntityId::RIGHT_BEATER2)},
-   chasers{std::make_shared<Chaser>(Position{tForm.getChaser1X(), tForm.getChaser1Y()}, tConf.getChaser1().getBroom(), leftTeam ?
+   chasers{std::make_shared<Chaser>(Position{tForm.getChaser1X(), tForm.getChaser1Y()}, tConf.getChaser1().getBroom(), side == TeamSide::LEFT ?
             communication::messages::types::EntityId::LEFT_CHASER1 : communication::messages::types::EntityId::RIGHT_CHASER1),
-            std::make_shared<Chaser>(Position{tForm.getChaser2X(), tForm.getChaser2Y()}, tConf.getChaser2().getBroom(), leftTeam ?
+            std::make_shared<Chaser>(Position{tForm.getChaser2X(), tForm.getChaser2Y()}, tConf.getChaser2().getBroom(), side == TeamSide::LEFT ?
             communication::messages::types::EntityId::LEFT_CHASER2 : communication::messages::types::EntityId::RIGHT_CHASER2),
-            std::make_shared<Chaser>(Position{tForm.getChaser3X(), tForm.getChaser3Y()}, tConf.getChaser3().getBroom(), leftTeam ?
+            std::make_shared<Chaser>(Position{tForm.getChaser3X(), tForm.getChaser3Y()}, tConf.getChaser3().getBroom(), side == TeamSide::LEFT ?
             communication::messages::types::EntityId::LEFT_CHASER3 : communication::messages::types::EntityId::RIGHT_CHASER3)},
-   fanblock(tConf.getElfs(), tConf.getGoblins(), tConf.getTrolls(), tConf.getNifflers(), tConf.getWombats()){}
+   fanblock(tConf.getElfs(), tConf.getGoblins(), tConf.getTrolls(), tConf.getNifflers(), tConf.getWombats()), side(side){}
 
 
     auto Team::getAllPlayers() const -> std::array<std::shared_ptr<Player>, 7> {
@@ -549,13 +520,7 @@ namespace gameModel{
     }
 
     bool Team::hasMember(const std::shared_ptr<const Player>& player) const {
-        for(const auto &p : getAllPlayers()){
-            if(player == p){
-                return true;
-            }
-        }
-
-        return false;
+        return gameLogic::conversions::idToSide(player->id) == side;
     }
 
     int Team::numberOfBannedMembers() const{
@@ -581,7 +546,7 @@ namespace gameModel{
 
     auto Team::clone() const -> std::shared_ptr<Team> {
         return std::make_shared<Team>(*this->seeker, *this->keeper, std::array<Beater, 2>{*this->beaters[0], *this->beaters[1]},
-                std::array<Chaser, 3>{*this->chasers[0], *this->chasers[1], *this->chasers[2]}, this->score, this->fanblock);
+                std::array<Chaser, 3>{*this->chasers[0], *this->chasers[1], *this->chasers[2]}, this->score, this->fanblock, this->side);
     }
 
     // Config
