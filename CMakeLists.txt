@@ -17,7 +17,8 @@ set(SOURCES
         ${CMAKE_SOURCE_DIR}/src/GameModel.cpp
         ${CMAKE_SOURCE_DIR}/src/Action.cpp
         ${CMAKE_SOURCE_DIR}/src/GameController.cpp
-        ${CMAKE_SOURCE_DIR}/src/Interference.cpp)
+        ${CMAKE_SOURCE_DIR}/src/Interference.cpp
+        ${CMAKE_SOURCE_DIR}/src/conversions.cpp)
 set(LIBS SopraMessages)
 
 include_directories(${CMAKE_SOURCE_DIR}/src)

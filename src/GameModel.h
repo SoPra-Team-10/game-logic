@@ -126,6 +126,10 @@ namespace gameModel{
         BlockCell
     };
 
+    enum class TeamSide : char {
+        LEFT, RIGHT
+    };
+
     /**
      * Class containing metadata for a match
      */
@@ -261,19 +265,6 @@ namespace gameModel{
          */
         void banFan(communication::messages::types::FanType fan);
 
-        /**
-         * Converts FanType to InterferenceType
-         * @param fanType
-         * @return
-         */
-        static auto fanToInterference(communication::messages::types::FanType fanType) -> InterferenceType;
-
-        /**
-         * Converts InterferenceType to FanType
-         * @param type
-         * @return
-         */
-        static auto interferenceToFan(InterferenceType type) -> communication::messages::types::FanType;
     private:
         std::map<InterferenceType, int> currFans;
         std::map<InterferenceType, const int> initialFans;
@@ -378,12 +369,13 @@ namespace gameModel{
         std::array<std::shared_ptr<Chaser>, 3> chasers;
         int score{};
         Fanblock fanblock;
+        const TeamSide side;
 
         /**
          * Constructs a Team from server config types with initial score of 0
          * @param leftTeam select if team si on left or right side
          */
-        Team(const communication::messages::request::TeamConfig& tConf, communication::messages::request::TeamFormation tForm, bool leftTeam);
+        Team(const communication::messages::request::TeamConfig& tConf, communication::messages::request::TeamFormation tForm, TeamSide side);
 
         /**
          * Ctor where all members can be specified
@@ -395,7 +387,7 @@ namespace gameModel{
          * @param fanblock fans of the team
          */
         Team(Seeker seeker, Keeper keeper, std::array<Beater, 2> beaters, std::array<Chaser, 3> chasers,
-                int score, Fanblock fanblock);
+                int score, Fanblock fanblock, TeamSide side);
 
         /**
          * gets all Players of the team
@@ -604,6 +596,14 @@ namespace gameModel{
          * @return the team of a player.
          */
         auto getTeam(const std::shared_ptr<Player>& player) const -> std::shared_ptr<Team>;
+
+
+        /**
+         * Gets the team on the specified side
+         * @param side the side of the team
+         * @return
+         */
+        auto getTeam(TeamSide side) const -> std::shared_ptr<Team>;
 
 
         /**
