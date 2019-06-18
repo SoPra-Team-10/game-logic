@@ -18,7 +18,7 @@ var searchData=
   ['getplayer',['getPlayer',['../classgame_model_1_1_environment.html#ad50b8cb84c76a6dbbfa9f8210918a4c2',1,'gameModel::Environment']]],
   ['getplayerbyid',['getPlayerByID',['../classgame_model_1_1_team.html#a1e22097a639d37333176354a83ab3038',1,'gameModel::Team::getPlayerByID()'],['../classgame_model_1_1_environment.html#a4d07c3194e35ffc1295a81c43c616540',1,'gameModel::Environment::getPlayerById()']]],
   ['getsurroundingpositions',['getSurroundingPositions',['../classgame_model_1_1_environment.html#a3eae4f5c6ac23d48c10a6688340b0ba9',1,'gameModel::Environment']]],
-  ['getteam',['getTeam',['../classgame_model_1_1_environment.html#a393a4957114c2361f17bc84d00cec55f',1,'gameModel::Environment::getTeam(const std::shared_ptr&lt; Player &gt; &amp;player) const -&gt; std::shared_ptr&lt; Team &gt;'],['../classgame_model_1_1_environment.html#a96786670bdcd643e38c3fc6400735386',1,'gameModel::Environment::getTeam(TeamSide side) const -&gt; std::shared_ptr&lt; Team &gt;']]],
+  ['getteam',['getTeam',['../classgame_model_1_1_environment.html#a393a4957114c2361f17bc84d00cec55f',1,'gameModel::Environment']]],
   ['getteammates',['getTeamMates',['../classgame_model_1_1_environment.html#a3122c0963d935543e2a7da1303772124',1,'gameModel::Environment']]],
   ['gettype',['getType',['../classgame_controller_1_1_interference.html#a694aa2cd65bbb35c02f1ca4ed7701ebe',1,'gameController::Interference']]],
   ['getuses',['getUses',['../classgame_model_1_1_fanblock.html#a65c17009e532bcda8316a30d9e9433cd',1,'gameModel::Fanblock::getUses(InterferenceType fan) const '],['../classgame_model_1_1_fanblock.html#a2a72db2243fdb205c4b2f37949f17707',1,'gameModel::Fanblock::getUses(communication::messages::types::FanType fan) const ']]]

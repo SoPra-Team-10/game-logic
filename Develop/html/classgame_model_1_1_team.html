@@ -97,10 +97,10 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a12363effb62bbea8e9d1f9dd708f2215"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgame_model_1_1_team.html#a12363effb62bbea8e9d1f9dd708f2215">Team</a> (const communication::messages::request::TeamConfig &amp;tConf, communication::messages::request::TeamFormation tForm, TeamSide side)</td></tr>
-<tr class="separator:a12363effb62bbea8e9d1f9dd708f2215"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad2ae8fd790f00a0f59d4e6127021fe5d"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgame_model_1_1_team.html#ad2ae8fd790f00a0f59d4e6127021fe5d">Team</a> (<a class="el" href="classgame_model_1_1_seeker.html">Seeker</a> seeker, <a class="el" href="classgame_model_1_1_keeper.html">Keeper</a> keeper, std::array&lt; <a class="el" href="classgame_model_1_1_beater.html">Beater</a>, 2 &gt; beaters, std::array&lt; <a class="el" href="classgame_model_1_1_chaser.html">Chaser</a>, 3 &gt; chasers, int score, <a class="el" href="classgame_model_1_1_fanblock.html">Fanblock</a> fanblock, TeamSide side)</td></tr>
-<tr class="separator:ad2ae8fd790f00a0f59d4e6127021fe5d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6254ef77ea2fd282421d1508457ba53f"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgame_model_1_1_team.html#a6254ef77ea2fd282421d1508457ba53f">Team</a> (const communication::messages::request::TeamConfig &amp;tConf, communication::messages::request::TeamFormation tForm, bool leftTeam)</td></tr>
+<tr class="separator:a6254ef77ea2fd282421d1508457ba53f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a758dd89ccf2b52fe9c0096f54f3173c5"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgame_model_1_1_team.html#a758dd89ccf2b52fe9c0096f54f3173c5">Team</a> (<a class="el" href="classgame_model_1_1_seeker.html">Seeker</a> seeker, <a class="el" href="classgame_model_1_1_keeper.html">Keeper</a> keeper, std::array&lt; <a class="el" href="classgame_model_1_1_beater.html">Beater</a>, 2 &gt; beaters, std::array&lt; <a class="el" href="classgame_model_1_1_chaser.html">Chaser</a>, 3 &gt; chasers, int score, <a class="el" href="classgame_model_1_1_fanblock.html">Fanblock</a> fanblock)</td></tr>
+<tr class="separator:a758dd89ccf2b52fe9c0096f54f3173c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3add38a878f50ed9a847b01d996be4ca"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgame_model_1_1_team.html#a3add38a878f50ed9a847b01d996be4ca">getAllPlayers</a> () const -&gt; std::array&lt; std::shared_ptr&lt; <a class="el" href="classgame_model_1_1_player.html">Player</a> &gt;, 7 &gt;</td></tr>
 <tr class="separator:a3add38a878f50ed9a847b01d996be4ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afb698cd2705eaae4d51eb0139c4f73bb"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgame_model_1_1_team.html#afb698cd2705eaae4d51eb0139c4f73bb">hasMember</a> (const std::shared_ptr&lt; const <a class="el" href="classgame_model_1_1_player.html">Player</a> &gt; &amp;player) const </td></tr>
@@ -134,14 +134,11 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>score</b> {}</td></tr>
 <tr class="memitem:a89c473adc822535d64c38db6637c4eb2"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a89c473adc822535d64c38db6637c4eb2"></a>
 <a class="el" href="classgame_model_1_1_fanblock.html">Fanblock</a>&#160;</td><td class="memItemRight" valign="bottom"><b>fanblock</b></td></tr>
 <tr class="separator:a89c473adc822535d64c38db6637c4eb2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af6dd66f4ec9f92ac9f812adff9ffbd75"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af6dd66f4ec9f92ac9f812adff9ffbd75"></a>
-const TeamSide&#160;</td><td class="memItemRight" valign="bottom"><b>side</b></td></tr>
-<tr class="separator:af6dd66f4ec9f92ac9f812adff9ffbd75"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Represents a <a class="el" href="classgame_model_1_1_team.html">Team</a> </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a class="anchor" id="a12363effb62bbea8e9d1f9dd708f2215"></a>
+<a class="anchor" id="a6254ef77ea2fd282421d1508457ba53f"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -160,8 +157,8 @@ const TeamSide&#160;</td><td class="memItemRight" valign="bottom"><b>side</b></t
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">TeamSide&#160;</td>
-          <td class="paramname"><em>side</em>&#160;</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>leftTeam</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -180,7 +177,7 @@ const TeamSide&#160;</td><td class="memItemRight" valign="bottom"><b>side</b></t
 
 </div>
 </div>
-<a class="anchor" id="ad2ae8fd790f00a0f59d4e6127021fe5d"></a>
+<a class="anchor" id="a758dd89ccf2b52fe9c0096f54f3173c5"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -218,13 +215,7 @@ const TeamSide&#160;</td><td class="memItemRight" valign="bottom"><b>side</b></t
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype"><a class="el" href="classgame_model_1_1_fanblock.html">Fanblock</a>&#160;</td>
-          <td class="paramname"><em>fanblock</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">TeamSide&#160;</td>
-          <td class="paramname"><em>side</em>&#160;</td>
+          <td class="paramname"><em>fanblock</em>&#160;</td>
         </tr>
         <tr>
           <td></td>

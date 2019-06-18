@@ -86,7 +86,8 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div><!-- top -->
 <div class="header">
   <div class="summary">
-<a href="#pub-methods">Public Member Functions</a>  </div>
+<a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-static-methods">Static Public Member Functions</a>  </div>
   <div class="headertitle">
 <div class="title">gameModel::Fanblock Class Reference</div>  </div>
 </div><!--header-->
@@ -111,6 +112,13 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a1642d454e4547e75d63675a5f929314d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5af5921a8ac7e3d8f603d366e408083a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgame_model_1_1_fanblock.html#a5af5921a8ac7e3d8f603d366e408083a">banFan</a> (communication::messages::types::FanType fan)</td></tr>
 <tr class="separator:a5af5921a8ac7e3d8f603d366e408083a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
+Static Public Member Functions</h2></td></tr>
+<tr class="memitem:a3c86e19ed428958ef678dea496a7d4c0"><td class="memItemLeft" align="right" valign="top">static auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgame_model_1_1_fanblock.html#a3c86e19ed428958ef678dea496a7d4c0">fanToInterference</a> (communication::messages::types::FanType fanType) -&gt; InterferenceType</td></tr>
+<tr class="separator:a3c86e19ed428958ef678dea496a7d4c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2ef924170c8311a0807e560e8b2b1422"><td class="memItemLeft" align="right" valign="top">static auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgame_model_1_1_fanblock.html#a2ef924170c8311a0807e560e8b2b1422">interferenceToFan</a> (InterferenceType type) -&gt; communication::messages::types::FanType</td></tr>
+<tr class="separator:a2ef924170c8311a0807e560e8b2b1422"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Represents available fans for a <a class="el" href="classgame_model_1_1_team.html">Team</a> </p>
@@ -170,6 +178,38 @@ Public Member Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a class="anchor" id="a3c86e19ed428958ef678dea496a7d4c0"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">auto gameModel::Fanblock::fanToInterference </td>
+          <td>(</td>
+          <td class="paramtype">communication::messages::types::FanType&#160;</td>
+          <td class="paramname"><em>fanType</em></td><td>)</td>
+          <td> -&gt; InterferenceType</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Converts FanType to InterferenceType </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">fanType</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
 </div>
 </div>
@@ -266,6 +306,38 @@ Public Member Functions</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>number of left uses </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a2ef924170c8311a0807e560e8b2b1422"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">auto gameModel::Fanblock::interferenceToFan </td>
+          <td>(</td>
+          <td class="paramtype">gameModel::InterferenceType&#160;</td>
+          <td class="paramname"><em>type</em></td><td>)</td>
+          <td> -&gt; communication::messages::types::FanType</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Converts InterferenceType to FanType </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">type</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
 </div>
 </div>
