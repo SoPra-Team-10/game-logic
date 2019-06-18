@@ -7,7 +7,7 @@
 
 #include "GameModel.h"
 
-namespace conversions{
+namespace gameLogic::conversions{
     auto foulToBanReason(gameModel::Foul foul) -> communication::messages::types::BanReason;
     auto interferenceToId(gameModel::InterferenceType type, gameModel::TeamSide side) -> communication::messages::types::EntityId;
     bool isFan(communication::messages::types::EntityId id);

@@ -43,7 +43,7 @@ namespace gameModel{
     }
 
     int Fanblock::getUses(communication::messages::types::FanType fan) const {
-        return getUses(conversions::fanToInterference(fan));
+        return getUses(gameLogic::conversions::fanToInterference(fan));
     }
 
     int Fanblock::getBannedCount(gameModel::InterferenceType fan) const {
@@ -51,7 +51,7 @@ namespace gameModel{
     }
 
     int Fanblock::getBannedCount(communication::messages::types::FanType fan) const {
-        return getBannedCount(conversions::fanToInterference(fan));
+        return getBannedCount(gameLogic::conversions::fanToInterference(fan));
     }
 
     void Fanblock::banFan(InterferenceType fan) {
@@ -61,7 +61,7 @@ namespace gameModel{
     }
 
     void Fanblock::banFan(communication::messages::types::FanType fan) {
-        banFan(conversions::fanToInterference(fan));
+        banFan(gameLogic::conversions::fanToInterference(fan));
     }
 
 
@@ -247,7 +247,7 @@ namespace gameModel{
 
     auto Environment::isPlayerInOwnRestrictedZone(const std::shared_ptr<Player>& player) const -> bool {
         const auto cell = Environment::getCell(player->position);
-        const auto side = conversions::idToSide(player->id);
+        const auto side = gameLogic::conversions::idToSide(player->id);
         if (side == TeamSide::LEFT && (cell == Cell::RestrictedLeft || cell == Cell::GoalLeft)) {
             return true;
         }
@@ -260,7 +260,7 @@ namespace gameModel{
     }
     auto Environment::isPlayerInOpponentRestrictedZone(const std::shared_ptr<Player>& player) const  -> bool {
         const auto cell = Environment::getCell(player->position);
-        const auto side = conversions::idToSide(player->id);
+        const auto side = gameLogic::conversions::idToSide(player->id);
         if (side == TeamSide::LEFT && (cell == Cell::RestrictedRight || cell == Cell::GoalRight)) {
             return true;
         }
@@ -271,7 +271,7 @@ namespace gameModel{
     }
 
     auto Environment::getTeam(const std::shared_ptr<Player>& player) const -> std::shared_ptr<Team> {
-        return getTeam(conversions::idToSide(player->id));
+        return getTeam(gameLogic::conversions::idToSide(player->id));
     }
 
     auto Environment::getTeam(TeamSide side) const -> std::shared_ptr<Team> {
@@ -281,7 +281,7 @@ namespace gameModel{
     void Environment::placePlayerOnRandomFreeCell(const std::shared_ptr<Player>& player) {
         std::vector<Position> possibleCells;
         possibleCells.reserve(82);
-        const auto side = conversions::idToSide(player->id);
+        const auto side = gameLogic::conversions::idToSide(player->id);
         for(const auto &cell : getAllValidCells()){
             if(getCell(cell) == Cell::Centre || getCell(cell) == Cell::GoalLeft){
                 continue;
@@ -458,7 +458,7 @@ namespace gameModel{
                        std::make_shared<Beater>(std::move(beaters[1]))}, chasers{std::make_shared<Chaser>(std::move(chasers[0])), std::make_shared<Chaser>(std::move(chasers[1])),
                                std::make_shared<Chaser>(std::move(chasers[2]))}, score(score), fanblock(std::move(fanblock)), side(side) {
         for(const auto &player : getAllPlayers()){
-            if(conversions::idToSide(player->id) != this->side){
+            if(gameLogic::conversions::idToSide(player->id) != this->side){
                 throw std::invalid_argument("Player-IDs not matching team side");
             }
         }
@@ -501,7 +501,7 @@ namespace gameModel{
     }
 
     bool Team::hasMember(const std::shared_ptr<const Player>& player) const {
-        return conversions::idToSide(player->id) == side;
+        return gameLogic::conversions::idToSide(player->id) == side;
     }
 
     int Team::numberOfBannedMembers() const{

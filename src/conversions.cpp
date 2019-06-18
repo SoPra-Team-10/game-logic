@@ -3,11 +3,12 @@
 //
 
 #include "conversions.h"
-auto conversions::foulToBanReason(gameModel::Foul foul) -> communication::messages::types::BanReason {
+
+auto gameLogic::conversions::foulToBanReason(gameModel::Foul foul) -> communication::messages::types::BanReason {
     using Reason = communication::messages::types::BanReason;
     switch (foul){
         case gameModel::Foul::None:
-            throw std::runtime_error("cannot convert");
+            throw std::runtime_error("cannot gameLogic::convert");
         case gameModel::Foul::BlockGoal:
             return Reason::FLACKING;
         case gameModel::Foul::ChargeGoal:
@@ -23,7 +24,7 @@ auto conversions::foulToBanReason(gameModel::Foul foul) -> communication::messag
     throw std::runtime_error("Fatal error! Enum out of bounds");
 }
 
-auto conversions::interferenceToId(gameModel::InterferenceType type,
+auto gameLogic::conversions::interferenceToId(gameModel::InterferenceType type,
                                    gameModel::TeamSide side) -> communication::messages::types::EntityId {
     using Id = communication::messages::types::EntityId;
     switch(type){
@@ -42,7 +43,7 @@ auto conversions::interferenceToId(gameModel::InterferenceType type,
     throw std::runtime_error("Fatal error! Enum out of bounds");
 }
 
-bool conversions::isFan(communication::messages::types::EntityId id) {
+bool gameLogic::conversions::isFan(communication::messages::types::EntityId id) {
     switch (id){
         case communication::messages::types::EntityId::LEFT_GOBLIN:
         case communication::messages::types::EntityId::LEFT_TROLL:
@@ -60,7 +61,7 @@ bool conversions::isFan(communication::messages::types::EntityId id) {
     }
 }
 
-bool conversions::isBall(communication::messages::types::EntityId id) {
+bool gameLogic::conversions::isBall(communication::messages::types::EntityId id) {
     switch (id){
         case communication::messages::types::EntityId::SNITCH:
         case communication::messages::types::EntityId::BLUDGER1:
@@ -72,7 +73,7 @@ bool conversions::isBall(communication::messages::types::EntityId id) {
     }
 }
 
-bool conversions::isPlayer(communication::messages::types::EntityId id) {
+bool gameLogic::conversions::isPlayer(communication::messages::types::EntityId id) {
     switch (id){
         case communication::messages::types::EntityId::LEFT_SEEKER:
         case communication::messages::types::EntityId::LEFT_KEEPER:
@@ -94,7 +95,7 @@ bool conversions::isPlayer(communication::messages::types::EntityId id) {
     }
 }
 
-auto conversions::idToSide(communication::messages::types::EntityId id) -> gameModel::TeamSide {
+auto gameLogic::conversions::idToSide(communication::messages::types::EntityId id) -> gameModel::TeamSide {
     using namespace gameModel;
     switch (id){
         case communication::messages::types::EntityId::LEFT_SEEKER:
@@ -128,7 +129,7 @@ auto conversions::idToSide(communication::messages::types::EntityId id) -> gameM
     }
 }
 
-auto conversions::idToFantype(communication::messages::types::EntityId id) -> communication::messages::types::FanType {
+auto gameLogic::conversions::idToFantype(communication::messages::types::EntityId id) -> communication::messages::types::FanType {
     using namespace communication::messages::types;
     switch (id){
         case communication::messages::types::EntityId::LEFT_GOBLIN:
@@ -156,7 +157,7 @@ auto conversions::idToFantype(communication::messages::types::EntityId id) -> co
     }
 }
 
-auto conversions::fanToInterference(communication::messages::types::FanType fanType)
+auto gameLogic::conversions::fanToInterference(communication::messages::types::FanType fanType)
 -> gameModel::InterferenceType {
     using namespace communication::messages::types;
     switch (fanType){
@@ -175,7 +176,7 @@ auto conversions::fanToInterference(communication::messages::types::FanType fanT
     }
 }
 
-auto conversions::interferenceToFan(gameModel::InterferenceType type)
+auto gameLogic::conversions::interferenceToFan(gameModel::InterferenceType type)
 -> communication::messages::types::FanType {
     using namespace communication::messages::types;
     switch (type){
