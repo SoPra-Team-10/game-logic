@@ -184,7 +184,7 @@ namespace gameModel{
         return resultVect;
     }
 
-    auto Environment::getTeamMates(const std::shared_ptr<Player>& player) const -> std::array<std::shared_ptr<Player>, 6> {
+    auto Environment::getTeamMates(const std::shared_ptr<const Player>& player) const -> std::array<std::shared_ptr<Player>, 6> {
         auto players = getTeam(player)->getAllPlayers();
         std::array<std::shared_ptr<Player>, 6> ret;
         auto it = ret.begin();
@@ -198,7 +198,7 @@ namespace gameModel{
         return ret;
     }
 
-    auto Environment::getOpponents(const std::shared_ptr<Player>& player) const -> std::array<std::shared_ptr<Player>, 7> {
+    auto Environment::getOpponents(const std::shared_ptr<const Player>& player) const -> std::array<std::shared_ptr<Player>, 7> {
         return team1->hasMember(player) ? team2->getAllPlayers() : team1->getAllPlayers();
     }
 
@@ -245,7 +245,7 @@ namespace gameModel{
         return ret;
     }
 
-    auto Environment::isPlayerInOwnRestrictedZone(const std::shared_ptr<Player>& player) const -> bool {
+    auto Environment::isPlayerInOwnRestrictedZone(const std::shared_ptr<const Player>& player) const -> bool {
         const auto cell = Environment::getCell(player->position);
         const auto side = gameLogic::conversions::idToSide(player->id);
         if (side == TeamSide::LEFT && (cell == Cell::RestrictedLeft || cell == Cell::GoalLeft)) {
@@ -258,7 +258,7 @@ namespace gameModel{
 
         return false;
     }
-    auto Environment::isPlayerInOpponentRestrictedZone(const std::shared_ptr<Player>& player) const  -> bool {
+    auto Environment::isPlayerInOpponentRestrictedZone(const std::shared_ptr<const Player>& player) const  -> bool {
         const auto cell = Environment::getCell(player->position);
         const auto side = gameLogic::conversions::idToSide(player->id);
         if (side == TeamSide::LEFT && (cell == Cell::RestrictedRight || cell == Cell::GoalRight)) {
@@ -270,7 +270,7 @@ namespace gameModel{
         return false;
     }
 
-    auto Environment::getTeam(const std::shared_ptr<Player>& player) const -> std::shared_ptr<Team> {
+    auto Environment::getTeam(const std::shared_ptr<const Player>& player) const -> std::shared_ptr<Team> {
         return getTeam(gameLogic::conversions::idToSide(player->id));
     }
 

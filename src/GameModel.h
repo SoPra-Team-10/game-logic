@@ -524,14 +524,14 @@ namespace gameModel{
          * @param player the player.
          * @return true if player is in own restricted zone, else false;
          */
-        auto isPlayerInOwnRestrictedZone(const std::shared_ptr<Player>& player) const -> bool;
+        auto isPlayerInOwnRestrictedZone(const std::shared_ptr<const Player> &player) const -> bool;
 
         /**
          * checks if a player is in the opponent restricted zone.
          * @param player the player.
          * @return true if player is in opponent restricted zone, else false;
          */
-        auto isPlayerInOpponentRestrictedZone(const std::shared_ptr<Player>& player) const  -> bool;
+        auto isPlayerInOpponentRestrictedZone(const std::shared_ptr<const Player> &player) const  -> bool;
 
         /**
          * Gets all players on the field
@@ -544,14 +544,14 @@ namespace gameModel{
          * @param player
          * @return
          */
-        auto getTeamMates(const std::shared_ptr<Player>& player) const -> std::array<std::shared_ptr<Player>, 6>;
+        auto getTeamMates(const std::shared_ptr<const Player>& player) const -> std::array<std::shared_ptr<Player>, 6>;
 
         /**
          * Gets all players from the opponent team of the given player
          * @param player
          * @return
          */
-        auto getOpponents(const std::shared_ptr<Player>& player) const -> std::array<std::shared_ptr<Player>, 7>;
+        auto getOpponents(const std::shared_ptr<const Player>& player) const -> std::array<std::shared_ptr<Player>, 7>;
 
         /**
          * Determines whether the given Position is occupied by a Player or Ball
@@ -604,7 +604,7 @@ namespace gameModel{
          * @param player the selected player.
          * @return the team of a player.
          */
-        auto getTeam(const std::shared_ptr<Player>& player) const -> std::shared_ptr<Team>;
+        auto getTeam(const std::shared_ptr<const Player>& player) const -> std::shared_ptr<Team>;
 
 
         /**
