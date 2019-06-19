@@ -8,6 +8,7 @@
 #include "GameController.h"
 #include "setup.h"
 #include "Interference.h"
+#include "conversions.h"
 
 //----------------------------Teleport----------------------------------------------------------------------------------
 
@@ -249,15 +250,15 @@ TEST(block_cell_test, execute1){
 
 //----------------------------------------------FanToInterfernce/ InterferenceToFan-------------------------------------
 TEST(fan_test, fan_to_interference){
-    EXPECT_EQ(gameModel::Fanblock::fanToInterference(communication::messages::types::FanType::GOBLIN), gameModel::InterferenceType::RangedAttack);
-    EXPECT_EQ(gameModel::Fanblock::fanToInterference(communication::messages::types::FanType::TROLL), gameModel::InterferenceType::Impulse);
-    EXPECT_EQ(gameModel::Fanblock::fanToInterference(communication::messages::types::FanType::ELF), gameModel::InterferenceType::Teleport);
-    EXPECT_EQ(gameModel::Fanblock::fanToInterference(communication::messages::types::FanType::NIFFLER), gameModel::InterferenceType::SnitchPush);
+    EXPECT_EQ(gameLogic::conversions::fanToInterference(communication::messages::types::FanType::GOBLIN), gameModel::InterferenceType::RangedAttack);
+    EXPECT_EQ(gameLogic::conversions::fanToInterference(communication::messages::types::FanType::TROLL), gameModel::InterferenceType::Impulse);
+    EXPECT_EQ(gameLogic::conversions::fanToInterference(communication::messages::types::FanType::ELF), gameModel::InterferenceType::Teleport);
+    EXPECT_EQ(gameLogic::conversions::fanToInterference(communication::messages::types::FanType::NIFFLER), gameModel::InterferenceType::SnitchPush);
 }
 
 TEST(fan_test, interference_to_fan) {
-    EXPECT_EQ(gameModel::Fanblock::interferenceToFan(gameModel::InterferenceType::RangedAttack), communication::messages::types::FanType::GOBLIN);
-    EXPECT_EQ(gameModel::Fanblock::interferenceToFan(gameModel::InterferenceType::Teleport), communication::messages::types::FanType::ELF);
-    EXPECT_EQ(gameModel::Fanblock::interferenceToFan(gameModel::InterferenceType::Impulse), communication::messages::types::FanType::TROLL);
-    EXPECT_EQ(gameModel::Fanblock::interferenceToFan(gameModel::InterferenceType::SnitchPush), communication::messages::types::FanType::NIFFLER);
+    EXPECT_EQ(gameLogic::conversions::interferenceToFan(gameModel::InterferenceType::RangedAttack), communication::messages::types::FanType::GOBLIN);
+    EXPECT_EQ(gameLogic::conversions::interferenceToFan(gameModel::InterferenceType::Teleport), communication::messages::types::FanType::ELF);
+    EXPECT_EQ(gameLogic::conversions::interferenceToFan(gameModel::InterferenceType::Impulse), communication::messages::types::FanType::TROLL);
+    EXPECT_EQ(gameLogic::conversions::interferenceToFan(gameModel::InterferenceType::SnitchPush), communication::messages::types::FanType::NIFFLER);
 }
