@@ -119,6 +119,11 @@ namespace gameController{
         auto check() const -> ActionCheckResult override;
         auto executeAll() const ->
             std::vector<std::pair<std::shared_ptr<gameModel::Environment>, double>> override;
+        /**
+         * Checks if the defined Shot will result in a goal if it succeedes
+         * @return an ActionResult with the appropriate message or nothing if no goal will be scored
+         */
+        auto isShotOnGoal() const -> std::optional<ActionResult>;
     private:
         std::shared_ptr<gameModel::Ball> ball;
         /**
