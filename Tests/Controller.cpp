@@ -484,3 +484,29 @@ TEST(controller_test, moveToAdjacentRemoveShitWithBall){
     EXPECT_EQ(env->quaffle->position, gameModel::Position(7, 7));
     EXPECT_TRUE(env->pileOfShit.empty());
 }
+
+//---------------------------------getAllPossibleActions----------------------------------------------------------------
+TEST(controller_test, getAllPossibleMoves){
+    auto env = setup::createEnv();
+    auto moves = gameController::getAllPossibleMoves(env->team1->beaters[0], env);
+    EXPECT_EQ(moves.size(), 6);
+    for(const auto &move : moves){
+        EXPECT_NE(move.check(), gameController::ActionCheckResult::Impossible);
+    }
+}
+
+TEST(controller_test, getAllPossibleShots){
+    auto env = setup::createEnv();
+    auto moves = gameController::getAllPossibleShots(env->team1->beaters[0], env, 0);
+    EXPECT_EQ(moves.size(), 0);
+}
+
+TEST(controller_test, getAllPossibleShots1){
+    auto env = setup::createEnv();
+    env->quaffle->position = env->team2->chasers[1]->position;
+    auto shots = gameController::getAllPossibleShots(env->team2->chasers[1], env, 0);
+    EXPECT_EQ(shots.size(), 193);
+    for(const auto &shot : shots){
+        EXPECT_NE(shot.check(), gameController::ActionCheckResult::Impossible);
+    }
+}

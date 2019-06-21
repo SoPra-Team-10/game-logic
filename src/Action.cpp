@@ -136,12 +136,11 @@ namespace gameController{
         }
 
         auto playerOnTarget = env->getPlayer(target);
-        const bool playerNotInSameTeam = !env->arePlayerInSameTeam(actor, playerOnTarget.value());
         const bool targetIsGoal = gameModel::Environment::isGoalCell(target);
         const bool isAnyPlayerOnTarget = playerOnTarget.has_value();
 
         if(QUAFFLETHROW) {
-            if(targetIsGoal && isAnyPlayerOnTarget && playerNotInSameTeam){
+            if(targetIsGoal && isAnyPlayerOnTarget && !env->arePlayerInSameTeam(actor, playerOnTarget.value())){
                 //100% bounce off on goal
                 return 0;
             }

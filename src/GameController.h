@@ -51,20 +51,21 @@ namespace gameController {
     /**
      * Get all currently possible shots of a given player in a given environment.
      * @param actor actor the acting player as shared pointer.
-     * @param envi the selected environment.
+     * @param env the selected environment.
+     * @param minSuccessProb minimal probability for the shot to succeed
      * @return a shots vector
      */
-    auto getAllPossibleShots(std::shared_ptr<gameModel::Player> actor, const gameModel::Environment &envi) ->
+    auto getAllPossibleShots(const std::shared_ptr<gameModel::Player> &actor,
+            const std::shared_ptr<gameModel::Environment> &env, double minSuccessProb) ->
         std::vector<Shot>;
 
     /**
      * Get all currently possible moves of a given actor in a given environment
-     * @tparam T the actor type (Player or Ball).
-     * @param actor actor the acting player or ball as shared pointer.
+     * @param actor actor the acting player
      * @param envi the selected environment.
      * @return a action vector
      */
-    auto getAllPossibleMoves(std::shared_ptr<gameModel::Player> actor, const gameModel::Environment &envi) ->
+    auto getAllPossibleMoves(const std::shared_ptr<gameModel::Player> &actor, const std::shared_ptr<gameModel::Environment> &envi) ->
         std::vector<Move>;
 
     /**
