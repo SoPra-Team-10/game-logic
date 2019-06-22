@@ -444,6 +444,10 @@ namespace gameController{
         }
     }
 
+    const std::shared_ptr<const gameModel::Ball> Shot::getBall() const {
+        return ball;
+    }
+
     Move::Move(std::shared_ptr<gameModel::Environment> env, std::shared_ptr<gameModel::Player> actor, gameModel::Position target):
             Action(std::move(env), std::move(actor), target) {}
 
