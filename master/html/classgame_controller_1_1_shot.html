@@ -117,12 +117,6 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:ab80ff184bcf495115777b9e4bdf865cf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a738e9be12420c2cb25928aa3c181ebb0"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgame_controller_1_1_shot.html#a738e9be12420c2cb25928aa3c181ebb0">isShotOnGoal</a> () const -&gt; std::optional&lt; ActionResult &gt;</td></tr>
 <tr class="separator:a738e9be12420c2cb25928aa3c181ebb0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af66e04cbaa9b1d713a0126ca9c2b1c24"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgame_controller_1_1_shot.html#af66e04cbaa9b1d713a0126ca9c2b1c24">shotType</a> () const -&gt; std::optional&lt; communication::messages::types::DeltaType &gt;</td></tr>
-<tr class="separator:af66e04cbaa9b1d713a0126ca9c2b1c24"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6e5ac54b5a0f1a4336698a7a49a89cad"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6e5ac54b5a0f1a4336698a7a49a89cad"></a>
-const std::shared_ptr&lt; const <br class="typebreak"/>
-<a class="el" href="classgame_model_1_1_ball.html">gameModel::Ball</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>getBall</b> () const </td></tr>
-<tr class="separator:a6e5ac54b5a0f1a4336698a7a49a89cad"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classgame_controller_1_1_action"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classgame_controller_1_1_action')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classgame_controller_1_1_action.html">gameController::Action</a></td></tr>
 <tr class="memitem:a2bd3423680c850dcb88aa860a84cddee inherit pub_methods_classgame_controller_1_1_action"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgame_controller_1_1_action.html#a2bd3423680c850dcb88aa860a84cddee">Action</a> ()=default</td></tr>
 <tr class="separator:a2bd3423680c850dcb88aa860a84cddee inherit pub_methods_classgame_controller_1_1_action"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -130,9 +124,6 @@ const std::shared_ptr&lt; const <br class="typebreak"/>
 <tr class="separator:a74a9ef91e17f72be6d8f521931f24437 inherit pub_methods_classgame_controller_1_1_action"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abc064426c616eadf8d31e875bfc66f99 inherit pub_methods_classgame_controller_1_1_action"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgame_controller_1_1_action.html#abc064426c616eadf8d31e875bfc66f99">~Action</a> ()=default</td></tr>
 <tr class="separator:abc064426c616eadf8d31e875bfc66f99 inherit pub_methods_classgame_controller_1_1_action"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0ef925b4a66ee91b98c78535d17576aa inherit pub_methods_classgame_controller_1_1_action"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a0ef925b4a66ee91b98c78535d17576aa"></a>
-const <a class="el" href="structgame_model_1_1_position.html">gameModel::Position</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getTarget</b> () const </td></tr>
-<tr class="separator:a0ef925b4a66ee91b98c78535d17576aa inherit pub_methods_classgame_controller_1_1_action"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
@@ -302,23 +293,6 @@ std::shared_ptr<br class="typebreak"/>
 </div><div class="memdoc">
 <p>Checks if the defined <a class="el" href="classgame_controller_1_1_shot.html">Shot</a> will result in a goal if it succeedes </p>
 <dl class="section return"><dt>Returns</dt><dd>an ActionResult with the appropriate message or nothing if no goal will be scored </dd></dl>
-
-</div>
-</div>
-<a class="anchor" id="af66e04cbaa9b1d713a0126ca9c2b1c24"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">auto gameController::Shot::shotType </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const -&gt; std::optional&lt;communication::messages::types::DeltaType&gt;</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Returns the type of <a class="el" href="classgame_controller_1_1_shot.html">Shot</a> as DeltaType </p>
-<dl class="section return"><dt>Returns</dt><dd>either DeltaType::QUAFFLE_THROW, DeltaType::BLUDGER_BEATING, or nothing </dd></dl>
 
 </div>
 </div>
