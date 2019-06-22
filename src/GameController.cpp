@@ -161,6 +161,10 @@ namespace gameController {
         if(ball.has_value()){
             ret.reserve(100);
             for(const auto &pos : gameModel::Environment::getAllValidCells()){
+                if(pos == actor->position){
+                    continue;
+                }
+
                 Shot prototype(env, actor, ball.value(), pos);
                 if(prototype.check() != ActionCheckResult::Impossible &&
                     prototype.successProb() >= minSuccessProb){

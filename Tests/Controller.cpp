@@ -490,9 +490,18 @@ TEST(controller_test, getAllPossibleMoves){
     auto env = setup::createEnv();
     auto moves = gameController::getAllPossibleMoves(env->team1->beaters[0], env);
     EXPECT_EQ(moves.size(), 6);
+    std::deque<gameModel::Position> poses = {{0, 4}, {1, 4}, {2, 4}, {2, 3}, {1, 2}, {2, 2}};
     for(const auto &move : moves){
         EXPECT_NE(move.check(), gameController::ActionCheckResult::Impossible);
+        for(auto it = poses.begin(); it < poses.end(); it++){
+            if(*it == move.getTarget()){
+                poses.erase(it);
+                break;
+            }
+        }
     }
+
+    EXPECT_TRUE(poses.empty());
 }
 
 TEST(controller_test, getAllPossibleShots){
@@ -505,8 +514,29 @@ TEST(controller_test, getAllPossibleShots1){
     auto env = setup::createEnv();
     env->quaffle->position = env->team2->chasers[1]->position;
     auto shots = gameController::getAllPossibleShots(env->team2->chasers[1], env, 0);
-    EXPECT_EQ(shots.size(), 193);
+    EXPECT_EQ(shots.size(), 192);
     for(const auto &shot : shots){
         EXPECT_NE(shot.check(), gameController::ActionCheckResult::Impossible);
     }
+}
+
+TEST(controller_test, getAllPossibleShots2){
+    auto env = setup::createEnv();
+    env->bludgers[0]->position = env->team1->beaters[1]->position;
+    auto shots = gameController::getAllPossibleShots(env->team1->beaters[1], env, 0);
+    EXPECT_EQ(shots.size(), 18);
+    std::deque<gameModel::Position> poses = {{1, 3}, {1, 2}, {2, 3}, {2, 2}, {2, 1}, {3, 3}, {3, 2}, {3, 1},
+                                             {4, 2}, {4, 1}, {4, 0}, {5, 2}, {5, 1}, {5, 0}, {6, 3}, {6, 2},
+                                             {6, 1}, {6, 0}};
+    for(const auto &shot : shots){
+        EXPECT_NE(shot.check(), gameController::ActionCheckResult::Impossible);
+        for(auto it = poses.begin(); it < poses.end(); it++) {
+            if (*it == shot.getTarget()) {
+                poses.erase(it);
+                break;
+            }
+        }
+    }
+
+    EXPECT_TRUE(poses.empty());
 }

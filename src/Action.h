@@ -84,6 +84,7 @@ namespace gameController{
         virtual auto executeAll() const ->
             std::vector<std::pair<std::shared_ptr<gameModel::Environment>, double>> = 0;
 
+        const gameModel::Position &getTarget() const;
     protected:
         // objects
         std::shared_ptr<gameModel::Player> actor;
@@ -210,7 +211,7 @@ namespace gameController{
     /**
      * class for a move in the game which can be executed by a player or a ball
      */
-    class Move : Action{
+    class Move : public Action{
     public:
 
         // constructors
