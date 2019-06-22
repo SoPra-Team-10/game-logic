@@ -497,8 +497,8 @@ TEST(controller_test, getAllPossibleMoves){
 
 TEST(controller_test, getAllPossibleShots){
     auto env = setup::createEnv();
-    auto moves = gameController::getAllPossibleShots(env->team1->beaters[0], env, 0);
-    EXPECT_EQ(moves.size(), 0);
+    auto shots = gameController::getAllPossibleShots(env->team1->beaters[0], env, 0);
+    EXPECT_EQ(shots.size(), 0);
 }
 
 TEST(controller_test, getAllPossibleShots1){
