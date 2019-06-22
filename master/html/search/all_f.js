@@ -3,6 +3,7 @@ var searchData=
   ['seeker',['Seeker',['../classgame_model_1_1_seeker.html',1,'gameModel']]],
   ['shot',['Shot',['../classgame_controller_1_1_shot.html',1,'gameController']]],
   ['shot',['Shot',['../classgame_controller_1_1_shot.html#a2bb5e375728dc141ef49a0f97dd36def',1,'gameController::Shot']]],
+  ['shottype',['shotType',['../classgame_controller_1_1_shot.html#af66e04cbaa9b1d713a0126ca9c2b1c24',1,'gameController::Shot']]],
   ['snitch',['Snitch',['../classgame_model_1_1_snitch.html#ae0cb09809ffc99eac10821718b6de864',1,'gameModel::Snitch::Snitch()'],['../classgame_model_1_1_snitch.html#a4041553f7e9cf5b9f2ccd1fa137e6963',1,'gameModel::Snitch::Snitch(Position position)']]],
   ['snitch',['Snitch',['../classgame_model_1_1_snitch.html',1,'gameModel']]],
   ['snitchpush',['SnitchPush',['../classgame_controller_1_1_snitch_push.html',1,'gameController']]],
