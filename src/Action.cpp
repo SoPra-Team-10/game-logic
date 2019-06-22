@@ -433,6 +433,17 @@ namespace gameController{
         return goalCheck(target);
     }
 
+    auto Shot::shotType() const -> std::optional<communication::messages::types::DeltaType> {
+        using namespace communication::messages::types;
+        if(BLUDGERSHOT) {
+            return DeltaType::BLUDGER_BEATING;
+        } else if(QUAFFLETHROW) {
+            return DeltaType::QUAFFLE_THROW;
+        } else {
+            return std::nullopt;
+        }
+    }
+
     Move::Move(std::shared_ptr<gameModel::Environment> env, std::shared_ptr<gameModel::Player> actor, gameModel::Position target):
             Action(std::move(env), std::move(actor), target) {}
 

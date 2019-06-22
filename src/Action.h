@@ -125,6 +125,12 @@ namespace gameController{
          * @return an ActionResult with the appropriate message or nothing if no goal will be scored
          */
         auto isShotOnGoal() const -> std::optional<ActionResult>;
+
+        /**
+         * Returns the type of Shot as DeltaType
+         * @return either DeltaType::QUAFFLE_THROW, DeltaType::BLUDGER_BEATING, or nothing
+         */
+        auto shotType() const -> std::optional<communication::messages::types::DeltaType>;
     private:
         std::shared_ptr<gameModel::Ball> ball;
         /**
