@@ -84,6 +84,7 @@ namespace gameController{
         virtual auto executeAll() const ->
             std::vector<std::pair<std::shared_ptr<gameModel::Environment>, double>> = 0;
 
+        const gameModel::Position &getTarget() const;
     protected:
         // objects
         std::shared_ptr<gameModel::Player> actor;
@@ -124,8 +125,18 @@ namespace gameController{
          * @return an ActionResult with the appropriate message or nothing if no goal will be scored
          */
         auto isShotOnGoal() const -> std::optional<ActionResult>;
+
+        /**
+         * Returns the type of Shot as DeltaType
+         * @return either DeltaType::QUAFFLE_THROW, DeltaType::BLUDGER_BEATING, or nothing
+         */
+        auto shotType() const -> std::optional<communication::messages::types::DeltaType>;
+
+        const std::shared_ptr<const gameModel::Ball> getBall() const;
     private:
         std::shared_ptr<gameModel::Ball> ball;
+
+    private:
         /**
          * gets all cells along the flightpath which are occupied by opponent players (ordered in flight direction)
          * @param env
@@ -210,7 +221,7 @@ namespace gameController{
     /**
      * class for a move in the game which can be executed by a player or a ball
      */
-    class Move : Action{
+    class Move : public Action{
     public:
 
         // constructors

@@ -8,6 +8,10 @@ namespace gameController{
     Action::Action(std::shared_ptr<gameModel::Environment> env, std::shared_ptr<gameModel::Player> actor,
             gameModel::Position target) :  actor(std::move(actor)), env(std::move(env)), target(target){}
 
+    const gameModel::Position &Action::getTarget() const {
+        return target;
+    }
+
 
     Shot::Shot(std::shared_ptr<gameModel::Environment> env, std::shared_ptr<gameModel::Player> actor,
             std::shared_ptr<gameModel::Ball> ball, gameModel::Position target) :
@@ -136,12 +140,11 @@ namespace gameController{
         }
 
         auto playerOnTarget = env->getPlayer(target);
-        const bool playerNotInSameTeam = !env->arePlayerInSameTeam(actor, playerOnTarget.value());
         const bool targetIsGoal = gameModel::Environment::isGoalCell(target);
         const bool isAnyPlayerOnTarget = playerOnTarget.has_value();
 
         if(QUAFFLETHROW) {
-            if(targetIsGoal && isAnyPlayerOnTarget && playerNotInSameTeam){
+            if(targetIsGoal && isAnyPlayerOnTarget && !env->arePlayerInSameTeam(actor, playerOnTarget.value())){
                 //100% bounce off on goal
                 return 0;
             }
@@ -428,6 +431,21 @@ namespace gameController{
 
     auto Shot::isShotOnGoal() const -> std::optional<ActionResult> {
         return goalCheck(target);
+    }
+
+    auto Shot::shotType() const -> std::optional<communication::messages::types::DeltaType> {
+        using namespace communication::messages::types;
+        if(BLUDGERSHOT) {
+            return DeltaType::BLUDGER_BEATING;
+        } else if(QUAFFLETHROW) {
+            return DeltaType::QUAFFLE_THROW;
+        } else {
+            return std::nullopt;
+        }
+    }
+
+    const std::shared_ptr<const gameModel::Ball> Shot::getBall() const {
+        return ball;
     }
 
     Move::Move(std::shared_ptr<gameModel::Environment> env, std::shared_ptr<gameModel::Player> actor, gameModel::Position target):

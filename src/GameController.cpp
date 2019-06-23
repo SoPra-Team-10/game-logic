@@ -130,22 +130,56 @@ namespace gameController {
         }
     }
 
-    auto getAllPossibleMoves(std::shared_ptr<gameModel::Player>, const gameModel::Environment&) -> std::vector<Move> {
-        return std::vector<Move>();
-        // @ToDo: Nicht für Server relevant
+    auto getAllPossibleMoves(const std::shared_ptr<gameModel::Player> &player, const std::shared_ptr<gameModel::Environment> &env) -> std::vector<Move> {
+        if(player->isFined || player->knockedOut){
+            throw std::runtime_error("Player cannot perform move");
+        }
+
+        std::vector<Move> ret;
+        ret.reserve(8);
+        for(const auto &pos : gameModel::Environment::getSurroundingPositions(player->position)){
+            if(!env->isShitOnCell(pos)){
+                ret.emplace_back(env, player, pos);
+            }
+        }
+
+        return ret;
     }
 
-    auto getAllPossibleShots(std::shared_ptr<gameModel::Player>,
-                             const gameModel::Environment&) -> std::vector<Shot> {
-        return std::vector<Shot>();
-        // @ToDo: Nicht für Server relevant
+    auto getAllPossibleShots(const std::shared_ptr<gameModel::Player> &actor,
+            const std::shared_ptr<gameModel::Environment> &env, double minSuccessProb) -> std::vector<Shot> {
+        std::vector<Shot> ret;
+        std::optional<std::shared_ptr<gameModel::Ball>> ball;
+        if(env->quaffle->position == actor->position) {
+            ball.emplace(env->quaffle);
+        } else if(env->bludgers[0]->position == actor->position) {
+            ball.emplace(env->bludgers[0]);
+        } else if(env->bludgers[1]->position == actor->position) {
+            ball.emplace(env->bludgers[1]);
+        }
+
+        if(ball.has_value()){
+            ret.reserve(100);
+            for(const auto &pos : gameModel::Environment::getAllValidCells()){
+                if(pos == actor->position){
+                    continue;
+                }
+
+                Shot prototype(env, actor, ball.value(), pos);
+                if(prototype.check() != ActionCheckResult::Impossible &&
+                    prototype.successProb() >= minSuccessProb){
+                    ret.emplace_back(prototype);
+                }
+            }
+        }
+
+        return ret;
     }
 
     auto refereeDecision(const gameModel::Foul &foul, const gameModel::Config &gameConf) -> bool {
         return actionTriggered(gameConf.getFoulDetectionProb(foul));
     }
 
-    // ToDo: TESTS!!!
     auto moveBludger(std::shared_ptr<gameModel::Bludger> &bludger, std::shared_ptr<gameModel::Environment> &env)
         -> std::optional<std::shared_ptr<gameModel::Player>> {
         auto players = env->getAllPlayers();
