@@ -136,7 +136,6 @@ namespace gameController{
     private:
         std::shared_ptr<gameModel::Ball> ball;
 
-    private:
         /**
          * gets all cells along the flightpath which are occupied by opponent players (ordered in flight direction)
          * @param env
