@@ -658,6 +658,12 @@ namespace gameModel{
          */
         auto clone() const -> std::shared_ptr<Environment>;
 
+        /**
+         *
+         * @param teamSide Teamside of the Player being redeployed
+         * @param env the current Enivironment
+         * @return list of possible Positions for redeploy
+         */
         auto getFreeCellsForRedeploy(const gameModel::TeamSide &teamSide, const std::shared_ptr<gameModel::Environment> &env) -> const std::vector<gameModel::Position>;
     };
 }
