@@ -146,6 +146,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:afd15a893dc5475c20488c46084a65a1a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1d2cf539bec96b11fb0a47b4e0d33bae"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgame_model_1_1_environment.html#a1d2cf539bec96b11fb0a47b4e0d33bae">clone</a> () const -&gt; std::shared_ptr&lt; <a class="el" href="classgame_model_1_1_environment.html">Environment</a> &gt;</td></tr>
 <tr class="separator:a1d2cf539bec96b11fb0a47b4e0d33bae"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a351189244d27d3d250dac34184cde7da"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgame_model_1_1_environment.html#a351189244d27d3d250dac34184cde7da">getFreeCellsForRedeploy</a> (const gameModel::TeamSide &amp;teamSide, const std::shared_ptr&lt; <a class="el" href="classgame_model_1_1_environment.html">gameModel::Environment</a> &gt; &amp;env) -&gt; const std::vector&lt; <a class="el" href="structgame_model_1_1_position.html">gameModel::Position</a> &gt;</td></tr>
+<tr class="separator:a351189244d27d3d250dac34184cde7da"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
@@ -671,6 +673,40 @@ std::deque&lt; std::shared_ptr<br class="typebreak"/>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a351189244d27d3d250dac34184cde7da"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">auto gameModel::Environment::getFreeCellsForRedeploy </td>
+          <td>(</td>
+          <td class="paramtype">const gameModel::TeamSide &amp;&#160;</td>
+          <td class="paramname"><em>teamSide</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::shared_ptr&lt; <a class="el" href="classgame_model_1_1_environment.html">gameModel::Environment</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>env</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> -&gt; const std::vector&lt;<a class="el" href="structgame_model_1_1_position.html">gameModel::Position</a>&gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">teamSide</td><td>Teamside of the <a class="el" href="classgame_model_1_1_player.html">Player</a> being redeployed </td></tr>
+    <tr><td class="paramname">env</td><td>the current Enivironment </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>list of possible Positions for redeploy </dd></dl>
 
 </div>
 </div>
