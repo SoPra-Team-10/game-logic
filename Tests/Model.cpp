@@ -347,8 +347,7 @@ TEST(env_test, getFreeCellsForRedeploy0) {
                                                      gameModel::Position{6, 10}, gameModel::Position{6, 11},
                                                      gameModel::Position{6, 12},
                                                      gameModel::Position{7, 0}, gameModel::Position{7, 1}, gameModel::Position{7, 2},
-                                                     gameModel::Position{7, 4}, gameModel::Position{7, 5}, gameModel::Position{7, 6},
-                                                     gameModel::Position{7, 7}, gameModel::Position{7, 8}, gameModel::Position{7, 9},
+                                                     gameModel::Position{7, 4}, gameModel::Position{7, 8}, gameModel::Position{7, 9},
                                                      gameModel::Position{7, 10}, gameModel::Position{7, 11},
                                                      gameModel::Position{7, 12}};
     for (const auto pos: posVec) {
@@ -360,7 +359,7 @@ TEST(env_test, getFreeCellsForRedeploy0) {
         }
     }
     EXPECT_TRUE(posDeque.empty());
-    EXPECT_EQ(79, posVec.size());
+    EXPECT_EQ(76, posVec.size());
 }
 
 TEST(env_test, getFreeCellsForRedeploy1) {
@@ -395,8 +394,7 @@ TEST(env_test, getFreeCellsForRedeploy1) {
                                        gameModel::Position{10, 10}, gameModel::Position{10, 11},
                                        gameModel::Position{10, 12},
                                        gameModel::Position{9, 0}, gameModel::Position{9, 1}, gameModel::Position{9, 2},
-                                       gameModel::Position{9, 4}, gameModel::Position{9, 5}, gameModel::Position{9, 6},
-                                       gameModel::Position{9, 7}, gameModel::Position{9, 8}, gameModel::Position{9, 3},
+                                       gameModel::Position{9, 4}, gameModel::Position{9, 8}, gameModel::Position{9, 3},
                                        gameModel::Position{9, 10}, gameModel::Position{9, 11},
                                        gameModel::Position{9, 12}};
     for (const auto pos: posVec) {
@@ -408,10 +406,10 @@ TEST(env_test, getFreeCellsForRedeploy1) {
         }
     }
     EXPECT_TRUE(posDeque.empty());
-    EXPECT_EQ(82, posVec.size());
+    EXPECT_EQ(79, posVec.size());
 }
 
-//-----------------------------------------Fanblock Test----------------------------------------------------------------
+//---------------------------------------Fanblock Test----------------------------------------------------------------
 
 TEST(fanblock_test, banFan_and_getUses_and_getBannedCount) {
     auto env = setup::createEnv();

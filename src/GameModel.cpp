@@ -278,11 +278,10 @@ namespace gameModel{
         return team1->side == side ? team1 : team2;
     }
 
-    void Environment::placePlayerOnRandomFreeCell(const std::shared_ptr<Player>& player, const std::shared_ptr<gameModel::Environment> &env) {
+    void Environment::placePlayerOnRandomFreeCell(const std::shared_ptr<Player>& player) {
         std::vector<Position> possibleCells;
-        possibleCells.reserve(82);
         const auto side = gameLogic::conversions::idToSide(player->id);
-        possibleCells = getFreeCellsForRedeploy(side, env);
+        possibleCells = getFreeCellsForRedeploy(side, this->clone());
         int index = gameController::rng(0, static_cast<int>(possibleCells.size() - 1));
         player->position = possibleCells[index];
     }
@@ -425,13 +424,14 @@ namespace gameModel{
 
     auto Environment::getFreeCellsForRedeploy(const gameModel::TeamSide &teamSide, const std::shared_ptr<gameModel::Environment> &env) -> const std::vector<gameModel::Position> {
         std::vector<gameModel::Position> ret;
+        ret.reserve(84);
         for(const auto &cell : env->getAllFreeCells()){
             if(teamSide == gameModel::TeamSide::LEFT){
-                if(cell.x < 8 && env->getCell(cell) != gameModel::Cell::GoalLeft && env->cellIsFree(cell) && !env->isShitOnCell(cell)){
+                if(cell.x < 8 && env->getCell(cell) != gameModel::Cell::GoalLeft && env->cellIsFree(cell) && !env->isShitOnCell(cell) && env->getCell(cell) != gameModel::Cell::Centre){
                     ret.emplace_back(cell);
                 }
             }else{
-                if(cell.x > 8 && env->getCell(cell) != gameModel::Cell::GoalRight && env->cellIsFree(cell) && !env->isShitOnCell(cell)){
+                if(cell.x > 8 && env->getCell(cell) != gameModel::Cell::GoalRight && env->cellIsFree(cell) && !env->isShitOnCell(cell) && env->getCell(cell) != gameModel::Cell::Centre){
                     ret.emplace_back(cell);
                 }
             }
