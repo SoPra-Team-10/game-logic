@@ -134,8 +134,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a96786670bdcd643e38c3fc6400735386"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae5dd94a5c24d5883e3f63c52a7e8e69f"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgame_model_1_1_environment.html#ae5dd94a5c24d5883e3f63c52a7e8e69f">getAllFreeCells</a> () -&gt; std::vector&lt; <a class="el" href="structgame_model_1_1_position.html">Position</a> &gt;</td></tr>
 <tr class="separator:ae5dd94a5c24d5883e3f63c52a7e8e69f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a585e52dc36311ec40c350cb2a7fae9c3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgame_model_1_1_environment.html#a585e52dc36311ec40c350cb2a7fae9c3">placePlayerOnRandomFreeCell</a> (const std::shared_ptr&lt; <a class="el" href="classgame_model_1_1_player.html">Player</a> &gt; &amp;player)</td></tr>
-<tr class="separator:a585e52dc36311ec40c350cb2a7fae9c3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1355c46cfb18410da8b365cc29aa2363"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgame_model_1_1_environment.html#a1355c46cfb18410da8b365cc29aa2363">placePlayerOnRandomFreeCell</a> (const std::shared_ptr&lt; <a class="el" href="classgame_model_1_1_player.html">Player</a> &gt; &amp;player, const std::shared_ptr&lt; <a class="el" href="classgame_model_1_1_environment.html">gameModel::Environment</a> &gt; &amp;env)</td></tr>
+<tr class="separator:a1355c46cfb18410da8b365cc29aa2363"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a67ac4b2693c8dc1e049fa1fb24357604"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgame_model_1_1_environment.html#a67ac4b2693c8dc1e049fa1fb24357604">getBallByID</a> (const communication::messages::types::EntityId &amp;id) const -&gt; std::shared_ptr&lt; <a class="el" href="classgame_model_1_1_ball.html">Ball</a> &gt;</td></tr>
 <tr class="separator:a67ac4b2693c8dc1e049fa1fb24357604"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af59e5a2ac9638700188a2e925487ec41"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgame_model_1_1_environment.html#af59e5a2ac9638700188a2e925487ec41">removeDeprecatedShit</a> ()</td></tr>
@@ -1006,7 +1006,7 @@ std::deque&lt; std::shared_ptr<br class="typebreak"/>
 
 </div>
 </div>
-<a class="anchor" id="a585e52dc36311ec40c350cb2a7fae9c3"></a>
+<a class="anchor" id="a1355c46cfb18410da8b365cc29aa2363"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -1014,8 +1014,18 @@ std::deque&lt; std::shared_ptr<br class="typebreak"/>
           <td class="memname">void gameModel::Environment::placePlayerOnRandomFreeCell </td>
           <td>(</td>
           <td class="paramtype">const std::shared_ptr&lt; <a class="el" href="classgame_model_1_1_player.html">Player</a> &gt; &amp;&#160;</td>
-          <td class="paramname"><em>player</em></td><td>)</td>
+          <td class="paramname"><em>player</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">const std::shared_ptr&lt; <a class="el" href="classgame_model_1_1_environment.html">gameModel::Environment</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>env</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
