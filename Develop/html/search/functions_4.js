@@ -15,7 +15,7 @@ var searchData=
   ['getgoalsright',['getGoalsRight',['../classgame_model_1_1_environment.html#a2614e33c697e1f433338a555b907186b',1,'gameModel::Environment']]],
   ['getopponents',['getOpponents',['../classgame_model_1_1_environment.html#ae122813ffb19124606101d9b7d4d4c0a',1,'gameModel::Environment']]],
   ['getplayer',['getPlayer',['../classgame_model_1_1_environment.html#ad50b8cb84c76a6dbbfa9f8210918a4c2',1,'gameModel::Environment']]],
-  ['getplayerbyid',['getPlayerById',['../classgame_model_1_1_environment.html#a4d07c3194e35ffc1295a81c43c616540',1,'gameModel::Environment::getPlayerById()'],['../classgame_model_1_1_team.html#a1e22097a639d37333176354a83ab3038',1,'gameModel::Team::getPlayerByID()']]],
+  ['getplayerbyid',['getPlayerByID',['../classgame_model_1_1_team.html#a1e22097a639d37333176354a83ab3038',1,'gameModel::Team::getPlayerByID()'],['../classgame_model_1_1_environment.html#a4d07c3194e35ffc1295a81c43c616540',1,'gameModel::Environment::getPlayerById()']]],
   ['getsurroundingpositions',['getSurroundingPositions',['../classgame_model_1_1_environment.html#a3eae4f5c6ac23d48c10a6688340b0ba9',1,'gameModel::Environment']]],
   ['getteam',['getTeam',['../classgame_model_1_1_environment.html#afbfe7026d1f8da6b0508db6e2cf5c064',1,'gameModel::Environment::getTeam(const std::shared_ptr&lt; const Player &gt; &amp;player) const -&gt; std::shared_ptr&lt; Team &gt;'],['../classgame_model_1_1_environment.html#a96786670bdcd643e38c3fc6400735386',1,'gameModel::Environment::getTeam(TeamSide side) const -&gt; std::shared_ptr&lt; Team &gt;']]],
   ['getteammates',['getTeamMates',['../classgame_model_1_1_environment.html#a6fbdbb56df251151eb620db5913de295',1,'gameModel::Environment']]],
