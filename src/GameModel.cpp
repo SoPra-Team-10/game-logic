@@ -278,24 +278,11 @@ namespace gameModel{
         return team1->side == side ? team1 : team2;
     }
 
-    void Environment::placePlayerOnRandomFreeCell(const std::shared_ptr<Player>& player) {
+    void Environment::placePlayerOnRandomFreeCell(const std::shared_ptr<Player>& player, const std::shared_ptr<gameModel::Environment> &env) {
         std::vector<Position> possibleCells;
         possibleCells.reserve(82);
         const auto side = gameLogic::conversions::idToSide(player->id);
-        for(const auto &cell : getAllValidCells()){
-            if(getCell(cell) == Cell::Centre || getCell(cell) == Cell::GoalLeft){
-                continue;
-            }
-
-            if(side == TeamSide::LEFT && cell.x < 8 && cellIsFree(cell)){
-                possibleCells.push_back(cell);
-            }
-
-            if(side == TeamSide::RIGHT && cell.x > 8 && cellIsFree(cell)){
-                possibleCells.push_back(cell);
-            }
-        }
-
+        possibleCells = getFreeCellsForRedeploy(side, env);
         int index = gameController::rng(0, static_cast<int>(possibleCells.size() - 1));
         player->position = possibleCells[index];
     }

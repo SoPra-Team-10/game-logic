@@ -625,7 +625,7 @@ namespace gameModel{
          * place a player on random free cell in his half of the game field.
          * @param player
           */
-        void placePlayerOnRandomFreeCell(const std::shared_ptr<Player>& player);
+        void placePlayerOnRandomFreeCell(const std::shared_ptr<Player>& player, const std::shared_ptr<gameModel::Environment> &env);
 
         /**
          * Get the corresponding ball object to an given id.
