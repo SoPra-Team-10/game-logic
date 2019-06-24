@@ -317,7 +317,7 @@ TEST(env_test, getAllEmptyCellsAround){
 
 TEST(env_test, getFreeCellsForRedeploy0) {
     auto env = setup::createEnv();
-    auto posVec = env->getFreeCellsForRedeploy(gameModel::TeamSide::LEFT, env);
+    auto posVec = env->getFreeCellsForRedeploy(gameModel::TeamSide::LEFT);
     std::deque<gameModel::Position> posDeque = {gameModel::Position{0, 4}, gameModel::Position{0, 5}, gameModel::Position{0, 7},
                                                      gameModel::Position{0, 8},
                                                      gameModel::Position{1, 2}, gameModel::Position{1, 4}, gameModel::Position{1, 5},
@@ -364,7 +364,7 @@ TEST(env_test, getFreeCellsForRedeploy0) {
 
 TEST(env_test, getFreeCellsForRedeploy1) {
     auto env = setup::createEnv();
-    auto posVec = env->getFreeCellsForRedeploy(gameModel::TeamSide::RIGHT, env);
+    auto posVec = env->getFreeCellsForRedeploy(gameModel::TeamSide::RIGHT);
     std::deque<gameModel::Position> posDeque = {gameModel::Position{16, 4}, gameModel::Position{16, 5}, gameModel::Position{16, 7},
                                        gameModel::Position{16, 8}, gameModel::Position{16,6},
                                        gameModel::Position{15, 2}, gameModel::Position{15, 4}, gameModel::Position{15, 5},
