@@ -13,6 +13,7 @@
 #include <SopraMessages/TeamFormation.hpp>
 
 namespace gameModel{
+    constexpr int FIELD_CENTRE_COL = 8;
 
     /**
      * Probabilities for detecting a foul

@@ -427,11 +427,13 @@ namespace gameModel{
         ret.reserve(84);
         for(const auto &cell : this->getAllFreeCells()){
             if(teamSide == gameModel::TeamSide::LEFT){
-                if(cell.x < 8 && this->getCell(cell) != gameModel::Cell::GoalLeft && this->cellIsFree(cell) && !this->isShitOnCell(cell) && this->getCell(cell) != gameModel::Cell::Centre){
+                if(cell.x < FIELD_CENTRE_COL && this->getCell(cell) != gameModel::Cell::GoalLeft &&
+                    this->cellIsFree(cell) && !this->isShitOnCell(cell) && this->getCell(cell) != gameModel::Cell::Centre){
                     ret.emplace_back(cell);
                 }
             }else{
-                if(cell.x > 8 && this->getCell(cell) != gameModel::Cell::GoalRight && this->cellIsFree(cell) && !this->isShitOnCell(cell) && this->getCell(cell) != gameModel::Cell::Centre){
+                if(cell.x > FIELD_CENTRE_COL && this->getCell(cell) != gameModel::Cell::GoalRight &&
+                    this->cellIsFree(cell) && !this->isShitOnCell(cell) && this->getCell(cell) != gameModel::Cell::Centre){
                     ret.emplace_back(cell);
                 }
             }

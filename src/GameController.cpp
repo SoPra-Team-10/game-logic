@@ -247,7 +247,7 @@ namespace gameController {
                                    std::optional<ActionType> {
 
         if(player->knockedOut || player->isFined){
-            return  {};
+            return  std::nullopt;
         }
 
         // check if there is generally allowed to perform a shot and a ball to shot on the same position as the player
@@ -271,7 +271,7 @@ namespace gameController {
             return ActionType::Wrest;
         }
 
-        return {};
+        return std::nullopt;
     }
 
     bool moveSnitch(std::shared_ptr<gameModel::Snitch> &snitch, std::shared_ptr<gameModel::Environment> &env, ExcessLength excessLength){
