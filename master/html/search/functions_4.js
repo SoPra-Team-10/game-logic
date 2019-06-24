@@ -1,7 +1,7 @@
 var searchData=
 [
   ['getallemptycellsaround',['getAllEmptyCellsAround',['../classgame_model_1_1_environment.html#a75d08bd54c2cc9b8e2251b6fb3c2ab97',1,'gameModel::Environment']]],
-  ['getallfreecells',['getAllFreeCells',['../classgame_model_1_1_environment.html#ae5dd94a5c24d5883e3f63c52a7e8e69f',1,'gameModel::Environment']]],
+  ['getallfreecells',['getAllFreeCells',['../classgame_model_1_1_environment.html#ade6d9d78d4f19f29ea4787137999c57d',1,'gameModel::Environment']]],
   ['getallfreecellsaround',['getAllFreeCellsAround',['../classgame_model_1_1_environment.html#a6b885f2c9e14b1c8d8b5fbf14de4de2d',1,'gameModel::Environment']]],
   ['getalllegalcellsaround',['getAllLegalCellsAround',['../classgame_model_1_1_environment.html#a1a1e01adaee92f8e44b8d69fec4b1797',1,'gameModel::Environment']]],
   ['getallplayers',['getAllPlayers',['../classgame_model_1_1_team.html#a3add38a878f50ed9a847b01d996be4ca',1,'gameModel::Team::getAllPlayers()'],['../classgame_model_1_1_environment.html#a33e0d834f58e41ad5551a06ee220076a',1,'gameModel::Environment::getAllPlayers()']]],
@@ -11,7 +11,7 @@ var searchData=
   ['getcell',['getCell',['../classgame_model_1_1_environment.html#a7c095b6202f82cc67d89aa3ec66f387d',1,'gameModel::Environment::getCell(int x, int y)'],['../classgame_model_1_1_environment.html#a71dc1b8596a609a49215beb0d0870489',1,'gameModel::Environment::getCell(const Position &amp;position)']]],
   ['getextraturnprob',['getExtraTurnProb',['../classgame_model_1_1_config.html#a7e2134a72f3b75c43610d337abf8e9c0',1,'gameModel::Config']]],
   ['getfouldetectionprob',['getFoulDetectionProb',['../classgame_model_1_1_config.html#a9a74968656799c833fb5c30bd2346b75',1,'gameModel::Config::getFoulDetectionProb(Foul foul) const '],['../classgame_model_1_1_config.html#a5ad695f57c6e3ebfb5c07492e9a7fa32',1,'gameModel::Config::getFoulDetectionProb(InterferenceType interference) const ']]],
-  ['getfreecellsforredeploy',['getFreeCellsForRedeploy',['../classgame_model_1_1_environment.html#a351189244d27d3d250dac34184cde7da',1,'gameModel::Environment']]],
+  ['getfreecellsforredeploy',['getFreeCellsForRedeploy',['../classgame_model_1_1_environment.html#acd2cb585d3b4109e9ea7a9bfbcf9de4c',1,'gameModel::Environment']]],
   ['getgoalsleft',['getGoalsLeft',['../classgame_model_1_1_environment.html#a9718a31bd8e763a69a89028977d3dc5a',1,'gameModel::Environment']]],
   ['getgoalsright',['getGoalsRight',['../classgame_model_1_1_environment.html#a2614e33c697e1f433338a555b907186b',1,'gameModel::Environment']]],
   ['getopponents',['getOpponents',['../classgame_model_1_1_environment.html#ae122813ffb19124606101d9b7d4d4c0a',1,'gameModel::Environment']]],
