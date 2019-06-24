@@ -315,6 +315,102 @@ TEST(env_test, getAllEmptyCellsAround){
     EXPECT_TRUE(poses.empty());
 }
 
+TEST(env_test, getFreeCellsForRedeploy0) {
+    auto env = setup::createEnv();
+    auto posVec = env->getFreeCellsForRedeploy(gameModel::TeamSide::LEFT, env);
+    std::deque<gameModel::Position> posDeque = {gameModel::Position{0, 4}, gameModel::Position{0, 5}, gameModel::Position{0, 7},
+                                                     gameModel::Position{0, 8},
+                                                     gameModel::Position{1, 2}, gameModel::Position{1, 4}, gameModel::Position{1, 5},
+                                                     gameModel::Position{1, 6}, gameModel::Position{1, 7}, gameModel::Position{1, 8},
+                                                     gameModel::Position{1, 9}, gameModel::Position{1, 10},
+                                                     gameModel::Position{2, 1}, gameModel::Position{2, 2}, gameModel::Position{2, 3},
+                                                     gameModel::Position{2, 5}, gameModel::Position{2, 7}, gameModel::Position{2, 9},
+                                                     gameModel::Position{2, 11},
+                                                     gameModel::Position{3, 1}, gameModel::Position{3, 2}, gameModel::Position{3, 3},
+                                                     gameModel::Position{3, 4}, gameModel::Position{3, 5}, gameModel::Position{3, 6},
+                                                     gameModel::Position{3, 7}, gameModel::Position{3, 8}, gameModel::Position{3, 9},
+                                                     gameModel::Position{3, 10}, gameModel::Position{3, 11},
+                                                     gameModel::Position{3, 12},
+                                                     gameModel::Position{4, 0}, gameModel::Position{4, 1}, gameModel::Position{4, 3},
+                                                     gameModel::Position{4, 4}, gameModel::Position{4, 5}, gameModel::Position{4, 6},
+                                                     gameModel::Position{4, 7}, gameModel::Position{4, 8}, gameModel::Position{4, 9},
+                                                     gameModel::Position{4, 10}, gameModel::Position{4, 11},
+                                                     gameModel::Position{4, 12},
+                                                     gameModel::Position{5, 0}, gameModel::Position{5, 1}, gameModel::Position{5, 2},
+                                                     gameModel::Position{5, 3}, gameModel::Position{5, 5}, gameModel::Position{5, 6},
+                                                     gameModel::Position{5, 7}, gameModel::Position{5, 8}, gameModel::Position{5, 9},
+                                                     gameModel::Position{5, 10}, gameModel::Position{5, 11},
+                                                     gameModel::Position{5, 12},
+                                                     gameModel::Position{6, 0}, gameModel::Position{6, 2}, gameModel::Position{6, 3},
+                                                     gameModel::Position{6, 4}, gameModel::Position{6, 5}, gameModel::Position{6, 6},
+                                                     gameModel::Position{6, 7}, gameModel::Position{6, 8}, gameModel::Position{6, 9},
+                                                     gameModel::Position{6, 10}, gameModel::Position{6, 11},
+                                                     gameModel::Position{6, 12},
+                                                     gameModel::Position{7, 0}, gameModel::Position{7, 1}, gameModel::Position{7, 2},
+                                                     gameModel::Position{7, 4}, gameModel::Position{7, 5}, gameModel::Position{7, 6},
+                                                     gameModel::Position{7, 7}, gameModel::Position{7, 8}, gameModel::Position{7, 9},
+                                                     gameModel::Position{7, 10}, gameModel::Position{7, 11},
+                                                     gameModel::Position{7, 12}};
+    for (const auto pos: posVec) {
+        for(auto it = posDeque.begin(); it < posDeque.end(); ++it){
+            if(pos == *it){
+                posDeque.erase(it);
+                break;
+            }
+        }
+    }
+    EXPECT_TRUE(posDeque.empty());
+    EXPECT_EQ(79, posVec.size());
+}
+
+TEST(env_test, getFreeCellsForRedeploy1) {
+    auto env = setup::createEnv();
+    auto posVec = env->getFreeCellsForRedeploy(gameModel::TeamSide::RIGHT, env);
+    std::deque<gameModel::Position> posDeque = {gameModel::Position{16, 4}, gameModel::Position{16, 5}, gameModel::Position{16, 7},
+                                       gameModel::Position{16, 8}, gameModel::Position{16,6},
+                                       gameModel::Position{15, 2}, gameModel::Position{15, 4}, gameModel::Position{15, 5},
+                                       gameModel::Position{15, 6}, gameModel::Position{15, 7}, gameModel::Position{15, 8},
+                                       gameModel::Position{15, 9}, gameModel::Position{15, 10}, gameModel::Position{15,3},
+                                       gameModel::Position{14, 1}, gameModel::Position{14, 2}, gameModel::Position{14, 3},
+                                       gameModel::Position{14, 5}, gameModel::Position{14, 7}, gameModel::Position{14, 9},
+                                       gameModel::Position{14, 11}, gameModel::Position{14,10},
+                                       gameModel::Position{13, 1}, gameModel::Position{13, 2}, gameModel::Position{13, 3},
+                                       gameModel::Position{13, 4}, gameModel::Position{13, 5}, gameModel::Position{13, 6},
+                                       gameModel::Position{13, 7}, gameModel::Position{13, 8}, gameModel::Position{13, 9},
+                                       gameModel::Position{13, 10}, gameModel::Position{13, 11},
+                                       gameModel::Position{13, 0},
+                                       gameModel::Position{12, 0}, gameModel::Position{12, 1}, gameModel::Position{12, 3},
+                                       gameModel::Position{12, 4}, gameModel::Position{12, 5}, gameModel::Position{12, 6},
+                                       gameModel::Position{12, 7}, gameModel::Position{12, 8}, gameModel::Position{12, 9},
+                                       gameModel::Position{12, 10}, gameModel::Position{12, 2},
+                                       gameModel::Position{12, 12},
+                                       gameModel::Position{11, 0}, gameModel::Position{11, 1}, gameModel::Position{11, 2},
+                                       gameModel::Position{11, 3}, gameModel::Position{11, 5}, gameModel::Position{11, 6},
+                                       gameModel::Position{11, 7}, gameModel::Position{11, 4}, gameModel::Position{11, 9},
+                                       gameModel::Position{11, 10}, gameModel::Position{11, 11},
+                                       gameModel::Position{11, 12},
+                                       gameModel::Position{10, 0}, gameModel::Position{10, 2}, gameModel::Position{10, 3},
+                                       gameModel::Position{10, 4}, gameModel::Position{10, 5}, gameModel::Position{10, 6},
+                                       gameModel::Position{10, 1}, gameModel::Position{10, 8}, gameModel::Position{10, 9},
+                                       gameModel::Position{10, 10}, gameModel::Position{10, 11},
+                                       gameModel::Position{10, 12},
+                                       gameModel::Position{9, 0}, gameModel::Position{9, 1}, gameModel::Position{9, 2},
+                                       gameModel::Position{9, 4}, gameModel::Position{9, 5}, gameModel::Position{9, 6},
+                                       gameModel::Position{9, 7}, gameModel::Position{9, 8}, gameModel::Position{9, 3},
+                                       gameModel::Position{9, 10}, gameModel::Position{9, 11},
+                                       gameModel::Position{9, 12}};
+    for (const auto pos: posVec) {
+        for(auto it = posDeque.begin(); it < posDeque.end(); ++it){
+            if(pos == *it){
+                posDeque.erase(it);
+                break;
+            }
+        }
+    }
+    EXPECT_TRUE(posDeque.empty());
+    EXPECT_EQ(82, posVec.size());
+}
+
 //-----------------------------------------Fanblock Test----------------------------------------------------------------
 
 TEST(fanblock_test, banFan_and_getUses_and_getBannedCount) {

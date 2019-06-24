@@ -436,6 +436,22 @@ namespace gameModel{
         return ret;
     }
 
+    auto Environment::getFreeCellsForRedeploy(const gameModel::TeamSide &teamSide, const std::shared_ptr<gameModel::Environment> &env) -> const std::vector<gameModel::Position> {
+        std::vector<gameModel::Position> ret;
+        for(const auto &cell : env->getAllFreeCells()){
+            if(teamSide == gameModel::TeamSide::LEFT){
+                if(cell.x < 8 && env->getCell(cell) != gameModel::Cell::GoalLeft && env->cellIsFree(cell) && !env->isShitOnCell(cell)){
+                    ret.emplace_back(cell);
+                }
+            }else{
+                if(cell.x > 8 && env->getCell(cell) != gameModel::Cell::GoalRight && env->cellIsFree(cell) && !env->isShitOnCell(cell)){
+                    ret.emplace_back(cell);
+                }
+            }
+        }
+        return ret;
+    }
+
 
     // Ball Types
 

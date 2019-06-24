@@ -657,6 +657,8 @@ namespace gameModel{
          * @return
          */
         auto clone() const -> std::shared_ptr<Environment>;
+
+        auto getFreeCellsForRedeploy(const gameModel::TeamSide &teamSide, const std::shared_ptr<gameModel::Environment> &env) -> const std::vector<gameModel::Position>;
     };
 }
 
