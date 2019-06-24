@@ -13,6 +13,7 @@
 #include <SopraMessages/TeamFormation.hpp>
 
 namespace gameModel{
+    constexpr int FIELD_CENTRE_COL = 8;
 
     /**
      * Probabilities for detecting a foul
@@ -619,7 +620,7 @@ namespace gameModel{
          * Gets all valid cells not occupied by players
          * @return
          */
-        auto getAllFreeCells() -> std::vector<Position>;
+        auto getAllFreeCells() const -> std::vector<Position>;
 
         /**
          * place a player on random free cell in his half of the game field.
@@ -657,6 +658,14 @@ namespace gameModel{
          * @return
          */
         auto clone() const -> std::shared_ptr<Environment>;
+
+        /**
+         *
+         * @param teamSide Teamside of the Player being redeployed
+         * @param env the current Enivironment
+         * @return list of possible Positions for redeploy
+         */
+        auto getFreeCellsForRedeploy(const gameModel::TeamSide &teamSide)const -> const std::vector<gameModel::Position>;
     };
 }
 
