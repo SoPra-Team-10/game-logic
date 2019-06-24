@@ -24,6 +24,15 @@ namespace gameController {
     };
 
     /**
+     * Enum for possible actions
+     */
+    enum class ActionType {
+        Move, ///>Move
+        Throw, ///>Throw
+        Wrest ///>Wrest
+    };
+
+    /**
      * Rolls the dice and determines whether an action takes place
      * @param actionProbability Probability of the action. Must be between 0 an 1
      * @return true if the action takes place
@@ -110,9 +119,22 @@ namespace gameController {
 
     /**
      * check if a player can perform a shot or wrest quaffle.
+     * @param player the player
+     * @param env the environment
+     * @return true if possible, else false
      */
     bool playerCanPerformAction(const std::shared_ptr<const gameModel::Player> &player,
                                 const std::shared_ptr<const gameModel::Environment> &env);
+
+    /**
+     * gets the actiontype of the action a player can perform with a ball
+     * @param player the player
+     * @param env the envirnoment
+     * @return optinal with action type
+     */
+    auto getPossibleBallActionType(const std::shared_ptr<const gameModel::Player> &player,
+                                   const std::shared_ptr<const gameModel::Environment> &env) ->
+                                   std::optional<ActionType>;
 
     /**
      * make the move for the Snitch as in the Rules given

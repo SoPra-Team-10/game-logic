@@ -239,31 +239,39 @@ namespace gameController {
 
     bool playerCanPerformAction(const std::shared_ptr<const gameModel::Player> &player,
                                 const std::shared_ptr<const gameModel::Environment> &env) {
+        return getPossibleBallActionType(player, env).has_value();
+    }
+
+    auto getPossibleBallActionType(const std::shared_ptr<const gameModel::Player> &player,
+                                   const std::shared_ptr<const gameModel::Environment> &env) ->
+                                   std::optional<ActionType> {
+
         if(player->knockedOut || player->isFined){
-            return false;
+            return  {};
         }
 
         // check if there is generally allowed to perform a shot and a ball to shot on the same position as the player
         if(player->position == env->quaffle->position && (INSTANCE_OF(player, const gameModel::Chaser) ||
-            INSTANCE_OF(player, const gameModel::Keeper))){
-            return true;
-        } else if((player->position == env->bludgers[0]->position || player->position == env->bludgers[1]->position) &&
-                    INSTANCE_OF(player, const gameModel::Beater)){
-            return true;
+                                                          INSTANCE_OF(player, const gameModel::Keeper))){
+            return ActionType::Throw;
+        }
+        else if((player->position == env->bludgers[0]->position || player->position == env->bludgers[1]->position) &&
+                  INSTANCE_OF(player, const gameModel::Beater)){
+            return ActionType::Throw;
         }
 
         // check if player can wrest quaffel
         auto playerHoldingQuaffle = env->getPlayer(env->quaffle->position);
         if(INSTANCE_OF(player, const gameModel::Chaser) && getDistance(player->position, env->quaffle->position) == 1 &&
-            playerHoldingQuaffle.has_value() && !playerHoldingQuaffle.value()->isFined &&
-            !env->arePlayerInSameTeam(player, playerHoldingQuaffle.value()) &&
-            (INSTANCE_OF(playerHoldingQuaffle.value(), gameModel::Chaser) ||
+           playerHoldingQuaffle.has_value() && !playerHoldingQuaffle.value()->isFined &&
+           !env->arePlayerInSameTeam(player, playerHoldingQuaffle.value()) &&
+           (INSTANCE_OF(playerHoldingQuaffle.value(), gameModel::Chaser) ||
             (INSTANCE_OF(playerHoldingQuaffle.value(), gameModel::Keeper) &&
-            !env->isPlayerInOwnRestrictedZone(playerHoldingQuaffle.value())))){
-            return true;
+             !env->isPlayerInOwnRestrictedZone(playerHoldingQuaffle.value())))){
+            return ActionType::Wrest;
         }
 
-        return false;
+        return {};
     }
 
     bool moveSnitch(std::shared_ptr<gameModel::Snitch> &snitch, std::shared_ptr<gameModel::Environment> &env, ExcessLength excessLength){
