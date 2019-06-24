@@ -232,7 +232,7 @@ namespace gameModel{
         return ret;
     }
 
-    auto Environment::getAllFreeCells() -> std::vector<Position> {
+    auto Environment::getAllFreeCells() const -> std::vector<Position> {
         //@TODO optimization!!!
         std::vector<Position> ret;
         ret.reserve(193);
@@ -281,7 +281,7 @@ namespace gameModel{
     void Environment::placePlayerOnRandomFreeCell(const std::shared_ptr<Player>& player) {
         std::vector<Position> possibleCells;
         const auto side = gameLogic::conversions::idToSide(player->id);
-        possibleCells = getFreeCellsForRedeploy(side, this->clone());
+        possibleCells = getFreeCellsForRedeploy(side);
         int index = gameController::rng(0, static_cast<int>(possibleCells.size() - 1));
         player->position = possibleCells[index];
     }
@@ -422,16 +422,16 @@ namespace gameModel{
         return ret;
     }
 
-    auto Environment::getFreeCellsForRedeploy(const gameModel::TeamSide &teamSide, const std::shared_ptr<gameModel::Environment> &env) -> const std::vector<gameModel::Position> {
+    auto Environment::getFreeCellsForRedeploy(const gameModel::TeamSide &teamSide)const -> const std::vector<gameModel::Position> {
         std::vector<gameModel::Position> ret;
         ret.reserve(84);
-        for(const auto &cell : env->getAllFreeCells()){
+        for(const auto &cell : this->getAllFreeCells()){
             if(teamSide == gameModel::TeamSide::LEFT){
-                if(cell.x < 8 && env->getCell(cell) != gameModel::Cell::GoalLeft && env->cellIsFree(cell) && !env->isShitOnCell(cell) && env->getCell(cell) != gameModel::Cell::Centre){
+                if(cell.x < 8 && this->getCell(cell) != gameModel::Cell::GoalLeft && this->cellIsFree(cell) && !this->isShitOnCell(cell) && this->getCell(cell) != gameModel::Cell::Centre){
                     ret.emplace_back(cell);
                 }
             }else{
-                if(cell.x > 8 && env->getCell(cell) != gameModel::Cell::GoalRight && env->cellIsFree(cell) && !env->isShitOnCell(cell) && env->getCell(cell) != gameModel::Cell::Centre){
+                if(cell.x > 8 && this->getCell(cell) != gameModel::Cell::GoalRight && this->cellIsFree(cell) && !this->isShitOnCell(cell) && this->getCell(cell) != gameModel::Cell::Centre){
                     ret.emplace_back(cell);
                 }
             }

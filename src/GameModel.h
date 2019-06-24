@@ -619,7 +619,7 @@ namespace gameModel{
          * Gets all valid cells not occupied by players
          * @return
          */
-        auto getAllFreeCells() -> std::vector<Position>;
+        auto getAllFreeCells() const -> std::vector<Position>;
 
         /**
          * place a player on random free cell in his half of the game field.
@@ -664,7 +664,7 @@ namespace gameModel{
          * @param env the current Enivironment
          * @return list of possible Positions for redeploy
          */
-        auto getFreeCellsForRedeploy(const gameModel::TeamSide &teamSide, const std::shared_ptr<gameModel::Environment> &env) -> const std::vector<gameModel::Position>;
+        auto getFreeCellsForRedeploy(const gameModel::TeamSide &teamSide)const -> const std::vector<gameModel::Position>;
     };
 }
 
