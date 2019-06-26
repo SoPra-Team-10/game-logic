@@ -377,7 +377,7 @@ namespace gameModel{
         auto newQuaf = std::make_shared<Quaffle>(*this->quaffle);
         auto newSnitch = std::make_shared<Snitch>(*this->snitch);
         auto newBludgers = std::array<std::shared_ptr<Bludger>, 2>{std::make_shared<Bludger>(*this->bludgers[0]),
-                std::make_shared<Bludger>(*this->bludgers[0])};
+                std::make_shared<Bludger>(*this->bludgers[1])};
         std::deque<std::shared_ptr<CubeOfShit>> newShit;
         for(const auto &shit : pileOfShit){
             newShit.emplace_back(std::make_shared<CubeOfShit>(*shit));
