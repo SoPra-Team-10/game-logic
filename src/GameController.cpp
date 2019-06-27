@@ -34,7 +34,9 @@ namespace gameController {
         // check if cells are valid
         if (gameModel::Environment::getCell(startPoint) == gameModel::Cell::OutOfBounds ||
         gameModel::Environment::getCell(endPoint) == gameModel::Cell::OutOfBounds){
-            throw std::out_of_range("Source or destination of movement vector are out of bounds");
+            throw std::out_of_range("Source or destination of movement vector are out of bounds: "
+                                    "Start point was [" + std::to_string(startPoint.x) + ", " + std::to_string(startPoint.y) +
+                                    "] end point was [" + std::to_string(endPoint.x) + ", " + std::to_string(endPoint.y) + "]");
         }
 
         // check if start and end point are equal
