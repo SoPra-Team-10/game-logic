@@ -148,6 +148,23 @@ TEST(controller_test, moveBludger_no_knock_out) {
     EXPECT_FALSE(env->team1->chasers[0]->knockedOut);
     EXPECT_TRUE(env->quaffle->position == gameModel::Position(2, 10));
 }
+
+
+TEST(controller_test, moveBludger_border){
+    auto env = setup::createEnv();
+    env->bludgers[0]->position = {16, 8};
+    env->team1->keeper->position = {15, 10};
+    gameController::moveBludger(env->bludgers[0], env);
+    EXPECT_EQ(env->bludgers[0]->position, gameModel::Position(15, 9));
+}
+
+TEST(controller_test, moveBludger_if_on_player){
+    auto env = setup::createEnv();
+    env->bludgers[0]->position = env->team2->keeper->position;
+    gameController::moveBludger(env->bludgers[0], env);
+    EXPECT_EQ(env->bludgers[0]->position, env->team1->keeper->position);
+}
+
 //------------------------------can perform action test--------------------------------------------------------------------------
 
 TEST(controller_test, can_shoot_test_valid){
