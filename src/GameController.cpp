@@ -1,7 +1,6 @@
 #include <random>
 #include <deque>
 #include "GameController.h"
-
 namespace gameController {
 
     double rng(double min, double max){
@@ -55,7 +54,9 @@ namespace gameController {
             // found a new crossed cell
             if ((travVect + startPoint) != lastCell) {
                 lastCell = travVect + startPoint;
-                resultVect.emplace_back(lastCell);
+                if(gameModel::Environment::getCell(lastCell) != gameModel::Cell::OutOfBounds){
+                    resultVect.emplace_back(lastCell);
+                }
             }
 
             // make a step to travers the vector
@@ -191,13 +192,13 @@ namespace gameController {
         std::vector<std::shared_ptr<gameModel::Player>> minDistancePlayers;
         for (const auto &player: players) {
 
-            if (!INSTANCE_OF(player, gameModel::Beater) && !player->isFined) {
-                if (getDistance(bludger->position, player->position) < minDistance) {
-                    minDistance = getDistance(bludger->position, player->position);
+            if (!INSTANCE_OF(player, gameModel::Beater) && !player->isFined && bludger->position != player->position) {
+                auto dist = getDistance(bludger->position, player->position);
+                if (dist < minDistance) {
+                    minDistance = dist;
                     minDistancePlayers.clear();
                     minDistancePlayers.emplace_back(player);
-                }
-                else if (getDistance(bludger->position, player->position) == minDistance) {
+                } else if (dist == minDistance) {
                     minDistancePlayers.emplace_back(player);
                 }
             }
@@ -205,8 +206,7 @@ namespace gameController {
 
         if (minDistancePlayers.empty()) {
             gameController::moveToAdjacent(bludger, env);
-        }
-        else {
+        } else {
             auto minDistancePlayer = minDistancePlayers[rng(0, static_cast<int>(minDistancePlayers.size() - 1))];
 
             // move towards nearest player
@@ -230,13 +230,13 @@ namespace gameController {
                 }
 
                 return minDistancePlayer;
-            }
-            else {
+            } else {
                 // move in the direction of the nearest player
                 bludger->position = crossedCells[0];
             }
         }
-        return {};
+
+        return std::nullopt;
     }
 
     bool playerCanPerformAction(const std::shared_ptr<const gameModel::Player> &player,
