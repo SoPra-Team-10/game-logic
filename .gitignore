@@ -33,6 +33,7 @@
 
 #Clion stuff
 cmake-build-debug/
+cmake-build-release/
 .idea/
 build/
 /.project
