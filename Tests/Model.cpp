@@ -262,22 +262,22 @@ TEST(env_test, clone_identical){
     auto originalEnv = setup::createEnv();
     auto newEnv = originalEnv->clone();
     auto playersOrig = originalEnv->getAllPlayers();
-    auto plaersClone = newEnv->getAllPlayers();
+    auto playersClone = newEnv->getAllPlayers();
     //Spieler
-    for(unsigned long i = 0; i < playersOrig.size(); i++){
+    for(std::size_t i = 0; i < playersOrig.size(); i++){
         //player == will iwi nicht...
-        EXPECT_EQ(playersOrig[i]->position, plaersClone[i]->position);
-        EXPECT_EQ(playersOrig[i]->id, plaersClone[i]->id);
-        EXPECT_EQ(playersOrig[i]->broom, plaersClone[i]->broom);
-        EXPECT_EQ(playersOrig[i]->isFined, plaersClone[i]->isFined);
-        EXPECT_EQ(playersOrig[i]->knockedOut, plaersClone[i]->knockedOut);
+        EXPECT_EQ(playersOrig[i]->position, playersClone[i]->position);
+        EXPECT_EQ(playersOrig[i]->id, playersClone[i]->id);
+        EXPECT_EQ(playersOrig[i]->broom, playersClone[i]->broom);
+        EXPECT_EQ(playersOrig[i]->isFined, playersClone[i]->isFined);
+        EXPECT_EQ(playersOrig[i]->knockedOut, playersClone[i]->knockedOut);
     }
 
     //Shit
     auto shitListOrig = originalEnv->pileOfShit;
     auto shitListClone  = originalEnv->pileOfShit;
     EXPECT_EQ(shitListClone.size(), shitListOrig.size());
-    for(unsigned long i = 0; i < shitListClone.size(); i++){
+    for(std::size_t i = 0; i < shitListClone.size(); i++){
         EXPECT_EQ(shitListClone[i]->position, shitListOrig[i]->position);
         EXPECT_EQ(shitListClone[i]->id, shitListOrig[i]->id);
         EXPECT_EQ(shitListClone[i]->spawnedThisRound, shitListOrig[i]->spawnedThisRound);
