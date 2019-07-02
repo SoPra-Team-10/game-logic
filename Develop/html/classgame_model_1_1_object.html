@@ -87,7 +87,9 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="#pub-attribs">Data Fields</a>  </div>
+<a href="#pub-attribs">Data Fields</a> &#124;
+<a href="#pro-attribs">Protected Attributes</a> &#124;
+<a href="#friends">Friends</a>  </div>
   <div class="headertitle">
 <div class="title">gameModel::Object Class Reference</div>  </div>
 </div><!--header-->
@@ -118,16 +120,27 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a22ec074a1b4f4c3b90e0827b07939f10"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a22ec074a1b4f4c3b90e0827b07939f10"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>Object</b> (const <a class="el" href="structgame_model_1_1_position.html">Position</a> &amp;position, communication::messages::types::EntityId id)</td></tr>
 <tr class="separator:a22ec074a1b4f4c3b90e0827b07939f10"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a537e2430d2e6c28c1e346cd0495973ba"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a537e2430d2e6c28c1e346cd0495973ba"></a>
+communication::messages::types::EntityId&#160;</td><td class="memItemRight" valign="bottom"><b>getId</b> () const </td></tr>
+<tr class="separator:a537e2430d2e6c28c1e346cd0495973ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Data Fields</h2></td></tr>
 <tr class="memitem:a852c8ff1e230a07349aa8dc60b8cbd71"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a852c8ff1e230a07349aa8dc60b8cbd71"></a>
 <a class="el" href="structgame_model_1_1_position.html">Position</a>&#160;</td><td class="memItemRight" valign="bottom"><b>position</b> = {}</td></tr>
 <tr class="separator:a852c8ff1e230a07349aa8dc60b8cbd71"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ada26da82f66b6139d4a430962ebbef22"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ada26da82f66b6139d4a430962ebbef22"></a>
-const <br class="typebreak"/>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
+Protected Attributes</h2></td></tr>
+<tr class="memitem:a170eae21bb1190ec7348ff0023917a57"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a170eae21bb1190ec7348ff0023917a57"></a>
 communication::messages::types::EntityId&#160;</td><td class="memItemRight" valign="bottom"><b>id</b> {}</td></tr>
-<tr class="separator:ada26da82f66b6139d4a430962ebbef22"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="separator:a170eae21bb1190ec7348ff0023917a57"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="friends"></a>
+Friends</h2></td></tr>
+<tr class="memitem:ae4bfbfcff554cabab7f2fe9b9ecbc3f5"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae4bfbfcff554cabab7f2fe9b9ecbc3f5"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>from_json</b> (const nlohmann::json &amp;, <a class="el" href="classgame_model_1_1_object.html">Object</a> &amp;)</td></tr>
+<tr class="separator:ae4bfbfcff554cabab7f2fe9b9ecbc3f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Base class for game objects like a ball or a player. </p>
