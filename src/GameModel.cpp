@@ -313,7 +313,7 @@ namespace gameModel{
         if (this->quaffle->getId() == id) {
             return this->quaffle;
         }
-        else if (this->snitch->getId()== id) {
+        else if (this->snitch->getId() == id) {
             return this->snitch;
         }
         else if (this->bludgers[0]->getId() == id) {
