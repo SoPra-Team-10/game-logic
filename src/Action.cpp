@@ -39,7 +39,7 @@ namespace gameController{
                     throw std::runtime_error("No Player at intercept position");
                 }
 
-                if(actionTriggered(env->config.gameDynamicsProbs.catchQuaffle)) {
+                if(actionTriggered(env->config.getGameDynamicsProbs().catchQuaffle)) {
                     intercepted = true;
                     ball->position = pos;
                     if(gameModel::Environment::isGoalCell(pos)){
@@ -61,7 +61,7 @@ namespace gameController{
             //Quaffle not intercepted
             if(!intercepted) {
                 auto dist = getDistance(actor->position, target);
-                if(actionTriggered(std::pow(env->config.gameDynamicsProbs.throwSuccess, dist))){
+                if(actionTriggered(std::pow(env->config.getGameDynamicsProbs().throwSuccess, dist))){
                     //Throw success
                     ball->position = target;
                 } else {
@@ -109,7 +109,7 @@ namespace gameController{
             if(playerOnTarget.has_value()){
                 //Knock player out an place bludger on random free cell
                 if(!INSTANCE_OF(playerOnTarget.value(), gameModel::Beater) &&
-                    actionTriggered(env->config.gameDynamicsProbs.knockOut)){
+                    actionTriggered(env->config.getGameDynamicsProbs().knockOut)){
                     shotRes.push_back(ActionResult::Knockout);
                     playerOnTarget.value()->knockedOut = true;
                     auto possibleCells = env->getAllFreeCells();
@@ -156,12 +156,12 @@ namespace gameController{
             }
 
             //Prob for !interception * prob for !miss
-            return std::pow(1 - env->config.gameDynamicsProbs.catchQuaffle, getInterceptionPositions().size()) *
-                std::pow(env->config.gameDynamicsProbs.throwSuccess, getDistance(actor->position, target));
+            return std::pow(1 - env->config.getGameDynamicsProbs().catchQuaffle, getInterceptionPositions().size()) *
+                std::pow(env->config.getGameDynamicsProbs().throwSuccess, getDistance(actor->position, target));
         } else if(BLUDGERSHOT) {
             if(isAnyPlayerOnTarget && !INSTANCE_OF(playerOnTarget.value(), gameModel::Beater)) {
                 //Prob for knockout
-                return env->config.gameDynamicsProbs.knockOut;
+                return env->config.getGameDynamicsProbs().knockOut;
             } else {
                 return 0;
             }
@@ -308,8 +308,8 @@ namespace gameController{
         for(unsigned long i = 0; i < interceptPoints.size(); i++) {
             auto const &interceptPos = interceptPoints[i];
             //baseProb for interception at i-th player
-            double baseProb = std::pow(1 - localEnv->config.gameDynamicsProbs.catchQuaffle, i) *
-                              localEnv->config.gameDynamicsProbs.catchQuaffle;
+            double baseProb = std::pow(1 - localEnv->config.getGameDynamicsProbs().catchQuaffle, i) *
+                              localEnv->config.getGameDynamicsProbs().catchQuaffle;
             const std::shared_ptr<const gameModel::Player> interceptingPlayer = localEnv->getPlayer(interceptPos).value();
             if(INSTANCE_OF(interceptingPlayer, const gameModel::Seeker) ||
                INSTANCE_OF(interceptingPlayer, const gameModel::Beater)) {
@@ -327,8 +327,8 @@ namespace gameController{
             }
         }
 
-        double noInterceptProb = std::pow(1 - localEnv->config.gameDynamicsProbs.catchQuaffle, interceptPoints.size());
-        double throwSuccess = std::pow(localEnv->config.gameDynamicsProbs.throwSuccess, getDistance(actor->position, target));
+        double noInterceptProb = std::pow(1 - localEnv->config.getGameDynamicsProbs().catchQuaffle, interceptPoints.size());
+        double throwSuccess = std::pow(localEnv->config.getGameDynamicsProbs().throwSuccess, getDistance(actor->position, target));
         //Handle miss
         emplaceEnvs(noInterceptProb * (1 - throwSuccess), getAllLandingCells(), ret);
 
@@ -350,22 +350,22 @@ namespace gameController{
         std::optional<const std::shared_ptr<const gameModel::Player>> playerOnTarget = localEnv->getPlayer(target);
         auto emplaceKnockoutEnv = [&ret, &playerOnTarget, &localEnv, this](double baseProb, const std::optional<gameModel::Position> &pos){
             auto knockoutEnv = localEnv->clone();
-            knockoutEnv->getPlayerById(playerOnTarget.value()->id)->knockedOut = true;
+            knockoutEnv->getPlayerById(playerOnTarget.value()->getId())->knockedOut = true;
             auto freeCells = knockoutEnv->getAllFreeCells();
             //non deterministic since branching factor would be way to high
-            knockoutEnv->getBallByID(ball->id)->position = freeCells[rng(0, static_cast<int>(freeCells.size()) - 1)];
+            knockoutEnv->getBallByID(ball->getId())->position = freeCells[rng(0, static_cast<int>(freeCells.size()) - 1)];
             if(pos.has_value()) {
                 knockoutEnv->quaffle->position = pos.value();
                 knockoutEnv->removeShitOnCell(pos.value());
             }
 
-            ret.emplace_back(knockoutEnv, baseProb * localEnv->config.gameDynamicsProbs.knockOut);
+            ret.emplace_back(knockoutEnv, baseProb * localEnv->config.getGameDynamicsProbs().knockOut);
         };
 
         auto emplaceFailEnv = [&ret, &localEnv, this](){
             auto failEnv = localEnv->clone();
-            failEnv->getBallByID(ball->id)->position = target;
-            ret.emplace_back(failEnv, 1 - localEnv->config.gameDynamicsProbs.knockOut);
+            failEnv->getBallByID(ball->getId())->position = target;
+            ret.emplace_back(failEnv, 1 - localEnv->config.getGameDynamicsProbs().knockOut);
         };
 
         if(playerOnTarget.has_value() && !INSTANCE_OF(playerOnTarget.value(), const gameModel::Beater)) {
@@ -388,7 +388,7 @@ namespace gameController{
             }
         } else {
             auto newEnv = localEnv->clone();
-            newEnv->getBallByID(ball->id)->position = target;
+            newEnv->getBallByID(ball->getId())->position = target;
             newEnv->removeShitOnCell(target);
             ret.emplace_back(newEnv, 1);
         }
@@ -494,7 +494,7 @@ namespace gameController{
 
         const bool positionIsTarget = this->env->snitch->position == this->target;
         const bool isSeeker = (bool) INSTANCE_OF(this->actor, gameModel::Seeker);
-        const bool actionWasTriggered = actionTriggered(env->config.gameDynamicsProbs.catchSnitch);
+        const bool actionWasTriggered = actionTriggered(env->config.getGameDynamicsProbs().catchSnitch);
         if(env->snitch->exists && positionIsTarget && isSeeker && actionWasTriggered) {
 
             actions.push_back(ActionResult::SnitchCatch);
@@ -633,14 +633,14 @@ namespace gameController{
                         //move target player on adjacent cell
                         newEnv->getPlayer(target).value()->position = pos;
                         //move actor on target
-                        newEnv->getPlayerById(actor->id)->position = target;
+                        newEnv->getPlayerById(actor->getId())->position = target;
                         newEnv->removeShitOnCell(pos);
 
                         resList.emplace_back(newEnv, prob);
                     }
                 } else {
                     resList.emplace_back(env->clone(), 1);
-                    resList.back().first->getPlayerById(actor->id)->position = target;
+                    resList.back().first->getPlayerById(actor->getId())->position = target;
                 }
 
                 executePartially(resList, ActionState::HandleBalls);
@@ -696,10 +696,10 @@ namespace gameController{
                     for(auto &outcome : resList) {
                         auto catchFailEnv = outcome.first->clone();
                         auto catchFailBaseProb = outcome.second;
-                        auto tempActorSucc = outcome.first->getPlayerById(actor->id);
+                        auto tempActorSucc = outcome.first->getPlayerById(actor->getId());
                         outcome.first->getTeam(tempActorSucc)->score += SNITCH_POINTS;
-                        outcome.second *= env->config.gameDynamicsProbs.catchSnitch;
-                        newOutcomes.emplace_back(catchFailEnv, catchFailBaseProb * (1 - env->config.gameDynamicsProbs.catchSnitch));
+                        outcome.second *= env->config.getGameDynamicsProbs().catchSnitch;
+                        newOutcomes.emplace_back(catchFailEnv, catchFailBaseProb * (1 - env->config.getGameDynamicsProbs().catchSnitch));
                     }
 
                     resList.insert(resList.end(), newOutcomes.begin(), newOutcomes.end());
@@ -715,7 +715,7 @@ namespace gameController{
                     resList.reserve(resList.size() * 2);
                     for(auto &outcome : resList){
                         auto newEnv = outcome.first->clone();
-                        newEnv->getPlayerById(actor->id)->isFined = true;
+                        newEnv->getPlayerById(actor->getId())->isFined = true;
                         newOutcomes.emplace_back(newEnv, outcome.second * (1 - success));
                         outcome.second *= success;
                     }
@@ -742,7 +742,7 @@ namespace gameController{
         }
 
         // wrest the quaffel
-        if(actionTriggered(env->config.gameDynamicsProbs.wrestQuaffle)) {
+        if(actionTriggered(env->config.getGameDynamicsProbs().wrestQuaffle)) {
             env->quaffle->position =  actor->position;
             actions.emplace_back(ActionResult::WrestQuaffel);
         }
@@ -752,7 +752,7 @@ namespace gameController{
 
     auto WrestQuaffle::successProb() const -> double {
         if (this->check() == ActionCheckResult::Success) {
-            return env->config.gameDynamicsProbs.wrestQuaffle;
+            return env->config.getGameDynamicsProbs().wrestQuaffle;
         }
         else {
             return 0;
@@ -787,10 +787,10 @@ namespace gameController{
 
         std::vector<std::pair<std::shared_ptr<gameModel::Environment>, double>> ret;
         ret.reserve(2);
-        ret.emplace_back(env->clone(), 1 - env->config.gameDynamicsProbs.wrestQuaffle);
+        ret.emplace_back(env->clone(), 1 - env->config.getGameDynamicsProbs().wrestQuaffle);
         auto successEnv = env->clone();
         successEnv->quaffle->position = actor->position;
-        ret.emplace_back(successEnv, env->config.gameDynamicsProbs.wrestQuaffle);
+        ret.emplace_back(successEnv, env->config.getGameDynamicsProbs().wrestQuaffle);
         return ret;
 
     }

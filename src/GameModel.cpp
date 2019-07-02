@@ -1,6 +1,7 @@
 #include "GameModel.h"
 #include "GameController.h"
 #include "conversions.h"
+#include "SharedPtrSerialization.h"
 
 #include <utility>
 #include <iostream>
@@ -14,7 +15,7 @@ namespace gameModel{
     }
 
     bool Player::operator==(const Player &other) const {
-        return position == other.position && broom == other.broom && id == other.id;
+        return position == other.position && broom == other.broom && id == other.getId();
     }
 
     bool Player::operator!=(const Player &other) const {
@@ -247,7 +248,7 @@ namespace gameModel{
 
     auto Environment::isPlayerInOwnRestrictedZone(const std::shared_ptr<const Player>& player) const -> bool {
         const auto cell = Environment::getCell(player->position);
-        const auto side = gameLogic::conversions::idToSide(player->id);
+        const auto side = gameLogic::conversions::idToSide(player->getId());
         if (side == TeamSide::LEFT && (cell == Cell::RestrictedLeft || cell == Cell::GoalLeft)) {
             return true;
         }
@@ -260,7 +261,7 @@ namespace gameModel{
     }
     auto Environment::isPlayerInOpponentRestrictedZone(const std::shared_ptr<const Player>& player) const  -> bool {
         const auto cell = Environment::getCell(player->position);
-        const auto side = gameLogic::conversions::idToSide(player->id);
+        const auto side = gameLogic::conversions::idToSide(player->getId());
         if (side == TeamSide::LEFT && (cell == Cell::RestrictedRight || cell == Cell::GoalRight)) {
             return true;
         }
@@ -271,16 +272,16 @@ namespace gameModel{
     }
 
     auto Environment::getTeam(const std::shared_ptr<const Player>& player) const -> std::shared_ptr<Team> {
-        return getTeam(gameLogic::conversions::idToSide(player->id));
+        return getTeam(gameLogic::conversions::idToSide(player->getId()));
     }
 
     auto Environment::getTeam(TeamSide side) const -> std::shared_ptr<Team> {
-        return team1->side == side ? team1 : team2;
+        return team1->getSide() == side ? team1 : team2;
     }
 
     void Environment::placePlayerOnRandomFreeCell(const std::shared_ptr<Player>& player) {
         std::vector<Position> possibleCells;
-        const auto side = gameLogic::conversions::idToSide(player->id);
+        const auto side = gameLogic::conversions::idToSide(player->getId());
         possibleCells = getFreeCellsForRedeploy(side);
         int index = gameController::rng(0, static_cast<int>(possibleCells.size() - 1));
         player->position = possibleCells[index];
@@ -309,16 +310,16 @@ namespace gameModel{
     }
 
     auto Environment::getBallByID(const communication::messages::types::EntityId &id) const -> std::shared_ptr<Ball> {
-        if (this->quaffle->id == id) {
+        if (this->quaffle->getId()== id) {
             return this->quaffle;
         }
-        else if (this->snitch->id == id) {
+        else if (this->snitch->getId()== id) {
             return this->snitch;
         }
-        else if (this->bludgers[0]->id == id) {
+        else if (this->bludgers[0]->getId()== id) {
             return this->bludgers[0];
         }
-        else if (this->bludgers[1]->id == id) {
+        else if (this->bludgers[1]->getId()== id) {
             return this->bludgers[1];
         }
         else {
@@ -482,7 +483,7 @@ namespace gameModel{
                        std::make_shared<Beater>(std::move(beaters[1]))}, chasers{std::make_shared<Chaser>(std::move(chasers[0])), std::make_shared<Chaser>(std::move(chasers[1])),
                                std::make_shared<Chaser>(std::move(chasers[2]))}, score(score), fanblock(std::move(fanblock)), side(side) {
         for(const auto &player : getAllPlayers()){
-            if(gameLogic::conversions::idToSide(player->id) != this->side){
+            if(gameLogic::conversions::idToSide(player->getId()) != this->side){
                 throw std::invalid_argument("Player-IDs not matching team side");
             }
         }
@@ -525,7 +526,7 @@ namespace gameModel{
     }
 
     bool Team::hasMember(const std::shared_ptr<const Player>& player) const {
-        return gameLogic::conversions::idToSide(player->id) == side;
+        return gameLogic::conversions::idToSide(player->getId()) == side;
     }
 
     int Team::numberOfBannedMembers() const{
@@ -541,7 +542,7 @@ namespace gameModel{
 
     auto Team::getPlayerByID(communication::messages::types::EntityId id) const -> std::optional<std::shared_ptr<Player>> {
         for(const auto &player : getAllPlayers()){
-            if(player->id == id){
+            if(player->getId()== id){
                 return player;
             }
         }
@@ -552,6 +553,10 @@ namespace gameModel{
     auto Team::clone() const -> std::shared_ptr<Team> {
         return std::make_shared<Team>(*this->seeker, *this->keeper, std::array<Beater, 2>{*this->beaters[0], *this->beaters[1]},
                 std::array<Chaser, 3>{*this->chasers[0], *this->chasers[1], *this->chasers[2]}, this->score, this->fanblock, this->side);
+    }
+
+    TeamSide Team::getSide() const {
+        return side;
     }
 
     // Config
@@ -614,6 +619,14 @@ namespace gameModel{
             default:
                 throw std::runtime_error("Fatal error, enum out of bounds");
         }
+    }
+
+    unsigned int Config::getMaxRounds() const {
+        return maxRounds;
+    }
+
+    const GameDynamicsProbs &Config::getGameDynamicsProbs() const {
+        return gameDynamicsProbs;
     }
 
 
@@ -682,5 +695,205 @@ namespace gameModel{
 
     Object::Object(const Position &position, communication::messages::types::EntityId id) : position(position), id(id){}
 
+    communication::messages::types::EntityId Object::getId() const {
+        return id;
+    }
+
     CubeOfShit::CubeOfShit(const Position &target) : Object(target, communication::messages::types::EntityId::LEFT_WOMBAT){}
+
+    void to_json(nlohmann::json &j, const Position &position){
+        j["x"] = position.x;
+        j["y"] = position.y;
+    }
+
+    void to_json(nlohmann::json &j, const Object &object){
+        j["position"] = object.position;
+        j["id"] = object.getId();
+    }
+
+    void to_json(nlohmann::json &j, const Player &player){
+        to_json(j, *static_cast<const Object*>(&player));
+        j["fined"] = player.isFined;
+        j["knockedOut"] = player.knockedOut;
+        j["broom"] = player.broom;
+    }
+
+    void to_json(nlohmann::json &j, const Ball &ball){
+        to_json(j, *static_cast<const Object*>(&ball));
+    }
+
+    void to_json(nlohmann::json &j, const Snitch &snitch){
+        to_json(j, *static_cast<const Ball*>(&snitch));
+        j["exists"] = snitch.exists;
+    }
+
+    void to_json(nlohmann::json &j, const Fanblock &fanblock){
+        j["Teleports"] = fanblock.getUses(InterferenceType::Teleport);
+        j["RangedAttacks"] = fanblock.getUses(InterferenceType::RangedAttack);
+        j["Impulses"] = fanblock.getUses(InterferenceType::Impulse);
+        j["SnitchPushes"] = fanblock.getUses(InterferenceType::SnitchPush);
+        j["BlockCells"] = fanblock.getUses(InterferenceType::BlockCell);
+
+        j["TeleportsBanned"] = fanblock.getBannedCount(InterferenceType::Teleport);
+        j["RangedAttacksBanned"] = fanblock.getBannedCount(InterferenceType::RangedAttack);
+        j["ImpulsesBanned"] = fanblock.getBannedCount(InterferenceType::Impulse);
+        j["SnitchPushesBanned"] = fanblock.getBannedCount(InterferenceType::SnitchPush);
+        j["BlockCellsBanned"] = fanblock.getBannedCount(InterferenceType::BlockCell);
+    }
+
+    void to_json(nlohmann::json &j, const Team &team){
+        j["fanblock"] = team.fanblock;
+        j["seeker"] = team.seeker;
+        j["keeper"] = team.keeper;
+        j["beater0"] = team.beaters[0];
+        j["beater1"] = team.beaters[1];
+        j["chaser0"] = team.chasers[0];
+        j["chaser1"] = team.chasers[1];
+        j["chaser2"] = team.chasers[2];
+        j["score"] = team.score;
+        j["side"] = team.getSide();
+    }
+
+    void to_json(nlohmann::json &j, const Config &config) {
+        using namespace communication::messages::types;
+        j["maxRounds"] = config.getMaxRounds();
+        j["catchSnitchProb"] = config.getGameDynamicsProbs().catchSnitch;
+        j["knockOutProb"] = config.getGameDynamicsProbs().knockOut;
+        j["throwSuccessProb"] = config.getGameDynamicsProbs().throwSuccess;
+        j["catchQuaffleProb"] = config.getGameDynamicsProbs().catchQuaffle;
+        j["wrestQuaffleProb"] = config.getGameDynamicsProbs().wrestQuaffle;
+
+        j["teleportFoulProb"] = config.getFoulDetectionProb(InterferenceType::Teleport);
+        j["rangedAttackFoulProb"] = config.getFoulDetectionProb(InterferenceType::RangedAttack);
+        j["impulseFoulProb"] = config.getFoulDetectionProb(InterferenceType::Impulse);
+        j["snitchPushFoulProb"] = config.getFoulDetectionProb(InterferenceType::SnitchPush);
+        j["blockCellFoulProb"] = config.getFoulDetectionProb(InterferenceType::BlockCell);
+
+        j["multipleOffence"] = config.getFoulDetectionProb(Foul::MultipleOffence);
+        j["ramming"] = config.getFoulDetectionProb(Foul::Ramming);
+        j["blockGoal"] = config.getFoulDetectionProb(Foul::BlockGoal);
+        j["blockSnitch"] = config.getFoulDetectionProb(Foul::BlockSnitch);
+        j["chargeGoal"] = config.getFoulDetectionProb(Foul::ChargeGoal);
+
+        j["tinderblastProb"] = config.getExtraTurnProb(Broom::TINDERBLAST);
+        j["fireBoltProb"] = config.getExtraTurnProb(Broom::FIREBOLT);
+        j["nimbusProb"] = config.getExtraTurnProb(Broom::NIMBUS2001);
+        j["cometProb"] = config.getExtraTurnProb(Broom::COMET260);
+        j["cleanSweepProb"] = config.getExtraTurnProb(Broom::CLEANSWEEP11);
+    }
+
+    void to_json(nlohmann::json &j, const Environment &environment){
+        j["leftTeam"] = environment.getTeam(TeamSide::LEFT);
+        j["rightTeam"] = environment.getTeam(TeamSide::RIGHT);
+        j["snitch"] = environment.snitch;
+        j["quaffle"] = environment.quaffle;
+        j["bludger0"] = environment.bludgers[0];
+        j["bludger1"] = environment.bludgers[1];
+        j["config"] = environment.config;
+        j["pileOfShit"] = environment.pileOfShit;
+    }
+
+    void from_json(const nlohmann::json &j, Position &position) {
+        position.x = j.at("x").get<int>();
+        position.y = j.at("y").get<int>();
+    }
+
+    void from_json(const nlohmann::json &j, Object &object) {
+        object.position = j.at("position").get<Position>();
+        object.id = j.at("id").get<communication::messages::types::EntityId>();
+    }
+
+    void from_json(const nlohmann::json &j, Player &player) {
+        from_json(j, *static_cast<Object*>(&player));
+        player.broom = j.at("broom").get<communication::messages::types::Broom>();
+        player.isFined = j.at("fined").get<bool>();
+        player.knockedOut = j.at("knockedOut").get<bool>();
+    }
+
+    void from_json(const nlohmann::json &j, Ball &ball) {
+        from_json(j, *static_cast<Object*>(&ball));
+    }
+
+    void from_json(const nlohmann::json &j, Snitch &snitch) {
+        from_json(j, *static_cast<Ball*>(&snitch));
+        snitch.exists = j.at("exists").get<bool>();
+    }
+
+    void from_json(const nlohmann::json &j, Fanblock &fanblock) {
+        fanblock.initialFans.clear();
+        fanblock.currFans.clear();
+        auto tel = j.at("Teleports").get<int>();
+        auto ra = j.at("RangedAttacks").get<int>();
+        auto imp = j.at("Impulses").get<int>();
+        auto sp = j.at("SnitchPushes").get<int>();
+        auto bc = j.at("BlockCells").get<int>();
+
+        auto telB = j.at("TeleportsBanned").get<int>();
+        auto raB = j.at("RangedAttacksBanned").get<int>();
+        auto impB = j.at("ImpulsesBanned").get<int>();
+        auto spB = j.at("SnitchPushesBanned").get<int>();
+        auto bcB = j.at("BlockCellsBanned").get<int>();
+
+        fanblock.currFans.emplace(InterferenceType::Teleport, tel);
+        fanblock.currFans.emplace(InterferenceType::RangedAttack, ra);
+        fanblock.currFans.emplace(InterferenceType::Impulse, imp);
+        fanblock.currFans.emplace(InterferenceType::SnitchPush, sp);
+        fanblock.currFans.emplace(InterferenceType::BlockCell, bc);
+
+        fanblock.initialFans.emplace(InterferenceType::Teleport, tel + telB);
+        fanblock.initialFans.emplace(InterferenceType::RangedAttack, ra + raB);
+        fanblock.initialFans.emplace(InterferenceType::Impulse, imp + impB);
+        fanblock.initialFans.emplace(InterferenceType::SnitchPush, sp + spB);
+        fanblock.initialFans.emplace(InterferenceType::BlockCell, bc + bcB);
+    }
+
+    void from_json(const nlohmann::json &j, Team &team) {
+        team.fanblock = j.at("fanblock").get<Fanblock>();
+        team.keeper = j.at("keeper").get<std::shared_ptr<Keeper>>();
+        team.seeker = j.at("seeker").get<std::shared_ptr<Seeker>>();
+        team.beaters = {j.at("beater0").get<std::shared_ptr<Beater>>(), j.at("beater1").get<std::shared_ptr<Beater>>()};
+        team.chasers = {j.at("chaser0").get<std::shared_ptr<Chaser>>(), j.at("chaser1").get<std::shared_ptr<Chaser>>(),
+                        j.at("chaser2").get<std::shared_ptr<Chaser>>()};
+        team.side = j.at("side").get<TeamSide>();
+        team.score = j.at("score").get<int>();
+    }
+
+    void from_json(const nlohmann::json &j, Config &config) {
+        using namespace communication::messages::types;
+        config.maxRounds = j.at("maxRounds").get<unsigned int>();
+        config.gameDynamicsProbs.wrestQuaffle = j.at("wrestQuaffleProb").get<double>();
+        config.gameDynamicsProbs.catchQuaffle = j.at("catchQuaffleProb").get<double>();
+        config.gameDynamicsProbs.throwSuccess = j.at("throwSuccessProb").get<double>();
+        config.gameDynamicsProbs.knockOut = j.at("knockOutProb").get<double>();
+        config.gameDynamicsProbs.catchSnitch = j.at("catchSnitchProb").get<double>();
+
+        config.foulDetectionProbs.teleport = j.at("teleportFoulProb").get<double>();
+        config.foulDetectionProbs.impulse = j.at("impulseFoulProb").get<double>();
+        config.foulDetectionProbs.snitchPush = j.at("snitchPushFoulProb").get<double>();
+        config.foulDetectionProbs.rangedAttack = j.at("rangedAttackFoulProb").get<double>();
+        config.foulDetectionProbs.blockCell = j.at("blockCellFoulProb").get<double>();
+
+        config.foulDetectionProbs.blockGoal = j.at("blockGoal").get<double>();
+        config.foulDetectionProbs.blockSnitch = j.at("blockSnitch").get<double>();
+        config.foulDetectionProbs.chargeGoal = j.at("chargeGoal").get<double>();
+        config.foulDetectionProbs.multipleOffence = j.at("multipleOffence").get<double>();
+        config.foulDetectionProbs.ramming = j.at("ramming").get<double>();
+
+        config.extraTurnProbs.clear();
+        config.extraTurnProbs.emplace(Broom::CLEANSWEEP11, j.at("cleanSweepProb").get<double>());
+        config.extraTurnProbs.emplace(Broom::COMET260, j.at("cometProb").get<double>());
+        config.extraTurnProbs.emplace(Broom::NIMBUS2001, j.at("nimbusProb").get<double>());
+        config.extraTurnProbs.emplace(Broom::FIREBOLT, j.at("fireBoltProb").get<double>());
+        config.extraTurnProbs.emplace(Broom::TINDERBLAST, j.at("tinderblastProb").get<double>());
+    }
+
+    void from_json(const nlohmann::json &j, Environment &environment) {
+        environment.team1 = j.at("leftTeam").get<std::shared_ptr<Team>>();
+        environment.team2 = j.at("rightTeam").get<std::shared_ptr<Team>>();
+        environment.config = j.at("config").get<Config>();
+        environment.quaffle = j.at("quaffle").get<std::shared_ptr<Quaffle>>();
+        environment.snitch = j.at("snitch").get<std::shared_ptr<Snitch>>();
+        environment.bludgers = {j.at("bludger0").get<std::shared_ptr<Bludger>>(), j.at("bludger1").get<std::shared_ptr<Bludger>>()};
+        environment.pileOfShit = j.at("pileOfShit").get<std::deque<std::shared_ptr<CubeOfShit>>>();
+    }
 }
