@@ -260,91 +260,18 @@ TEST(env_test, removeDeprecatedShit){
 }
 
 TEST(env_test, clone_identical){
-    auto originalEnv = setup::createEnv();
+    using B = communication::messages::types::Broom;
+    std::map<B, double> brooms;
+    brooms.emplace(B::TINDERBLAST, 0.5);
+    brooms.emplace(B::CLEANSWEEP11, 0.6);
+    brooms.emplace(B::COMET260, 0.7);
+    brooms.emplace(B::NIMBUS2001, 0.8);
+    brooms.emplace(B::FIREBOLT, 0.9);
+    auto originalEnv = setup::createEnv({0, {1, 1, 1, 1, 1, 1, 1, 1, 1, 1}, {1, 1, 1, 1, 1}, brooms});
+    originalEnv->pileOfShit.emplace_back(std::make_shared<gameModel::CubeOfShit>(gameModel::Position{11, 5}));
+    originalEnv->pileOfShit.emplace_back(std::make_shared<gameModel::CubeOfShit>(gameModel::Position{12, 5}));
     auto newEnv = originalEnv->clone();
-    auto playersOrig = originalEnv->getAllPlayers();
-    auto playersClone = newEnv->getAllPlayers();
-    //Spieler
-    for(std::size_t i = 0; i < playersOrig.size(); i++){
-        //player == will iwi nicht...
-        EXPECT_EQ(playersOrig[i]->position, playersClone[i]->position);
-        EXPECT_EQ(playersOrig[i]->getId(), playersClone[i]->getId());
-        EXPECT_EQ(playersOrig[i]->broom, playersClone[i]->broom);
-        EXPECT_EQ(playersOrig[i]->isFined, playersClone[i]->isFined);
-        EXPECT_EQ(playersOrig[i]->knockedOut, playersClone[i]->knockedOut);
-    }
-
-    //Shit
-    auto shitListOrig = originalEnv->pileOfShit;
-    auto shitListClone  = originalEnv->pileOfShit;
-    EXPECT_EQ(shitListClone.size(), shitListOrig.size());
-    for(std::size_t i = 0; i < shitListClone.size(); i++){
-        EXPECT_EQ(shitListClone[i]->position, shitListOrig[i]->position);
-        EXPECT_EQ(shitListClone[i]->getId(), shitListOrig[i]->getId());
-        EXPECT_EQ(shitListClone[i]->spawnedThisRound, shitListOrig[i]->spawnedThisRound);
-    }
-
-    //Bälle
-    EXPECT_EQ(originalEnv->quaffle->position, newEnv->quaffle->position);
-    EXPECT_EQ(originalEnv->bludgers[0]->position, newEnv->bludgers[0]->position);
-    EXPECT_EQ(originalEnv->bludgers[1]->position, newEnv->bludgers[1]->position);
-    EXPECT_EQ(originalEnv->snitch->position, newEnv->snitch->position);
-    EXPECT_EQ(originalEnv->snitch->exists, newEnv->snitch->exists);
-
-    //Teams
-    EXPECT_EQ(originalEnv->team1->score, newEnv->team1->score);
-    EXPECT_EQ(originalEnv->team1->getSide(), newEnv->team1->getSide());
-    EXPECT_EQ(originalEnv->team2->score, newEnv->team2->score);
-    EXPECT_EQ(originalEnv->team2->getSide(), newEnv->team2->getSide());
-
-    //Team1 Fanblock banned
-    EXPECT_EQ(originalEnv->team1->fanblock.getBannedCount(gameModel::InterferenceType::Teleport),
-            newEnv->team1->fanblock.getBannedCount(gameModel::InterferenceType::Teleport));
-    EXPECT_EQ(originalEnv->team1->fanblock.getBannedCount(gameModel::InterferenceType::BlockCell),
-              newEnv->team1->fanblock.getBannedCount(gameModel::InterferenceType::BlockCell));
-    EXPECT_EQ(originalEnv->team1->fanblock.getBannedCount(gameModel::InterferenceType::Impulse),
-              newEnv->team1->fanblock.getBannedCount(gameModel::InterferenceType::Impulse));
-    EXPECT_EQ(originalEnv->team1->fanblock.getBannedCount(gameModel::InterferenceType::SnitchPush),
-              newEnv->team1->fanblock.getBannedCount(gameModel::InterferenceType::SnitchPush));
-    EXPECT_EQ(originalEnv->team1->fanblock.getBannedCount(gameModel::InterferenceType::RangedAttack),
-              newEnv->team1->fanblock.getBannedCount(gameModel::InterferenceType::RangedAttack));
-
-    //Team1 Fanblock uses
-    EXPECT_EQ(originalEnv->team1->fanblock.getUses(gameModel::InterferenceType::Teleport),
-              newEnv->team1->fanblock.getUses(gameModel::InterferenceType::Teleport));
-    EXPECT_EQ(originalEnv->team1->fanblock.getUses(gameModel::InterferenceType::BlockCell),
-              newEnv->team1->fanblock.getUses(gameModel::InterferenceType::BlockCell));
-    EXPECT_EQ(originalEnv->team1->fanblock.getUses(gameModel::InterferenceType::Impulse),
-              newEnv->team1->fanblock.getUses(gameModel::InterferenceType::Impulse));
-    EXPECT_EQ(originalEnv->team1->fanblock.getUses(gameModel::InterferenceType::SnitchPush),
-              newEnv->team1->fanblock.getUses(gameModel::InterferenceType::SnitchPush));
-    EXPECT_EQ(originalEnv->team1->fanblock.getUses(gameModel::InterferenceType::RangedAttack),
-              newEnv->team1->fanblock.getUses(gameModel::InterferenceType::RangedAttack));
-
-    //Team2 Fanblock banned
-    EXPECT_EQ(originalEnv->team2->fanblock.getBannedCount(gameModel::InterferenceType::Teleport),
-              newEnv->team2->fanblock.getBannedCount(gameModel::InterferenceType::Teleport));
-    EXPECT_EQ(originalEnv->team2->fanblock.getBannedCount(gameModel::InterferenceType::BlockCell),
-              newEnv->team2->fanblock.getBannedCount(gameModel::InterferenceType::BlockCell));
-    EXPECT_EQ(originalEnv->team2->fanblock.getBannedCount(gameModel::InterferenceType::Impulse),
-              newEnv->team2->fanblock.getBannedCount(gameModel::InterferenceType::Impulse));
-    EXPECT_EQ(originalEnv->team2->fanblock.getBannedCount(gameModel::InterferenceType::SnitchPush),
-              newEnv->team2->fanblock.getBannedCount(gameModel::InterferenceType::SnitchPush));
-    EXPECT_EQ(originalEnv->team2->fanblock.getBannedCount(gameModel::InterferenceType::RangedAttack),
-              newEnv->team2->fanblock.getBannedCount(gameModel::InterferenceType::RangedAttack));
-
-    //Team2 Fanblock uses
-    EXPECT_EQ(originalEnv->team2->fanblock.getUses(gameModel::InterferenceType::Teleport),
-              newEnv->team2->fanblock.getUses(gameModel::InterferenceType::Teleport));
-    EXPECT_EQ(originalEnv->team2->fanblock.getUses(gameModel::InterferenceType::BlockCell),
-              newEnv->team2->fanblock.getUses(gameModel::InterferenceType::BlockCell));
-    EXPECT_EQ(originalEnv->team2->fanblock.getUses(gameModel::InterferenceType::Impulse),
-              newEnv->team2->fanblock.getUses(gameModel::InterferenceType::Impulse));
-    EXPECT_EQ(originalEnv->team2->fanblock.getUses(gameModel::InterferenceType::SnitchPush),
-              newEnv->team2->fanblock.getUses(gameModel::InterferenceType::SnitchPush));
-    EXPECT_EQ(originalEnv->team2->fanblock.getUses(gameModel::InterferenceType::RangedAttack),
-              newEnv->team2->fanblock.getUses(gameModel::InterferenceType::RangedAttack));
-
+    EXPECT_EQ(*originalEnv, *newEnv);
 }
 
 TEST(env_test, clone){
@@ -523,87 +450,5 @@ TEST(env_test, serialize_and_deserialize){
     nlohmann::json json;
     json = originalEnv;
     auto newEnv = json.get<std::shared_ptr<gameModel::Environment>>();
-    auto playersOrig = originalEnv->getAllPlayers();
-    auto playersClone = newEnv->getAllPlayers();
-
-    //Spieler
-    for(std::size_t i = 0; i < playersOrig.size(); i++){
-        //player == will iwi nicht...
-        EXPECT_EQ(playersOrig[i]->position, playersClone[i]->position);
-        EXPECT_EQ(playersOrig[i]->getId(), playersClone[i]->getId());
-        EXPECT_EQ(playersOrig[i]->broom, playersClone[i]->broom);
-        EXPECT_EQ(playersOrig[i]->isFined, playersClone[i]->isFined);
-        EXPECT_EQ(playersOrig[i]->knockedOut, playersClone[i]->knockedOut);
-    }
-
-    //Shit
-    auto shitListOrig = originalEnv->pileOfShit;
-    auto shitListClone  = originalEnv->pileOfShit;
-    EXPECT_EQ(shitListClone.size(), shitListOrig.size());
-    for(std::size_t i = 0; i < shitListClone.size(); i++){
-        EXPECT_EQ(shitListClone[i]->position, shitListOrig[i]->position);
-        EXPECT_EQ(shitListClone[i]->getId(), shitListOrig[i]->getId());
-        EXPECT_EQ(shitListClone[i]->spawnedThisRound, shitListOrig[i]->spawnedThisRound);
-    }
-
-    //Bälle
-    EXPECT_EQ(originalEnv->quaffle->position, newEnv->quaffle->position);
-    EXPECT_EQ(originalEnv->bludgers[0]->position, newEnv->bludgers[0]->position);
-    EXPECT_EQ(originalEnv->bludgers[1]->position, newEnv->bludgers[1]->position);
-    EXPECT_EQ(originalEnv->snitch->position, newEnv->snitch->position);
-    EXPECT_EQ(originalEnv->snitch->exists, newEnv->snitch->exists);
-
-    //Teams
-    EXPECT_EQ(originalEnv->team1->score, newEnv->team1->score);
-    EXPECT_EQ(originalEnv->team1->getSide(), newEnv->team1->getSide());
-    EXPECT_EQ(originalEnv->team2->score, newEnv->team2->score);
-    EXPECT_EQ(originalEnv->team2->getSide(), newEnv->team2->getSide());
-
-    //Team1 Fanblock banned
-    EXPECT_EQ(originalEnv->team1->fanblock.getBannedCount(gameModel::InterferenceType::Teleport),
-              newEnv->team1->fanblock.getBannedCount(gameModel::InterferenceType::Teleport));
-    EXPECT_EQ(originalEnv->team1->fanblock.getBannedCount(gameModel::InterferenceType::BlockCell),
-              newEnv->team1->fanblock.getBannedCount(gameModel::InterferenceType::BlockCell));
-    EXPECT_EQ(originalEnv->team1->fanblock.getBannedCount(gameModel::InterferenceType::Impulse),
-              newEnv->team1->fanblock.getBannedCount(gameModel::InterferenceType::Impulse));
-    EXPECT_EQ(originalEnv->team1->fanblock.getBannedCount(gameModel::InterferenceType::SnitchPush),
-              newEnv->team1->fanblock.getBannedCount(gameModel::InterferenceType::SnitchPush));
-    EXPECT_EQ(originalEnv->team1->fanblock.getBannedCount(gameModel::InterferenceType::RangedAttack),
-              newEnv->team1->fanblock.getBannedCount(gameModel::InterferenceType::RangedAttack));
-
-    //Team1 Fanblock uses
-    EXPECT_EQ(originalEnv->team1->fanblock.getUses(gameModel::InterferenceType::Teleport),
-              newEnv->team1->fanblock.getUses(gameModel::InterferenceType::Teleport));
-    EXPECT_EQ(originalEnv->team1->fanblock.getUses(gameModel::InterferenceType::BlockCell),
-              newEnv->team1->fanblock.getUses(gameModel::InterferenceType::BlockCell));
-    EXPECT_EQ(originalEnv->team1->fanblock.getUses(gameModel::InterferenceType::Impulse),
-              newEnv->team1->fanblock.getUses(gameModel::InterferenceType::Impulse));
-    EXPECT_EQ(originalEnv->team1->fanblock.getUses(gameModel::InterferenceType::SnitchPush),
-              newEnv->team1->fanblock.getUses(gameModel::InterferenceType::SnitchPush));
-    EXPECT_EQ(originalEnv->team1->fanblock.getUses(gameModel::InterferenceType::RangedAttack),
-              newEnv->team1->fanblock.getUses(gameModel::InterferenceType::RangedAttack));
-
-    //Team2 Fanblock banned
-    EXPECT_EQ(originalEnv->team2->fanblock.getBannedCount(gameModel::InterferenceType::Teleport),
-              newEnv->team2->fanblock.getBannedCount(gameModel::InterferenceType::Teleport));
-    EXPECT_EQ(originalEnv->team2->fanblock.getBannedCount(gameModel::InterferenceType::BlockCell),
-              newEnv->team2->fanblock.getBannedCount(gameModel::InterferenceType::BlockCell));
-    EXPECT_EQ(originalEnv->team2->fanblock.getBannedCount(gameModel::InterferenceType::Impulse),
-              newEnv->team2->fanblock.getBannedCount(gameModel::InterferenceType::Impulse));
-    EXPECT_EQ(originalEnv->team2->fanblock.getBannedCount(gameModel::InterferenceType::SnitchPush),
-              newEnv->team2->fanblock.getBannedCount(gameModel::InterferenceType::SnitchPush));
-    EXPECT_EQ(originalEnv->team2->fanblock.getBannedCount(gameModel::InterferenceType::RangedAttack),
-              newEnv->team2->fanblock.getBannedCount(gameModel::InterferenceType::RangedAttack));
-
-    //Team2 Fanblock uses
-    EXPECT_EQ(originalEnv->team2->fanblock.getUses(gameModel::InterferenceType::Teleport),
-              newEnv->team2->fanblock.getUses(gameModel::InterferenceType::Teleport));
-    EXPECT_EQ(originalEnv->team2->fanblock.getUses(gameModel::InterferenceType::BlockCell),
-              newEnv->team2->fanblock.getUses(gameModel::InterferenceType::BlockCell));
-    EXPECT_EQ(originalEnv->team2->fanblock.getUses(gameModel::InterferenceType::Impulse),
-              newEnv->team2->fanblock.getUses(gameModel::InterferenceType::Impulse));
-    EXPECT_EQ(originalEnv->team2->fanblock.getUses(gameModel::InterferenceType::SnitchPush),
-              newEnv->team2->fanblock.getUses(gameModel::InterferenceType::SnitchPush));
-    EXPECT_EQ(originalEnv->team2->fanblock.getUses(gameModel::InterferenceType::RangedAttack),
-              newEnv->team2->fanblock.getUses(gameModel::InterferenceType::RangedAttack));
+    EXPECT_EQ(*originalEnv, *newEnv);
 }
