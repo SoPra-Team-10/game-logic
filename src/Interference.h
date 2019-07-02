@@ -1,6 +1,9 @@
-//
-// Created by timluchterhand on 05.05.19.
-//
+/**
+ * @file Interference.h
+ * @author Björn, Tim
+ * @date 05.05.19
+ * @brief Decleration of the Interferences.
+ */
 
 #ifndef SOPRAGAMELOGIC_INTERFERENCE_H
 #define SOPRAGAMELOGIC_INTERFERENCE_H
@@ -18,23 +21,24 @@ namespace gameController{
                 gameModel::InterferenceType type);
 
         /**
-         * Executes the interference
+         * Executes the interference.
+         * @return the results of the executed action as gameController::ActionCheckResult
          */
         virtual auto execute() const -> gameController::ActionCheckResult = 0;
 
         /**
          * Checks if the interference is possible
-         * @return
+         * @return true if possible, else false
          */
         virtual bool isPossible() const;
 
         /**
-         * Gets the type of interference
-         * @return
+         * Gets the type of interference.
+         * @return the type of the interference as gameModel::InterferenceType
          */
         auto getType() const -> gameModel::InterferenceType;
-    protected:
 
+    protected:
         std::shared_ptr<gameModel::Environment> env;
         std::shared_ptr<gameModel::Team> team;
         gameModel::InterferenceType type;

@@ -1,6 +1,9 @@
-//
-// Created by timluchterhand on 05.05.19.
-//
+/**
+ * @file Interference.cpp
+ * @author Björn, Tim
+ * @date 05.05.19
+ * @brief Implementation of the Interferences.
+ */
 
 #include "Interference.h"
 

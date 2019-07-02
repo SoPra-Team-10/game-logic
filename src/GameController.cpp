@@ -1,6 +1,14 @@
+/**
+ * @file GameController.cpp
+ * @author Björn, Jonas, Tim
+ * @date
+ * @brief Implementation of multiple classes for the game controller.
+ */
+
 #include <random>
 #include <deque>
 #include "GameController.h"
+
 namespace gameController {
 
     double rng(double min, double max){
