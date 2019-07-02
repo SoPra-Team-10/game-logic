@@ -316,7 +316,7 @@ namespace gameModel{
         else if (this->snitch->getId()== id) {
             return this->snitch;
         }
-        else if (this->bludgers[0]->getId()== id) {
+        else if (this->bludgers[0]->getId() == id) {
             return this->bludgers[0];
         }
         else if (this->bludgers[1]->getId()== id) {
