@@ -70,7 +70,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Friends</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Variables</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -87,7 +87,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="#friends">Friends</a>  </div>
+<a href="#pub-attribs">Data Fields</a>  </div>
   <div class="headertitle">
 <div class="title">gameModel::Config Class Reference</div>  </div>
 </div><!--header-->
@@ -109,15 +109,18 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a9a74968656799c833fb5c30bd2346b75"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5ad695f57c6e3ebfb5c07492e9a7fa32"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgame_model_1_1_config.html#a5ad695f57c6e3ebfb5c07492e9a7fa32">getFoulDetectionProb</a> (InterferenceType interference) const </td></tr>
 <tr class="separator:a5ad695f57c6e3ebfb5c07492e9a7fa32"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a152cb256e4e54d4561739290f2cdcc7d"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgame_model_1_1_config.html#a152cb256e4e54d4561739290f2cdcc7d">getMaxRounds</a> () const </td></tr>
-<tr class="separator:a152cb256e4e54d4561739290f2cdcc7d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af72f4ab618f8dab215c15b9f825430dd"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="structgame_model_1_1_game_dynamics_probs.html">GameDynamicsProbs</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgame_model_1_1_config.html#af72f4ab618f8dab215c15b9f825430dd">getGameDynamicsProbs</a> () const </td></tr>
-<tr class="separator:af72f4ab618f8dab215c15b9f825430dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="friends"></a>
-Friends</h2></td></tr>
-<tr class="memitem:a24fb97ca2b84e7d72aa845ff8c52e4e9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgame_model_1_1_config.html#a24fb97ca2b84e7d72aa845ff8c52e4e9">from_json</a> (const nlohmann::json &amp;, <a class="el" href="classgame_model_1_1_config.html">Config</a> &amp;)</td></tr>
-<tr class="separator:a24fb97ca2b84e7d72aa845ff8c52e4e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
+Data Fields</h2></td></tr>
+<tr class="memitem:a9690fb78b42fcb9310d55d89fb49079e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9690fb78b42fcb9310d55d89fb49079e"></a>
+const unsigned int&#160;</td><td class="memItemRight" valign="bottom"><b>maxRounds</b></td></tr>
+<tr class="separator:a9690fb78b42fcb9310d55d89fb49079e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a810141306fe0e5f8d3c445fed3c898a5"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a810141306fe0e5f8d3c445fed3c898a5"></a>
+const <a class="el" href="structgame_model_1_1_foul_detection_probs.html">FoulDetectionProbs</a>&#160;</td><td class="memItemRight" valign="bottom"><b>foulDetectionProbs</b></td></tr>
+<tr class="separator:a810141306fe0e5f8d3c445fed3c898a5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad88e428a62281ff69051f424bd4966c2"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad88e428a62281ff69051f424bd4966c2"></a>
+const <a class="el" href="structgame_model_1_1_game_dynamics_probs.html">GameDynamicsProbs</a>&#160;</td><td class="memItemRight" valign="bottom"><b>gameDynamicsProbs</b></td></tr>
+<tr class="separator:ad88e428a62281ff69051f424bd4966c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Class containing metadata for a match </p>
@@ -191,76 +194,6 @@ Friends</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
-
-</div>
-</div>
-<a class="anchor" id="af72f4ab618f8dab215c15b9f825430dd"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">const <a class="el" href="structgame_model_1_1_game_dynamics_probs.html">GameDynamicsProbs</a> &amp; gameModel::Config::getGameDynamicsProbs </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Getter </p>
-<dl class="section return"><dt>Returns</dt><dd>game dynamics probabilities </dd></dl>
-
-</div>
-</div>
-<a class="anchor" id="a152cb256e4e54d4561739290f2cdcc7d"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">unsigned int gameModel::Config::getMaxRounds </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Getter </p>
-<dl class="section return"><dt>Returns</dt><dd>maximum number of rounds before overtime </dd></dl>
-
-</div>
-</div>
-<h2 class="groupheader">Friends And Related Function Documentation</h2>
-<a class="anchor" id="a24fb97ca2b84e7d72aa845ff8c52e4e9"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void from_json </td>
-          <td>(</td>
-          <td class="paramtype">const nlohmann::json &amp;&#160;</td>
-          <td class="paramname">, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="classgame_model_1_1_config.html">Config</a> &amp;&#160;</td>
-          <td class="paramname">&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">friend</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>Friend method for serialization </p>
 
 </div>
 </div>
