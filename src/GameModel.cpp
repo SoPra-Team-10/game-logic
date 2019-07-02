@@ -542,7 +542,7 @@ namespace gameModel{
 
     auto Team::getPlayerByID(communication::messages::types::EntityId id) const -> std::optional<std::shared_ptr<Player>> {
         for(const auto &player : getAllPlayers()){
-            if(player->getId()== id){
+            if(player->getId() == id){
                 return player;
             }
         }
