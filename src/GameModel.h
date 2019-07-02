@@ -707,7 +707,6 @@ namespace gameModel{
     void to_json(nlohmann::json &j, const Position &position);
     void to_json(nlohmann::json &j, const Object &object);
     void to_json(nlohmann::json &j, const Player &player);
-    void to_json(nlohmann::json &j, const Ball &ball);
     void to_json(nlohmann::json &j, const Snitch &snitch);
     void to_json(nlohmann::json &j, const Fanblock &fanblock);
     void to_json(nlohmann::json &j, const Team &team);
@@ -717,7 +716,6 @@ namespace gameModel{
     void from_json(const nlohmann::json &j, Position &position);
     void from_json(const nlohmann::json &j, Object &object);
     void from_json(const nlohmann::json &j, Player &player);
-    void from_json(const nlohmann::json &j, Ball &ball);
     void from_json(const nlohmann::json &j, Snitch &snitch);
     void from_json(const nlohmann::json &j, Fanblock &fanblock);
     void from_json(const nlohmann::json &j, Team &team);

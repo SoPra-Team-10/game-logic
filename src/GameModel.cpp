@@ -718,27 +718,23 @@ namespace gameModel{
         j["broom"] = player.broom;
     }
 
-    void to_json(nlohmann::json &j, const Ball &ball){
-        to_json(j, *static_cast<const Object*>(&ball));
-    }
-
     void to_json(nlohmann::json &j, const Snitch &snitch){
-        to_json(j, *static_cast<const Ball*>(&snitch));
+        to_json(j, *static_cast<const Object*>(&snitch));
         j["exists"] = snitch.exists;
     }
 
     void to_json(nlohmann::json &j, const Fanblock &fanblock){
-        j["Teleports"] = fanblock.getUses(InterferenceType::Teleport);
-        j["RangedAttacks"] = fanblock.getUses(InterferenceType::RangedAttack);
-        j["Impulses"] = fanblock.getUses(InterferenceType::Impulse);
-        j["SnitchPushes"] = fanblock.getUses(InterferenceType::SnitchPush);
-        j["BlockCells"] = fanblock.getUses(InterferenceType::BlockCell);
+        j["teleports"] = fanblock.getUses(InterferenceType::Teleport);
+        j["rangedAttacks"] = fanblock.getUses(InterferenceType::RangedAttack);
+        j["impulses"] = fanblock.getUses(InterferenceType::Impulse);
+        j["snitchPushes"] = fanblock.getUses(InterferenceType::SnitchPush);
+        j["blockCells"] = fanblock.getUses(InterferenceType::BlockCell);
 
-        j["TeleportsBanned"] = fanblock.getBannedCount(InterferenceType::Teleport);
-        j["RangedAttacksBanned"] = fanblock.getBannedCount(InterferenceType::RangedAttack);
-        j["ImpulsesBanned"] = fanblock.getBannedCount(InterferenceType::Impulse);
-        j["SnitchPushesBanned"] = fanblock.getBannedCount(InterferenceType::SnitchPush);
-        j["BlockCellsBanned"] = fanblock.getBannedCount(InterferenceType::BlockCell);
+        j["teleportsBanned"] = fanblock.getBannedCount(InterferenceType::Teleport);
+        j["rangedAttacksBanned"] = fanblock.getBannedCount(InterferenceType::RangedAttack);
+        j["impulsesBanned"] = fanblock.getBannedCount(InterferenceType::Impulse);
+        j["snitchPushesBanned"] = fanblock.getBannedCount(InterferenceType::SnitchPush);
+        j["blockCellsBanned"] = fanblock.getBannedCount(InterferenceType::BlockCell);
     }
 
     void to_json(nlohmann::json &j, const Team &team){
@@ -810,29 +806,25 @@ namespace gameModel{
         player.knockedOut = j.at("knockedOut").get<bool>();
     }
 
-    void from_json(const nlohmann::json &j, Ball &ball) {
-        from_json(j, *static_cast<Object*>(&ball));
-    }
-
     void from_json(const nlohmann::json &j, Snitch &snitch) {
-        from_json(j, *static_cast<Ball*>(&snitch));
+        from_json(j, *static_cast<Object*>(&snitch));
         snitch.exists = j.at("exists").get<bool>();
     }
 
     void from_json(const nlohmann::json &j, Fanblock &fanblock) {
         fanblock.initialFans.clear();
         fanblock.currFans.clear();
-        auto tel = j.at("Teleports").get<int>();
-        auto ra = j.at("RangedAttacks").get<int>();
-        auto imp = j.at("Impulses").get<int>();
-        auto sp = j.at("SnitchPushes").get<int>();
-        auto bc = j.at("BlockCells").get<int>();
+        auto tel = j.at("teleports").get<int>();
+        auto ra = j.at("rangedAttacks").get<int>();
+        auto imp = j.at("impulses").get<int>();
+        auto sp = j.at("snitchPushes").get<int>();
+        auto bc = j.at("blockCells").get<int>();
 
-        auto telB = j.at("TeleportsBanned").get<int>();
-        auto raB = j.at("RangedAttacksBanned").get<int>();
-        auto impB = j.at("ImpulsesBanned").get<int>();
-        auto spB = j.at("SnitchPushesBanned").get<int>();
-        auto bcB = j.at("BlockCellsBanned").get<int>();
+        auto telB = j.at("teleportsBanned").get<int>();
+        auto raB = j.at("rangedAttacksBanned").get<int>();
+        auto impB = j.at("impulsesBanned").get<int>();
+        auto spB = j.at("snitchPushesBanned").get<int>();
+        auto bcB = j.at("blockCellsBanned").get<int>();
 
         fanblock.currFans.emplace(InterferenceType::Teleport, tel);
         fanblock.currFans.emplace(InterferenceType::RangedAttack, ra);
