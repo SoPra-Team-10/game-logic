@@ -163,8 +163,21 @@ namespace gameModel{
          */
         double getFoulDetectionProb(InterferenceType interference) const;
 
+        /**
+         * Getter
+         * @return maximum number of rounds before overtime
+         */
         unsigned int getMaxRounds() const;
+
+        /**
+         * Getter
+         * @return game dynamics probabilities
+         */
         const GameDynamicsProbs &getGameDynamicsProbs() const;
+
+        /**
+         * Friend method for serialization
+         */
         friend void from_json(const nlohmann::json &, Config &);
 
     private:
@@ -186,8 +199,15 @@ namespace gameModel{
 
         virtual ~Object() = default;
 
+        /**
+         * Getter
+         * @return object id
+         */
         communication::messages::types::EntityId getId() const;
 
+        /**
+         * Friend method for serialization
+         */
         friend void from_json(const nlohmann::json &, Object &);
 
     protected:
@@ -448,6 +468,10 @@ namespace gameModel{
          */
         auto clone() const -> std::shared_ptr<Team>;
 
+        /**
+         * Getter
+         * @return side of the team
+         */
         TeamSide getSide() const;
 
         friend void from_json(const nlohmann::json &, Team &);
