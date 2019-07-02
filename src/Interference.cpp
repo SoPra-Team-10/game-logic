@@ -28,7 +28,7 @@ namespace gameController{
         auto possibleCells = env->getAllFreeCells();
         target->position = possibleCells[rng(0, static_cast<int>(possibleCells.size() - 1))];
 
-        if (gameController::actionTriggered(env->config.foulDetectionProbs.teleport)) {
+        if (gameController::actionTriggered(env->config.getFoulDetectionProb(type))) {
             team->fanblock.banFan(this->getType());
             return gameController::ActionCheckResult::Foul;
         }
@@ -57,7 +57,7 @@ namespace gameController{
 
         moveToAdjacent(target, env);
 
-        if (gameController::actionTriggered(env->config.foulDetectionProbs.rangedAttack)) {
+        if (gameController::actionTriggered(env->config.getFoulDetectionProb(type))) {
             team->fanblock.banFan(this->getType());
             return gameController::ActionCheckResult::Foul;
         }
@@ -88,7 +88,7 @@ namespace gameController{
             }
         }
 
-        if (gameController::actionTriggered(env->config.foulDetectionProbs.impulse)) {
+        if (gameController::actionTriggered(env->config.getFoulDetectionProb(type))) {
             team->fanblock.banFan(this->getType());
             return gameController::ActionCheckResult::Foul;
         }
@@ -109,7 +109,7 @@ namespace gameController{
             moveToAdjacent(env->snitch, env);
         }
 
-        if (gameController::actionTriggered(env->config.foulDetectionProbs.snitchPush)) {
+        if (gameController::actionTriggered(env->config.getFoulDetectionProb(type))) {
             team->fanblock.banFan(this->getType());
             return gameController::ActionCheckResult::Foul;
         }
@@ -126,7 +126,7 @@ namespace gameController{
             throw std::runtime_error("Interference not possible");
         }
         env->pileOfShit.emplace_back(std::make_shared<gameModel::CubeOfShit>(target));
-        if (gameController::actionTriggered(env->config.foulDetectionProbs.blockCell)) {
+        if (gameController::actionTriggered(env->config.getFoulDetectionProb(type))) {
             team->fanblock.banFan(this->getType());
             return gameController::ActionCheckResult::Foul;
         }

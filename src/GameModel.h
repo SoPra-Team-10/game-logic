@@ -11,6 +11,7 @@
 #include <SopraMessages/MatchConfig.hpp>
 #include <SopraMessages/TeamConfig.hpp>
 #include <SopraMessages/TeamFormation.hpp>
+#include <SopraMessages/json.hpp>
 
 namespace gameModel{
     constexpr int FIELD_CENTRE_COL = 8;
@@ -136,10 +137,8 @@ namespace gameModel{
      */
     class Config{
     public:
-        const unsigned int maxRounds;
-        const FoulDetectionProbs foulDetectionProbs;
-        const GameDynamicsProbs gameDynamicsProbs;
 
+        Config() = default;
         Config(const communication::messages::broadcast::MatchConfig &config);
         Config(unsigned int maxRounds, const FoulDetectionProbs &foulDetectionProbs,
                const GameDynamicsProbs &gameDynamicsProbs, std::map<communication::messages::types::Broom, double> extraTurnProbs);
@@ -163,22 +162,56 @@ namespace gameModel{
          * @return
          */
         double getFoulDetectionProb(InterferenceType interference) const;
+
+        /**
+         * Getter
+         * @return maximum number of rounds before overtime
+         */
+        unsigned int getMaxRounds() const;
+
+        /**
+         * Getter
+         * @return game dynamics probabilities
+         */
+        const GameDynamicsProbs &getGameDynamicsProbs() const;
+
+        /**
+         * Friend method for serialization
+         */
+        friend void from_json(const nlohmann::json &, Config &);
+
     private:
+        unsigned int maxRounds;
+        FoulDetectionProbs foulDetectionProbs;
+        GameDynamicsProbs gameDynamicsProbs;
         std::map<communication::messages::types::Broom, double> extraTurnProbs;
     };
 
     /**
      * Base class for game objects like a ball or a player.
      */
-    class Object{
+    class Object {
     public:
         Object() = default;
         Object(const Position &position, communication::messages::types::EntityId id);
 
         Position position = {};
-        const communication::messages::types::EntityId id{};
 
         virtual ~Object() = default;
+
+        /**
+         * Getter
+         * @return object id
+         */
+        communication::messages::types::EntityId getId() const;
+
+        /**
+         * Friend method for serialization
+         */
+        friend void from_json(const nlohmann::json &, Object &);
+
+    protected:
+        communication::messages::types::EntityId id{};
     };
 
     /**
@@ -203,6 +236,8 @@ namespace gameModel{
      */
     class Ball : public Object{
     public:
+        Ball() = default;
+
         Ball(Position position, communication::messages::types::EntityId id);
 
         virtual ~Ball() = default;
@@ -213,8 +248,9 @@ namespace gameModel{
      */
     class CubeOfShit : public Object {
     public:
-        bool spawnedThisRound = true;
+        CubeOfShit() = default;
         explicit CubeOfShit(const Position &target);
+        bool spawnedThisRound = true;
     };
 
     /**
@@ -222,6 +258,7 @@ namespace gameModel{
      */
     class Fanblock{
     public:
+        Fanblock() = default;
         Fanblock(int teleportation, int rangedAttack, int impulse, int snitchPush, int blockCell);
 
         /**
@@ -266,6 +303,8 @@ namespace gameModel{
          */
         void banFan(communication::messages::types::FanType fan);
 
+        friend void from_json(const nlohmann::json &, Fanblock &);
+
     private:
         std::map<InterferenceType, int> currFans;
         std::map<InterferenceType, const int> initialFans;
@@ -277,6 +316,7 @@ namespace gameModel{
      */
     class Chaser : public Player{
     public:
+        Chaser() = default;
         Chaser(Position position, communication::messages::types::Broom broom, communication::messages::types::EntityId id);
     };
 
@@ -285,6 +325,7 @@ namespace gameModel{
      */
     class Keeper : public Player{
     public:
+        Keeper() = default;
         Keeper(Position position, communication::messages::types::Broom broom, communication::messages::types::EntityId id);
     };
 
@@ -293,6 +334,7 @@ namespace gameModel{
      */
     class Seeker : public Player{
     public:
+        Seeker() = default;
         Seeker(Position position, communication::messages::types::Broom broom, communication::messages::types::EntityId id);
     };
 
@@ -301,6 +343,7 @@ namespace gameModel{
      */
     class Beater : public Player{
     public:
+        Beater() = default;
         Beater(Position position, communication::messages::types::Broom broom, communication::messages::types::EntityId id);
     };
 
@@ -326,6 +369,9 @@ namespace gameModel{
      */
     class Bludger : public Ball{
     public:
+
+        Bludger() = default;
+
         /**
          * Places Bludger in the centre of the field
          * @param id Id of the Bludger
@@ -370,7 +416,8 @@ namespace gameModel{
         std::array<std::shared_ptr<Chaser>, 3> chasers;
         int score{};
         Fanblock fanblock;
-        const TeamSide side;
+
+        Team() = default;
 
         /**
          * Constructs a Team from server config types with initial score of 0
@@ -420,6 +467,17 @@ namespace gameModel{
          * @return
          */
         auto clone() const -> std::shared_ptr<Team>;
+
+        /**
+         * Getter
+         * @return side of the team
+         */
+        TeamSide getSide() const;
+
+        friend void from_json(const nlohmann::json &, Team &);
+
+    private:
+        TeamSide side;
     };
 
     /**
@@ -433,6 +491,8 @@ namespace gameModel{
         std::shared_ptr<Snitch> snitch;
         std::array<std::shared_ptr<Bludger>, 2> bludgers;
         std::deque<std::shared_ptr<CubeOfShit>> pileOfShit;
+
+        Environment() = default;
 
         /**
          * Constructs an Environment from server config types
@@ -667,6 +727,25 @@ namespace gameModel{
          */
         auto getFreeCellsForRedeploy(const gameModel::TeamSide &teamSide)const -> const std::vector<gameModel::Position>;
     };
+
+    void to_json(nlohmann::json &j, const Position &position);
+    void to_json(nlohmann::json &j, const Object &object);
+    void to_json(nlohmann::json &j, const Player &player);
+    void to_json(nlohmann::json &j, const Snitch &snitch);
+    void to_json(nlohmann::json &j, const Fanblock &fanblock);
+    void to_json(nlohmann::json &j, const Team &team);
+    void to_json(nlohmann::json &j, const Config &config);
+    void to_json(nlohmann::json &j, const Environment &environment);
+
+    void from_json(const nlohmann::json &j, Position &position);
+    void from_json(const nlohmann::json &j, Object &object);
+    void from_json(const nlohmann::json &j, Player &player);
+    void from_json(const nlohmann::json &j, Snitch &snitch);
+    void from_json(const nlohmann::json &j, Fanblock &fanblock);
+    void from_json(const nlohmann::json &j, Team &team);
+    void from_json(const nlohmann::json &j, Config &config);
+    void from_json(const nlohmann::json &j, Environment &environment);
+
 }
 
 
