@@ -417,7 +417,7 @@ TEST(move_test, move_execute_all_snitch_catch){
     gameController::Move move(env, env->team2->seeker, gameModel::Position{12, 9});
     auto resList = move.executeAll();
     EXPECT_EQ(resList.size(), 2);
-    auto catchProb = env->config.gameDynamicsProbs.catchSnitch;
+    auto catchProb = env->config.getGameDynamicsProbs().catchSnitch;
     EXPECT_DOUBLE_EQ(resList[0].second, catchProb);
     EXPECT_EQ(resList[0].first->team2->score, gameController::SNITCH_POINTS);
     EXPECT_EQ(resList[0].first->team2->seeker->position, gameModel::Position(12, 9));
@@ -440,11 +440,11 @@ TEST(move_test, move_execute_all_charge_goal){
     EXPECT_EQ(resList[0].first->team1->chasers[0]->position, target);
     EXPECT_EQ(resList[0].first->team1->score, gameController::GOAL_POINTS);
     EXPECT_FALSE(resList[0].first->team1->chasers[0]->isFined);
-    EXPECT_DOUBLE_EQ(resList[0].second, 1 - env->config.foulDetectionProbs.chargeGoal);
+    EXPECT_DOUBLE_EQ(resList[0].second, 1 - env->config.getFoulDetectionProb(gameModel::Foul::ChargeGoal));
     EXPECT_EQ(resList[1].first->quaffle->position, target);
     EXPECT_EQ(resList[1].first->team1->chasers[0]->position, target);
     EXPECT_EQ(resList[1].first->team1->score, gameController::GOAL_POINTS);
-    EXPECT_DOUBLE_EQ(resList[1].second, env->config.foulDetectionProbs.chargeGoal);
+    EXPECT_DOUBLE_EQ(resList[1].second, env->config.getFoulDetectionProb(gameModel::Foul::ChargeGoal));
     EXPECT_TRUE(resList[1].first->team1->chasers[0]->isFined);
     EXPECT_EQ(env->team1->chasers[0]->position, gameModel::Position(13, 8));
     EXPECT_EQ(env->quaffle->position, gameModel::Position(13, 8));

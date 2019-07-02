@@ -542,8 +542,8 @@ TEST(shot_test, bludger_execute_all){
     EXPECT_EQ(resList.size(), 2);
     EXPECT_TRUE(resList[0].first->team1->seeker->knockedOut);
     EXPECT_FALSE(resList[1].first->team1->seeker->knockedOut);
-    EXPECT_DOUBLE_EQ(resList[0].second, env->config.gameDynamicsProbs.knockOut);
-    EXPECT_DOUBLE_EQ(resList[1].second, 1 - env->config.gameDynamicsProbs.knockOut);
+    EXPECT_DOUBLE_EQ(resList[0].second, env->config.getGameDynamicsProbs().knockOut);
+    EXPECT_DOUBLE_EQ(resList[1].second, 1 - env->config.getGameDynamicsProbs().knockOut);
     EXPECT_NE(resList[0].first->bludgers[0]->position, env->team1->seeker->position);
     EXPECT_EQ(env->bludgers[0]->position, env->team2->beaters[1]->position);
     EXPECT_FALSE(env->team1->seeker->knockedOut);

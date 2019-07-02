@@ -216,7 +216,7 @@ namespace gameController {
                 bludger->position = minDistancePlayer->position;
 
                 // roll the dices
-                if (actionTriggered(env->config.gameDynamicsProbs.knockOut)) {
+                if (actionTriggered(env->config.getGameDynamicsProbs().knockOut)) {
                     // quaffel test
                     if (env->quaffle->position == minDistancePlayer->position) {
                         moveToAdjacent(env->quaffle, env);
