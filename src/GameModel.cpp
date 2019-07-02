@@ -310,7 +310,7 @@ namespace gameModel{
     }
 
     auto Environment::getBallByID(const communication::messages::types::EntityId &id) const -> std::shared_ptr<Ball> {
-        if (this->quaffle->getId()== id) {
+        if (this->quaffle->getId() == id) {
             return this->quaffle;
         }
         else if (this->snitch->getId()== id) {
