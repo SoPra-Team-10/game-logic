@@ -310,16 +310,16 @@ namespace gameModel{
     }
 
     auto Environment::getBallByID(const communication::messages::types::EntityId &id) const -> std::shared_ptr<Ball> {
-        if (this->quaffle->getId()== id) {
+        if (this->quaffle->getId() == id) {
             return this->quaffle;
         }
-        else if (this->snitch->getId()== id) {
+        else if (this->snitch->getId() == id) {
             return this->snitch;
         }
-        else if (this->bludgers[0]->getId()== id) {
+        else if (this->bludgers[0]->getId() == id) {
             return this->bludgers[0];
         }
-        else if (this->bludgers[1]->getId()== id) {
+        else if (this->bludgers[1]->getId() == id) {
             return this->bludgers[1];
         }
         else {
@@ -542,7 +542,7 @@ namespace gameModel{
 
     auto Team::getPlayerByID(communication::messages::types::EntityId id) const -> std::optional<std::shared_ptr<Player>> {
         for(const auto &player : getAllPlayers()){
-            if(player->getId()== id){
+            if(player->getId() == id){
                 return player;
             }
         }
