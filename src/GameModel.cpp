@@ -890,16 +890,7 @@ namespace gameModel{
     }
 
     bool Fanblock::operator==(const Fanblock &other) const {
-        return initialFans.at(InterferenceType::BlockCell) == other.initialFans.at(InterferenceType::BlockCell) &&
-            initialFans.at(InterferenceType::SnitchPush) == other.initialFans.at(InterferenceType::SnitchPush) &&
-            initialFans.at(InterferenceType::Impulse) == other.initialFans.at(InterferenceType::Impulse) &&
-            initialFans.at(InterferenceType::RangedAttack) == other.initialFans.at(InterferenceType::RangedAttack) &&
-            initialFans.at(InterferenceType::Teleport) == other.initialFans.at(InterferenceType::Teleport) &&
-            currFans.at(InterferenceType::BlockCell) == other.currFans.at(InterferenceType::BlockCell) &&
-            currFans.at(InterferenceType::SnitchPush) == other.currFans.at(InterferenceType::SnitchPush) &&
-            currFans.at(InterferenceType::Impulse) == other.currFans.at(InterferenceType::Impulse) &&
-            currFans.at(InterferenceType::RangedAttack) == other.currFans.at(InterferenceType::RangedAttack) &&
-            currFans.at(InterferenceType::Teleport) == other.currFans.at(InterferenceType::Teleport);
+        return initialFans == other.initialFans && currFans == other.currFans;
     }
 
     bool Fanblock::operator!=(const Fanblock &other) const {
