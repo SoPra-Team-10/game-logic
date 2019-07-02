@@ -20,6 +20,10 @@ namespace gameModel{
      * Probabilities for detecting a foul
      */
     struct FoulDetectionProbs{
+        bool operator==(const FoulDetectionProbs &rhs) const;
+
+        bool operator!=(const FoulDetectionProbs &rhs) const;
+
         double blockGoal,
                 chargeGoal, multipleOffence,
                 ramming, blockSnitch, teleport,
@@ -30,6 +34,10 @@ namespace gameModel{
      * Probabilities for standard gameplay
      */
     struct GameDynamicsProbs{
+        bool operator==(const GameDynamicsProbs &rhs) const;
+
+        bool operator!=(const GameDynamicsProbs &rhs) const;
+
         double throwSuccess,
                 knockOut,
                 catchSnitch, catchQuaffle,
@@ -180,6 +188,10 @@ namespace gameModel{
          */
         friend void from_json(const nlohmann::json &, Config &);
 
+        bool operator==(const Config &rhs) const;
+
+        bool operator!=(const Config &rhs) const;
+
     private:
         unsigned int maxRounds;
         FoulDetectionProbs foulDetectionProbs;
@@ -198,6 +210,9 @@ namespace gameModel{
         Position position = {};
 
         virtual ~Object() = default;
+
+        bool operator==(const Object &other) const;
+        bool operator!=(const Object &other) const;
 
         /**
          * Getter
@@ -251,6 +266,9 @@ namespace gameModel{
         CubeOfShit() = default;
         explicit CubeOfShit(const Position &target);
         bool spawnedThisRound = true;
+
+        bool operator==(const CubeOfShit &other) const;
+        bool operator!=(const CubeOfShit &other) const;
     };
 
     /**
@@ -304,6 +322,9 @@ namespace gameModel{
         void banFan(communication::messages::types::FanType fan);
 
         friend void from_json(const nlohmann::json &, Fanblock &);
+
+        bool operator==(const Fanblock &other) const;
+        bool operator!=(const Fanblock &other) const;
 
     private:
         std::map<InterferenceType, int> currFans;
@@ -403,6 +424,9 @@ namespace gameModel{
          * @param position Position where the Snitch is constructed
          */
         explicit Snitch(Position position);
+
+        bool operator==(const Snitch &other) const;
+        bool operator!=(const Snitch &other) const;
     };
 
     /**
@@ -476,6 +500,9 @@ namespace gameModel{
 
         friend void from_json(const nlohmann::json &, Team &);
 
+        bool operator==(const Team &other) const;
+        bool operator!=(const Team &other) const;
+
     private:
         TeamSide side;
     };
@@ -524,6 +551,9 @@ namespace gameModel{
          */
         Environment(Config config, std::shared_ptr<Team> team1, std::shared_ptr<Team> team2, std::shared_ptr<Quaffle> quaffle,
                 std::shared_ptr<Snitch> snitch, std::array<std::shared_ptr<Bludger>, 2> bludgers, std::deque<std::shared_ptr<CubeOfShit>> pileOfShit);
+
+        bool operator==(const Environment &other) const;
+        bool operator!=(const Environment &other) const;
 
         /**
          * Gets the type of the cell at position (x,y)
