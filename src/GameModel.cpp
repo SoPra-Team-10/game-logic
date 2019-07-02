@@ -17,7 +17,8 @@ namespace gameModel{
     bool Player::operator==(const Player &other) const {
         auto tObject = static_cast<const Object*>(this);
         auto oObject = static_cast<const Object*>(&other);
-        return *tObject == *oObject && broom == other.broom && this->knockedOut == other.knockedOut && this->isFined == other.isFined;
+        return *tObject == *oObject && broom == other.broom &&
+            this->knockedOut == other.knockedOut && this->isFined == other.isFined;
     }
 
     bool Player::operator!=(const Player &other) const {
@@ -455,8 +456,9 @@ namespace gameModel{
             }
         }
 
-        return *this->team1 == *other.team1 && *this->team2 == *other.team2 && *this->quaffle == *other.quaffle &&
-            *this->snitch == *other.snitch && *this->bludgers[0] == *other.bludgers[0] && *this->bludgers[1] == *other.bludgers[1] &&
+        return *this->team1 == *other.team1 && *this->team2 == *other.team2 &&
+            *this->quaffle == *other.quaffle && *this->snitch == *other.snitch &&
+            *this->bludgers[0] == *other.bludgers[0] && *this->bludgers[1] == *other.bludgers[1] &&
             this->config == other.config;
     }
 
