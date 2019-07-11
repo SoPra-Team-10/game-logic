@@ -137,7 +137,6 @@ namespace gameController{
 
     bool BlockCell::isPossible() const {
         const bool isInField = gameModel::Environment::getCell(target) != gameModel::Cell::OutOfBounds;
-        return Interference::isPossible() && Interference::env->cellIsFree(target) &&
-                !env->isShitOnCell(target) && isInField;
+        return Interference::isPossible() && Interference::env->cellIsFree(target) && isInField;
     }
 }
