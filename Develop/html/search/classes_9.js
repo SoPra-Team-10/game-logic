@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['object',['Object',['../classgame_model_1_1_object.html',1,'gameModel']]]
+  ['move',['Move',['../classgame_controller_1_1_move.html',1,'gameController']]]
 ];
