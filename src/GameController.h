@@ -70,7 +70,7 @@ namespace gameController {
 
     /**
      * Get all currently possible shots of a given player in a given environment. Optimized for QauffleThrows: Only throws on goals
-     * and team mates are calculated
+     * and team mates (and their surrounding positions) are calculated
      * @param actor actor the acting player as shared pointer.
      * @param env the selected environment.
      * @return a shots vector
