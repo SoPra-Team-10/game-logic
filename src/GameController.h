@@ -69,12 +69,23 @@ namespace gameController {
         std::vector<Shot>;
 
     /**
+     * Get all currently possible shots of a given player in a given environment. Optimized for QauffleThrows: Only throws on goals
+     * and team mates (and their surrounding positions) are calculated
+     * @param actor actor the acting player as shared pointer.
+     * @param env the selected environment.
+     * @return a shots vector
+     */
+    auto getAllConstrainedShots(const std::shared_ptr<gameModel::Player> &actor,
+                                const std::shared_ptr<gameModel::Environment> &env) ->
+            std::vector<Shot>;
+
+    /**
      * Get all currently possible moves of a given actor in a given environment
      * @param actor actor the acting player
      * @param envi the selected environment.
      * @return a action vector
      */
-    auto getAllPossibleMoves(const std::shared_ptr<gameModel::Player> &actor, const std::shared_ptr<gameModel::Environment> &envi) ->
+    auto getAllPossibleMoves(const std::shared_ptr<gameModel::Player> &player, const std::shared_ptr<gameModel::Environment> &env) ->
         std::vector<Move>;
 
     /**
