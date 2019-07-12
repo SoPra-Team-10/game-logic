@@ -562,7 +562,7 @@ TEST(controller_test, getAllPossibleShotsOptimized){
     auto env = setup::createEnv();
     env->quaffle->position = env->team2->chasers[1]->position;
     auto shots = gameController::getAllConstrainedShots(env->team2->chasers[1], env);
-    EXPECT_EQ(shots.size(), 43);
+    EXPECT_EQ(shots.size(), 49);
     for(const auto &shot : shots){
         EXPECT_NE(shot.check(), gameController::ActionCheckResult::Impossible);
     }

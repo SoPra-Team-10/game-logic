@@ -213,6 +213,14 @@ namespace gameController {
                 for(const auto &position : poses){
                     ret.emplace_back(env, actor, ball.value(), position);
                 }
+
+                for(const auto &goal : gameModel::Environment::getGoalsRight()){
+                    ret.emplace_back(env, actor, ball.value(), goal);
+                }
+
+                for(const auto &goal : gameModel::Environment::getGoalsLeft()){
+                    ret.emplace_back(env, actor, ball.value(), goal);
+                }
             } else {
                 ret = getAllPossibleShots(actor, env, 0);
             }
