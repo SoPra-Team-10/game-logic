@@ -55,6 +55,7 @@ namespace gameModel{
         Position(int x, int y);
         bool operator==(const Position &other) const;
         bool operator!=(const Position &other) const;
+
     };
 
     /**
@@ -776,6 +777,15 @@ namespace gameModel{
     void from_json(const nlohmann::json &j, Config &config);
     void from_json(const nlohmann::json &j, Environment &environment);
 
+}
+
+namespace std{
+    template<>
+    struct hash<gameModel::Position> {
+        std::size_t operator()(gameModel::Position const& p) const noexcept {
+            return p.x + 17 * p.y;
+        }
+    };
 }
 
 
