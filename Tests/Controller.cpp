@@ -561,7 +561,7 @@ TEST(controller_test, getAllPossibleShots2){
 TEST(controller_test, getAllPossibleShotsOptimized){
     auto env = setup::createEnv();
     env->quaffle->position = env->team2->chasers[1]->position;
-    auto shots = gameController::getAllPossibleShots(env->team2->chasers[1], env);
+    auto shots = gameController::getAllConstrainedShots(env->team2->chasers[1], env);
     EXPECT_EQ(shots.size(), 43);
     for(const auto &shot : shots){
         EXPECT_NE(shot.check(), gameController::ActionCheckResult::Impossible);
@@ -571,7 +571,7 @@ TEST(controller_test, getAllPossibleShotsOptimized){
 TEST(controller_test, getAllPossibleShots2Optimized){
     auto env = setup::createEnv();
     env->bludgers[0]->position = env->team1->beaters[1]->position;
-    auto shots = gameController::getAllPossibleShots(env->team1->beaters[1], env);
+    auto shots = gameController::getAllConstrainedShots(env->team1->beaters[1], env);
     EXPECT_EQ(shots.size(), 18);
     std::deque<gameModel::Position> poses = {{1, 3}, {1, 2}, {2, 3}, {2, 2}, {2, 1}, {3, 3}, {3, 2}, {3, 1},
                                              {4, 2}, {4, 1}, {4, 0}, {5, 2}, {5, 1}, {5, 0}, {6, 3}, {6, 2},

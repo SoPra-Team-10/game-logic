@@ -75,8 +75,8 @@ namespace gameController {
      * @param env the selected environment.
      * @return a shots vector
      */
-    auto getAllPossibleShots(const std::shared_ptr<gameModel::Player> &actor,
-            const std::shared_ptr<gameModel::Environment> &env) ->
+    auto getAllConstrainedShots(const std::shared_ptr<gameModel::Player> &actor,
+                                const std::shared_ptr<gameModel::Environment> &env) ->
             std::vector<Shot>;
 
     /**

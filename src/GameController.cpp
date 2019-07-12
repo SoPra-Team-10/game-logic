@@ -181,8 +181,8 @@ namespace gameController {
         return ret;
     }
 
-    auto getAllPossibleShots(const std::shared_ptr<gameModel::Player> &actor,
-            const std::shared_ptr<gameModel::Environment> &env) ->
+    auto getAllConstrainedShots(const std::shared_ptr<gameModel::Player> &actor,
+                                const std::shared_ptr<gameModel::Environment> &env) ->
             std::vector<Shot>{
         std::vector<Shot> ret;
         std::optional<std::shared_ptr<gameModel::Ball>> ball;
