@@ -557,3 +557,34 @@ TEST(controller_test, getAllPossibleShots2){
 
     EXPECT_TRUE(poses.empty());
 }
+
+TEST(controller_test, getAllPossibleShotsOptimized){
+    auto env = setup::createEnv();
+    env->quaffle->position = env->team2->chasers[1]->position;
+    auto shots = gameController::getAllConstrainedShots(env->team2->chasers[1], env);
+    EXPECT_EQ(shots.size(), 49);
+    for(const auto &shot : shots){
+        EXPECT_NE(shot.check(), gameController::ActionCheckResult::Impossible);
+    }
+}
+
+TEST(controller_test, getAllPossibleShots2Optimized){
+    auto env = setup::createEnv();
+    env->bludgers[0]->position = env->team1->beaters[1]->position;
+    auto shots = gameController::getAllConstrainedShots(env->team1->beaters[1], env);
+    EXPECT_EQ(shots.size(), 18);
+    std::deque<gameModel::Position> poses = {{1, 3}, {1, 2}, {2, 3}, {2, 2}, {2, 1}, {3, 3}, {3, 2}, {3, 1},
+                                             {4, 2}, {4, 1}, {4, 0}, {5, 2}, {5, 1}, {5, 0}, {6, 3}, {6, 2},
+                                             {6, 1}, {6, 0}};
+    for(const auto &shot : shots){
+        EXPECT_NE(shot.check(), gameController::ActionCheckResult::Impossible);
+        for(auto it = poses.begin(); it < poses.end(); it++) {
+            if (*it == shot.getTarget()) {
+                poses.erase(it);
+                break;
+            }
+        }
+    }
+
+    EXPECT_TRUE(poses.empty());
+}
