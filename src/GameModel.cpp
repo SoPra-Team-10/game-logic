@@ -22,7 +22,10 @@ namespace gameModel{
     }
 
     bool Player::operator==(const Player &other) const {
-        return position == other.position && broom == other.broom && id == other.getId();
+        auto tObject = static_cast<const Object*>(this);
+        auto oObject = static_cast<const Object*>(&other);
+        return *tObject == *oObject && broom == other.broom &&
+            this->knockedOut == other.knockedOut && this->isFined == other.isFined;
     }
 
     bool Player::operator!=(const Player &other) const {
@@ -449,6 +452,27 @@ namespace gameModel{
         return ret;
     }
 
+    bool Environment::operator==(const Environment &other) const {
+        if(this->pileOfShit.size() != other.pileOfShit.size()){
+            return false;
+        }
+
+        for(size_t i = 0; i < this->pileOfShit.size(); i++){
+            if(*this->pileOfShit[i] != *other.pileOfShit[i]){
+                return false;
+            }
+        }
+
+        return *this->team1 == *other.team1 && *this->team2 == *other.team2 &&
+            *this->quaffle == *other.quaffle && *this->snitch == *other.snitch &&
+            *this->bludgers[0] == *other.bludgers[0] && *this->bludgers[1] == *other.bludgers[1] &&
+            this->config == other.config;
+    }
+
+    bool Environment::operator!=(const Environment &other) const {
+        return !(*this == other);
+    }
+
 
     // Ball Types
 
@@ -460,6 +484,16 @@ namespace gameModel{
         auto allCells = Environment::getAllValidCells();
         auto index = gameController::rng(0, static_cast<int>(allCells.size()) - 1);
         position = allCells[index];
+    }
+
+    bool Snitch::operator==(const Snitch &other) const {
+        auto tBall = static_cast<const Ball*>(this);
+        auto oBall = static_cast<const Ball*>(&other);
+        return (*tBall == *oBall) && this->exists == other.exists;
+    }
+
+    bool Snitch::operator!=(const Snitch &other) const {
+        return !(*this == other);
     }
 
     Bludger::Bludger(Position position, communication::messages::types::EntityId id) : Ball(position, id) {}
@@ -708,6 +742,16 @@ namespace gameModel{
 
     CubeOfShit::CubeOfShit(const Position &target) : Object(target, communication::messages::types::EntityId::LEFT_WOMBAT){}
 
+    bool CubeOfShit::operator==(const CubeOfShit &other) const {
+        auto tObject = static_cast<const Object*>(this);
+        auto oObject = static_cast<const Object*>(&other);
+        return *tObject == *oObject && this->spawnedThisRound == other.spawnedThisRound;
+    }
+
+    bool CubeOfShit::operator!=(const CubeOfShit &other) const {
+        return !(*this == other);
+    }
+
     void to_json(nlohmann::json &j, const Position &position){
         j["x"] = position.x;
         j["y"] = position.y;
@@ -806,6 +850,14 @@ namespace gameModel{
         object.id = j.at("id").get<communication::messages::types::EntityId>();
     }
 
+    bool Object::operator==(const Object &other) const {
+        return this->position == other.position && this->getId() == other.getId();
+    }
+
+    bool Object::operator!=(const Object &other) const {
+        return !(*this == other);
+    }
+
     void from_json(const nlohmann::json &j, Player &player) {
         from_json(j, *static_cast<Object*>(&player));
         player.broom = j.at("broom").get<communication::messages::types::Broom>();
@@ -846,6 +898,14 @@ namespace gameModel{
         fanblock.initialFans.emplace(InterferenceType::BlockCell, bc + bcB);
     }
 
+    bool Fanblock::operator==(const Fanblock &other) const {
+        return initialFans == other.initialFans && currFans == other.currFans;
+    }
+
+    bool Fanblock::operator!=(const Fanblock &other) const {
+        return !(*this == other);
+    }
+
     void from_json(const nlohmann::json &j, Team &team) {
         team.fanblock = j.at("fanblock").get<Fanblock>();
         team.keeper = j.at("keeper").get<std::shared_ptr<Keeper>>();
@@ -855,6 +915,22 @@ namespace gameModel{
                         j.at("chaser2").get<std::shared_ptr<Chaser>>()};
         team.side = j.at("side").get<TeamSide>();
         team.score = j.at("score").get<int>();
+    }
+
+    bool Team::operator!=(const Team &other) const {
+        return !(*this == other);
+    }
+
+    bool Team::operator==(const Team &other) const {
+        auto tPlayers = getAllPlayers();
+        auto oPlayers = other.getAllPlayers();
+        for(size_t i = 0; i < tPlayers.size(); i++){
+            if(*tPlayers[i] != *oPlayers[i]){
+                return false;
+            }
+        }
+
+        return this->getSide() == other.getSide() && this->fanblock == other.fanblock && this->score == other.score;
     }
 
     void from_json(const nlohmann::json &j, Config &config) {
@@ -886,6 +962,17 @@ namespace gameModel{
         config.extraTurnProbs.emplace(Broom::TINDERBLAST, j.at("tinderblastProb").get<double>());
     }
 
+    bool Config::operator==(const Config &rhs) const {
+        return maxRounds == rhs.maxRounds &&
+               foulDetectionProbs == rhs.foulDetectionProbs &&
+               gameDynamicsProbs == rhs.gameDynamicsProbs &&
+               extraTurnProbs == rhs.extraTurnProbs;
+    }
+
+    bool Config::operator!=(const Config &rhs) const {
+        return !(rhs == *this);
+    }
+
     void from_json(const nlohmann::json &j, Environment &environment) {
         environment.team1 = j.at("leftTeam").get<std::shared_ptr<Team>>();
         environment.team2 = j.at("rightTeam").get<std::shared_ptr<Team>>();
@@ -894,5 +981,34 @@ namespace gameModel{
         environment.snitch = j.at("snitch").get<std::shared_ptr<Snitch>>();
         environment.bludgers = {j.at("bludger0").get<std::shared_ptr<Bludger>>(), j.at("bludger1").get<std::shared_ptr<Bludger>>()};
         environment.pileOfShit = j.at("pileOfShit").get<std::deque<std::shared_ptr<CubeOfShit>>>();
+    }
+
+    bool FoulDetectionProbs::operator==(const FoulDetectionProbs &rhs) const {
+        return blockGoal == rhs.blockGoal &&
+               chargeGoal == rhs.chargeGoal &&
+               multipleOffence == rhs.multipleOffence &&
+               ramming == rhs.ramming &&
+               blockSnitch == rhs.blockSnitch &&
+               teleport == rhs.teleport &&
+               rangedAttack == rhs.rangedAttack &&
+               impulse == rhs.impulse &&
+               snitchPush == rhs.snitchPush &&
+               blockCell == rhs.blockCell;
+    }
+
+    bool FoulDetectionProbs::operator!=(const FoulDetectionProbs &rhs) const {
+        return !(rhs == *this);
+    }
+
+    bool GameDynamicsProbs::operator==(const GameDynamicsProbs &rhs) const {
+        return throwSuccess == rhs.throwSuccess &&
+               knockOut == rhs.knockOut &&
+               catchSnitch == rhs.catchSnitch &&
+               catchQuaffle == rhs.catchQuaffle &&
+               wrestQuaffle == rhs.wrestQuaffle;
+    }
+
+    bool GameDynamicsProbs::operator!=(const GameDynamicsProbs &rhs) const {
+        return !(rhs == *this);
     }
 }

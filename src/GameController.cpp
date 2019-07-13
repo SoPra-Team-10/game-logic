@@ -8,6 +8,7 @@
 #include <random>
 #include <deque>
 #include "GameController.h"
+#include <unordered_set>
 
 namespace gameController {
 
@@ -181,6 +182,54 @@ namespace gameController {
                     prototype.successProb() >= minSuccessProb){
                     ret.emplace_back(prototype);
                 }
+            }
+        }
+
+        return ret;
+    }
+
+    auto getAllConstrainedShots(const std::shared_ptr<gameModel::Player> &actor,
+                                const std::shared_ptr<gameModel::Environment> &env) ->
+            std::vector<Shot>{
+        std::vector<Shot> ret;
+        std::optional<std::shared_ptr<gameModel::Ball>> ball;
+        if(env->quaffle->position == actor->position) {
+            ball.emplace(env->quaffle);
+        } else if(env->bludgers[0]->position == actor->position) {
+            ball.emplace(env->bludgers[0]);
+        } else if(env->bludgers[1]->position == actor->position) {
+            ball.emplace(env->bludgers[1]);
+        }
+
+        if(ball.has_value()){
+            if(INSTANCE_OF(ball.value(), gameModel::Quaffle)){
+                ret.reserve(69); //7 players * 9 cells + 6 goals
+                std::unordered_set<gameModel::Position> poses;
+                for(const auto &player : env->getTeamMates(actor)){
+                    if(player->isFined){
+                        continue;
+                    }
+
+                    for(const auto &p : gameModel::Environment::getSurroundingPositions(player->position)){
+                        poses.emplace(p);
+                    }
+
+                    poses.emplace(player->position);
+                }
+
+                for(const auto &position : poses){
+                    ret.emplace_back(env, actor, ball.value(), position);
+                }
+
+                for(const auto &goal : gameModel::Environment::getGoalsRight()){
+                    ret.emplace_back(env, actor, ball.value(), goal);
+                }
+
+                for(const auto &goal : gameModel::Environment::getGoalsLeft()){
+                    ret.emplace_back(env, actor, ball.value(), goal);
+                }
+            } else {
+                ret = getAllPossibleShots(actor, env, 0);
             }
         }
 
