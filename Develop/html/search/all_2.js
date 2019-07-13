@@ -6,5 +6,7 @@ var searchData=
   ['checkforfoul',['checkForFoul',['../classgame_controller_1_1_move.html#acf276f2198a6229660727956a5f156ad',1,'gameController::Move']]],
   ['clone',['clone',['../classgame_model_1_1_team.html#a8a5a918670b644da716fc70c3a47d033',1,'gameModel::Team::clone()'],['../classgame_model_1_1_environment.html#a1d2cf539bec96b11fb0a47b4e0d33bae',1,'gameModel::Environment::clone()']]],
   ['config',['Config',['../classgame_model_1_1_config.html',1,'gameModel']]],
+  ['conversions_2ecpp',['conversions.cpp',['../conversions_8cpp.html',1,'']]],
+  ['conversions_2eh',['conversions.h',['../conversions_8h.html',1,'']]],
   ['cubeofshit',['CubeOfShit',['../classgame_model_1_1_cube_of_shit.html',1,'gameModel']]]
 ];

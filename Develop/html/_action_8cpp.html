@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.6"/>
-<title>GameLogic: std::hash&lt; gameModel::Position &gt; Struct Template Reference</title>
+<title>GameLogic: /home/travis/build/SoPra-Team-10/GameLogic/src/Action.cpp File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -37,8 +37,8 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow1" class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
-      <li class="current"><a href="annotated.html"><span>Data&#160;Structures</span></a></li>
-      <li><a href="files.html"><span>Files</span></a></li>
+      <li><a href="annotated.html"><span>Data&#160;Structures</span></a></li>
+      <li class="current"><a href="files.html"><span>Files</span></a></li>
       <li>
         <div id="MSearchBox" class="MSearchBoxInactive">
         <span class="left">
@@ -59,10 +59,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   </div>
   <div id="navrow2" class="tabs2">
     <ul class="tablist">
-      <li><a href="annotated.html"><span>Data&#160;Structures</span></a></li>
-      <li><a href="classes.html"><span>Data&#160;Structure&#160;Index</span></a></li>
-      <li><a href="hierarchy.html"><span>Class&#160;Hierarchy</span></a></li>
-      <li><a href="functions.html"><span>Data&#160;Fields</span></a></li>
+      <li><a href="files.html"><span>File&#160;List</span></a></li>
     </ul>
   </div>
 <!-- window showing the filter options -->
@@ -81,27 +78,37 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><b>std</b></li><li class="navelem"><a class="el" href="structstd_1_1hash_3_01game_model_1_1_position_01_4.html">hash< gameModel::Position ></a></li>  </ul>
+<li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
   <div class="summary">
-<a href="#pub-methods">Public Member Functions</a>  </div>
+<a href="#define-members">Macros</a>  </div>
   <div class="headertitle">
-<div class="title">std::hash&lt; gameModel::Position &gt; Struct Template Reference</div>  </div>
+<div class="title">Action.cpp File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-<table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
-Public Member Functions</h2></td></tr>
-<tr class="memitem:a10ddfd4742a76ac1029122d7551daffe"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a10ddfd4742a76ac1029122d7551daffe"></a>
-std::size_t&#160;</td><td class="memItemRight" valign="bottom"><b>operator()</b> (<a class="el" href="structgame_model_1_1_position.html">gameModel::Position</a> const &amp;p) const noexcept</td></tr>
-<tr class="separator:a10ddfd4742a76ac1029122d7551daffe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+
+<p>Implementation of multiple classes for game actions.  
+<a href="#details">More...</a></p>
+<div class="textblock"><code>#include &lt;utility&gt;</code><br/>
+<code>#include &quot;<a class="el" href="_action_8h_source.html">Action.h</a>&quot;</code><br/>
+<code>#include &quot;<a class="el" href="_game_model_8h_source.html">GameModel.h</a>&quot;</code><br/>
+</div><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
+Macros</h2></td></tr>
+<tr class="memitem:abb50ccf46d6e4a343ea42cc0a91a83e8"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="abb50ccf46d6e4a343ea42cc0a91a83e8"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>QUAFFLETHROW</b>&#160;&#160;&#160;(((INSTANCE_OF(actor, <a class="el" href="classgame_model_1_1_chaser.html">gameModel::Chaser</a>)) || (INSTANCE_OF(actor, <a class="el" href="classgame_model_1_1_keeper.html">gameModel::Keeper</a>))) &amp;&amp; (INSTANCE_OF(ball, <a class="el" href="classgame_model_1_1_quaffle.html">gameModel::Quaffle</a>)))</td></tr>
+<tr class="separator:abb50ccf46d6e4a343ea42cc0a91a83e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4c1de44c447d8cc8e1fe262dca0a51fa"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a4c1de44c447d8cc8e1fe262dca0a51fa"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>BLUDGERSHOT</b>&#160;&#160;&#160;((INSTANCE_OF(actor, <a class="el" href="classgame_model_1_1_beater.html">gameModel::Beater</a>)) &amp;&amp; (INSTANCE_OF(ball, <a class="el" href="classgame_model_1_1_bludger.html">gameModel::Bludger</a>)))</td></tr>
+<tr class="separator:a4c1de44c447d8cc8e1fe262dca0a51fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<hr/>The documentation for this struct was generated from the following file:<ul>
-<li>/home/travis/build/SoPra-Team-10/GameLogic/src/<a class="el" href="_game_model_8h_source.html">GameModel.h</a></li>
-</ul>
-</div><!-- contents -->
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Implementation of multiple classes for game actions. </p>
+<dl class="section author"><dt>Author</dt><dd>Björn, Jonas, Tim </dd></dl>
+<dl class="section date"><dt>Date</dt><dd></dd></dl>
+</div></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
 Generated by &#160;<a href="http://www.doxygen.org/index.html">

@@ -1,6 +1,10 @@
 var searchData=
 [
+  ['gamecontroller_2ecpp',['GameController.cpp',['../_game_controller_8cpp.html',1,'']]],
+  ['gamecontroller_2eh',['GameController.h',['../_game_controller_8h.html',1,'']]],
   ['gamedynamicsprobs',['GameDynamicsProbs',['../structgame_model_1_1_game_dynamics_probs.html',1,'gameModel']]],
+  ['gamemodel_2ecpp',['GameModel.cpp',['../_game_model_8cpp.html',1,'']]],
+  ['gamemodel_2eh',['GameModel.h',['../_game_model_8h.html',1,'']]],
   ['getallemptycellsaround',['getAllEmptyCellsAround',['../classgame_model_1_1_environment.html#a75d08bd54c2cc9b8e2251b6fb3c2ab97',1,'gameModel::Environment']]],
   ['getallfreecells',['getAllFreeCells',['../classgame_model_1_1_environment.html#ade6d9d78d4f19f29ea4787137999c57d',1,'gameModel::Environment']]],
   ['getallfreecellsaround',['getAllFreeCellsAround',['../classgame_model_1_1_environment.html#a6b885f2c9e14b1c8d8b5fbf14de4de2d',1,'gameModel::Environment']]],
