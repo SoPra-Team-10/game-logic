@@ -2,7 +2,7 @@
  * @file Interference.h
  * @author Björn, Tim
  * @date 05.05.19
- * @brief Decleration of the Interferences.
+ * @brief Declaration of the Interferences.
  */
 
 #ifndef SOPRAGAMELOGIC_INTERFERENCE_H
