@@ -2,7 +2,7 @@
  * @file GameModel.h
  * @author Björn, Jonas, Tim
  * @date
- * @brief Decleration of multiple classes for the game model.
+ * @brief Declaration of multiple classes for the game model.
  */
 
 #ifndef GAMELOGIC_SOPRAGAMEMODEL_H
