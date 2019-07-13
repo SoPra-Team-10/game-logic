@@ -1,3 +1,10 @@
+/**
+ * @file Action.h
+ * @author Björn, Jonas, Tim
+ * @date
+ * @brief Declaration of multiple classes for game actions.
+ */
+
 #ifndef SOPRAGAMELOGIC_SOPRAGAMEACTION_H
 #define SOPRAGAMELOGIC_SOPRAGAMEACTION_H
 

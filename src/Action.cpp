@@ -1,6 +1,14 @@
+/**
+ * @file Action.cpp
+ * @author Björn, Jonas, Tim
+ * @date
+ * @brief Implementation of multiple classes for game actions.
+ */
+
 #include <utility>
 #include "Action.h"
 #include "GameModel.h"
+
 #define QUAFFLETHROW (((INSTANCE_OF(actor, gameModel::Chaser)) || (INSTANCE_OF(actor, gameModel::Keeper))) && (INSTANCE_OF(ball, gameModel::Quaffle)))
 #define BLUDGERSHOT ((INSTANCE_OF(actor, gameModel::Beater)) && (INSTANCE_OF(ball, gameModel::Bludger)))
 

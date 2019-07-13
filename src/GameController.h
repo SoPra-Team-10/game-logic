@@ -1,3 +1,10 @@
+/**
+ * @file GameController.h
+ * @author Björn, Jonas, Tim
+ * @date
+ * @brief Declaration of multiple classes for the game controller.
+ */
+
 #ifndef GAMELOGIC_SOPRAGAMECONTROLLER_H
 #define GAMELOGIC_SOPRAGAMECONTROLLER_H
 

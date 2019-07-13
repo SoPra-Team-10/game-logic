@@ -1,6 +1,9 @@
-//
-// Created by timluchterhand on 18.06.19.
-//
+/**
+ * @file conversions.h
+ * @author Tim
+ * @date 18.06.19
+ * @brief Decleration of multiple conversions functions.
+ */
 
 #ifndef SOPRAGAMELOGIC_CONVERSIONS_H
 #define SOPRAGAMELOGIC_CONVERSIONS_H
