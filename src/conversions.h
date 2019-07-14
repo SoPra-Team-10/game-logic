@@ -50,6 +50,7 @@ namespace gameLogic::conversions{
     /**
      * Converts an EntityId to a TeamSide
      * @param id
+     * @throws std::runtime_error if id is no Player or Fan
      * @return
      */
     auto idToSide(communication::messages::types::EntityId id) -> gameModel::TeamSide;
@@ -57,6 +58,7 @@ namespace gameLogic::conversions{
     /**
      * Converts EntityId to FanType
      * @param id
+     * @throws std::runtime_error if id is no Fan
      * @return
      */
     auto idToFantype(communication::messages::types::EntityId id) -> communication::messages::types::FanType;
