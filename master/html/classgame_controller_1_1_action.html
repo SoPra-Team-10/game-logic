@@ -70,7 +70,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Friends</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Friends</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -120,8 +120,7 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:abd249c0f371aac9d98a4fa60c4fd94c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:affce03bad2b647bfc3eb3006ea18823f"><td class="memItemLeft" align="right" valign="top">virtual auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgame_controller_1_1_action.html#affce03bad2b647bfc3eb3006ea18823f">executeAll</a> () const -&gt; std::vector&lt; std::pair&lt; std::shared_ptr&lt; <a class="el" href="classgame_model_1_1_environment.html">gameModel::Environment</a> &gt;, double &gt;&gt;=0</td></tr>
 <tr class="separator:affce03bad2b647bfc3eb3006ea18823f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0ef925b4a66ee91b98c78535d17576aa"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a0ef925b4a66ee91b98c78535d17576aa"></a>
-const <a class="el" href="structgame_model_1_1_position.html">gameModel::Position</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getTarget</b> () const </td></tr>
+<tr class="memitem:a0ef925b4a66ee91b98c78535d17576aa"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="structgame_model_1_1_position.html">gameModel::Position</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgame_controller_1_1_action.html#a0ef925b4a66ee91b98c78535d17576aa">getTarget</a> () const </td></tr>
 <tr class="separator:a0ef925b4a66ee91b98c78535d17576aa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
@@ -276,14 +275,14 @@ std::shared_ptr<br class="typebreak"/>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>executes the <a class="el" href="classgame_controller_1_1_action.html">Action</a> </p>
+<p>executes the <a class="el" href="classgame_controller_1_1_action.html">Action</a>. Method is not deterministic. </p>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
     <tr><td class="paramname">std::runtime_exception</td><td>if <a class="el" href="classgame_controller_1_1_action.html">Action</a> is impossible </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>List of ramifications from the action axecution, List of Fouls during the execution </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>List of ramifications from the action execution, list of fouls during the execution </dd></dl>
 
 <p>Implemented in <a class="el" href="classgame_controller_1_1_move.html#a87a2d3fcd083bfef8905515ebbe89ded">gameController::Move</a>, <a class="el" href="classgame_controller_1_1_wrest_quaffle.html#a357a491029cbe341a185292462d95ecf">gameController::WrestQuaffle</a>, and <a class="el" href="classgame_controller_1_1_shot.html#a12a5c371ff14fc6df6afeedc2f6287af">gameController::Shot</a>.</p>
 
@@ -309,10 +308,27 @@ std::shared_ptr<br class="typebreak"/>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Produces a List with all possible outomes of the <a class="el" href="classgame_controller_1_1_action.html">Action</a> </p>
-<dl class="section return"><dt>Returns</dt><dd></dd></dl>
+<p>Produces a list with all possible outcomes of the <a class="el" href="classgame_controller_1_1_action.html">Action</a> and the respective transition probabilities. </p>
+<dl class="section return"><dt>Returns</dt><dd>List of pairs consisting of the resulting Environment and the probability of landing in that state </dd></dl>
 
 <p>Implemented in <a class="el" href="classgame_controller_1_1_move.html#a49e6087fc3ee8f025e057234919fdf3b">gameController::Move</a>, <a class="el" href="classgame_controller_1_1_wrest_quaffle.html#a65969fb3dd59084aae4cb137aff55758">gameController::WrestQuaffle</a>, and <a class="el" href="classgame_controller_1_1_shot.html#ab80ff184bcf495115777b9e4bdf865cf">gameController::Shot</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a0ef925b4a66ee91b98c78535d17576aa"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="structgame_model_1_1_position.html">gameModel::Position</a> &amp; gameController::Action::getTarget </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Getter </p>
+<dl class="section return"><dt>Returns</dt><dd>target position of the <a class="el" href="classgame_controller_1_1_action.html">Action</a> </dd></dl>
 
 </div>
 </div>
@@ -344,7 +360,7 @@ std::shared_ptr<br class="typebreak"/>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>
 <li>/home/travis/build/SoPra-Team-10/GameLogic/src/<a class="el" href="_action_8h_source.html">Action.h</a></li>
-<li>/home/travis/build/SoPra-Team-10/GameLogic/src/Action.cpp</li>
+<li>/home/travis/build/SoPra-Team-10/GameLogic/src/<a class="el" href="_action_8cpp.html">Action.cpp</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->

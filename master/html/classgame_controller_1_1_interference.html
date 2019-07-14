@@ -70,7 +70,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Friends</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Friends</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -152,7 +152,8 @@ gameModel::InterferenceType&#160;</td><td class="memItemRight" valign="bottom"><
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Executes the interference </p>
+<p>Executes the interference. </p>
+<dl class="section return"><dt>Returns</dt><dd>the results of the executed action as gameController::ActionCheckResult: Foul if <a class="el" href="classgame_controller_1_1_interference.html">Interference</a> was detected, Success otherwise </dd></dl>
 
 <p>Implemented in <a class="el" href="classgame_controller_1_1_block_cell.html#ab7120abd9f32ae3e96cf3b07c48b7903">gameController::BlockCell</a>, <a class="el" href="classgame_controller_1_1_snitch_push.html#a8a2f83c287bbe0c619cc99fa012515b3">gameController::SnitchPush</a>, <a class="el" href="classgame_controller_1_1_impulse.html#acd4697c3567adfacf7b657ffefe72d1d">gameController::Impulse</a>, <a class="el" href="classgame_controller_1_1_ranged_attack.html#a7c5cb7567f7f6bc8fb844837240d7c09">gameController::RangedAttack</a>, and <a class="el" href="classgame_controller_1_1_teleport.html#a8afb230cf709b514e549ebe73f1fc68e">gameController::Teleport</a>.</p>
 
@@ -170,8 +171,8 @@ gameModel::InterferenceType&#160;</td><td class="memItemRight" valign="bottom"><
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Gets the type of interference </p>
-<dl class="section return"><dt>Returns</dt><dd></dd></dl>
+<p>Gets the type of interference. </p>
+<dl class="section return"><dt>Returns</dt><dd>the type of the interference as gameModel::InterferenceType </dd></dl>
 
 </div>
 </div>
@@ -196,7 +197,7 @@ gameModel::InterferenceType&#160;</td><td class="memItemRight" valign="bottom"><
 </table>
 </div><div class="memdoc">
 <p>Checks if the interference is possible </p>
-<dl class="section return"><dt>Returns</dt><dd></dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>true if possible, else false </dd></dl>
 
 <p>Reimplemented in <a class="el" href="classgame_controller_1_1_block_cell.html#a7abe0ba5b2352755cc3a08df8f1668a6">gameController::BlockCell</a>, <a class="el" href="classgame_controller_1_1_ranged_attack.html#a95776ac1efedefee37dd42acd5308e6b">gameController::RangedAttack</a>, and <a class="el" href="classgame_controller_1_1_teleport.html#a6d6f4050f84929e7e0df46ca4ea40374">gameController::Teleport</a>.</p>
 
@@ -204,7 +205,7 @@ gameModel::InterferenceType&#160;</td><td class="memItemRight" valign="bottom"><
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>
 <li>/home/travis/build/SoPra-Team-10/GameLogic/src/<a class="el" href="_interference_8h_source.html">Interference.h</a></li>
-<li>/home/travis/build/SoPra-Team-10/GameLogic/src/Interference.cpp</li>
+<li>/home/travis/build/SoPra-Team-10/GameLogic/src/<a class="el" href="_interference_8cpp.html">Interference.cpp</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->

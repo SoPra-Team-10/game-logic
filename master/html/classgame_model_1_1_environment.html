@@ -70,7 +70,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Friends</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Friends</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -477,7 +477,7 @@ std::deque&lt; std::shared_ptr<br class="typebreak"/>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Gets all valid cells not occupied by players </p>
+<p>Gets all valid cells not occupied by players or balls </p>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
 </div>
@@ -553,7 +553,7 @@ std::deque&lt; std::shared_ptr<br class="typebreak"/>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Gets all players on the field </p>
+<p>Gets all players in the game </p>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
 </div>
@@ -794,7 +794,7 @@ std::deque&lt; std::shared_ptr<br class="typebreak"/>
       </table>
 </div><div class="memdoc">
 <p>Returns player object (if not banned) at the specified position if one exists </p>
-<dl class="section return"><dt>Returns</dt><dd></dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>player on the specified position, or nothing of no player is located on the specified position </dd></dl>
 
 </div>
 </div>
@@ -1048,7 +1048,7 @@ std::deque&lt; std::shared_ptr<br class="typebreak"/>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>place a player on random free cell in his half of the game field. </p>
+<p>place a player on random free cell in their half of the game field. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">player</td><td></td></tr>
@@ -1099,7 +1099,7 @@ std::deque&lt; std::shared_ptr<br class="typebreak"/>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>
 <li>/home/travis/build/SoPra-Team-10/GameLogic/src/<a class="el" href="_game_model_8h_source.html">GameModel.h</a></li>
-<li>/home/travis/build/SoPra-Team-10/GameLogic/src/GameModel.cpp</li>
+<li>/home/travis/build/SoPra-Team-10/GameLogic/src/<a class="el" href="_game_model_8cpp.html">GameModel.cpp</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->

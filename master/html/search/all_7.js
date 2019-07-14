@@ -2,6 +2,8 @@ var searchData=
 [
   ['impulse',['Impulse',['../classgame_controller_1_1_impulse.html',1,'gameController']]],
   ['interference',['Interference',['../classgame_controller_1_1_interference.html',1,'gameController']]],
+  ['interference_2ecpp',['Interference.cpp',['../_interference_8cpp.html',1,'']]],
+  ['interference_2eh',['Interference.h',['../_interference_8h.html',1,'']]],
   ['isgoalcell',['isGoalCell',['../classgame_model_1_1_environment.html#a4614d0fd75a7775e58f4a1e2d18b31eb',1,'gameModel::Environment']]],
   ['isplayerinopponentrestrictedzone',['isPlayerInOpponentRestrictedZone',['../classgame_model_1_1_environment.html#a29c3d948c11b020498d632ae20f8db69',1,'gameModel::Environment']]],
   ['isplayerinownrestrictedzone',['isPlayerInOwnRestrictedZone',['../classgame_model_1_1_environment.html#a2f8b8b7cc29aa708e16e0a2debd7e908',1,'gameModel::Environment']]],
