@@ -57,7 +57,7 @@ namespace gameController {
         std::vector<gameModel::Position>;
 
     /**
-     * get the ditance between to cells on the game field.
+     * get the distance between to cells on the game field.
      * @param startPoint position of the first cell.
      * @param endPoint position of the second cell.
      * @return the distance as integer.
@@ -83,8 +83,7 @@ namespace gameController {
      * @return a shots vector
      */
     auto getAllConstrainedShots(const std::shared_ptr<gameModel::Player> &actor,
-                                const std::shared_ptr<gameModel::Environment> &env) ->
-            std::vector<Shot>;
+                                const std::shared_ptr<gameModel::Environment> &env) -> std::vector<Shot>;
 
     /**
      * Get all currently possible moves of a given actor in a given environment
@@ -102,6 +101,10 @@ namespace gameController {
      */
     void moveToAdjacent(const std::shared_ptr<gameModel::Object> &object, const std::shared_ptr<gameModel::Environment> &env);
 
+    /**
+     * Moves the quaffle after the round ends according to game rules
+     * @param env the environment to operate on
+     */
     void moveQuaffelAfterGoal(const std::shared_ptr<gameModel::Environment> &env);
 
     /**
@@ -121,7 +124,7 @@ namespace gameController {
     int rng(int min, int max);
 
     /**
-     * make the decision if a player will be punished or not after a foul.df
+     * makes the decision if a player will be punished after a foul
      * @param foul the foul type.
      * @param gameConf the current game configuration.
      * @return true if player shall be punished, else false.
@@ -130,7 +133,7 @@ namespace gameController {
 
     /**
      * move the selected bludger according to the game roles.
-     * @return the player the bludger attempted to knock out
+     * @return the player the bludger attempted to knock out or nothing if no knockout was attempted
      */
     auto moveBludger(std::shared_ptr<gameModel::Bludger> &bludger, std::shared_ptr<gameModel::Environment> &env) ->
         std::optional<std::shared_ptr<gameModel::Player>>;
@@ -145,7 +148,7 @@ namespace gameController {
                                 const std::shared_ptr<const gameModel::Environment> &env);
 
     /**
-     * gets the actiontype of the action a player can perform with a ball
+     * gets the actiontype of the action a player can perform with a ball or nothing if no action can be performed
      * @param player the player
      * @param env the envirnoment
      * @return optinal with action type
@@ -155,13 +158,13 @@ namespace gameController {
                                    std::optional<ActionType>;
 
     /**
-     * make the move for the Snitch as in the Rules given
+     * make the move for the Snitch according to the game rules
      * @return true if the snitch was caught after its move, false otherwise
      */
     bool moveSnitch(std::shared_ptr<gameModel::Snitch> &snitch, std::shared_ptr<gameModel::Environment> &env, ExcessLength excessLength);
 
     /**
-     * This Method places the Snitch belong to the Rules. The Method shuld be called in the 13th Round of the Game
+     * This method places the Snitch according to the rules. The Method should be called in the 13th Round of the Game
      */
     void spawnSnitch(std::shared_ptr<gameModel::Environment>& env);
 }

@@ -19,7 +19,7 @@
 namespace gameController{
 
     /**
-     * Basic types of actions
+     * Basic categories of Actions
      */
     enum class ActionCheckResult {
         Impossible, ///< Action violates game mechanics
@@ -28,7 +28,7 @@ namespace gameController{
     };
 
     /**
-     * Outcomes of a Shot
+     * Outcomes of an Action
      */
     enum class ActionResult {
         Intercepted, ///<Quaffle is intercepted
@@ -37,9 +37,9 @@ namespace gameController{
         ScoreLeft, ///<Throw resulted in a goal for the left team
         ThrowSuccess, ///<Quaffle landed on target position
         Knockout, ///<Bludger knocked out a player
-        SnitchCatch, ///Snitch is catched
+        SnitchCatch, ///Snitch is caught
         WrestQuaffel, ///>Quaffel was wrested
-        FoolAway
+        FoolAway ///> Quaffle was lost
     };
 
     class Action {
@@ -50,6 +50,7 @@ namespace gameController{
          * default constructor for the Action class.
          */
         Action() = default;
+
         /**
          * main constructor for the Action class.
          * @param env The environment to operate on
@@ -67,9 +68,9 @@ namespace gameController{
 
         // functions
         /**
-         * executes the Action
+         * executes the Action. Method is not deterministic.
          * @throws std::runtime_exception if Action is impossible
-         * @return List of ramifications from the action axecution, List of Fouls during the execution
+         * @return List of ramifications from the action execution, list of fouls during the execution
          */
         virtual auto execute() const -> std::pair<std::vector<ActionResult>, std::vector<gameModel::Foul>> = 0;
 
@@ -85,12 +86,16 @@ namespace gameController{
         virtual auto check() const -> ActionCheckResult = 0;
 
         /**
-         * Produces a List with all possible outomes of the Action
-         * @return
+         * Produces a list with all possible outcomes of the Action and the respective transition probabilities.
+         * @return List of pairs consisting of the resulting Environment and the probability of landing in that state
          */
         virtual auto executeAll() const ->
             std::vector<std::pair<std::shared_ptr<gameModel::Environment>, double>> = 0;
 
+        /**
+         * Getter
+         * @return target position of the Action
+         */
         const gameModel::Position &getTarget() const;
     protected:
         // objects
@@ -100,7 +105,7 @@ namespace gameController{
     };
 
     /**
-     * class for a shot in the game which can only be executed by a player
+     * Represents actions with the game's balls except for the Snitch
      */
     class Shot : public Action {
     public:
@@ -128,7 +133,7 @@ namespace gameController{
         auto executeAll() const ->
             std::vector<std::pair<std::shared_ptr<gameModel::Environment>, double>> override;
         /**
-         * Checks if the defined Shot will result in a goal if it succeedes
+         * Checks if the defined Shot will result in a goal if it succeeds
          * @return an ActionResult with the appropriate message or nothing if no goal will be scored
          */
         auto isShotOnGoal() const -> std::optional<ActionResult>;
@@ -139,47 +144,48 @@ namespace gameController{
          */
         auto shotType() const -> std::optional<communication::messages::types::DeltaType>;
 
+        /**
+         * Getter
+         * @return the ball of the Shot
+         */
         const std::shared_ptr<const gameModel::Ball> getBall() const;
     private:
         std::shared_ptr<gameModel::Ball> ball;
 
         /**
-         * gets all cells along the flightpath which are occupied by opponent players (ordered in flight direction)
-         * @param env
-         * @return
+         * Gets all cells along the flightpath which are occupied by opponent players (ordered in flight direction)
+         * @return list with positions where the Quaffle might be intercepted
          */
         auto getInterceptionPositions() const -> std::vector<gameModel::Position>;
 
         /**
          * Returns a list with all possible positions the ball might land if NOT intercepted. The target position is NOT
          * included
-         * @param env
-         * @return
+         * @return list with all possible landing positions
          */
         auto getAllLandingCells() const -> std::vector<gameModel::Position>;
 
         /**
          * Checks if a goal was scored depending on the actors current position
          * @param pos the position where the quaffle was thrown
-         * @return
+         * @return true if a successful throw from the actors position to pos counts as goal, false otherwise
          */
         auto goalCheck(const gameModel::Position &pos) const -> std::optional<ActionResult>;
 
         /**
          * creates all Environments for Quaffle throws
-         * @return
+         * @return see Action::executeAll
          */
         auto executeAllQuaffle() const -> std::vector<std::pair<std::shared_ptr<gameModel::Environment>, double>>;
 
         /**
          * creates all Environments for Bludger shots
-         * @return
+         * @return see Action::executeAll
          */
         auto executeAllBludger() const -> std::vector<std::pair<std::shared_ptr<gameModel::Environment>, double>>;
 
-
         /**
-         * emplaces new Envs in return-list where the Quaffle landed on a cell in newPoses to pos
+         * emplaces new Envs in return-list where the Quaffle landed on a cell in newPoses
          * and makes sure that no duplicate envs are created.
          * @param baseProb the probability that the Quaffle reached any of the cells in newPoses
          * @param newPoses positions for new envs
@@ -190,7 +196,7 @@ namespace gameController{
     };
 
     /**
-     * class for a the action of wresting the quaffel from anoter player.
+     * class for a the action of wresting the Quaffel from another player.
      */
     class WrestQuaffle : public Action {
     public:
@@ -225,7 +231,7 @@ namespace gameController{
     };
 
     /**
-     * class for a move in the game which can be executed by a player or a ball
+     * class for a move in the game
      */
     class Move : public Action{
     public:
