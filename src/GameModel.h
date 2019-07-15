@@ -1,3 +1,10 @@
+/**
+ * @file GameModel.h
+ * @author Björn, Jonas, Tim
+ * @date
+ * @brief Declaration of multiple classes for the game model.
+ */
+
 #ifndef GAMELOGIC_SOPRAGAMEMODEL_H
 #define GAMELOGIC_SOPRAGAMEMODEL_H
 
@@ -137,6 +144,9 @@ namespace gameModel{
         BlockCell
     };
 
+    /**
+     * Side of a team
+     */
     enum class TeamSide : char {
         LEFT, RIGHT
     };
@@ -154,21 +164,21 @@ namespace gameModel{
         /**
          * Gets the probability of an extra turn with the specified Broom type
          * @param broom
-         * @return
+         * @return probability of an extra turn with the specified Broom type
          */
         double getExtraTurnProb(communication::messages::types::Broom broom) const;
 
         /**
          * Gets the probability that the given foul will be detected
          * @param foul
-         * @return
+         * @return probability that the given foul will be detected
          */
         double getFoulDetectionProb(Foul foul) const;
 
         /**
          * Gets the probability that the given interference will be detected
          * @param interference
-         * @return
+         * @return probability that the given interference will be detected
          */
         double getFoulDetectionProb(InterferenceType interference) const;
 
@@ -190,7 +200,6 @@ namespace gameModel{
         friend void from_json(const nlohmann::json &, Config &);
 
         bool operator==(const Config &rhs) const;
-
         bool operator!=(const Config &rhs) const;
 
     private:
@@ -297,14 +306,14 @@ namespace gameModel{
         /**
          * gets the number of banned fans of the given type
          * @param fan
-         * @return
+         * @return number of banned fans of the given type
          */
         int getBannedCount(InterferenceType fan) const;
 
         /**
          * gets the number of banned fans of the given type
          * @param fan
-         * @return
+         * @return number of banned fans of the given type
          */
         int getBannedCount(communication::messages::types::FanType fan) const;
 
@@ -469,7 +478,7 @@ namespace gameModel{
         auto getAllPlayers() const -> std::array<std::shared_ptr<Player>, 7>;
 
         /**
-         * Determins wether a given player is a member of the team
+         * Determines whether a given player is a member of the team
          * @param player
          * @return true if player is a member of the team. false otherwise
          */
@@ -477,6 +486,7 @@ namespace gameModel{
 
         /**
          * gets the number of banned players in the team
+         * @return number of banned players in the team
          */
         int numberOfBannedMembers() const;
 
@@ -626,7 +636,7 @@ namespace gameModel{
         auto isPlayerInOpponentRestrictedZone(const std::shared_ptr<const Player> &player) const  -> bool;
 
         /**
-         * Gets all players on the field
+         * Gets all players in the game
          * @return
          */
         auto getAllPlayers() const -> std::array<std::shared_ptr<Player>, 14>;
@@ -679,7 +689,7 @@ namespace gameModel{
 
         /**
          * Returns player object (if not banned) at the specified position if one exists
-         * @return
+         * @return player on the specified position, or nothing of no player is located on the specified position
          */
         auto getPlayer(const Position &position) const -> std::optional<std::shared_ptr<Player>>;
 
@@ -708,13 +718,13 @@ namespace gameModel{
 
 
         /**
-         * Gets all valid cells not occupied by players
+         * Gets all valid cells not occupied by players or balls
          * @return
          */
         auto getAllFreeCells() const -> std::vector<Position>;
 
         /**
-         * place a player on random free cell in his half of the game field.
+         * place a player on random free cell in their half of the game field.
          * @param player
           */
         void placePlayerOnRandomFreeCell(const std::shared_ptr<Player>& player);

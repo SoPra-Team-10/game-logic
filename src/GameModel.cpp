@@ -1,3 +1,10 @@
+/**
+ * @file GameModel.cpp
+ * @author Björn, Jonas, Tim
+ * @date
+ * @brief Implementation of multiple classes for the game model.
+ */
+
 #include "GameModel.h"
 #include "GameController.h"
 #include "conversions.h"

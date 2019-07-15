@@ -1,6 +1,9 @@
-//
-// Created by timluchterhand on 05.05.19.
-//
+/**
+ * @file Interference.h
+ * @author Björn, Tim
+ * @date 05.05.19
+ * @brief Declaration of the Interferences.
+ */
 
 #ifndef SOPRAGAMELOGIC_INTERFERENCE_H
 #define SOPRAGAMELOGIC_INTERFERENCE_H
@@ -18,23 +21,25 @@ namespace gameController{
                 gameModel::InterferenceType type);
 
         /**
-         * Executes the interference
+         * Executes the interference.
+         * @return the results of the executed action as gameController::ActionCheckResult: Foul if Interference was detected,
+         * Success otherwise
          */
         virtual auto execute() const -> gameController::ActionCheckResult = 0;
 
         /**
          * Checks if the interference is possible
-         * @return
+         * @return true if possible, else false
          */
         virtual bool isPossible() const;
 
         /**
-         * Gets the type of interference
-         * @return
+         * Gets the type of interference.
+         * @return the type of the interference as gameModel::InterferenceType
          */
         auto getType() const -> gameModel::InterferenceType;
-    protected:
 
+    protected:
         std::shared_ptr<gameModel::Environment> env;
         std::shared_ptr<gameModel::Team> team;
         gameModel::InterferenceType type;
@@ -47,9 +52,14 @@ namespace gameController{
 
         /**
          * Teleports target player to random free location on the field
+         * @return see Interference::execute
          */
         auto execute() const -> gameController::ActionCheckResult override;
 
+        /**
+         * Checks if Interference is possible
+         * @return true if available an target Player on field
+         */
         bool isPossible() const override;
 
     private:
@@ -64,11 +74,12 @@ namespace gameController{
         /**
          * Pushes target player to a random free adjacent position
          * if target player previously held quaffle, quaffle will be moved to random free adjacent position
+         * @return see Interference::execute
          */
         auto execute() const -> gameController::ActionCheckResult override;
 
         /**
-         *
+         * Checks if Interference is possible
          * @return true if available and opponent target, false otherwise
          */
         bool isPossible() const override;
@@ -82,6 +93,7 @@ namespace gameController{
 
         /**
          * If a Keeper or Chaser holds the quaffle, quaffle is moved to a random free adjacent position
+         * @return see Interference::execute
          */
         auto execute() const -> gameController::ActionCheckResult override;
 
@@ -93,6 +105,7 @@ namespace gameController{
 
         /**
          * Snitch is moved to random free adjacent position
+         * @return see Interference::execute
          */
         auto execute() const -> gameController::ActionCheckResult override;
     };
@@ -102,12 +115,14 @@ namespace gameController{
         BlockCell(std::shared_ptr<gameModel::Environment> env, std::shared_ptr<gameModel::Team> team, gameModel::Position target);
 
         /**
-         * @return true if this Interference is available and possible to place the this Interference to this Cell
+         * Checks if Interference is possible
+         * @return true if this Interference is available and possible to place CubeOfShit on specified position
          */
         bool isPossible() const override ;
 
         /**
-         * BLockCell is moved to the Cell
+         * Places CubeOfShit on target position
+         * @return see Interference::execute
          */
         auto execute() const -> gameController::ActionCheckResult override;
     private:

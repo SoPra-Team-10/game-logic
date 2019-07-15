@@ -1,6 +1,9 @@
-//
-// Created by timluchterhand on 05.05.19.
-//
+/**
+ * @file Interference.cpp
+ * @author Björn, Tim
+ * @date 05.05.19
+ * @brief Implementation of the Interferences.
+ */
 
 #include "Interference.h"
 
@@ -39,7 +42,7 @@ namespace gameController{
 
     bool Teleport::isPossible() const {
         const bool isInField = gameModel::Environment::getCell(target->position) != gameModel::Cell::OutOfBounds;
-        return Interference::isPossible() && isInField;
+        return Interference::isPossible() && isInField && !target->isFined;
     }
 
     RangedAttack::RangedAttack(std::shared_ptr<gameModel::Environment> env, std::shared_ptr<gameModel::Team> team,
@@ -68,7 +71,7 @@ namespace gameController{
 
     bool RangedAttack::isPossible() const {
         const bool isInField = gameModel::Environment::getCell(target->position) != gameModel::Cell::OutOfBounds;
-        return Interference::isPossible() && !team->hasMember(target) && isInField;
+        return Interference::isPossible() && !team->hasMember(target) && isInField && !target->isFined;
     }
 
     Impulse::Impulse(std::shared_ptr<gameModel::Environment> env, std::shared_ptr<gameModel::Team> team) :

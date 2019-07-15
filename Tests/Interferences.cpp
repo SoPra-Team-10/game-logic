@@ -28,6 +28,13 @@ TEST(teleport_test, no_teleports_left){
     EXPECT_FALSE(testTeleport.isPossible());
 }
 
+TEST(teleport_test, no_valid_target){
+    auto env = setup::createEnv();
+    env->team1->seeker->isFined = true;
+    gameController::Teleport testTeleport(env, env->team2, env->team1->seeker);
+    EXPECT_FALSE(testTeleport.isPossible());
+}
+
 TEST(teleport_test, execute0){
     auto env = setup::createEnv();
     gameController::Teleport testTeleport(env, env->team1, env->team1->seeker);
@@ -79,6 +86,13 @@ TEST(ranged_attack_test, no_uses_left){
         env->team1->fanblock.banFan(testAttack.getType());
     }
 
+    EXPECT_FALSE(testAttack.isPossible());
+}
+
+TEST(ranged_attack_test, no_valid_target){
+    auto env = setup::createEnv();
+    env->team1->seeker->isFined = true;
+    gameController::RangedAttack testAttack(env, env->team2, env->team1->seeker);
     EXPECT_FALSE(testAttack.isPossible());
 }
 

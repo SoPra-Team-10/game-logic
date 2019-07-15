@@ -1,6 +1,14 @@
+/**
+ * @file Action.cpp
+ * @author Björn, Jonas, Tim
+ * @date
+ * @brief Implementation of multiple classes for game actions.
+ */
+
 #include <utility>
 #include "Action.h"
 #include "GameModel.h"
+
 #define QUAFFLETHROW (((INSTANCE_OF(actor, gameModel::Chaser)) || (INSTANCE_OF(actor, gameModel::Keeper))) && (INSTANCE_OF(ball, gameModel::Quaffle)))
 #define BLUDGERSHOT ((INSTANCE_OF(actor, gameModel::Beater)) && (INSTANCE_OF(ball, gameModel::Bludger)))
 
@@ -96,9 +104,9 @@ namespace gameController{
             if(goalCheckResult.has_value()){
                 shotRes.push_back(goalCheckResult.value());
                 if(goalCheckResult.value() == ActionResult::ScoreLeft){
-                    env->team1->score += GOAL_POINTS;
+                    env->getTeam(gameModel::TeamSide::LEFT)->score += GOAL_POINTS;
                 } else if(goalCheckResult.value() == ActionResult::ScoreRight){
-                    env->team2->score += GOAL_POINTS;
+                    env->getTeam(gameModel::TeamSide::RIGHT)->score += GOAL_POINTS;
                 } else {
                     throw std::runtime_error("Unexpected goal check result");
                 }
@@ -419,9 +427,9 @@ namespace gameController{
                 auto goalRes = goalCheck(cell);
                 if(goalRes.has_value()) {
                     if(goalRes.value() == ActionResult::ScoreLeft) {
-                        newEnv->team1->score += GOAL_POINTS;
+                        newEnv->getTeam(gameModel::TeamSide::LEFT)->score += GOAL_POINTS;
                     } else if(goalRes.value() == ActionResult::ScoreRight) {
-                        newEnv->team2->score += GOAL_POINTS;
+                        newEnv->getTeam(gameModel::TeamSide::RIGHT)->score += GOAL_POINTS;
                     }
                 }
 
@@ -514,10 +522,10 @@ namespace gameController{
             if (gameModel::Environment::isGoalCell(this->env->quaffle->position)) {
                 if (gameModel::Environment::getCell(this->env->quaffle->position) == gameModel::Cell::GoalLeft) {
                     actions.push_back(ActionResult::ScoreRight);
-                    env->team2->score += GOAL_POINTS;
+                    env->getTeam(gameModel::TeamSide::RIGHT)->score += GOAL_POINTS;
                 } else if (gameModel::Environment::getCell(this->env->quaffle->position) == gameModel::Cell::GoalRight) {
                     actions.push_back(ActionResult::ScoreLeft);
-                    env->team1->score += GOAL_POINTS;
+                    env->getTeam(gameModel::TeamSide::LEFT)->score += GOAL_POINTS;
                 }
             }
         } else if(rammingFoulFlag && env->quaffle->position == target) {
@@ -655,9 +663,9 @@ namespace gameController{
                     for(auto &outcome : resList) {
                         outcome.first->quaffle->position = target;
                         if(gameModel::Environment::getCell(target) == gameModel::Cell::GoalLeft) {
-                            outcome.first->team2->score += GOAL_POINTS;
+                            outcome.first->getTeam(gameModel::TeamSide::RIGHT)->score += GOAL_POINTS;
                         } else if(gameModel::Environment::getCell(target) == gameModel::Cell::GoalRight) {
-                            outcome.first->team1->score += GOAL_POINTS;
+                            outcome.first->getTeam(gameModel::TeamSide::LEFT)->score += GOAL_POINTS;
                         }
                     }
                 } else if(env->quaffle->position == target && (INSTANCE_OF(actor, gameModel::Beater) || INSTANCE_OF(actor, gameModel::Seeker) ||
