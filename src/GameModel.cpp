@@ -405,7 +405,7 @@ namespace gameModel{
             for(int y = position.y - 1; y <= position.y + 1; y++){
                 Position curr(x, y);
                 auto playerOnCell = getPlayer(curr);
-                auto opponentTeam = leftTeam ? team2 : team1;
+                auto opponentTeam = leftTeam ? getTeam(TeamSide::RIGHT) : getTeam(TeamSide::LEFT);
                 bool ownGoalCell = leftTeam ? getCell(curr) == Cell::GoalLeft : getCell(curr) == Cell::GoalRight;
                 if(curr != position && getCell(curr) != Cell::OutOfBounds && !isShitOnCell(curr) && !ownGoalCell &&
                     (!playerOnCell.has_value() || !opponentTeam->hasMember(playerOnCell.value()))){
